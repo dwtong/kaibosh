@@ -7,17 +7,17 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <a class="is-active">View recipients</a>
+        <a class="is-active">View Recipients</a>
       </li>
       <li>
-        <a>Add new recipient</a>
+        <a>Add New Recipient</a>
       </li>
     </ul>
 
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <a>View schedule</a>
+        <a>View Schedule</a>
       </li>
     </ul>
   </aside>
