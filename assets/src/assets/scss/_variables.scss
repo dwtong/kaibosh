@@ -167,6 +167,13 @@ $size-normal: $size-6 !default;
 $size-medium: $size-5 !default;
 $size-large: $size-4 !default;
 
+// Box
+
+$box-padding: 1.5rem;
+$box-radius: 2px;
+// $box-shadow: 5px 5px 8px 0px rgba(204, 204, 204, 1);
+$box-background-color: white;
+
 // Navbar
 
 $navbar-background: $kaibosh-charcoal;

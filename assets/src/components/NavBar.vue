@@ -7,7 +7,7 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <a>View recipients</a>
+        <a class="is-active">View recipients</a>
       </li>
       <li>
         <a>Add new recipient</a>
@@ -44,8 +44,20 @@
 .menu-list {
   a {
     &:hover {
-      background-color: $primary;
       border-radius: 1rem 0 0 1rem;
+      background-color: $primary;
+      color: $text;
+    }
+
+    &.is-active {
+      background-color: $background;
+      color: $text;
+      border-radius: 1rem 0 0 1rem;
+      &:hover {
+        border-radius: 1rem 0 0 1rem;
+        background-color: $primary;
+        color: $text;
+      }
     }
     color: white;
     margin-left: 1rem;
