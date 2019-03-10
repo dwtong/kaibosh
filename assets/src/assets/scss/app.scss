@@ -33,10 +33,41 @@ $colors: map-merge($colors, $addColors);
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
-@import "~material-icons/css/material-icons.scss";
 
 // 4. Provide custom buefy overrides and site styles here
 
 .button {
   font-weight: 700;
+}
+
+.b-table .table {
+  td {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  th {
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+
+    &.is-current-sort {
+      border-color: #dbdbdb;
+    }
+
+    .th-wrap .icon {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+p {
+  &.subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 0.6rem;
+  }
 }
