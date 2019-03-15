@@ -1,7 +1,8 @@
 <template>
   <b-table
     class="table"
-    :data="data"
+    :data="filteredRecipientList"
+    :loading="loading"
     hoverable
     striped
     default-sort-direction="asc"
@@ -9,7 +10,7 @@
   >
     <template slot="empty">
       <section class="section">
-        <div class="has-text-grey has-text-centered">
+        <div v-if="!loading" class="has-text-grey has-text-centered">
           <p>
             <b-icon
               class="has-text-grey-lighter sad-icon"
@@ -36,13 +37,32 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import RecipientStatusTag from "@/components/RecipientStatusTag";
 
 export default {
   components: {
     RecipientStatusTag
   },
-  props: ["data"]
+
+  computed: {
+    ...mapGetters("recipients", ["filteredRecipientList"])
+  },
+
+  async created() {
+    await this.getAllRecipients();
+    this.loading = false;
+  },
+
+  data() {
+    return {
+      loading: true
+    };
+  },
+
+  methods: {
+    ...mapActions("recipients", ["getAllRecipients"])
+  }
 };
 </script>
 
