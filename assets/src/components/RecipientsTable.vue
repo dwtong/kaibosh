@@ -29,7 +29,13 @@
         props.row.name
       }}</b-table-column>
 
-      <b-table-column field="status" label="Status" centered sortable>
+      <b-table-column
+        field="status"
+        label="Status"
+        centered
+        sortable
+        width="80"
+      >
         <RecipientStatusTag :status="props.row.status" />
       </b-table-column>
     </template>
