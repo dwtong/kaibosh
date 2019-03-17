@@ -16,7 +16,7 @@ const post = async (endpoint, body) => {
     const response = await axios.post(basePath + endpoint, body);
     return response;
   } catch (error) {
-    return error;
+    return { error: error };
   }
 };
 
