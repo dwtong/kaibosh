@@ -1,21 +1,24 @@
-import api from "@/store/api";
+// import api from "@/store/api";
+import * as types from "@/store/mutation-types";
 
 export default {
-  async getAllRecipients({ commit }) {
-    // TODO handle failure
-    const response = await api.get("/recipients");
-    commit("UPDATE_RECIPIENT_LIST", { recipients: response.data });
-  },
+  async resetFilters({ commit, state }) {
+    const statusFilter = [...state.filters.status];
+    statusFilter.forEach(f => (f.enabled = false));
 
-  resetFilters({ commit }) {
-    commit("RESET_FILTERS");
+    await commit(types.SET_NAME_FILTER, "");
+    await commit(types.SET_STATUS_FILTER, statusFilter);
   },
 
   updateNameFilter({ commit }, value) {
-    commit("UPDATE_NAME_FILTER", { value });
+    commit(types.SET_NAME_FILTER, value);
   },
 
-  toggleStatusFilter({ commit }, statusName) {
-    commit("TOGGLE_STATUS_FILTER", { statusName });
+  toggleStatusFilter({ commit, state }, statusName) {
+    const statusFilter = [...state.filters.status];
+    const filter = statusFilter.find(f => f.name === statusName);
+    filter.enabled = filter.enabled ? false : true;
+
+    commit(types.SET_STATUS_FILTER, statusFilter);
   }
 };
