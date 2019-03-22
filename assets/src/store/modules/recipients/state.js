@@ -1,5 +1,8 @@
 export default {
-  recipientList: [],
+  recipientList: {
+    loading: false,
+    data: []
+  },
   filters: {
     name: "",
     status: [

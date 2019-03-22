@@ -1,7 +1,14 @@
-// import api from "@/store/api";
+import apiHelper from "@/store/api-helper";
 import * as types from "@/store/mutation-types";
 
 export default {
+  async getRecipients(store) {
+    await apiHelper.get(store, {
+      endpoint: "/recipients",
+      mutation: types.API_GET_RECIPIENTS
+    });
+  },
+
   async resetFilters({ commit, state }) {
     const statusFilter = [...state.filters.status];
     statusFilter.forEach(f => (f.enabled = false));

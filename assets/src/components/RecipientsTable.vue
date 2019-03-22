@@ -1,27 +1,29 @@
 <template>
   <b-table
     class="table"
-    :data="filteredRecipientList"
-    :loading="loading"
+    :data="filteredRecipients"
+    :loading="recipientList.loading"
     hoverable
     striped
     default-sort-direction="asc"
     default-sort="name"
   >
     <template slot="empty">
-      <section class="section">
-        <div v-if="!loading" class="has-text-grey has-text-centered">
-          <p>
-            <b-icon
-              class="has-text-grey-lighter sad-icon"
-              icon="frown"
-              size="is-large"
-            >
-            </b-icon>
-          </p>
-          <p>Nothing here.</p>
-        </div>
-      </section>
+      <div
+        v-if="!recipientList.loading"
+        class="has-text-grey has-text-centered"
+      >
+        <p>
+          <b-icon
+            class="has-text-grey-lighter sad-icon"
+            icon="frown"
+            size="is-large"
+          >
+          </b-icon>
+        </p>
+        <p>Nothing here.</p>
+      </div>
+      <div v-else class="pending"></div>
     </template>
 
     <template slot-scope="props">
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import RecipientStatusTag from "@/components/RecipientStatusTag";
 
 export default {
@@ -52,27 +54,25 @@ export default {
   },
 
   computed: {
-    ...mapGetters("recipients", ["filteredRecipientList"])
+    ...mapGetters("recipients", ["filteredRecipients"]),
+    ...mapState("recipients", ["recipientList"])
   },
 
   async created() {
-    await this.getAllRecipients();
-    this.loading = false;
-  },
-
-  data() {
-    return {
-      loading: true
-    };
+    await this.getRecipients();
   },
 
   methods: {
-    ...mapActions("recipients", ["getAllRecipients"])
+    ...mapActions("recipients", ["getRecipients"])
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.pending {
+  height: 10rem;
+}
+
 .table {
   cursor: pointer;
 }
