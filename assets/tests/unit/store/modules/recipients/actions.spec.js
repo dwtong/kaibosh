@@ -7,6 +7,20 @@ const mock = new MockAdapter(axios);
 const commit = jest.fn();
 
 describe("actions", () => {
+  describe("createRecipient", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const recipient = { recipient: { name: "Test 1" } };
+      const createdRecipient = { ...recipient, id: 1 };
+      mock.onPost("/api/v1/recipients").reply(201, createdRecipient);
+      await actions.createRecipient({ commit, state }, recipient);
+      await expect(commit).toBeCalledWith(types.API_CREATE_RECIPIENT.PENDING);
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_RECIPIENT.SUCCESS,
+        createdRecipient
+      );
+    });
+  });
+
   describe("getRecipients", () => {
     it("calls SUCCESS mutation with list of recipients on API success", async () => {
       const recipients = [

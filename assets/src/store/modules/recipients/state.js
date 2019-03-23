@@ -3,6 +3,11 @@ export default {
     loading: false,
     data: []
   },
+  activeRecipient: {
+    loading: false,
+    data: {},
+    errors: null
+  },
   filters: {
     name: "",
     status: [

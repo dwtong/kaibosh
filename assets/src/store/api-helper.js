@@ -9,7 +9,6 @@ const get = async (store, { endpoint, mutation }) => {
     store.commit(mutation.SUCCESS, response.data);
   } catch (error) {
     store.commit(mutation.FAILURE);
-    console.log(`API ERROR: ${error.message}`);
   }
 };
 
@@ -20,7 +19,13 @@ const post = async (store, { endpoint, body, mutation }) => {
     const response = await axios.post(basePath + endpoint, body);
     store.commit(mutation.SUCCESS, response.data);
   } catch (error) {
-    store.commit(mutation.FAILURE, error);
+    let errors;
+    if (error.response.data) {
+      errors = error.response.data;
+    } else {
+      errors = error.message;
+    }
+    store.commit(mutation.FAILURE, errors);
   }
 };
 

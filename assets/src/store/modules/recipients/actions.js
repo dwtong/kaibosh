@@ -2,6 +2,14 @@ import apiHelper from "@/store/api-helper";
 import * as types from "@/store/mutation-types";
 
 export default {
+  async createRecipient(store, recipient) {
+    await apiHelper.post(store, {
+      endpoint: "/recipients",
+      body: recipient,
+      mutation: types.API_CREATE_RECIPIENT
+    });
+  },
+
   async getRecipients(store) {
     await apiHelper.get(store, {
       endpoint: "/recipients",

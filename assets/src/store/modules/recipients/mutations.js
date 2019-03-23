@@ -14,6 +14,21 @@ export default {
     state.recipientList.loading = false;
   },
 
+  [types.API_CREATE_RECIPIENT.PENDING](state) {
+    state.activeRecipient.loading = true;
+    state.activeRecipient.errors = null;
+  },
+
+  [types.API_CREATE_RECIPIENT.SUCCESS](state, payload) {
+    state.activeRecipient.loading = false;
+    state.activeRecipient.data = payload;
+  },
+
+  [types.API_CREATE_RECIPIENT.FAILURE](state, payload) {
+    state.activeRecipient.loading = false;
+    state.activeRecipient.errors = payload;
+  },
+
   [types.SET_NAME_FILTER](state, payload) {
     state.filters.name = payload;
   },

@@ -3,30 +3,21 @@ import * as types from "@/store/mutation-types";
 import state from "@/store/modules/recipients/state";
 
 describe("mutations", () => {
-  // it("UPDATE_RECIPIENT_LIST", () => {
-  //   const payload = {
-  //     recipients: [{ name: "recipient 1" }, { name: "recipient 2" }]
-  //   };
-
-  //   UPDATE_RECIPIENT_LIST(state, payload);
-  //   expect(state.recipientList).toEqual(payload.recipients);
-  // });
-
   describe("API_CREATE_RECIPIENT", () => {
     it("PENDING", () => {
-      mutations[types.API_GET_RECIPIENTS.PENDING](state);
+      mutations[types.API_CREATE_RECIPIENT.PENDING](state);
       expect(state.activeRecipient.loading).toBeTruthy;
     });
 
     it("SUCCESS", () => {
       const payload = { name: "Recipient 1", status: "active", id: 1 };
-      mutations[types.API_GET_RECIPIENTS.SUCCESS](state, payload);
+      mutations[types.API_CREATE_RECIPIENT.SUCCESS](state, payload);
       expect(state.activeRecipient.data).toEqual(payload);
       expect(state.activeRecipient.loading).toBeFalsy;
     });
 
     it("FAILURE", () => {
-      mutations[types.API_GET_RECIPIENTS.FAILURE](state);
+      mutations[types.API_CREATE_RECIPIENT.FAILURE](state);
       expect(state.activeRecipient.loading).toBeFalsy;
     });
   });

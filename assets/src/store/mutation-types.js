@@ -1,12 +1,10 @@
 // https://medium.com/@lachlanmiller_52885/a-pattern-to-handle-ajax-requests-in-vuex-2d69bc2f8984
-import _ from "lodash";
-
 const createAPIMutation = type => ({
   SUCCESS: `${type}_SUCCESS`,
   FAILURE: `${type}_FAILURE`,
   PENDING: `${type}_PENDING`
 });
-
+export const API_CREATE_RECIPIENT = createAPIMutation("CREATE_RECIPIENT");
 export const API_GET_RECIPIENT = createAPIMutation("GET_RECIPIENT");
 export const API_GET_RECIPIENTS = createAPIMutation("GET_RECIPIENTS");
 

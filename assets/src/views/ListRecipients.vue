@@ -2,9 +2,12 @@
   <div>
     <div class="title-box">
       <h1 class="title is-inline-block">Food Recipients</h1>
-      <button class="button is-primary is-pulled-right">
-        Create Recipient
-      </button>
+      <router-link
+        to="/recipients/new"
+        tag="button"
+        class="button is-primary is-pulled-right"
+        >Add New Recipient</router-link
+      >
     </div>
 
     <div class="columns">
