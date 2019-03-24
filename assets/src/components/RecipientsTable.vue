@@ -2,7 +2,7 @@
   <b-table
     class="table"
     :data="filteredRecipients"
-    :loading="recipientList.loading"
+    :loading="filteredRecipients.length == 0 && recipientList.loading"
     hoverable
     striped
     default-sort-direction="asc"
