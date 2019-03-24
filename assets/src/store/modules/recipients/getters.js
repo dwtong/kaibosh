@@ -1,5 +1,3 @@
-import * as types from "@/store/mutation-types";
-
 export default {
   filteredRecipients(state) {
     const filters = state.filters.status
