@@ -3,6 +3,8 @@ import * as types from "@/store/mutation-types";
 
 export default {
   async createRecipient(store, recipient) {
+    recipient.primary_contact_attributes = recipient.primary_contact;
+
     await apiHelper.post(store, {
       endpoint: "/recipients",
       body: recipient,

@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecipientForm.vue component layout renders correctly 1`] = `
+<form>
+  <div
+    class="box"
+  >
+    <h1
+      class="title"
+    >
+      Organisation Details
+    </h1>
+     
+    <div
+      class="field form-field"
+    >
+      <label
+        class="label"
+      >
+        
+            Organisation name
+        
+      </label>
+       
+      <div
+        class="control is-clearfix"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          name="name"
+          type="text"
+        />
+         
+        <!---->
+         
+        <!---->
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="field form-field"
+    >
+      <label
+        class="label"
+      >
+        
+            Kaibosh base
+        
+      </label>
+       
+      <div
+        class="control"
+      >
+        <span
+          class="select is-empty"
+        >
+          <select
+            name="base"
+          >
+            <option
+              disabled="disabled"
+              hidden="hidden"
+              selected="selected"
+              value=""
+            >
+              
+                    Select an option
+                
+            </option>
+             
+          </select>
+        </span>
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+  </div>
+   
+  <div
+    class="box"
+  >
+    <h1
+      class="title"
+    >
+      Primary Contact Details
+    </h1>
+     
+    <div
+      class="field"
+    >
+      <label
+        class="label"
+      >
+        
+            Contact name
+        
+      </label>
+       
+      <div
+        class="control is-clearfix"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          data-vv-as="contact name"
+          name="contact-name"
+          type="text"
+        />
+         
+        <!---->
+         
+        <!---->
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="field"
+    >
+      <label
+        class="label"
+      >
+        
+            Contact email
+        
+      </label>
+       
+      <div
+        class="control is-clearfix"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          data-vv-as="contact email"
+          name="contact-email"
+          type="text"
+        />
+         
+        <!---->
+         
+        <!---->
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="field"
+    >
+      <label
+        class="label"
+      >
+        
+            Contact landline
+        
+      </label>
+       
+      <div
+        class="control is-clearfix"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          name="contact-landline"
+          type="text"
+        />
+         
+        <!---->
+         
+        <!---->
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+     
+    <div
+      class="field"
+    >
+      <label
+        class="label"
+      >
+        
+            Contact mobile
+        
+      </label>
+       
+      <div
+        class="control is-clearfix"
+      >
+        <input
+          autocomplete="on"
+          class="input"
+          name="name"
+          type="text"
+        />
+         
+        <!---->
+         
+        <!---->
+         
+        <!---->
+      </div>
+       
+      <!---->
+    </div>
+  </div>
+   
+  <button
+    class="button is-primary is-pulled-right"
+    type="submit"
+  >
+    
+    Save Recipient
+  
+  </button>
+</form>
+`;
