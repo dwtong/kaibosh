@@ -8,8 +8,10 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { capitalize } from "lodash";
+import { addErrorsToForm } from "@/helpers/form-validation";
+import toast from "@/helpers/toast";
 import RecipientForm from "@/components/RecipientForm";
+
 export default {
   components: { RecipientForm },
 
@@ -27,48 +29,14 @@ export default {
         await this.createRecipient(recipientParams);
 
         if (this.activeRecipient.errors) {
-          this.addApiErrorsToForm(this.activeRecipient.errors);
-          this.toastError("Unable to create recipient.", this.errors.items);
+          addErrorsToForm(this.activeRecipient.errors);
+          toast.error("Unable to create recipient.", this.errors.items);
         } else {
-          this.toastSuccess("Successfully created recipient.");
+          toast.success("Successfully created recipient.");
           this.$router.push("/recipients");
         }
       } else {
-        this.toastError("Unable to create recipient.", this.errors.items);
-      }
-    },
-
-    toastError(errorMsg, items) {
-      this.$toast.open({
-        message: `${errorMsg} ${
-          items && items.length > 0
-            ? "Please see form errors."
-            : "Please try again later or contact support."
-        }`,
-        type: "is-danger",
-        position: "is-bottom"
-      });
-    },
-
-    toastSuccess(msg) {
-      this.$toast.open({
-        message: msg,
-        type: "is-success",
-        position: "is-top"
-      });
-    },
-
-    addApiErrorsToForm(apiErrors) {
-      if (typeof apiErrors == "object") {
-        for (const field in apiErrors) {
-          apiErrors[field].forEach(error => {
-            const humanisedField = capitalize(field.split(".").pop());
-            this.errors.add({
-              field: field,
-              msg: `${capitalize(humanisedField)} ${error}.`
-            });
-          });
-        }
+        toast.error("Unable to create recipient.", this.errors.items);
       }
     }
   }
