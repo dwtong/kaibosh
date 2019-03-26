@@ -1,56 +1,56 @@
 import getters from "@/store/modules/recipients/getters";
-const recipientList = [
+const getRecipientsData = [
   { id: 1, name: "Wellington Food Bank", status: "active" },
   { id: 2, name: "Salvation Army Lower Hutt", status: "archived" }
 ];
 
 describe("getters", () => {
-  describe("filteredRecipientList", () => {
+  describe("filteredRecipients", () => {
     test("filters recipients by status", () => {
       const state = {
-        recipientList,
+        recipientList: { data: getRecipientsData, loading: false },
         filters: { name: "", status: [{ name: "active", enabled: true }] }
       };
-      const filteredRecipients = getters.filteredRecipientList(state);
-      expect(filteredRecipients).toEqual([recipientList[0]]);
+      const filteredRecipients = getters.filteredRecipients(state);
+      expect(filteredRecipients).toEqual([getRecipientsData[0]]);
     });
 
     test("filters recipients by name", () => {
       const state = {
-        recipientList,
+        recipientList: { data: getRecipientsData, loading: false },
         filters: { name: "army", status: [{ name: "active", enabled: false }] }
       };
-      const filteredRecipients = getters.filteredRecipientList(state);
-      expect(filteredRecipients).toEqual([recipientList[1]]);
+      const filteredRecipients = getters.filteredRecipients(state);
+      expect(filteredRecipients).toEqual([getRecipientsData[1]]);
     });
 
     test("filters recipients by status and name", () => {
       const state = {
-        recipientList,
+        recipientList: { data: getRecipientsData, loading: false },
         filters: {
           name: "Welling",
           status: [{ name: "active", enabled: true }]
         }
       };
-      const filteredRecipients = getters.filteredRecipientList(state);
-      expect(filteredRecipients).toEqual([recipientList[0]]);
+      const filteredRecipients = getters.filteredRecipients(state);
+      expect(filteredRecipients).toEqual([getRecipientsData[0]]);
     });
 
     test("does not filter recipients if no filters are set", () => {
       const state = {
-        recipientList,
+        recipientList: { data: getRecipientsData, loading: false },
         filters: { name: "", status: [{ name: "active", enabled: false }] }
       };
-      const filteredRecipients = getters.filteredRecipientList(state);
-      expect(filteredRecipients).toEqual(recipientList);
+      const filteredRecipients = getters.filteredRecipients(state);
+      expect(filteredRecipients).toEqual(getRecipientsData);
     });
 
     test("returns empty array for no match", () => {
       const state = {
-        recipientList,
+        recipientList: { data: getRecipientsData, loading: false },
         filters: { name: "xxx", status: [{ name: "pending", enabled: true }] }
       };
-      const filteredRecipients = getters.filteredRecipientList(state);
+      const filteredRecipients = getters.filteredRecipients(state);
       expect(filteredRecipients).toEqual([]);
     });
   });

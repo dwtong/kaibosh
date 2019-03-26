@@ -1,17 +1,18 @@
 export default {
-  filteredRecipientList(state) {
-    const activeFilterNames = state.filters.status
+  filteredRecipients(state) {
+    const filters = state.filters.status
       .filter(f => f.enabled)
       .map(f => f.name);
 
+    const data = state.recipientList.data;
     let recipientList;
 
-    if (activeFilterNames.length > 0 && state.recipientList.length > 0) {
-      recipientList = state.recipientList.filter(r =>
-        activeFilterNames.includes(r.status)
-      );
+    if (!data || data.length == 0) {
+      recipientList = [];
+    } else if (filters.length > 0) {
+      recipientList = data.filter(r => filters.includes(r.status));
     } else {
-      recipientList = state.recipientList;
+      recipientList = data;
     }
 
     return recipientList.filter(r =>

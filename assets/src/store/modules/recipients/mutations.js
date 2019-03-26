@@ -1,21 +1,39 @@
+import * as types from "@/store/mutation-types";
+
 export default {
-  UPDATE_RECIPIENT_LIST(state, payload) {
-    state.recipientList = payload.recipients;
+  [types.API_GET_RECIPIENTS.PENDING](state) {
+    state.recipientList.loading = true;
   },
 
-  UPDATE_NAME_FILTER(state, payload) {
-    state.filters.name = payload.value;
+  [types.API_GET_RECIPIENTS.SUCCESS](state, payload) {
+    state.recipientList.loading = false;
+    state.recipientList.data = payload;
   },
 
-  RESET_FILTERS(state) {
-    state.filters.name = "";
-    state.filters.status.forEach(f => (f.enabled = false));
+  [types.API_GET_RECIPIENTS.FAILURE](state) {
+    state.recipientList.loading = false;
   },
 
-  TOGGLE_STATUS_FILTER(state, payload) {
-    const filter = state.filters.status.find(
-      f => f.name === payload.statusName
-    );
-    filter.enabled = filter.enabled ? false : true;
+  [types.API_CREATE_RECIPIENT.PENDING](state) {
+    state.activeRecipient.loading = true;
+    state.activeRecipient.errors = null;
+  },
+
+  [types.API_CREATE_RECIPIENT.SUCCESS](state, payload) {
+    state.activeRecipient.loading = false;
+    state.activeRecipient.data = payload;
+  },
+
+  [types.API_CREATE_RECIPIENT.FAILURE](state, payload) {
+    state.activeRecipient.loading = false;
+    state.activeRecipient.errors = payload;
+  },
+
+  [types.SET_NAME_FILTER](state, payload) {
+    state.filters.name = payload;
+  },
+
+  [types.SET_STATUS_FILTER](state, payload) {
+    state.filters.status = payload;
   }
 };

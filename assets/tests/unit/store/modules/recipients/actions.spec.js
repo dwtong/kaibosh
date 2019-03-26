@@ -1,47 +1,70 @@
 import actions from "@/store/modules/recipients/actions";
+import * as types from "@/store/mutation-types";
 import state from "@/store/modules/recipients/state";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 const mock = new MockAdapter(axios);
 const commit = jest.fn();
-const recipients = [
-  { id: 1, name: "Wellington Food Bank", status: "active" },
-  { id: 2, name: "Salvation Army Lower Hutt", status: "active" }
-];
 
 describe("actions", () => {
-  describe("getAllRecipients", () => {
-    it("calls UPDATE_RECIPIENT_LIST mutation with list of recipients on API success", async () => {
+  describe("createRecipient", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const recipient = { recipient: { name: "Test 1" } };
+      const createdRecipient = { ...recipient, id: 1 };
+      mock.onPost("/api/v1/recipients").reply(201, createdRecipient);
+      await actions.createRecipient({ commit, state }, recipient);
+      await expect(commit).toBeCalledWith(types.API_CREATE_RECIPIENT.PENDING);
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_RECIPIENT.SUCCESS,
+        createdRecipient
+      );
+    });
+  });
+
+  describe("getRecipients", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const recipients = [
+        { name: "Test 1", status: "active" },
+        { name: "Test 2", status: "pending" }
+      ];
       mock.onGet("/api/v1/recipients").reply(200, recipients);
-      await actions.getAllRecipients({ commit, state });
-      expect(commit).toBeCalledWith("UPDATE_RECIPIENT_LIST", {
-        recipients: recipients
-      });
+      await actions.getRecipients({ commit, state });
+      await expect(commit).toBeCalledWith(types.API_GET_RECIPIENTS.PENDING);
+      await expect(commit).toBeCalledWith(
+        types.API_GET_RECIPIENTS.SUCCESS,
+        recipients
+      );
     });
   });
 
   describe("resetFilters", () => {
-    it("calls RESET_FILTERS mutation", async () => {
+    it("resets name and status filter", async () => {
+      const statuses = [...state.filters.status];
+      statuses.forEach(f => (f.enabled = false));
       await actions.resetFilters({ commit, state });
-      expect(commit).toBeCalledWith("RESET_FILTERS");
+
+      await expect(commit).toBeCalledWith(types.SET_NAME_FILTER, "");
+      await expect(commit).toBeCalledWith(types.SET_STATUS_FILTER, statuses);
     });
   });
 
   describe("updateNameFilter", () => {
-    it("calls UPDATE_NAME_FILTER mutation with new filter value", async () => {
+    it("updates name filter with new value", async () => {
       const value = "search string";
       await actions.updateNameFilter({ commit, state }, value);
-      expect(commit).toBeCalledWith("UPDATE_NAME_FILTER", { value });
+
+      expect(commit).toBeCalledWith(types.SET_NAME_FILTER, value);
     });
   });
 
   describe("toggleStatusFilter", () => {
-    it("calls TOGGLE_STATUS_FILTER mutation with status filter to toggle", async () => {
-      const status = "active";
-      await actions.toggleStatusFilter({ commit, state }, status);
-      expect(commit).toBeCalledWith("TOGGLE_STATUS_FILTER", {
-        statusName: status
-      });
+    it("enables provided status filter", async () => {
+      const statuses = [...state.filters.status];
+      const filter = statuses.find(f => f.name === "active");
+      filter.enabled = true;
+      await actions.toggleStatusFilter({ commit, state }, "active");
+
+      expect(commit).toBeCalledWith(types.SET_STATUS_FILTER, statuses);
     });
   });
 });

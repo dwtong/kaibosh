@@ -7,10 +7,14 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <a class="is-active">View Recipients</a>
+        <router-link to="/recipients" active-class="is-active" exact
+          >View Recipients</router-link
+        >
       </li>
       <li>
-        <a>Add New Recipient</a>
+        <router-link to="/recipients/new" active-class="is-active" exact
+          >Add New Recipient</router-link
+        >
       </li>
     </ul>
 
