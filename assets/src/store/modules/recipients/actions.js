@@ -23,8 +23,13 @@ export default {
     const statusFilter = [...state.filters.status];
     statusFilter.forEach(f => (f.enabled = false));
 
+    await commit(types.SET_BASE_FILTER, 0);
     await commit(types.SET_NAME_FILTER, "");
     await commit(types.SET_STATUS_FILTER, statusFilter);
+  },
+
+  updateBaseFilter({ commit }, value) {
+    commit(types.SET_BASE_FILTER, value);
   },
 
   updateNameFilter({ commit }, value) {

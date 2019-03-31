@@ -29,6 +29,10 @@ export default {
     state.activeRecipient.errors = payload;
   },
 
+  [types.SET_BASE_FILTER](state, payload) {
+    state.filters.base_id = payload;
+  },
+
   [types.SET_NAME_FILTER](state, payload) {
     state.filters.name = payload;
   },

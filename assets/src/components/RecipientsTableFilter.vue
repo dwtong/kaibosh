@@ -1,6 +1,15 @@
 <template>
   <div>
     <div class="filter-box">
+      <p class="subtitle">Filter By Base</p>
+      <BaseSelect
+        @input="updateBaseFilter($event)"
+        :value="filters.base_id"
+        all
+      />
+    </div>
+
+    <div class="filter-box">
       <p class="subtitle">Filter By Name</p>
       <div class="field">
         <div class="control">
@@ -39,15 +48,21 @@
 </template>
 
 <script>
+import BaseSelect from "@/components/form/BaseSelect";
 import { mapActions, mapState } from "vuex";
 
 export default {
+  components: {
+    BaseSelect
+  },
+
   computed: {
     ...mapState("recipients", ["filters"])
   },
 
   methods: {
     ...mapActions("recipients", [
+      "updateBaseFilter",
       "updateNameFilter",
       "toggleStatusFilter",
       "resetFilters"

@@ -12,23 +12,7 @@
         <b-input v-model="recipient.name" name="name" v-validate="'required'" />
       </b-field>
 
-      <b-field
-        label="Kaibosh base"
-        :type="{ 'is-danger': errors.has('base') }"
-        :message="errors.first('base')"
-        class="form-field"
-      >
-        <b-select
-          v-model="recipient.base_id"
-          name="base"
-          placeholder="Select an option"
-          v-validate="'required'"
-        >
-          <option v-for="base in bases.data" :key="base.id" :value="base.id">{{
-            base.name
-          }}</option>
-        </b-select>
-      </b-field>
+      <BaseSelect v-model="recipient.base_id" label="Kaibosh base" />
     </div>
 
     <div class="box">
@@ -77,21 +61,20 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import BaseSelect from "@/components/form/BaseSelect";
 
 export default {
-  async created() {
-    await this.getBases();
+  components: {
+    BaseSelect
   },
 
-  computed: {
-    ...mapState("bases", ["bases"])
+  async created() {
+    await this.getBases();
   },
 
   inject: ["$validator"],
 
   methods: {
-    ...mapActions("bases", ["getBases"]),
     async submit() {
       this.$emit("submit", this.recipient);
     }

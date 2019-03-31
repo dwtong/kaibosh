@@ -54,10 +54,10 @@ exports[`RecipientForm.vue component layout renders correctly 1`] = `
       </label>
        
       <div
-        class="control"
+        class="control is-expanded"
       >
         <span
-          class="select is-empty"
+          class="select is-fullwidth is-empty"
         >
           <select
             name="base"

@@ -41,6 +41,12 @@ describe("mutations", () => {
     });
   });
 
+  it("SET_BASE_FILTER", () => {
+    const payload = 1;
+    mutations.SET_BASE_FILTER(state, payload);
+    expect(state.filters.base_id).toEqual(payload);
+  });
+
   it("SET_NAME_FILTER", () => {
     const payload = "search string";
     mutations.SET_NAME_FILTER(state, payload);
