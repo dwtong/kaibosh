@@ -43,8 +43,18 @@ describe("actions", () => {
       statuses.forEach(f => (f.enabled = false));
       await actions.resetFilters({ commit, state });
 
+      await expect(commit).toBeCalledWith(types.SET_BASE_FILTER, 0);
       await expect(commit).toBeCalledWith(types.SET_NAME_FILTER, "");
       await expect(commit).toBeCalledWith(types.SET_STATUS_FILTER, statuses);
+    });
+  });
+
+  describe("updateBaseFilter", () => {
+    it("updates base filter with new value", async () => {
+      const value = 1;
+      await actions.updateBaseFilter({ commit, state }, value);
+
+      expect(commit).toBeCalledWith(types.SET_BASE_FILTER, value);
     });
   });
 

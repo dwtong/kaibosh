@@ -9,6 +9,7 @@ export default {
     errors: null
   },
   filters: {
+    base_id: 0,
     name: "",
     status: [
       { label: "Active", name: "active", enabled: false },
