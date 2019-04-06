@@ -12,6 +12,7 @@ module.exports = {
   configureWebpack: {
     devServer: {
       disableHostCheck: true,
+      hot: true,
       proxy: {
         "^/api": {
           target: "http://localhost:3000",

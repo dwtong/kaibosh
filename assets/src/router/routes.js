@@ -1,5 +1,6 @@
-import ListRecipients from "@/views/ListRecipients";
 import CreateRecipient from "@/views/CreateRecipient";
+import ListRecipients from "@/views/ListRecipients";
+import ShowRecipient from "@/views/ShowRecipient";
 import NotFound from "@/views/NotFound";
 
 export default [
@@ -14,6 +15,11 @@ export default [
   {
     path: "/recipients/new",
     component: CreateRecipient
+  },
+  {
+    path: "/recipients/:id",
+    component: ShowRecipient,
+    props: true
   },
   {
     path: "*",

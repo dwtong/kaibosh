@@ -7,6 +7,7 @@
     striped
     default-sort-direction="asc"
     default-sort="name"
+    @click="viewRecipient"
   >
     <template slot="empty">
       <div
@@ -63,7 +64,10 @@ export default {
   },
 
   methods: {
-    ...mapActions("recipients", ["getRecipients"])
+    ...mapActions("recipients", ["getRecipients"]),
+    viewRecipient({ id }) {
+      this.$router.push(`/recipients/${id}`);
+    }
   }
 };
 </script>

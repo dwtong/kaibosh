@@ -19,6 +19,13 @@ export default {
     });
   },
 
+  async getRecipient(store, id) {
+    await apiHelper.get(store, {
+      endpoint: `/recipients/${id}`,
+      mutation: types.API_GET_RECIPIENT
+    });
+  },
+
   async resetFilters({ commit, state }) {
     const statusFilter = [...state.filters.status];
     statusFilter.forEach(f => (f.enabled = false));

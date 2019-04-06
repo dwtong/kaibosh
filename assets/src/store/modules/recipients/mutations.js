@@ -1,6 +1,20 @@
 import * as types from "@/store/mutation-types";
 
 export default {
+  [types.API_GET_RECIPIENT.PENDING](state) {
+    state.activeRecipient.loading = true;
+    state.activeRecipient.data = {};
+  },
+
+  [types.API_GET_RECIPIENT.SUCCESS](state, payload) {
+    state.activeRecipient.loading = false;
+    state.activeRecipient.data = payload;
+  },
+
+  [types.API_GET_RECIPIENT.FAILURE](state) {
+    state.activeRecipient.loading = false;
+  },
+
   [types.API_GET_RECIPIENTS.PENDING](state) {
     state.recipientList.loading = true;
   },
