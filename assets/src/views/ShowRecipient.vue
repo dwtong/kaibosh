@@ -6,7 +6,7 @@
           <h1 class="title">Organisation Details</h1>
 
           <InfoField label="Name" :value="recipient.name" />
-          <InfoField label="Base" :value="recipient.base" />
+          <InfoField label="Base" :value="base.name" />
         </div>
 
         <div class="box">
@@ -21,7 +21,20 @@
 
       <div class="column">
         <div class="box">
-          <h1 class="title">Food Allocations</h1>
+          <h1 class="title is-inline-block">Sorting Sessions</h1>
+          <button
+            @click="isFoodAllocationModalActive = true"
+            class="button is-primary is-pulled-right"
+          >
+            Add Sorting Session
+          </button>
+
+          <b-modal :active.sync="isFoodAllocationModalActive" has-modal-card>
+            <FoodAllocationModal
+              :sessions="base.sessions"
+              :foodCategories="base.foodCategories"
+            />
+          </b-modal>
         </div>
       </div>
     </div>
@@ -29,45 +42,70 @@
 </template>
 
 <script>
+import FoodAllocationModal from "@/components/FoodAllocationModal";
 import InfoField from "@/components/form/InfoField";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import toast from "@/helpers/toast";
 
 export default {
-  components: { InfoField },
+  components: { FoodAllocationModal, InfoField },
 
   computed: {
     ...mapState("recipients", ["activeRecipient"]),
-    recipient() {
-      let contact = {
-        name: "",
-        email: "",
-        mobile: "",
-        landline: ""
-      };
-
-      if (this.activeRecipient.data.primary_contact) {
-        contact.name = this.activeRecipient.data.primary_contact.name;
-        contact.email = this.activeRecipient.data.primary_contact.email;
-        contact.mobile = this.activeRecipient.data.primary_contact.phone_mobile;
-        contact.landline = this.activeRecipient.data.primary_contact.phone_landline;
-      }
-
-      return {
-        name: this.activeRecipient.data.name,
-        base: this.activeRecipient.data.base
-          ? this.activeRecipient.data.base.name
-          : null,
-        contact: contact
-      };
-    }
+    ...mapState("bases", ["bases"]),
+    ...mapGetters("bases", ["getBaseById"])
   },
 
   async created() {
-    await this.getRecipient(this.id);
+    await Promise.all([this.getRecipient(this.id), this.getBases()]);
+
+    if (this.activeRecipient.data && this.activeRecipient.data.base) {
+      const base = this.getBaseById(this.activeRecipient.data.base.id);
+
+      this.base = {
+        sessions: base.sessions,
+        foodCategories: base.food_categories,
+        name: base.name
+      };
+
+      this.recipient.name = this.activeRecipient.data.name;
+
+      if (this.activeRecipient.data.primary_contact) {
+        this.recipient.contact = {
+          name: this.activeRecipient.data.primary_contact.name,
+          email: this.activeRecipient.data.primary_contact.email,
+          mobile: this.activeRecipient.data.primary_contact.phone_mobile,
+          landline: this.activeRecipient.data.primary_contact.phone_landline
+        };
+      }
+    } else {
+      toast.error("Failed to fetch data from server.");
+    }
+  },
+
+  data() {
+    return {
+      isFoodAllocationModalActive: false,
+      base: {
+        foodCategories: [],
+        sessions: []
+      },
+      recipient: {
+        name: "",
+        id: this.id,
+        contact: {
+          name: "",
+          email: "",
+          mobile: "",
+          landline: ""
+        }
+      }
+    };
   },
 
   methods: {
-    ...mapActions("recipients", ["getRecipient"])
+    ...mapActions("recipients", ["getRecipient"]),
+    ...mapActions("bases", ["getBases"])
   },
 
   props: ["id"]
