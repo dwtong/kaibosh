@@ -1,12 +1,12 @@
 import { capitalize } from "lodash";
 
 export default {
-  addErrorsToForm(errors) {
-    if (typeof errors == "object") {
-      for (const field in errors) {
-        errors[field].forEach(error => {
+  addErrorsToForm(newErrors, formErrors) {
+    if (typeof newErrors == "object") {
+      for (const field in newErrors) {
+        newErrors[field].forEach(error => {
           const humanisedField = capitalize(field.split(".").pop());
-          this.errors.add({
+          formErrors.add({
             field: field,
             msg: `${capitalize(humanisedField)} ${error}.`
           });
