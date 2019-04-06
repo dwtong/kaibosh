@@ -8,7 +8,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { addErrorsToForm } from "@/helpers/form-validation";
+import helpers from "@/helpers/form-validation";
 import toast from "@/helpers/toast";
 import RecipientForm from "@/components/RecipientForm";
 
@@ -29,11 +29,11 @@ export default {
         await this.createRecipient(recipientParams);
 
         if (this.activeRecipient.errors) {
-          addErrorsToForm(this.activeRecipient.errors);
+          helpers.addErrorsToForm(this.activeRecipient.errors, this.errors);
           toast.error("Unable to create recipient.", this.errors.items);
         } else {
           toast.success("Successfully created recipient.");
-          this.$router.push("/recipients");
+          this.$router.push(`/recipients/${this.activeRecipient.data.id}`);
         }
       } else {
         toast.error("Unable to create recipient.", this.errors.items);

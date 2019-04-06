@@ -68,10 +68,6 @@ export default {
     BaseSelect
   },
 
-  async created() {
-    await this.getBases();
-  },
-
   inject: ["$validator"],
 
   methods: {
