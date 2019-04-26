@@ -5,8 +5,14 @@ const createAPIMutation = type => ({
   PENDING: `${type}_PENDING`
 });
 export const API_CREATE_RECIPIENT = createAPIMutation("CREATE_RECIPIENT");
+export const API_CREATE_SCHEDULED_SESSION = createAPIMutation(
+  "CREATE_SCHEDULED_SESSION"
+);
 export const API_GET_RECIPIENT = createAPIMutation("GET_RECIPIENT");
 export const API_GET_RECIPIENTS = createAPIMutation("GET_RECIPIENTS");
+export const API_GET_SCHEDULED_SESSIONS = createAPIMutation(
+  "GET_SCHEDULED_SESSIONS"
+);
 
 export const API_GET_BASES = createAPIMutation("GET_BASES");
 export const API_GET_FOOD_CATEGORIES = createAPIMutation("GET_FOOD_CATEGORIES");

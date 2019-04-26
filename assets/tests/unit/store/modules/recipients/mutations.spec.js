@@ -24,6 +24,28 @@ describe("mutations", () => {
     });
   });
 
+  describe("API_CREATE_SCHEDULED_SESSION", () => {
+    it("PENDING", () => {
+      mutations[types.API_CREATE_SCHEDULED_SESSION.PENDING](state);
+      expect(state.loading).toBeTruthy;
+    });
+
+    it("SUCCESS", () => {
+      const payload = { session_slot_id: 1, recipient_id: 1, id: 1 };
+      mutations[types.API_CREATE_SCHEDULED_SESSION.SUCCESS](state, payload);
+
+      expect(state.scheduledSessions).toEqual([payload]);
+      expect(state.loading).toBeFalsy;
+    });
+
+    it("FAILURE", () => {
+      const payload = [{ recipient: ["failed to create"] }];
+      mutations[types.API_CREATE_SCHEDULED_SESSION.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual(payload);
+    });
+  });
+
   describe("API_GET_RECIPIENTS", () => {
     it("PENDING", () => {
       mutations[types.API_GET_RECIPIENTS.PENDING](state);

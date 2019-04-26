@@ -1,11 +1,11 @@
 import axios from "axios";
 const basePath = "/api/v1";
 
-const get = async (store, { endpoint, mutation }) => {
+const get = async (store, { endpoint, mutation, params }) => {
   store.commit(mutation.PENDING);
 
   try {
-    const response = await axios.get(basePath + endpoint);
+    const response = await axios.get(basePath + endpoint, { params });
     store.commit(mutation.SUCCESS, response.data);
   } catch (error) {
     store.commit(mutation.FAILURE, error);

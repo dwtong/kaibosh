@@ -12,6 +12,22 @@ export default {
     });
   },
 
+  async createScheduledSession(store, session) {
+    await apiHelper.post(store, {
+      endpoint: "/sessions/scheduled",
+      body: { session },
+      mutation: types.API_CREATE_SCHEDULED_SESSION
+    });
+  },
+
+  async getScheduledSessions(store, recipientId) {
+    await apiHelper.get(store, {
+      endpoint: "/sessions/scheduled",
+      mutation: types.API_GET_SCHEDULED_SESSIONS,
+      params: { recipient_id: recipientId }
+    });
+  },
+
   async getRecipients(store) {
     await apiHelper.get(store, {
       endpoint: "/recipients",

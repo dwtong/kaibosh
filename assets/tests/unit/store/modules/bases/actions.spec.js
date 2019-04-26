@@ -46,7 +46,7 @@ describe("actions", () => {
         { day: "Wednesday", time: "12:00 PM", id: 2 }
       ];
       mock
-        .onGet(`/api/v1/sessions/slots?base_id=${baseId}`)
+        .onGet("/api/v1/sessions/slots", { params: { base_id: baseId } })
         .reply(200, sessionSlots);
       await actions.getSessionSlots({ commit, state }, baseId);
       await expect(commit).toBeCalledWith(types.API_GET_SESSION_SLOTS.PENDING);

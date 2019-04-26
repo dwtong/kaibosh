@@ -14,12 +14,13 @@ export default {
       mobile: "",
       landline: ""
     },
-    sortingSessions: [],
     base: {
       name: "",
       id: null
     }
   },
+
+  scheduledSessions: [],
 
   filters: {
     base_id: 0,

@@ -18,8 +18,9 @@ export default {
 
   async getSessionSlots(store, baseId) {
     await apiHelper.get(store, {
-      endpoint: `/sessions/slots?base_id=${baseId}`,
-      mutation: types.API_GET_SESSION_SLOTS
+      endpoint: "/sessions/slots",
+      mutation: types.API_GET_SESSION_SLOTS,
+      params: { base_id: baseId }
     });
   }
 };

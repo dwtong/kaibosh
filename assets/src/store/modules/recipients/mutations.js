@@ -29,6 +29,35 @@ export default {
     state.errors = [payload];
   },
 
+  [types.API_GET_SCHEDULED_SESSIONS.PENDING](state) {
+    state.loading = true;
+  },
+
+  [types.API_GET_SCHEDULED_SESSIONS.SUCCESS](state, payload) {
+    state.loading = false;
+    state.scheduledSessions = payload;
+  },
+
+  [types.API_GET_SCHEDULED_SESSIONS.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.PENDING](state) {
+    state.loading = true;
+    state.errors = null;
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.SUCCESS](state, payload) {
+    state.loading = false;
+    state.scheduledSessions.push(payload);
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = payload;
+  },
+
   [types.API_CREATE_RECIPIENT.PENDING](state) {
     state.loading = true;
     state.errors = null;
