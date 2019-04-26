@@ -16,7 +16,10 @@ export default {
   components: { RecipientForm },
 
   computed: {
-    ...mapState("recipients", ["activeRecipient"])
+    ...mapState("recipients", {
+      details: state => state.details,
+      recipientErrors: state => state.errors
+    })
   },
 
   methods: {
@@ -28,12 +31,12 @@ export default {
       if (formIsValid) {
         await this.createRecipient(recipientParams);
 
-        if (this.activeRecipient.errors) {
-          helpers.addErrorsToForm(this.activeRecipient.errors, this.errors);
+        if (this.recipientErrors) {
+          helpers.addErrorsToForm(this.recipientErrors, this.errors);
           toast.error("Unable to create recipient.", this.errors.items);
         } else {
           toast.success("Successfully created recipient.");
-          this.$router.push(`/recipients/${this.activeRecipient.data.id}`);
+          this.$router.push(`/recipients/${this.details.id}`);
         }
       } else {
         toast.error("Unable to create recipient.", this.errors.items);
