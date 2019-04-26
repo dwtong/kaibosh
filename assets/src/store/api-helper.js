@@ -8,7 +8,7 @@ const get = async (store, { endpoint, mutation }) => {
     const response = await axios.get(basePath + endpoint);
     store.commit(mutation.SUCCESS, response.data);
   } catch (error) {
-    store.commit(mutation.FAILURE);
+    store.commit(mutation.FAILURE, error);
   }
 };
 

@@ -12,12 +12,17 @@ localVue.use(Buefy);
 describe("RecipientsTableFilter.vue", () => {
   let actions;
   let store;
+  let stubs;
 
   beforeEach(() => {
     actions = {
       updateNameFilter: jest.fn(),
       toggleStatusFilter: jest.fn(),
       resetFilters: jest.fn()
+    };
+
+    stubs = {
+      BaseSelect: { template: "<div />" }
     };
 
     store = new Vuex.Store({
@@ -39,7 +44,7 @@ describe("RecipientsTableFilter.vue", () => {
     });
 
     it("renders active status label", () => {
-      const wrapper = mount(RecipientsTableFilter, { store, localVue });
+      const wrapper = mount(RecipientsTableFilter, { store, localVue, stubs });
       const activeStatusLabel = wrapper.find(
         "#active-filter > .b-checkbox > .control-label"
       );
@@ -47,7 +52,7 @@ describe("RecipientsTableFilter.vue", () => {
     });
 
     it('dispatches "toggleStatusFilter" when status checkboxes are changed', () => {
-      const wrapper = mount(RecipientsTableFilter, { store, localVue });
+      const wrapper = mount(RecipientsTableFilter, { store, localVue, stubs });
       const activeStatusInput = wrapper.find('input[name="active"]');
       activeStatusInput.setChecked();
       expect(actions.toggleStatusFilter).toBeCalled();

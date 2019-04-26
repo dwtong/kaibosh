@@ -7,7 +7,10 @@ const createAPIMutation = type => ({
 export const API_CREATE_RECIPIENT = createAPIMutation("CREATE_RECIPIENT");
 export const API_GET_RECIPIENT = createAPIMutation("GET_RECIPIENT");
 export const API_GET_RECIPIENTS = createAPIMutation("GET_RECIPIENTS");
+
 export const API_GET_BASES = createAPIMutation("GET_BASES");
+export const API_GET_FOOD_CATEGORIES = createAPIMutation("GET_FOOD_CATEGORIES");
+export const API_GET_SESSION_SLOTS = createAPIMutation("GET_SESSION_SLOTS");
 
 export const SET_BASE_FILTER = "SET_BASE_FILTER";
 export const SET_NAME_FILTER = "SET_NAME_FILTER";
