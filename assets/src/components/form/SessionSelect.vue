@@ -1,7 +1,10 @@
 <template>
   <b-field label="Select session" class="form-field">
     <b-select name="session" placeholder="Select an option" expanded>
-      <option v-for="session in sessions" :key="session.id" :value="session.id"
+      <option
+        v-for="session in sessionSlots"
+        :key="session.id"
+        :value="session.id"
         >{{ session.time }} {{ session.day }}</option
       >
     </b-select>
@@ -9,18 +12,18 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters("bases", ["getBase"]),
-    ...mapState("bases", ["bases"]),
-    foodCategories: () => this.getBase(this.baseId).foods,
-    sessions: () => this.getBase(this.baseId).session_slots
+    ...mapState("bases", ["sessionSlots", "foodCategories"])
   },
 
   async created() {
-    await this.getBases();
+    await Promise.all([
+      this.getSessionSlots(this.baseId),
+      this.getFoodCategories(this.baseId)
+    ]);
   },
 
   data() {
@@ -32,7 +35,7 @@ export default {
   inject: ["$validator"],
 
   methods: {
-    ...mapActions("bases", ["getBases"])
+    ...mapActions("bases", ["getSessionSlots", "getFoodCategories"])
   },
 
   props: ["baseId"]

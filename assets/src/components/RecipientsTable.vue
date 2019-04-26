@@ -2,7 +2,7 @@
   <b-table
     class="table"
     :data="filteredRecipients"
-    :loading="filteredRecipients.length == 0 && recipientList.loading"
+    :loading="filteredRecipients.length == 0 && loading"
     hoverable
     striped
     default-sort-direction="asc"
@@ -10,10 +10,7 @@
     @click="viewRecipient"
   >
     <template slot="empty">
-      <div
-        v-if="!recipientList.loading"
-        class="has-text-grey has-text-centered"
-      >
+      <div v-if="!loading" class="has-text-grey has-text-centered">
         <p>
           <b-icon
             class="has-text-grey-lighter sad-icon"
@@ -56,7 +53,7 @@ export default {
 
   computed: {
     ...mapGetters("recipients", ["filteredRecipients"]),
-    ...mapState("recipients", ["recipientList"])
+    ...mapState("recipients", ["loading", "list"])
   },
 
   async created() {

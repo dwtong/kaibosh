@@ -1,13 +1,26 @@
 export default {
-  recipientList: {
-    loading: false,
-    data: []
+  errors: null,
+  loading: false,
+
+  list: [],
+
+  details: {
+    name: "",
+    id: null,
+    status: "",
+    primary_contact: {
+      name: "",
+      email: "",
+      mobile: "",
+      landline: ""
+    },
+    sortingSessions: [],
+    base: {
+      name: "",
+      id: null
+    }
   },
-  activeRecipient: {
-    loading: false,
-    data: {},
-    errors: null
-  },
+
   filters: {
     base_id: 0,
     name: "",

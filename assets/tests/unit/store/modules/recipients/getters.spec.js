@@ -1,5 +1,5 @@
 import getters from "@/store/modules/recipients/getters";
-const getRecipientsData = [
+const recipientsList = [
   { id: 1, name: "Wellington Food Bank", status: "active", base_id: 1 },
   { id: 2, name: "Salvation Army Lower Hutt", status: "archived", base_id: 2 },
   { id: 2, name: "Bellyful Lower Hutt", status: "pending", base_id: 3 }
@@ -9,7 +9,7 @@ describe("getters", () => {
   describe("filteredRecipients", () => {
     test("filters recipients by status", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 0,
           name: "",
@@ -17,12 +17,12 @@ describe("getters", () => {
         }
       };
       const filteredRecipients = getters.filteredRecipients(state);
-      expect(filteredRecipients).toEqual([getRecipientsData[0]]);
+      expect(filteredRecipients).toEqual([recipientsList[0]]);
     });
 
     test("filters recipients by base", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 3,
           name: "",
@@ -30,12 +30,12 @@ describe("getters", () => {
         }
       };
       const filteredRecipients = getters.filteredRecipients(state);
-      expect(filteredRecipients).toEqual([getRecipientsData[2]]);
+      expect(filteredRecipients).toEqual([recipientsList[2]]);
     });
 
     test("filters recipients by name", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 0,
           name: "army",
@@ -43,12 +43,12 @@ describe("getters", () => {
         }
       };
       const filteredRecipients = getters.filteredRecipients(state);
-      expect(filteredRecipients).toEqual([getRecipientsData[1]]);
+      expect(filteredRecipients).toEqual([recipientsList[1]]);
     });
 
     test("filters recipients by all types", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 1,
           name: "Welling",
@@ -56,12 +56,12 @@ describe("getters", () => {
         }
       };
       const filteredRecipients = getters.filteredRecipients(state);
-      expect(filteredRecipients).toEqual([getRecipientsData[0]]);
+      expect(filteredRecipients).toEqual([recipientsList[0]]);
     });
 
     test("does not filter recipients if no filters are set", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 0,
           name: "",
@@ -69,12 +69,12 @@ describe("getters", () => {
         }
       };
       const filteredRecipients = getters.filteredRecipients(state);
-      expect(filteredRecipients).toEqual(getRecipientsData);
+      expect(filteredRecipients).toEqual(recipientsList);
     });
 
     test("returns empty array for no match", () => {
       const state = {
-        recipientList: { data: getRecipientsData, loading: false },
+        list: recipientsList,
         filters: {
           base_id: 0,
           name: "xxx",

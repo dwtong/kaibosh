@@ -53,11 +53,4 @@ describe("RecipientForm.vue", () => {
       expect(wrapper.emitted().submit).toBeTruthy();
     });
   });
-
-  describe("getting bases", () => {
-    it("calls getBases action on creation", () => {
-      shallowMount(RecipientForm, { store, localVue, provide });
-      expect(actions.getBases).toBeCalled();
-    });
-  });
 });
