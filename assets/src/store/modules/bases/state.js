@@ -1,6 +1,7 @@
 export default {
-  bases: {
-    data: [],
-    loading: false
-  }
+  loading: false,
+  errors: [],
+  list: [],
+  sessionSlots: [],
+  foodCategories: []
 };

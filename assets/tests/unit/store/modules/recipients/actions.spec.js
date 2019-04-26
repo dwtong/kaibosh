@@ -20,6 +20,32 @@ describe("actions", () => {
       );
     });
   });
+  describe("createScheduledSession", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const session = {
+        session: {
+          session_slot_id: 1,
+          recipient_id: 1,
+          allocations_attributes: [
+            {
+              food_category_id: 1,
+              quantity: null
+            }
+          ]
+        }
+      };
+      const createdSession = { ...session, id: 1 };
+      mock.onPost("/api/v1/sessions/scheduled").reply(201, createdSession);
+      await actions.createScheduledSession({ commit, state }, session);
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_SCHEDULED_SESSION.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_SCHEDULED_SESSION.SUCCESS,
+        createdSession
+      );
+    });
+  });
 
   describe("getRecipients", () => {
     it("calls SUCCESS mutation with list of recipients on API success", async () => {
@@ -33,6 +59,29 @@ describe("actions", () => {
       await expect(commit).toBeCalledWith(
         types.API_GET_RECIPIENTS.SUCCESS,
         recipients
+      );
+    });
+  });
+
+  describe("getScheduledSessions", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const recipient_id = 1;
+      const sessions = [
+        { id: 1, recipient_id: recipient_id, session_slot_id: 1 },
+        { id: 2, recipient_id: recipient_id, session_slot_id: 2 }
+      ];
+      mock
+        .onGet("/api/v1/sessions/scheduled", {
+          params: { recipient_id: recipient_id }
+        })
+        .reply(200, sessions);
+      await actions.getScheduledSessions({ commit, state }, recipient_id);
+      await expect(commit).toBeCalledWith(
+        types.API_GET_SCHEDULED_SESSIONS.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_GET_SCHEDULED_SESSIONS.SUCCESS,
+        sessions
       );
     });
   });

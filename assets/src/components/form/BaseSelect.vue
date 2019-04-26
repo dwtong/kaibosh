@@ -14,7 +14,7 @@
       expanded
     >
       <option v-if="all" :value="allValue">All</option>
-      <option v-for="base in bases.data" :key="base.id" :value="base.id">{{
+      <option v-for="base in list" :key="base.id" :value="base.id">{{
         base.name
       }}</option>
     </b-select>
@@ -26,7 +26,7 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState("bases", ["bases"])
+    ...mapState("bases", ["list"])
   },
 
   async created() {

@@ -4,29 +4,26 @@ export default {
       .filter(f => f.enabled)
       .map(f => f.name);
 
-    const data = state.recipientList.data;
-    let recipientList;
+    let list;
 
-    if (!data || data.length == 0) {
-      recipientList = [];
+    if (!state.list || state.list.length == 0) {
+      list = [];
     } else if (filters.length > 0) {
-      recipientList = data.filter(r => filters.includes(r.status));
+      list = state.list.filter(r => filters.includes(r.status));
     } else {
-      recipientList = data;
+      list = state.list;
     }
 
     if (state.filters.name !== "") {
-      recipientList = recipientList.filter(r =>
+      list = list.filter(r =>
         r.name.toLowerCase().includes(state.filters.name.toLowerCase())
       );
     }
 
     if (state.filters.base_id !== 0) {
-      recipientList = recipientList.filter(
-        r => r.base_id === state.filters.base_id
-      );
+      list = list.filter(r => r.base_id === state.filters.base_id);
     }
 
-    return recipientList;
+    return list;
   }
 };

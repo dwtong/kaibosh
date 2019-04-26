@@ -2,45 +2,75 @@ import * as types from "@/store/mutation-types";
 
 export default {
   [types.API_GET_RECIPIENT.PENDING](state) {
-    state.activeRecipient.loading = true;
-    state.activeRecipient.data = {};
+    state.loading = true;
   },
 
   [types.API_GET_RECIPIENT.SUCCESS](state, payload) {
-    state.activeRecipient.loading = false;
-    state.activeRecipient.data = payload;
+    state.loading = false;
+    state.details = payload;
   },
 
-  [types.API_GET_RECIPIENT.FAILURE](state) {
-    state.activeRecipient.loading = false;
+  [types.API_GET_RECIPIENT.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
   },
 
   [types.API_GET_RECIPIENTS.PENDING](state) {
-    state.recipientList.loading = true;
+    state.loading = true;
   },
 
   [types.API_GET_RECIPIENTS.SUCCESS](state, payload) {
-    state.recipientList.loading = false;
-    state.recipientList.data = payload;
+    state.loading = false;
+    state.list = payload;
   },
 
-  [types.API_GET_RECIPIENTS.FAILURE](state) {
-    state.recipientList.loading = false;
+  [types.API_GET_RECIPIENTS.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
+  },
+
+  [types.API_GET_SCHEDULED_SESSIONS.PENDING](state) {
+    state.loading = true;
+  },
+
+  [types.API_GET_SCHEDULED_SESSIONS.SUCCESS](state, payload) {
+    state.loading = false;
+    state.scheduledSessions = payload;
+  },
+
+  [types.API_GET_SCHEDULED_SESSIONS.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.PENDING](state) {
+    state.loading = true;
+    state.errors = null;
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.SUCCESS](state, payload) {
+    state.loading = false;
+    state.scheduledSessions.push(payload);
+  },
+
+  [types.API_CREATE_SCHEDULED_SESSION.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = payload;
   },
 
   [types.API_CREATE_RECIPIENT.PENDING](state) {
-    state.activeRecipient.loading = true;
-    state.activeRecipient.errors = null;
+    state.loading = true;
+    state.errors = null;
   },
 
   [types.API_CREATE_RECIPIENT.SUCCESS](state, payload) {
-    state.activeRecipient.loading = false;
-    state.activeRecipient.data = payload;
+    state.loading = false;
+    state.details = payload;
   },
 
   [types.API_CREATE_RECIPIENT.FAILURE](state, payload) {
-    state.activeRecipient.loading = false;
-    state.activeRecipient.errors = payload;
+    state.loading = false;
+    state.errors = payload;
   },
 
   [types.SET_BASE_FILTER](state, payload) {

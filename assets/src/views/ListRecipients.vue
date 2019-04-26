@@ -37,18 +37,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.button {
-  margin-top: 0.3rem;
-}
-
-.title {
-  margin-left: 0.5rem !important;
-  margin-bottom: 2.5rem !important;
-}
-
-.title-box {
-  margin-right: 0.5rem;
-}
-</style>

@@ -6,38 +6,64 @@ describe("mutations", () => {
   describe("API_CREATE_RECIPIENT", () => {
     it("PENDING", () => {
       mutations[types.API_CREATE_RECIPIENT.PENDING](state);
-      expect(state.activeRecipient.loading).toBeTruthy;
+      expect(state.loading).toBeTruthy;
     });
 
     it("SUCCESS", () => {
       const payload = { name: "Recipient 1", status: "active", id: 1 };
       mutations[types.API_CREATE_RECIPIENT.SUCCESS](state, payload);
-      expect(state.activeRecipient.data).toEqual(payload);
-      expect(state.activeRecipient.loading).toBeFalsy;
+      expect(state.details).toEqual(payload);
+      expect(state.loading).toBeFalsy;
     });
 
     it("FAILURE", () => {
-      mutations[types.API_CREATE_RECIPIENT.FAILURE](state);
-      expect(state.activeRecipient.loading).toBeFalsy;
+      const payload = [{ recipient: ["failed to create"] }];
+      mutations[types.API_CREATE_RECIPIENT.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual(payload);
+    });
+  });
+
+  describe("API_CREATE_SCHEDULED_SESSION", () => {
+    it("PENDING", () => {
+      mutations[types.API_CREATE_SCHEDULED_SESSION.PENDING](state);
+      expect(state.loading).toBeTruthy;
+    });
+
+    it("SUCCESS", () => {
+      const payload = { session_slot_id: 1, recipient_id: 1, id: 1 };
+      mutations[types.API_CREATE_SCHEDULED_SESSION.SUCCESS](state, payload);
+
+      expect(state.scheduledSessions).toEqual([payload]);
+      expect(state.loading).toBeFalsy;
+    });
+
+    it("FAILURE", () => {
+      const payload = [{ recipient: ["failed to create"] }];
+      mutations[types.API_CREATE_SCHEDULED_SESSION.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual(payload);
     });
   });
 
   describe("API_GET_RECIPIENTS", () => {
     it("PENDING", () => {
       mutations[types.API_GET_RECIPIENTS.PENDING](state);
-      expect(state.recipientList.loading).toBeTruthy;
+      expect(state.loading).toBeTruthy;
     });
 
     it("SUCCESS", () => {
       const payload = [{ name: "Recipient 1", status: "active" }];
       mutations[types.API_GET_RECIPIENTS.SUCCESS](state, payload);
-      expect(state.recipientList.data).toEqual(payload);
-      expect(state.recipientList.loading).toBeFalsy;
+      expect(state.list).toEqual(payload);
+      expect(state.loading).toBeFalsy;
     });
 
     it("FAILURE", () => {
-      mutations[types.API_GET_RECIPIENTS.FAILURE](state);
-      expect(state.recipientList.loading).toBeFalsy;
+      const payload = "error on get request";
+      mutations[types.API_GET_RECIPIENTS.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual([payload]);
     });
   });
 
