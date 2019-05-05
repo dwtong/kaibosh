@@ -12,6 +12,17 @@ const get = async (store, { endpoint, mutation, params }) => {
   }
 };
 
+const del = async (store, { endpoint, mutation, id }) => {
+  store.commit(mutation.PENDING);
+
+  try {
+    await axios.delete(basePath + endpoint + `/${id}`);
+    store.commit(mutation.SUCCESS, id);
+  } catch (error) {
+    store.commit(mutation.FAILURE, error);
+  }
+};
+
 const post = async (store, { endpoint, body, mutation }) => {
   store.commit(mutation.PENDING);
 
@@ -31,5 +42,6 @@ const post = async (store, { endpoint, body, mutation }) => {
 
 export default {
   get,
-  post
+  post,
+  del
 };

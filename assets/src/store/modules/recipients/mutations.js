@@ -43,6 +43,21 @@ export default {
     state.errors = [payload];
   },
 
+  [types.API_DELETE_SCHEDULED_SESSION.PENDING](state) {
+    state.loading = true;
+  },
+
+  [types.API_DELETE_SCHEDULED_SESSION.SUCCESS](state, sessionId) {
+    state.loading = false;
+    const index = state.scheduledSessions.findIndex(s => s.id == sessionId);
+    state.scheduledSessions.splice(index, 1);
+  },
+
+  [types.API_DELETE_SCHEDULED_SESSION.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
+  },
+
   [types.API_CREATE_SCHEDULED_SESSION.PENDING](state) {
     state.loading = true;
     state.errors = null;

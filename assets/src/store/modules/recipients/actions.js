@@ -20,6 +20,14 @@ export default {
     });
   },
 
+  async deleteScheduledSession(store, sessionId) {
+    await apiHelper.del(store, {
+      endpoint: "/sessions/scheduled",
+      id: sessionId,
+      mutation: types.API_DELETE_SCHEDULED_SESSION
+    });
+  },
+
   async getScheduledSessions(store, recipientId) {
     await apiHelper.get(store, {
       endpoint: "/sessions/scheduled",
