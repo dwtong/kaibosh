@@ -69,39 +69,13 @@
           <h2 class="title is-4 is-inline-block">Sorting Sessions</h2>
 
           <div v-for="session in scheduledSessions" :key="session.id">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title">
-                  {{ session.session_slot.day }}
-                  {{ session.session_slot.time }}
-                </p>
-              </header>
-              <div class="card-content">
-                <div class="content">
-                  <div
-                    class="level"
-                    v-for="allocation in session.allocations"
-                    :key="allocation.id"
-                  >
-                    <div class="level-left">
-                      <div class="level-item">
-                        {{ foodCategoryName(allocation.food_category_id) }}
-                      </div>
-                    </div>
-                    <div class="level-right">
-                      <div class="level-item">
-                        <div class="field has-addons">
-                          <p class="control">
-                            <button class="button is-static">
-                              {{ allocationQuantityLabel(allocation.quantity) }}
-                            </button>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <ScheduledSessionCard
+              :session="session"
+              @edit="openSessionModal(session.id)"
+              @remove="confirmSessionDeletion(session.id)"
+            />
+          </div>
+        </div>
               <footer class="card-footer">
                 <a href="#" class="card-footer-item">Edit</a>
                 <a
@@ -127,27 +101,32 @@
 </template>
 
 <script>
+import ScheduledSessionCard from "@/components/ScheduledSessionCard";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal";
 import InfoField from "@/components/form/InfoField";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import toast from "@/helpers/toast";
 
 export default {
-  components: { ScheduledSessionModal, InfoField },
+  components: {
+    ScheduledSessionCard,
+    ScheduledSessionModal,
+    InfoField
+  },
 
   computed: {
-    ...mapState("recipients", ["details", "scheduledSessions"]),
-    ...mapGetters("bases", ["foodCategoryById"])
+    ...mapState("recipients", ["details", "scheduledSessions"])
   },
 
   async created() {
-    await Promise.all([this.getFoodCategories(), this.getRecipient(this.id)]);
+    await this.getRecipient(this.id);
     await this.getScheduledSessions(this.details.id);
   },
 
   data() {
     return {
-      isScheduledSessionModalActive: false
+      isScheduledSessionModalActive: false,
+      selectedSessionId: null
     };
   },
 
@@ -157,26 +136,26 @@ export default {
       "getScheduledSessions",
       "deleteScheduledSession"
     ]),
-    ...mapActions("bases", ["getFoodCategories"]),
-    allocationQuantityLabel(quantity) {
-      if (parseInt(quantity.charAt(0))) {
-        return quantity + " (max)";
-      } else {
-        return "no limit";
-      }
-    },
+
     confirmSessionDeletion(sessionId) {
       this.$dialog.confirm({
         message: "Are you sure you wish to remove this session?",
         type: "is-danger",
-        onConfirm: () => {
+        onConfirm: async () => {
           this.deleteScheduledSession(sessionId);
+          await this.getScheduledSessions(this.details.id);
           toast.success("Deleted session.");
         }
       });
     },
-    foodCategoryName(id) {
-      return this.foodCategoryById(id).name || "";
+    openSessionModal(id) {
+      if (Number.isInteger(id)) {
+        this.selectedSessionId = id;
+      } else {
+        this.selectedSessionId = null;
+      }
+
+      this.isScheduledSessionModalActive = true;
     }
   },
 
