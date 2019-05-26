@@ -25,5 +25,9 @@ export default {
     }
 
     return list;
+  },
+
+  scheduledSessionById(state) {
+    return id => state.scheduledSessions.find(ss => ss.id === id);
   }
 };

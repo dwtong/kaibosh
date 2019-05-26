@@ -2,19 +2,18 @@
   <div>
     <div class="title-box">
       <h1 class="title is-inline-block">{{ details.name }}</h1>
-      <div class="buttons is-pulled-right">
-        <button class="button is-light ">
-          Edit Recipient
-        </button>
-        <button
-          @click="isScheduledSessionModalActive = true"
-          class="button is-light"
-        >
-          Add Sorting Session
-        </button>
-        <button class="button is-primary ">
-          Add Hold Date
-        </button>
+
+      <div class="field has-addons buttons is-pulled-right">
+        <p class="control">
+          <a class="button ">
+            Edit Recipient
+          </a>
+        </p>
+        <p class="control">
+          <a @click="openSessionModal" class="button">
+            Add Sorting Session
+          </a>
+        </p>
       </div>
     </div>
 
@@ -76,22 +75,12 @@
             />
           </div>
         </div>
-              <footer class="card-footer">
-                <a href="#" class="card-footer-item">Edit</a>
-                <a
-                  @click="confirmSessionDeletion(session.id)"
-                  class="card-footer-item"
-                  >Remove</a
-                >
-              </footer>
-            </div>
-          </div>
-        </div>
 
         <b-modal :active.sync="isScheduledSessionModalActive" has-modal-card>
           <ScheduledSessionModal
             :baseId="details.base.id"
             :recipientId="details.id"
+            :sessionId="selectedSessionId"
             @close="isScheduledSessionModalActive = false"
           />
         </b-modal>
