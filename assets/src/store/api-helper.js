@@ -40,8 +40,26 @@ const post = async (store, { endpoint, body, mutation }) => {
   }
 };
 
+const put = async (store, { endpoint, body, mutation }) => {
+  store.commit(mutation.PENDING);
+
+  try {
+    const response = await axios.put(basePath + endpoint, body);
+    store.commit(mutation.SUCCESS, response.data);
+  } catch (error) {
+    let errors;
+    if (error.response.data) {
+      errors = error.response.data;
+    } else {
+      errors = error.message;
+    }
+    store.commit(mutation.FAILURE, errors);
+  }
+};
+
 export default {
   get,
   post,
+  put,
   del
 };

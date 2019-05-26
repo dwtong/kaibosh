@@ -48,6 +48,33 @@ describe("actions", () => {
     });
   });
 
+  describe("updateScheduledSession", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const session = {
+        id: 1,
+        session_slot_id: 1,
+        recipient_id: 1,
+        allocations_attributes: [
+          {
+            food_category_id: 1,
+            quantity: null
+          }
+        ]
+      };
+      mock
+        .onPut(`/api/v1/sessions/scheduled/${session.id}`)
+        .reply(200, session);
+      await actions.updateScheduledSession({ commit, state }, session);
+      await expect(commit).toBeCalledWith(
+        types.API_UPDATE_SCHEDULED_SESSION.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_UPDATE_SCHEDULED_SESSION.SUCCESS,
+        session
+      );
+    });
+  });
+
   describe("deleteScheduledSession", () => {
     it("calls SUCCESS mutation with session to delete on API success", async () => {
       const sessionId = 1;

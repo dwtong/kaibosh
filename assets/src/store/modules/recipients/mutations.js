@@ -73,6 +73,22 @@ export default {
     state.errors = payload;
   },
 
+  [types.API_UPDATE_SCHEDULED_SESSION.PENDING](state) {
+    state.loading = true;
+    state.errors = null;
+  },
+
+  [types.API_UPDATE_SCHEDULED_SESSION.SUCCESS](state, payload) {
+    state.loading = false;
+    const index = state.scheduledSessions.findIndex(s => s.id == payload.id);
+    state.scheduledSessions.splice(index, 1, payload);
+  },
+
+  [types.API_UPDATE_SCHEDULED_SESSION.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = payload;
+  },
+
   [types.API_CREATE_RECIPIENT.PENDING](state) {
     state.loading = true;
     state.errors = null;
