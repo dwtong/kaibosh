@@ -1,8 +1,10 @@
 <template>
-  <form action="">
-    <div class="modal-card">
+  <form @submit.prevent="">
+    <div v-if="!loading" class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Add Scheduled Session</p>
+        <p class="modal-card-title">
+          {{ this.sessionId ? "Edit " : "Add" }} Sorting Session
+        </p>
       </header>
 
       <section class="modal-card-body">
@@ -30,7 +32,7 @@
         <div v-if="sessionSlotId" class="columns">
           <div class="column">
             <p class="subtitle">Choose food categories</p>
-            <div v-for="food in categories" :key="food.id">
+            <div v-for="food in categories" :key="food.food_category_id">
               <div
                 class="level box"
                 :class="{ disabled: food.enabled == false }"
@@ -48,6 +50,9 @@
                       <p class="control">
                         <input
                           class="input food-quantity"
+                          :value="
+                            parseInt(food.quantity) > 0 ? food.quantity : null
+                          "
                           @input="setFoodQuantity(food, $event.target.value)"
                           type="number"
                         />
@@ -71,7 +76,7 @@
           <button class="button is-light" type="button" @click="$emit('close')">
             Cancel
           </button>
-          <button type="button" class="button is-info" @click="saveSession">
+          <button type="submit" class="button is-info" @click="saveSession">
             Save
           </button>
         </div>
@@ -81,18 +86,17 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import toast from "@/helpers/toast";
+import { mapEnabledFoodCategories } from "@/helpers/food-categories";
 
 export default {
   computed: {
     ...mapState("bases", ["sessionSlots", "foodCategories"]),
     ...mapState("recipients", ["errors"]),
-
-    selectedFoodCategories() {
-      return {
-        foodCategories: this.categories.filter(c => c.enabled === true)
-      };
+    ...mapGetters("recipients", ["scheduledSessionById"]),
+    selectedSession() {
+      return this.scheduledSessionById(this.sessionId);
     }
   },
 
@@ -102,21 +106,32 @@ export default {
       this.getFoodCategories()
     ]);
 
-    this.categories = this.foodCategories.map(fc => {
-      return { enabled: false, quantity: 0, ...fc };
-    });
+    this.categories = mapEnabledFoodCategories(
+      this.selectedSession,
+      this.foodCategories
+    );
+
+    if (this.selectedSession) {
+      this.sessionSlotId = this.selectedSession.session_slot.id;
+    }
+
+    this.loading = false;
   },
 
   data() {
     return {
       categories: [],
-      sessionSlotId: null
+      sessionSlotId: null,
+      loading: true
     };
   },
 
   methods: {
     ...mapActions("bases", ["getSessionSlots", "getFoodCategories"]),
-    ...mapActions("recipients", ["createScheduledSession"]),
+    ...mapActions("recipients", [
+      "createScheduledSession",
+      "updateScheduledSession"
+    ]),
 
     setFoodQuantity(food, quantity) {
       if (quantity && quantity > 0) {
@@ -128,21 +143,43 @@ export default {
       }
     },
 
+    foodQuantityValue(quantity) {
+      if (parseInt(quantity) > 0) {
+        return quantity;
+      } else {
+        return null;
+      }
+    },
+
     async saveSession() {
-      const allocations = this.categories.reduce((acc, fc) => {
-        if (fc.enabled) {
-          acc.push({ food_category_id: fc.id, quantity: fc.quantity });
+      const allocations = this.categories.map(allocation => {
+        if (allocation.enabled) {
+          return {
+            food_category_id: allocation.food_category_id,
+            quantity: allocation.quantity,
+            id: allocation.id
+          };
+        } else if (!allocation.enabled && allocation.id) {
+          return { id: allocation.id, _destroy: true };
         }
+      });
 
-        return acc;
-      }, []);
+      if (this.selectedSession) {
+        const params = {
+          allocations_attributes: allocations,
+          session_slot_id: this.sessionSlotId,
+          ...this.selectedSession
+        };
+        await this.updateScheduledSession(params);
+      } else {
+        const params = {
+          recipient_id: this.recipientId,
+          session_slot_id: this.sessionSlotId,
+          allocations_attributes: allocations
+        };
 
-      const params = {
-        recipient_id: this.recipientId,
-        session_slot_id: this.sessionSlotId,
-        allocations_attributes: allocations
-      };
-      await this.createScheduledSession(params);
+        await this.createScheduledSession(params);
+      }
 
       if (this.errors.length > 0) {
         toast.error("Unable to save session.");
@@ -160,6 +197,10 @@ export default {
     },
     recipientId: {
       required: true,
+      type: Number
+    },
+    sessionId: {
+      required: false,
       type: Number
     }
   }

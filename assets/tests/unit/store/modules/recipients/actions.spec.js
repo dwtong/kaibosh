@@ -20,6 +20,7 @@ describe("actions", () => {
       );
     });
   });
+
   describe("createScheduledSession", () => {
     it("calls SUCCESS mutation with list of recipients on API success", async () => {
       const session = {
@@ -43,6 +44,48 @@ describe("actions", () => {
       await expect(commit).toBeCalledWith(
         types.API_CREATE_SCHEDULED_SESSION.SUCCESS,
         createdSession
+      );
+    });
+  });
+
+  describe("updateScheduledSession", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const session = {
+        id: 1,
+        session_slot_id: 1,
+        recipient_id: 1,
+        allocations_attributes: [
+          {
+            food_category_id: 1,
+            quantity: null
+          }
+        ]
+      };
+      mock
+        .onPut(`/api/v1/sessions/scheduled/${session.id}`)
+        .reply(200, session);
+      await actions.updateScheduledSession({ commit, state }, session);
+      await expect(commit).toBeCalledWith(
+        types.API_UPDATE_SCHEDULED_SESSION.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_UPDATE_SCHEDULED_SESSION.SUCCESS,
+        session
+      );
+    });
+  });
+
+  describe("deleteScheduledSession", () => {
+    it("calls SUCCESS mutation with session to delete on API success", async () => {
+      const sessionId = 1;
+      mock.onDelete(`/api/v1/sessions/scheduled/${sessionId}`).reply(204, "");
+      await actions.deleteScheduledSession({ commit, state }, sessionId);
+      await expect(commit).toBeCalledWith(
+        types.API_DELETE_SCHEDULED_SESSION.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_DELETE_SCHEDULED_SESSION.SUCCESS,
+        sessionId
       );
     });
   });

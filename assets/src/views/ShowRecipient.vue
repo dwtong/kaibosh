@@ -2,16 +2,18 @@
   <div>
     <div class="title-box">
       <h1 class="title is-inline-block">{{ details.name }}</h1>
-      <div class="buttons is-pulled-right">
-        <button class="button is-light ">
-          Edit Recipient
-        </button>
-        <button
-          @click="isScheduledSessionModalActive = true"
-          class="button is-primary"
-        >
-          Add Sorting Session
-        </button>
+
+      <div class="field has-addons buttons is-pulled-right">
+        <p class="control">
+          <a class="button ">
+            Edit Recipient
+          </a>
+        </p>
+        <p class="control">
+          <a @click="openSessionModal" class="button">
+            Add Sorting Session
+          </a>
+        </p>
       </div>
     </div>
 
@@ -64,54 +66,13 @@
       <div class="column">
         <div class="box">
           <h2 class="title is-4 is-inline-block">Sorting Sessions</h2>
+
           <div v-for="session in scheduledSessions" :key="session.id">
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title">
-                  {{ session.session_slot.day }}
-                  {{ session.session_slot.time }}
-                </p>
-                <a href="#" class="card-header-icon">
-                  <div class="field">
-                    <b-switch :value="true" type="is-primary  " />
-                  </div>
-                </a>
-              </header>
-              <div class="card-content">
-                <div class="content">
-                  <div
-                    class="level"
-                    v-for="allocation in session.allocations"
-                    :key="allocation.id"
-                  >
-                    <div class="level-left">
-                      <div class="level-item">
-                        {{ foodCategoryName(allocation.food_category_id) }}
-                      </div>
-                    </div>
-                    <div class="level-right">
-                      <div class="level-item">
-                        <div class="field has-addons">
-                          <p class="control">
-                            <button class="button is-static">
-                              {{ allocation.quantity }} (max)
-                            </button>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <footer class="card-footer">
-                <a href="#" class="card-footer-item">Set Hold Dates</a>
-                <a
-                  @click="deleteScheduledSession(session.id)"
-                  class="card-footer-item"
-                  >Remove</a
-                >
-              </footer>
-            </div>
+            <ScheduledSessionCard
+              :session="session"
+              @edit="openSessionModal(session.id)"
+              @remove="confirmSessionDeletion(session.id)"
+            />
           </div>
         </div>
 
@@ -119,6 +80,7 @@
           <ScheduledSessionModal
             :baseId="details.base.id"
             :recipientId="details.id"
+            :sessionId="selectedSessionId"
             @close="isScheduledSessionModalActive = false"
           />
         </b-modal>
@@ -128,26 +90,32 @@
 </template>
 
 <script>
+import ScheduledSessionCard from "@/components/ScheduledSessionCard";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal";
 import InfoField from "@/components/form/InfoField";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
+import toast from "@/helpers/toast";
 
 export default {
-  components: { ScheduledSessionModal, InfoField },
+  components: {
+    ScheduledSessionCard,
+    ScheduledSessionModal,
+    InfoField
+  },
 
   computed: {
-    ...mapState("recipients", ["details", "scheduledSessions"]),
-    ...mapGetters("bases", ["foodCategoryById"])
+    ...mapState("recipients", ["details", "scheduledSessions"])
   },
 
   async created() {
-    await Promise.all([this.getFoodCategories(), this.getRecipient(this.id)]);
+    await this.getRecipient(this.id);
     await this.getScheduledSessions(this.details.id);
   },
 
   data() {
     return {
-      isScheduledSessionModalActive: false
+      isScheduledSessionModalActive: false,
+      selectedSessionId: null
     };
   },
 
@@ -157,9 +125,26 @@ export default {
       "getScheduledSessions",
       "deleteScheduledSession"
     ]),
-    ...mapActions("bases", ["getFoodCategories"]),
-    foodCategoryName(id) {
-      return this.foodCategoryById(id).name || "";
+
+    confirmSessionDeletion(sessionId) {
+      this.$dialog.confirm({
+        message: "Are you sure you wish to remove this session?",
+        type: "is-danger",
+        onConfirm: async () => {
+          this.deleteScheduledSession(sessionId);
+          await this.getScheduledSessions(this.details.id);
+          toast.success("Deleted session.");
+        }
+      });
+    },
+    openSessionModal(id) {
+      if (Number.isInteger(id)) {
+        this.selectedSessionId = id;
+      } else {
+        this.selectedSessionId = null;
+      }
+
+      this.isScheduledSessionModalActive = true;
     }
   },
 

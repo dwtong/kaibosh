@@ -10,7 +10,12 @@ Vue.use(VeeValidate, {
   events: ""
 });
 
-Vue.use(Buefy, { defaultIconPack: "fas" });
+Vue.use(Buefy, {
+  defaultIconPack: "fas",
+  defaultDateFormatter: date => {
+    return date.toLocaleDateString("en-GB");
+  }
+});
 
 Vue.config.productionTip = false;
 

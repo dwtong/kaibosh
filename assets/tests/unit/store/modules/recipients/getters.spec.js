@@ -85,4 +85,42 @@ describe("getters", () => {
       expect(filteredRecipients).toEqual([]);
     });
   });
+
+  describe("scheduledSessionById", () => {
+    const scheduledSessions = [
+      { id: 1, day: "tuesday", time: "10:00 AM" },
+      { id: 2, day: "tuesday", time: "12:00 PM" },
+      { id: 3, day: "tuesday", time: "6:00 PM" }
+    ];
+
+    test("returns scheduledSession for id", () => {
+      const state = { scheduledSessions };
+      const foodCategory = getters.scheduledSessionById(state)(2);
+      expect(foodCategory).toEqual(scheduledSessions[1]);
+    });
+  });
+
+  describe("categoriesForScheduledSession", () => {
+    const scheduledSessions = [
+      {
+        id: 1,
+        day: "tuesday",
+        time: "10:00 AM",
+        allocations: [
+          {
+            food_category_id: 3,
+            id: 70,
+            quantity: "0.0",
+            quantity_label: "no boxes"
+          }
+        ]
+      }
+    ];
+
+    test("returns scheduledSession for id", () => {
+      const state = { scheduledSessions };
+      const foodCategory = getters.scheduledSessionById(state)(2);
+      expect(foodCategory).toEqual(scheduledSessions[1]);
+    });
+  });
 });

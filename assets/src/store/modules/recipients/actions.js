@@ -20,6 +20,22 @@ export default {
     });
   },
 
+  async updateScheduledSession(store, session) {
+    await apiHelper.put(store, {
+      endpoint: `/sessions/scheduled/${session.id}`,
+      body: { session },
+      mutation: types.API_UPDATE_SCHEDULED_SESSION
+    });
+  },
+
+  async deleteScheduledSession(store, sessionId) {
+    await apiHelper.del(store, {
+      endpoint: "/sessions/scheduled",
+      id: sessionId,
+      mutation: types.API_DELETE_SCHEDULED_SESSION
+    });
+  },
+
   async getScheduledSessions(store, recipientId) {
     await apiHelper.get(store, {
       endpoint: "/sessions/scheduled",
