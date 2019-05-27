@@ -25,6 +25,10 @@
           <InfoField label="Full Legal Name" :value="details.name" />
           <InfoField label="Base" :value="details.base.name" />
           <InfoField label="Status" :value="details.status" />
+          <InfoField
+            label="Physical Address"
+            :value="details.physical_address"
+          />
         </div>
 
         <div class="box">

@@ -13,6 +13,10 @@
       </b-field>
 
       <BaseSelect v-model="recipient.base_id" label="Kaibosh base" />
+      <AddressField
+        v-model="recipient.physical_address"
+        label="Physical address"
+      />
     </div>
 
     <div class="box">
@@ -61,10 +65,12 @@
 </template>
 
 <script>
+import AddressField from "@/components/form/AddressField";
 import BaseSelect from "@/components/form/BaseSelect";
 
 export default {
   components: {
+    AddressField,
     BaseSelect
   },
 
@@ -83,6 +89,7 @@ export default {
         return {
           name: null,
           base_id: null,
+          physical_address: null,
           primary_contact: {
             name: null,
             email: null,
