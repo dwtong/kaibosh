@@ -225,6 +225,11 @@ export default {
 .food-quantity {
   width: 5rem;
 }
+
+.modal-card {
+  width: 400px;
+}
+
 .modal-card-foot {
   justify-content: right;
 }
