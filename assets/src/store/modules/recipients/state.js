@@ -20,6 +20,7 @@ export default {
     }
   },
 
+  sessionHolds: [],
   scheduledSessions: [],
 
   filters: {

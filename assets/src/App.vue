@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 .main {
   margin-left: $navbar-width;
-  background-color: $background;
+  background-color: $app-background;
   min-height: 100vh;
   overflow: hidden;
 }

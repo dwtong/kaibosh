@@ -46,6 +46,32 @@ describe("mutations", () => {
     });
   });
 
+  describe("API_CREATE_SESSION_HOLD", () => {
+    it("PENDING", () => {
+      mutations[types.API_CREATE_SESSION_HOLD.PENDING](state);
+      expect(state.loading).toBeTruthy;
+    });
+
+    it("SUCCESS", () => {
+      const payload = {
+        scheduled_session_id: 1,
+        starts_at: "2019-01-01",
+        ends_at: "2020-01-01"
+      };
+      mutations[types.API_CREATE_SESSION_HOLD.SUCCESS](state, payload);
+
+      expect(state.sessionHolds).toEqual([payload]);
+      expect(state.loading).toBeFalsy;
+    });
+
+    it("FAILURE", () => {
+      const payload = [{ recipient: ["failed to create"] }];
+      mutations[types.API_CREATE_SESSION_HOLD.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual(payload);
+    });
+  });
+
   describe("API_UPDATE_SCHEDULED_SESSION", () => {
     it("PENDING", () => {
       mutations[types.API_UPDATE_SCHEDULED_SESSION.PENDING](state);
@@ -88,6 +114,50 @@ describe("mutations", () => {
     it("FAILURE", () => {
       const payload = { session: ["failed to delete"] };
       mutations[types.API_DELETE_SCHEDULED_SESSION.FAILURE](state, payload);
+      expect(state.loading).toBeFalsy;
+      expect(state.errors).toEqual([payload]);
+    });
+  });
+
+  describe("API_DELETE_SESSION_HOLD", () => {
+    it("PENDING", () => {
+      mutations[types.API_DELETE_SESSION_HOLD.PENDING](state);
+      expect(state.loading).toBeTruthy;
+    });
+
+    it("SUCCESS", () => {
+      const state = {
+        sessionHolds: [
+          {
+            id: 1,
+            scheduled_session_id: 1,
+            starts_at: "2019-01-01",
+            ends_at: "2020-01-01"
+          },
+          {
+            id: 2,
+            scheduled_session_id: 2,
+            starts_at: "2019-02-01",
+            ends_at: null
+          }
+        ]
+      };
+      mutations[types.API_DELETE_SESSION_HOLD.SUCCESS](state, 1);
+
+      expect(state.sessionHolds).toEqual([
+        {
+          id: 2,
+          scheduled_session_id: 2,
+          starts_at: "2019-02-01",
+          ends_at: null
+        }
+      ]);
+      expect(state.loading).toBeFalsy;
+    });
+
+    it("FAILURE", () => {
+      const payload = { session: ["failed to delete"] };
+      mutations[types.API_DELETE_SESSION_HOLD.FAILURE](state, payload);
       expect(state.loading).toBeFalsy;
       expect(state.errors).toEqual([payload]);
     });
