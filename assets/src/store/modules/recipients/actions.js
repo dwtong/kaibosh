@@ -20,6 +20,14 @@ export default {
     });
   },
 
+  async createSessionHold(store, sessionHold) {
+    await apiHelper.post(store, {
+      endpoint: "/sessions/holds",
+      body: { session_hold: sessionHold },
+      mutation: types.API_CREATE_SESSION_HOLD
+    });
+  },
+
   async updateScheduledSession(store, session) {
     await apiHelper.put(store, {
       endpoint: `/sessions/scheduled/${session.id}`,
@@ -33,6 +41,14 @@ export default {
       endpoint: "/sessions/scheduled",
       id: sessionId,
       mutation: types.API_DELETE_SCHEDULED_SESSION
+    });
+  },
+
+  async deleteSessionHold(store, sessionHoldId) {
+    await apiHelper.del(store, {
+      endpoint: "/sessions/holds",
+      id: sessionHoldId,
+      mutation: types.API_DELETE_SESSION_HOLD
     });
   },
 

@@ -14,11 +14,16 @@
             Add Sorting Session
           </a>
         </p>
+        <p class="control">
+          <a @click="openHoldModal" class="button">
+            Add Hold Date
+          </a>
+        </p>
       </div>
     </div>
 
     <div class="columns">
-      <div class="column is-two-fifths">
+      <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
 
@@ -32,17 +37,6 @@
         </div>
 
         <div class="box">
-          <h2 class="title is-4">Primary Contact</h2>
-
-          <InfoField label="Name" :value="details.primary_contact.name" />
-          <InfoField label="Email" :value="details.primary_contact.email" />
-          <InfoField label="Mobile" :value="details.primary_contact.mobile" />
-          <InfoField
-            label="Landline"
-            :value="details.primary_contact.landline"
-          />
-        </div>
-        <div class="box">
           <h2 class="title is-4">Onboarding</h2>
           <div class="field">
             <b-checkbox type="is-info"
@@ -53,21 +47,21 @@
             <b-checkbox type="is-info">Have met Kaibosh in person</b-checkbox>
           </div>
         </div>
-
-        <div class="box">
-          <h2 class="title is-4">Files</h2>
-          <b-field class="file">
-            <b-upload>
-              <a class="button is-primary">
-                <b-icon icon="upload"></b-icon>
-                <span>Click to upload</span>
-              </a>
-            </b-upload>
-          </b-field>
-        </div>
       </div>
 
       <div class="column">
+        <div class="box">
+          <h2 class="title is-4">Primary Contact</h2>
+
+          <InfoField label="Name" :value="details.primary_contact.name" />
+          <InfoField label="Email" :value="details.primary_contact.email" />
+          <InfoField label="Mobile" :value="details.primary_contact.mobile" />
+          <InfoField
+            label="Landline"
+            :value="details.primary_contact.landline"
+          />
+        </div>
+
         <div class="box">
           <h2 class="title is-4 is-inline-block">Sorting Sessions</h2>
 
@@ -76,6 +70,7 @@
               :session="session"
               @edit="openSessionModal(session.id)"
               @remove="confirmSessionDeletion(session.id)"
+              @remove-hold="deleteSessionHold($event)"
             />
           </div>
         </div>
@@ -88,6 +83,13 @@
             @close="isScheduledSessionModalActive = false"
           />
         </b-modal>
+
+        <b-modal :active.sync="isHoldModalActive" has-modal-card>
+          <HoldModal
+            @close="isHoldModalActive = false"
+            :scheduledSessions="scheduledSessions"
+          />
+        </b-modal>
       </div>
     </div>
   </div>
@@ -96,12 +98,14 @@
 <script>
 import ScheduledSessionCard from "@/components/ScheduledSessionCard";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal";
+import HoldModal from "@/components/HoldModal";
 import InfoField from "@/components/form/InfoField";
 import { mapActions, mapState } from "vuex";
 import toast from "@/helpers/toast";
 
 export default {
   components: {
+    HoldModal,
     ScheduledSessionCard,
     ScheduledSessionModal,
     InfoField
@@ -118,6 +122,7 @@ export default {
 
   data() {
     return {
+      isHoldModalActive: false,
       isScheduledSessionModalActive: false,
       selectedSessionId: null
     };
@@ -127,7 +132,8 @@ export default {
     ...mapActions("recipients", [
       "getRecipient",
       "getScheduledSessions",
-      "deleteScheduledSession"
+      "deleteScheduledSession",
+      "deleteSessionHold"
     ]),
 
     confirmSessionDeletion(sessionId) {
@@ -140,6 +146,10 @@ export default {
           toast.success("Deleted session.");
         }
       });
+    },
+
+    openHoldModal() {
+      this.isHoldModalActive = true;
     },
     openSessionModal(id) {
       if (Number.isInteger(id)) {

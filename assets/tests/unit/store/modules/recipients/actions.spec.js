@@ -48,6 +48,28 @@ describe("actions", () => {
     });
   });
 
+  describe("createSessionHold", () => {
+    it("calls SUCCESS mutation with list of recipients on API success", async () => {
+      const sessionHold = {
+        session_hold: {
+          scheduled_session_id: 1,
+          starts_at: "2019-01-01",
+          ends_at: "2020-01-01"
+        }
+      };
+      const createdSessionHold = { ...sessionHold, id: 1 };
+      mock.onPost("/api/v1/sessions/holds").reply(201, createdSessionHold);
+      await actions.createSessionHold({ commit, state }, sessionHold);
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_SESSION_HOLD.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_CREATE_SESSION_HOLD.SUCCESS,
+        createdSessionHold
+      );
+    });
+  });
+
   describe("updateScheduledSession", () => {
     it("calls SUCCESS mutation with list of recipients on API success", async () => {
       const session = {
@@ -86,6 +108,21 @@ describe("actions", () => {
       await expect(commit).toBeCalledWith(
         types.API_DELETE_SCHEDULED_SESSION.SUCCESS,
         sessionId
+      );
+    });
+  });
+
+  describe("deleteSessionHold", () => {
+    it("calls SUCCESS mutation with session to delete on API success", async () => {
+      const sessionHoldId = 1;
+      mock.onDelete(`/api/v1/sessions/holds/${sessionHoldId}`).reply(204, "");
+      await actions.deleteSessionHold({ commit, state }, sessionHoldId);
+      await expect(commit).toBeCalledWith(
+        types.API_DELETE_SESSION_HOLD.PENDING
+      );
+      await expect(commit).toBeCalledWith(
+        types.API_DELETE_SESSION_HOLD.SUCCESS,
+        sessionHoldId
       );
     });
   });

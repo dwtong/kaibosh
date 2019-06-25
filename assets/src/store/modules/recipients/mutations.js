@@ -58,6 +58,25 @@ export default {
     state.errors = [payload];
   },
 
+  [types.API_DELETE_SESSION_HOLD.PENDING](state) {
+    state.loading = true;
+  },
+
+  [types.API_DELETE_SESSION_HOLD.SUCCESS](state, holdId) {
+    state.loading = false;
+    const session = state.scheduledSessions.find(
+      s => s.holds.filter(h => h.id == holdId).length > 0
+    );
+
+    const index = session.holds.findIndex(h => h.id == holdId);
+    session.holds.splice(index, 1);
+  },
+
+  [types.API_DELETE_SESSION_HOLD.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = [payload];
+  },
+
   [types.API_CREATE_SCHEDULED_SESSION.PENDING](state) {
     state.loading = true;
     state.errors = null;
@@ -69,6 +88,23 @@ export default {
   },
 
   [types.API_CREATE_SCHEDULED_SESSION.FAILURE](state, payload) {
+    state.loading = false;
+    state.errors = payload;
+  },
+
+  [types.API_CREATE_SESSION_HOLD.PENDING](state) {
+    state.loading = true;
+    state.errors = null;
+  },
+
+  [types.API_CREATE_SESSION_HOLD.SUCCESS](state, payload) {
+    state.loading = false;
+    state.scheduledSessions
+      .find(s => s.id === payload.scheduled_session_id)
+      .holds.push(payload);
+  },
+
+  [types.API_CREATE_SESSION_HOLD.FAILURE](state, payload) {
     state.loading = false;
     state.errors = payload;
   },
