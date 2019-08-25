@@ -1,0 +1,72 @@
+export interface IAllocation {
+  food_category_id: string;
+  id: string;
+  quantity: string;
+  quantity_label: string;
+}
+
+export interface IBase {
+  id: string;
+  name: string;
+}
+
+export interface IContact {
+  name: string;
+  email: string;
+  phone_landline: string;
+  phone_mobile: string;
+}
+
+export interface IFoodCategory {
+  id: string;
+  name: string;
+}
+
+export interface IHold {
+  id: string;
+  scheduled_session_id: string;
+  starts_at: string;
+  ends_at: string;
+}
+
+export interface IRecipient {
+  name: string;
+  id?: string;
+  status?: string;
+  started_at?: Date;
+  physical_address?: string;
+  base?: IBase;
+  base_id?: string;
+  primary_contact?: IContact;
+}
+
+export interface IRecipientListItem {
+  name: string;
+  base_id: string;
+  id: string;
+  status: string;
+}
+
+export interface ISessionSlot {
+  id: string;
+  day: string;
+  time: string;
+}
+
+export interface IScheduledSession {
+  allocations: IAllocation[];
+  holds: IHold[];
+  id: string;
+  recipient_id: string;
+  session_slot: ISessionSlot;
+}
+
+export interface IStatus {
+  name: string;
+  label: string;
+  enabled?: boolean;
+}
+
+export interface IStatusLabelGroup {
+  [key: string]: string;
+}
