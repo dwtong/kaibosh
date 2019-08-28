@@ -3,8 +3,12 @@
     <div class="box">
       <h1 class="title">Organisation Details</h1>
 
-      <InputField name="name" v-model="recipient.name" />
-      <BaseSelect v-model="recipient.base_id" label="Kaibosh base" />
+      <InputField name="name" v-model="recipient.name" required="true" />
+      <BaseSelect
+        v-model="recipient.base_id"
+        label="Kaibosh base"
+        required="true"
+      />
       <AddressField
         v-model="recipient.physical_address"
         label="Physical address"
@@ -35,13 +39,15 @@ import { IContact, IRecipient } from "@/types";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import toast from "@/helpers/toast";
 
-@Component({ components: { AddressField, BaseSelect, InputField } })
+@Component({
+  components: { AddressField, BaseSelect, InputField },
+  $_veeValidate: { validator: "new" }
+})
 export default class RecipientForm extends Vue {
   @Prop(String) readonly recipientId!: string;
 
   recipient: IRecipient = {
-    name: "",
-    base_id: "0"
+    name: ""
   };
 
   contact: IContact = {
@@ -52,6 +58,27 @@ export default class RecipientForm extends Vue {
   };
 
   async submit() {
+    const formIsValid = await this.$validator.validateAll();
+
+    if (formIsValid) {
+      this.saveRecipient();
+    }
+    {
+      toast.error("Failed to save recipient.", true);
+    }
+  }
+
+  async created() {
+    if (this.recipientId) {
+      await ActiveRecipientModule.fetchRecipient(this.recipientId);
+      this.recipient = ActiveRecipientModule.details;
+      if (ActiveRecipientModule.details.primary_contact) {
+        this.contact = { ...ActiveRecipientModule.details.primary_contact };
+      }
+    }
+  }
+
+  async saveRecipient() {
     const params = {
       primary_contact_attributes: this.contact,
       ...this.recipient
@@ -67,16 +94,6 @@ export default class RecipientForm extends Vue {
       if (ActiveRecipientModule.details.id) {
         this.$router.push(`/recipients/${ActiveRecipientModule.details.id}`);
         toast.success("Recipient created.");
-      }
-    }
-  }
-
-  async created() {
-    if (this.recipientId) {
-      await ActiveRecipientModule.fetchRecipient(this.recipientId);
-      this.recipient = ActiveRecipientModule.details;
-      if (ActiveRecipientModule.details.primary_contact) {
-        this.contact = { ...ActiveRecipientModule.details.primary_contact };
       }
     }
   }

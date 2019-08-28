@@ -43,7 +43,7 @@ export interface IRecipient {
   status?: string;
   started_at?: Date;
   physical_address?: string;
-  base_id: string;
+  base_id?: string;
   primary_contact?: IContact;
 }
 

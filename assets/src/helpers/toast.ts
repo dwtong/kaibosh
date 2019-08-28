@@ -2,10 +2,10 @@
 import { Toast } from "buefy/dist/components/toast";
 
 export default {
-  error(errorMsg: string, items?: []) {
+  error(errorMsg: string, formError?: boolean) {
     Toast.open({
       message: `${errorMsg} ${
-        items && items.length > 0
+        formError
           ? "Please see form errors."
           : "Please try again later or contact support."
       }`,

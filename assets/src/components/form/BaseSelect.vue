@@ -1,8 +1,8 @@
 <template>
   <b-field
     :label="label"
-    :type="{ 'is-danger': errors.has('base') }"
-    :message="errors.first('base')"
+    :type="{ 'is-danger': $validator.errors.has('base') }"
+    :message="$validator.errors.first('base')"
     class="form-field"
   >
     <b-select
@@ -10,7 +10,7 @@
       @input="$emit('input', $event)"
       name="base"
       placeholder="Select an option"
-      v-validate="'required'"
+      v-validate="{ required: required }"
       expanded
     >
       <option v-if="all" :value="allValue">All</option>
@@ -27,13 +27,15 @@ import Vue from "vue";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
 import BaseService from "@/services/base-service";
 import { IBase } from "@/types";
+import { Validator } from "vee-validate";
 
 @Component
 export default class BaseSelect extends Vue {
   @Prop({ default: false }) readonly all!: boolean;
+  @Prop({ default: false }) readonly required!: boolean;
   @Prop({ default: "" }) readonly label!: string;
   @Prop() readonly value!: string;
-  @Inject() readonly $validator: any;
+  @Inject("$validator") $validator!: Validator;
 
   list: IBase[] = [];
   allValue: number = 0;

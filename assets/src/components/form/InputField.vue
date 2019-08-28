@@ -1,5 +1,9 @@
 <template>
-  <b-field :label="label">
+  <b-field
+    :label="label"
+    :type="{ 'is-danger': $validator.errors.has(name) }"
+    :message="$validator.errors.first(name)"
+  >
     <b-input
       :value="value"
       @input="$emit('input', $event)"
@@ -13,13 +17,14 @@
 <script lang="ts">
 import { Component, Inject, Prop, PropSync } from "vue-property-decorator";
 import Vue from "vue";
+import { Validator } from "vee-validate";
 
 @Component
 export default class InputField extends Vue {
   @Prop() readonly value: any;
   @Prop({ default: "" }) readonly name!: string;
   @Prop({ default: false }) readonly required!: boolean;
-  @Inject() readonly $validator: any;
+  @Inject("$validator") $validator!: Validator;
 
   get label() {
     return this.name.replace(/-/g, " ");
