@@ -7,7 +7,7 @@
 <script>
 export default {
   mounted() {
-    let script = document.createElement("script");
+    const script = document.createElement("script");
     script.setAttribute(
       "src",
       "https://api.addressfinder.io/assets/v3/widget.js"

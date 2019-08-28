@@ -3,15 +3,7 @@
     <div class="box">
       <h1 class="title">Organisation Details</h1>
 
-      <b-field
-        label="Organisation name"
-        :type="{ 'is-danger': errors.has('name') }"
-        :message="errors.first('name')"
-        class="form-field"
-      >
-        <b-input v-model="recipient.name" name="name" v-validate="'required'" />
-      </b-field>
-
+      <InputField name="name" v-model="recipient.name" />
       <BaseSelect v-model="recipient.base_id" label="Kaibosh base" />
       <AddressField
         v-model="recipient.physical_address"
@@ -22,83 +14,71 @@
     <div class="box">
       <h1 class="title">Primary Contact Details</h1>
 
-      <b-field
-        label="Contact name"
-        :type="{ 'is-danger': errors.has('contact-name') }"
-        :message="errors.first('contact-name')"
-      >
-        <b-input
-          v-model="recipient.primary_contact.name"
-          data-vv-as="contact name"
-          name="contact-name"
-        />
-      </b-field>
-
-      <b-field
-        label="Contact email"
-        :type="{ 'is-danger': errors.has('primary_contact.email') }"
-        :message="errors.first('primary_contact.email')"
-      >
-        <b-input
-          data-vv-as="contact email"
-          v-model="recipient.primary_contact.email"
-          name="contact-email"
-        />
-      </b-field>
-
-      <b-field label="Contact landline">
-        <b-input
-          v-model="recipient.primary_contact.phone_landline"
-          name="contact-landline"
-        />
-      </b-field>
-
-      <b-field label="Contact mobile">
-        <b-input v-model="recipient.primary_contact.phone_mobile" name="name" />
-      </b-field>
+      <InputField name="contact-name" v-model="contact.name" />
+      <InputField name="contact-email" v-model="contact.email" />
+      <InputField name="contact-landline" v-model="contact.phone_landline" />
+      <InputField name="contact-mobile" v-model="contact.phone_mobile" />
     </div>
-
     <button type="submit" class="button is-primary is-pulled-right">
       Save Recipient
     </button>
   </form>
 </template>
 
-<script>
-import AddressField from "@/components/form/AddressField";
-import BaseSelect from "@/components/form/BaseSelect";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import AddressField from "@/components/form/AddressField.vue";
+import BaseSelect from "@/components/form/BaseSelect.vue";
+import InputField from "@/components/form/InputField.vue";
+import { IContact, IRecipient } from "@/types";
+import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import toast from "@/helpers/toast";
 
-export default {
-  components: {
-    AddressField,
-    BaseSelect
-  },
+@Component({ components: { AddressField, BaseSelect, InputField } })
+export default class RecipientForm extends Vue {
+  @Prop(String) readonly recipientId!: string;
 
-  inject: ["$validator"],
+  recipient: IRecipient = {
+    name: "",
+    base_id: "0"
+  };
 
-  methods: {
-    async submit() {
-      this.$emit("submit", this.recipient);
-    }
-  },
+  contact: IContact = {
+    name: "",
+    email: "",
+    phone_landline: "",
+    phone_mobile: ""
+  };
 
-  props: {
-    recipient: {
-      type: Object,
-      default() {
-        return {
-          name: null,
-          base_id: null,
-          physical_address: null,
-          primary_contact: {
-            name: null,
-            email: null,
-            phone_landline: null,
-            phone_mobile: null
-          }
-        };
+  async submit() {
+    const params = {
+      primary_contact_attributes: this.contact,
+      ...this.recipient
+    };
+
+    if (this.recipientId) {
+      await ActiveRecipientModule.updateRecipient(params);
+      this.$router.push(`/recipients/${this.recipientId}`);
+      toast.success("Recipient updated.");
+    } else {
+      await ActiveRecipientModule.createRecipient(params);
+
+      if (ActiveRecipientModule.details.id) {
+        this.$router.push(`/recipients/${ActiveRecipientModule.details.id}`);
+        toast.success("Recipient created.");
       }
     }
   }
-};
+
+  async created() {
+    if (this.recipientId) {
+      await ActiveRecipientModule.fetchRecipient(this.recipientId);
+      this.recipient = ActiveRecipientModule.details;
+      if (ActiveRecipientModule.details.primary_contact) {
+        this.contact = { ...ActiveRecipientModule.details.primary_contact };
+      }
+    }
+  }
+}
 </script>

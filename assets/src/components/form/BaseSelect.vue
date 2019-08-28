@@ -21,34 +21,30 @@
   </b-field>
 </template>
 
-<script>
-import { mapActions, mapState } from "vuex";
+<script lang="ts">
+import { Component, Inject, Prop } from "vue-property-decorator";
+import Vue from "vue";
+import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import BaseService from "@/services/base-service";
+import { IBase } from "@/types";
 
-export default {
-  computed: {
-    ...mapState("bases", ["list"])
-  },
+@Component
+export default class BaseSelect extends Vue {
+  @Prop({ default: false }) readonly all!: boolean;
+  @Prop({ default: "" }) readonly label!: string;
+  @Prop() readonly value!: string;
+  @Inject() readonly $validator: any;
+
+  list: IBase[] = [];
+  allValue: number = 0;
 
   async created() {
-    await this.getBases();
-  },
-
-  data() {
-    return {
-      allValue: 0
-    };
-  },
-
-  inject: ["$validator"],
-
-  methods: {
-    ...mapActions("bases", ["getBases"])
-  },
-
-  props: {
-    all: Boolean,
-    label: String,
-    value: Number
+    try {
+      const response = await BaseService.get();
+      this.list = response;
+    } catch {
+      this.list = [];
+    }
   }
-};
+}
 </script>

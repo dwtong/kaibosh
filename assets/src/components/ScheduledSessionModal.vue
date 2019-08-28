@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="">
-    <div v-if="!loading" class="modal-card">
+    <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">
-          {{ this.sessionId ? "Edit " : "Add" }} Sorting Session
+          {{ this.session ? "Edit " : "Add" }} Sorting Session
         </p>
       </header>
 
@@ -16,57 +16,23 @@
                 name="session"
                 placeholder="Select an option"
                 expanded
-                v-model="sessionSlotId"
+                v-model="selectedSessionSlotId"
               >
                 <option
-                  v-for="session in sessionSlots"
-                  :key="session.id"
-                  :value="session.id"
-                  >{{ session.day }} - {{ session.time }}</option
+                  v-for="slot in sessionSlots"
+                  :key="slot.id"
+                  :value="slot.id"
+                  >{{ slot.day }} - {{ slot.time }}</option
                 >
               </b-select>
             </b-field>
           </div>
         </div>
 
-        <div v-if="sessionSlotId" class="columns">
+        <div v-if="selectedSessionSlotId" class="columns">
           <div class="column">
             <p class="subtitle">Choose food categories</p>
-            <div v-for="food in categories" :key="food.food_category_id">
-              <div
-                class="level box"
-                :class="{ disabled: food.enabled == false }"
-              >
-                <div class="level-left">
-                  <div class="level-item">
-                    <b-checkbox v-model="food.enabled" type="is-info">
-                      <p class="food-label">{{ food.name }}</p></b-checkbox
-                    >
-                  </div>
-                </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    <div class="field has-addons">
-                      <p class="control">
-                        <input
-                          class="input food-quantity"
-                          :value="
-                            parseInt(food.quantity) > 0 ? food.quantity : null
-                          "
-                          @input="setFoodQuantity(food, $event.target.value)"
-                          type="number"
-                        />
-                      </p>
-                      <p class="control">
-                        <button class="button is-static">
-                          {{ food.unit }} (max)
-                        </button>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AllocationQuantitiesInput v-model="allocations" />
           </div>
         </div>
       </section>
@@ -85,147 +51,60 @@
   </form>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapState } from "vuex";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
+import { ActiveRecipientModule } from "../store/modules/active-recipient";
+import { BasesModule } from "../store/modules/bases";
+import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
-import { mapEnabledFoodCategories } from "@/helpers/food-categories";
 
-export default {
-  computed: {
-    ...mapState("bases", ["sessionSlots", "foodCategories"]),
-    ...mapState("recipients", ["errors"]),
-    ...mapGetters("recipients", ["scheduledSessionById"]),
-    selectedSession() {
-      return this.scheduledSessionById(this.sessionId);
-    }
-  },
+@Component({ components: { AllocationQuantitiesInput } })
+export default class ScheduledSessionModal extends Vue {
+  @Prop() readonly recipientId!: string;
+  @Prop() readonly baseId: string | undefined;
+  @Prop() readonly session?: IScheduledSession;
+  loading: boolean = true;
+  allocations: IAllocation[] = [];
+  sessionSlots: ISessionSlot[] = [];
+  selectedSessionSlotId: string = "";
 
-  async created() {
-    await Promise.all([
-      this.getSessionSlots(this.baseId),
-      this.getFoodCategories()
-    ]);
+  created() {
+    if (this.session) {
+      this.allocations = this.session.allocations
+        ? [...this.session.allocations]
+        : [];
 
-    this.categories = mapEnabledFoodCategories(
-      this.selectedSession,
-      this.foodCategories
-    );
-
-    if (this.selectedSession) {
-      this.sessionSlotId = this.selectedSession.session_slot.id;
+      this.selectedSessionSlotId = this.session.session_slot!.id;
     }
 
-    this.loading = false;
-  },
-
-  data() {
-    return {
-      categories: [],
-      sessionSlotId: null,
-      loading: true
-    };
-  },
-
-  methods: {
-    ...mapActions("bases", ["getSessionSlots", "getFoodCategories"]),
-    ...mapActions("recipients", [
-      "createScheduledSession",
-      "updateScheduledSession"
-    ]),
-
-    setFoodQuantity(food, quantity) {
-      if (quantity && quantity > 0) {
-        food.quantity = quantity;
-        food.enabled = true;
-      } else {
-        food.quantity = 0;
-        food.enabled = false;
-      }
-    },
-
-    foodQuantityValue(quantity) {
-      if (parseInt(quantity) > 0) {
-        return quantity;
-      } else {
-        return null;
-      }
-    },
-
-    async saveSession() {
-      const allocations = this.categories.map(allocation => {
-        if (allocation.enabled) {
-          return {
-            food_category_id: allocation.food_category_id,
-            quantity: allocation.quantity,
-            id: allocation.id
-          };
-        } else if (!allocation.enabled && allocation.id) {
-          return { id: allocation.id, _destroy: true };
-        }
-      });
-
-      if (this.selectedSession) {
-        const params = {
-          allocations_attributes: allocations,
-          session_slot_id: this.sessionSlotId,
-          ...this.selectedSession
-        };
-        await this.updateScheduledSession(params);
-      } else {
-        const params = {
-          recipient_id: this.recipientId,
-          session_slot_id: this.sessionSlotId,
-          allocations_attributes: allocations
-        };
-
-        await this.createScheduledSession(params);
-      }
-
-      if (this.errors.length > 0) {
-        toast.error("Unable to save session.");
-      } else {
-        this.$emit("close");
-        toast.success("Session saved.");
-      }
-    }
-  },
-
-  props: {
-    baseId: {
-      required: true,
-      type: Number
-    },
-    recipientId: {
-      required: true,
-      type: Number
-    },
-    sessionId: {
-      required: false,
-      type: Number
-    }
+    this.sessionSlots = BasesModule.sessionSlots;
   }
-};
+
+  async saveSession() {
+    const params = {
+      recipient_id: this.recipientId,
+      session_slot_id: this.selectedSessionSlotId,
+      allocations_attributes: this.allocations
+    };
+
+    if (this.session) {
+      await ActiveRecipientModule.updateScheduledSession({
+        ...params,
+        ...this.session
+      });
+    } else {
+      await ActiveRecipientModule.createScheduledSession(params);
+    }
+
+    this.$emit("close");
+    toast.success("Scheduled session created.");
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.box {
-  padding: 0.5rem;
-}
-
-.disabled {
-  .food-label {
-    color: gray;
-  }
-}
-
-.food-label {
-  margin-left: 0.5rem;
-}
-
-.food-quantity {
-  width: 5rem;
-}
-
 .modal-card {
   width: 400px;
 }

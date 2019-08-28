@@ -1,7 +1,8 @@
+// @ts-ignore
 import { Toast } from "buefy/dist/components/toast";
 
 export default {
-  error(errorMsg, items) {
+  error(errorMsg: string, items?: []) {
     Toast.open({
       message: `${errorMsg} ${
         items && items.length > 0
@@ -9,11 +10,12 @@ export default {
           : "Please try again later or contact support."
       }`,
       type: "is-danger",
-      position: "is-bottom"
+      position: "is-bottom",
+      duration: 10000
     });
   },
 
-  success(msg) {
+  success(msg: string) {
     Toast.open({
       message: msg,
       type: "is-success",

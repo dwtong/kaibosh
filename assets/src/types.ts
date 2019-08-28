@@ -5,6 +5,14 @@ export interface IAllocation {
   quantity_label: string;
 }
 
+export interface IAllocationCategory {
+  food_category_id: string;
+  enabled?: boolean;
+  id: string;
+  quantity: string;
+  quantity_label: string;
+}
+
 export interface IBase {
   id: string;
   name: string;
@@ -23,7 +31,7 @@ export interface IFoodCategory {
 }
 
 export interface IHold {
-  id: string;
+  id?: string;
   scheduled_session_id: string;
   starts_at: string;
   ends_at: string;
@@ -35,8 +43,7 @@ export interface IRecipient {
   status?: string;
   started_at?: Date;
   physical_address?: string;
-  base?: IBase;
-  base_id?: string;
+  base_id: string;
   primary_contact?: IContact;
 }
 
@@ -54,11 +61,13 @@ export interface ISessionSlot {
 }
 
 export interface IScheduledSession {
-  allocations: IAllocation[];
-  holds: IHold[];
-  id: string;
+  allocations?: IAllocation[];
+  enabled?: boolean;
+  holds?: IHold[];
+  id?: string;
   recipient_id: string;
-  session_slot: ISessionSlot;
+  session_slot?: ISessionSlot;
+  session_slot_id?: string;
 }
 
 export interface IStatus {

@@ -7,7 +7,11 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/recipients" active-class="is-active" exact
+        <router-link
+          v-on:click.native="resetRecipientFilters"
+          to="/recipients"
+          active-class="is-active"
+          exact
           >View Recipients</router-link
         >
       </li>
@@ -26,6 +30,19 @@
     </ul>
   </aside>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { AllRecipientsModule } from "@/store/modules/all-recipients";
+
+@Component
+export default class NavBar extends Vue {
+  resetRecipientFilters() {
+    AllRecipientsModule.resetFilters();
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .logo {

@@ -49,8 +49,7 @@
             v-model="session.enabled"
             :disabled="allSessions"
           >
-            {{ session.session_slot.day }}
-            {{ session.session_slot.time }}
+            {{ sessionSlotLabel(session) }}
           </b-checkbox>
         </div>
       </section>
@@ -69,60 +68,65 @@
   </form>
 </template>
 
-<script>
-import { mapActions } from "vuex";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
+import { ActiveRecipientModule } from "../store/modules/active-recipient";
+import { BasesModule } from "../store/modules/bases";
+import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
 
-export default {
+@Component({ components: { AllocationQuantitiesInput } })
+export default class HoldModal extends Vue {
+  @Prop() scheduledSessions!: IScheduledSession[];
+  startDate: Date = new Date();
+  endDate: Date = new Date();
+  disableEndDate: boolean = false;
+  allSessions: boolean = false;
+  sessions: IScheduledSession[] = [];
+
   created() {
     this.sessions = this.scheduledSessions.map(s => {
       return { enabled: false, ...s };
     });
-  },
+  }
 
-  data() {
-    return {
-      startDate: null,
-      endDate: null,
-      disableEndDate: false,
-      allSessions: false,
-      sessions: []
-    };
-  },
+  async saveHold() {
+    const endDate = this.disableEndDate ? null : this.endDate;
+    const sessionHolds = this.sessions
+      .filter(s => s.enabled)
+      .map(s => {
+        return {
+          scheduled_session_id: s.id!,
+          starts_at: this.startDate.toString(),
+          ends_at: endDate ? endDate.toString() : ""
+        };
+      })
+      .filter(h => h !== null);
+    await ActiveRecipientModule.createHolds(sessionHolds);
 
-  methods: {
-    ...mapActions("recipients", ["createSessionHold"]),
-    toggleEndDate(isDisabled) {
-      this.disableEndDate = isDisabled;
-    },
-    toggleAllSessions() {
-      this.allSessions = !this.allSessions;
-      this.sessions.forEach(s => (s.enabled = this.allSessions));
-    },
-    async saveHold() {
-      const endDate = this.disableEndDate ? null : this.endDate;
-      const sessions = this.sessions
-        .filter(s => s.enabled)
-        .map(s => {
-          return {
-            scheduled_session_id: s.id,
-            starts_at: this.startDate,
-            ends_at: endDate
-          };
-        });
-      await sessions.forEach(s => this.createSessionHold(s));
+    this.$emit("close");
+    toast.success("Session hold created.");
+  }
 
-      if (this.errors.length > 0) {
-        toast.error("Unable to save session.");
-      } else {
-        this.$emit("close");
-        toast.success("Session hold created.");
-      }
+  toggleEndDate(isDisabled: boolean) {
+    this.disableEndDate = isDisabled;
+  }
+
+  toggleAllSessions() {
+    this.allSessions = !this.allSessions;
+    this.sessions.forEach(s => (s.enabled = this.allSessions));
+  }
+
+  sessionSlotLabel(session: IScheduledSession) {
+    if (session.session_slot) {
+      return `${session.session_slot.day} ${session.session_slot.time}`;
+    } else {
+      return "";
     }
-  },
-
-  props: ["scheduledSessions"]
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -5,12 +5,12 @@
 
       <div class="field has-addons buttons is-pulled-right">
         <p class="control">
-          <a class="button ">
+          <a @click="updateRecipient" class="button ">
             Edit Recipient
           </a>
         </p>
         <p class="control">
-          <a @click="openSessionModal" class="button">
+          <a @click="openCreateSessionModal" class="button">
             Add Sorting Session
           </a>
         </p>
@@ -28,7 +28,7 @@
           <h2 class="title is-4">Organisation Details</h2>
 
           <InfoField label="Full Legal Name" :value="details.name" />
-          <InfoField label="Base" :value="details.base.name" />
+          <InfoField label="Base" :value="baseName" />
           <InfoField label="Status" :value="details.status" />
           <InfoField
             label="Physical Address"
@@ -53,13 +53,10 @@
         <div class="box">
           <h2 class="title is-4">Primary Contact</h2>
 
-          <InfoField label="Name" :value="details.primary_contact.name" />
-          <InfoField label="Email" :value="details.primary_contact.email" />
-          <InfoField label="Mobile" :value="details.primary_contact.mobile" />
-          <InfoField
-            label="Landline"
-            :value="details.primary_contact.landline"
-          />
+          <InfoField label="Name" :value="contact.name" />
+          <InfoField label="Email" :value="contact.email" />
+          <InfoField label="Mobile" :value="contact.phone_mobile" />
+          <InfoField label="Landline" :value="contact.phone_landline" />
         </div>
 
         <div class="box">
@@ -68,18 +65,17 @@
           <div v-for="session in scheduledSessions" :key="session.id">
             <ScheduledSessionCard
               :session="session"
-              @edit="openSessionModal(session.id)"
+              @edit="openEditSessionModal(session)"
               @remove="confirmSessionDeletion(session.id)"
-              @remove-hold="deleteSessionHold($event)"
             />
           </div>
         </div>
 
         <b-modal :active.sync="isScheduledSessionModalActive" has-modal-card>
           <ScheduledSessionModal
-            :baseId="details.base.id"
+            :baseId="details.base_id"
             :recipientId="details.id"
-            :sessionId="selectedSessionId"
+            :session="selectedSession"
             @close="isScheduledSessionModalActive = false"
           />
         </b-modal>
@@ -95,75 +91,92 @@
   </div>
 </template>
 
-<script>
-import ScheduledSessionCard from "@/components/ScheduledSessionCard";
-import ScheduledSessionModal from "@/components/ScheduledSessionModal";
-import HoldModal from "@/components/HoldModal";
-import InfoField from "@/components/form/InfoField";
-import { mapActions, mapState } from "vuex";
-import toast from "@/helpers/toast";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
+import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
+import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import HoldModal from "@/components/HoldModal.vue";
+import InfoField from "@/components/form/InfoField.vue";
+import { IRecipient, IScheduledSession } from "@/types";
+import toast from "../helpers/toast";
+import { BasesModule } from "../store/modules/bases";
 
-export default {
+@Component({
   components: {
     HoldModal,
     ScheduledSessionCard,
     ScheduledSessionModal,
     InfoField
-  },
-
-  computed: {
-    ...mapState("recipients", ["details", "scheduledSessions"])
-  },
+  }
+})
+export default class ShowRecipient extends Vue {
+  @Prop(String) readonly id!: string;
+  isHoldModalActive: boolean = false;
+  isScheduledSessionModalActive: boolean = false;
+  selectedSession: IScheduledSession | null = null;
 
   async created() {
-    await this.getRecipient(this.id);
-    await this.getScheduledSessions(this.details.id);
-  },
+    await Promise.all([
+      ActiveRecipientModule.fetchRecipient(this.id),
+      BasesModule.fetchBases(),
+      BasesModule.fetchFoodCategories()
+    ]);
 
-  data() {
-    return {
-      isHoldModalActive: false,
-      isScheduledSessionModalActive: false,
-      selectedSessionId: null
-    };
-  },
-
-  methods: {
-    ...mapActions("recipients", [
-      "getRecipient",
-      "getScheduledSessions",
-      "deleteScheduledSession",
-      "deleteSessionHold"
-    ]),
-
-    confirmSessionDeletion(sessionId) {
-      this.$dialog.confirm({
-        message: "Are you sure you wish to remove this session?",
-        type: "is-danger",
-        onConfirm: async () => {
-          this.deleteScheduledSession(sessionId);
-          await this.getScheduledSessions(this.details.id);
-          toast.success("Deleted session.");
-        }
-      });
-    },
-
-    openHoldModal() {
-      this.isHoldModalActive = true;
-    },
-    openSessionModal(id) {
-      if (Number.isInteger(id)) {
-        this.selectedSessionId = id;
-      } else {
-        this.selectedSessionId = null;
-      }
-
-      this.isScheduledSessionModalActive = true;
+    if (ActiveRecipientModule.details) {
+      await BasesModule.fetchSessionSlots(
+        ActiveRecipientModule.details.base_id!
+      );
     }
-  },
+  }
 
-  props: ["id"]
-};
+  get contact() {
+    return ActiveRecipientModule.details.primary_contact;
+  }
+
+  get baseName() {
+    const baseId = ActiveRecipientModule.details.base_id;
+    return BasesModule.baseNameById(baseId!);
+  }
+
+  get details() {
+    return ActiveRecipientModule.details;
+  }
+
+  get scheduledSessions() {
+    return ActiveRecipientModule.scheduledSessions;
+  }
+
+  updateRecipient() {
+    this.$router.push(`/recipients/update/${this.id}`);
+  }
+
+  openHoldModal() {
+    this.isHoldModalActive = true;
+  }
+
+  openCreateSessionModal() {
+    this.selectedSession = null;
+    this.isScheduledSessionModalActive = true;
+  }
+
+  openEditSessionModal(session: IScheduledSession) {
+    this.selectedSession = session;
+    this.isScheduledSessionModalActive = true;
+  }
+
+  confirmSessionDeletion(sessionId: string) {
+    this.$dialog.confirm({
+      message: "Are you sure you wish to remove this session?",
+      type: "is-danger",
+      onConfirm: async () => {
+        await ActiveRecipientModule.deleteScheduledSession(sessionId);
+        toast.success("Deleted session.");
+      }
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

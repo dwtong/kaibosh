@@ -4,8 +4,8 @@
       <p class="subtitle">Filter By Base</p>
       <BaseSelect
         @input="updateBaseFilter($event)"
-        :value="filters.base_id"
-        all
+        :value="filteredBase"
+        all="true"
       />
     </div>
 
@@ -15,7 +15,7 @@
         <div class="control">
           <input
             @input="updateNameFilter($event.target.value)"
-            :value="filters.name"
+            :value="filteredName"
             id="name-filter"
             type="text"
             class="input"
@@ -28,7 +28,7 @@
     <div class="filter-box">
       <p class="subtitle">Filter By Status</p>
       <div
-        v-for="filter in filters.status"
+        v-for="filter in filteredStatus"
         :key="filter.name"
         :id="filter.name + '-filter'"
         class="field"
@@ -47,28 +47,43 @@
   </div>
 </template>
 
-<script>
-import BaseSelect from "@/components/form/BaseSelect";
-import { mapActions, mapState } from "vuex";
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import BaseSelect from "@/components/form/BaseSelect.vue";
+import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import { IStatus } from "@/types";
 
-export default {
-  components: {
-    BaseSelect
-  },
-
-  computed: {
-    ...mapState("recipients", ["filters"])
-  },
-
-  methods: {
-    ...mapActions("recipients", [
-      "updateBaseFilter",
-      "updateNameFilter",
-      "toggleStatusFilter",
-      "resetFilters"
-    ])
+@Component({ components: { BaseSelect } })
+export default class RecipientsFilter extends Vue {
+  get filteredBase(): string {
+    return AllRecipientsModule.filteredBase;
   }
-};
+
+  get filteredName(): string {
+    return AllRecipientsModule.filteredName;
+  }
+
+  get filteredStatus(): IStatus[] {
+    return AllRecipientsModule.filteredStatus;
+  }
+
+  updateBaseFilter(baseId: string) {
+    AllRecipientsModule.updateBaseFilter(baseId);
+  }
+
+  updateNameFilter(name: string) {
+    AllRecipientsModule.updateNameFilter(name);
+  }
+
+  toggleStatusFilter(name: string) {
+    AllRecipientsModule.toggleStatusFilter(name);
+  }
+
+  resetFilters() {
+    AllRecipientsModule.resetFilters();
+  }
+}
 </script>
 
 <style lang="scss" scoped>

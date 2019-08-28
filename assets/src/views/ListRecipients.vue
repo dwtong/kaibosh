@@ -19,21 +19,19 @@
 
       <div class="column is-one-quarter">
         <div class="box">
-          <RecipientsTableFilter />
+          <RecipientsFilter />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import RecipientsTable from "@/components/RecipientsTable";
-import RecipientsTableFilter from "@/components/RecipientsTableFilter";
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import RecipientsTable from "@/components/RecipientsTable.vue";
+import RecipientsFilter from "@/components/RecipientsFilter.vue";
 
-export default {
-  components: {
-    RecipientsTable,
-    RecipientsTableFilter
-  }
-};
+@Component({ components: { RecipientsTable, RecipientsFilter } })
+export default class ListRecipients extends Vue {}
 </script>
