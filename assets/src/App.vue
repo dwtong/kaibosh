@@ -13,14 +13,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 import NavBar from "@/components/NavBar.vue";
 
-export default {
-  components: {
-    NavBar
-  }
-};
+@Component({ components: { NavBar } })
+export default class App extends Vue {}
 </script>
 
 <style lang="scss" scoped>

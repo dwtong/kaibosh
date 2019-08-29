@@ -18,40 +18,20 @@
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <b-tag rounded :type="statusLabelType" size="is-medium">{{
-            statusLabel
-          }}</b-tag>
+          <HoldStatusLabel :holds="session.holds" />
         </div>
       </div>
     </div>
     <div class="box">
       <div class="card-content">
-        <div v-if="sortedHolds.length > 0" class="content">
+        <div v-if="session.holds.length > 0" class="content">
           <p class="label">Session Holds</p>
-          <table>
-            <tbody>
-              <tr v-for="hold in sortedHolds" :key="hold.id">
-                <td>{{ holdLabel(hold) }}</td>
-                <td>
-                  <a
-                    @click="$emit('remove-hold', hold.id)"
-                    class="delete is-medium"
-                  ></a>
-                </td>
-              </tr>
-              <tr></tr>
-            </tbody>
-          </table>
+          <HoldsTable :holds="session.holds" :sessionId="session.id" />
         </div>
 
         <div class="content">
           <p class="label">Food Allocations</p>
-          <table>
-            <tr v-for="allocation in sortedAllocations" :key="allocation.id">
-              <td>{{ foodCategoryName(allocation.food_category_id) }}</td>
-              <td>{{ allocationQuantityLabel(allocation.quantity_label) }}</td>
-            </tr>
-          </table>
+          <AllocationsTable :allocations="session.allocations" />
         </div>
 
         <div class="buttons">
@@ -63,92 +43,24 @@
   </b-collapse>
 </template>
 
-<script>
-import { mapActions, mapGetters } from "vuex";
-import { sortBy } from "lodash";
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+import { IScheduledSession, IHold, IFoodCategory } from "@/types";
+import { BasesModule } from "../store/modules/bases";
+import HoldsTable from "@/components/HoldsTable.vue";
+import AllocationsTable from "@/components/AllocationsTable.vue";
+import HoldStatusLabel from "@/components/HoldStatusLabel.vue";
 
-export default {
-  computed: {
-    ...mapGetters("bases", ["foodCategoryById"]),
-    statusLabel() {
-      if (this.sortedHolds[0]) {
-        return `On hold from ${this.sortedHolds[0].starts_at}`;
-      } else {
-        return "active";
-      }
-    },
+@Component({ components: { HoldsTable, AllocationsTable, HoldStatusLabel } })
+export default class ScheduledSessionCard extends Vue {
+  @Prop(Object) readonly session!: IScheduledSession;
+  isOpen: boolean = false;
 
-    statusLabelType() {
-      if (this.statusLabel == "active") {
-        return "is-primary";
-      } else {
-        return "is-warning";
-      }
-    },
-
-    sortedAllocations() {
-      const allocations = this.session.allocations.map(a => {
-        return {
-          name: this.foodCategoryName(a.food_category_id),
-          quantity: this.allocationQuantityLabel(a.quantity_label),
-          ...a
-        };
-      });
-
-      return sortBy(allocations, ["name"]);
-    },
-    sortedHolds() {
-      return sortBy(this.session.holds, ["starts_at"]);
-    }
-  },
-
-  async created() {
-    await this.getFoodCategories();
-  },
-
-  data() {
-    return {
-      isOpen: false
-    };
-  },
-
-  methods: {
-    ...mapActions("bases", ["getFoodCategories"]),
-    allocationQuantityLabel(quantity) {
-      if (parseInt(quantity.charAt(0))) {
-        return quantity + " (max)";
-      } else {
-        return "no limit";
-      }
-    },
-
-    foodCategoryName(id) {
-      const fc = this.foodCategoryById(id);
-
-      if (fc) {
-        return this.foodCategoryById(id).name;
-      } else {
-        return "";
-      }
-    },
-
-    holdLabel(hold) {
-      if (hold && hold.ends_at) {
-        return `${hold.starts_at} - ${hold.ends_at}`;
-      } else if (hold) {
-        return `${hold.starts_at} - (no end date)`;
-      } else {
-        return "";
-      }
-    },
-
-    toggleIsOpen() {
-      this.isOpen = !this.isOpen;
-    }
-  },
-
-  props: ["session"]
-};
+  toggleIsOpen() {
+    this.isOpen = !this.isOpen;
+  }
+}
 </script>
 
 <style lang="scss" scoped>

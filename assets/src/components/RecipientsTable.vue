@@ -1,8 +1,8 @@
 <template>
   <b-table
     class="table"
-    :data="filteredRecipients"
-    :loading="filteredRecipients.length == 0 && loading"
+    :data="recipientsList"
+    :loading="loading"
     hoverable
     striped
     default-sort-direction="asc"
@@ -42,31 +42,30 @@
   </b-table>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapState } from "vuex";
-import RecipientStatusTag from "@/components/RecipientStatusTag";
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
+import { IRecipientListItem } from "@/types";
 
-export default {
-  components: {
-    RecipientStatusTag
-  },
-
-  computed: {
-    ...mapGetters("recipients", ["filteredRecipients"]),
-    ...mapState("recipients", ["loading", "list"])
-  },
+@Component({ components: { RecipientStatusTag } })
+export default class RecipientsTable extends Vue {
+  loading: boolean = true;
 
   async created() {
-    await this.getRecipients();
-  },
-
-  methods: {
-    ...mapActions("recipients", ["getRecipients"]),
-    viewRecipient({ id }) {
-      this.$router.push(`/recipients/${id}`);
-    }
+    await AllRecipientsModule.fetchRecipients();
+    this.loading = false;
   }
-};
+
+  get recipientsList() {
+    return AllRecipientsModule.filteredList;
+  }
+
+  viewRecipient(recipient: IRecipientListItem) {
+    this.$router.push(`/recipients/${recipient.id}`);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
