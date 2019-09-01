@@ -43,14 +43,18 @@
 
         <div class="box">
           <h2 class="title is-4">Onboarding</h2>
-          <div class="field">
-            <b-checkbox type="is-info"
-              >Terms and conditions are signed</b-checkbox
-            >
-          </div>
-          <div class="field">
-            <b-checkbox type="is-info">Have met Kaibosh in person</b-checkbox>
-          </div>
+          <OnboardingCheckbox
+            label="Terms and conditions are signed"
+            name="has_signed_terms"
+            :id="details.id"
+            :value="details.has_signed_terms"
+          />
+          <OnboardingCheckbox
+            label="Have met Kaibosh in person"
+            name="has_met_kaibosh"
+            :id="details.id"
+            :value="details.has_met_kaibosh"
+          />
         </div>
       </div>
 
@@ -99,6 +103,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import OnboardingCheckbox from "@/components/form/OnboardingCheckbox.vue";
 import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
 import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
@@ -112,6 +117,7 @@ import { BasesModule } from "../store/modules/bases";
 @Component({
   components: {
     HoldModal,
+    OnboardingCheckbox,
     RecipientStatusTag,
     ScheduledSessionCard,
     ScheduledSessionModal,
