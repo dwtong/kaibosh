@@ -101,6 +101,12 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
+  async archiveRecipient(recipientId: string) {
+    const updatedRecipient = await RecipientService.destroy(recipientId);
+    await this.context.commit("setRecipientDetails", updatedRecipient);
+  }
+
+  @Action
   async createHolds(holds: IHold[]) {
     await holds.forEach(hold => HoldService.create(hold));
     // TODO: Mutate holds instead of refreshing all sessions

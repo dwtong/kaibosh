@@ -3,12 +3,10 @@
     <div class="title-box">
       <h1 class="title is-inline-block">{{ details.name }}</h1>
 
-      <div class="field has-addons buttons is-pulled-right">
-        <p class="control">
-          <a @click="updateRecipient" class="button ">
-            Edit Recipient
-          </a>
-        </p>
+      <div
+        v-if="details.status !== 'archived'"
+        class="field has-addons buttons is-pulled-right"
+      >
         <p class="control">
           <a @click="openCreateSessionModal" class="button">
             Add Sorting Session
@@ -19,12 +17,22 @@
             Add Hold Date
           </a>
         </p>
+        <p class="control">
+          <a @click="updateRecipient" class="button ">
+            Edit
+          </a>
+        </p>
+        <p class="control">
+          <a @click="archiveRecipient" class="button ">
+            Archive
+          </a>
+        </p>
       </div>
     </div>
 
     <RecipientMessageBox />
 
-    <div class="columns">
+    <div v-if="details.status !== 'archived'" class="columns">
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
@@ -167,6 +175,12 @@ export default class ShowRecipient extends Vue {
 
   updateRecipient() {
     this.$router.push(`/recipients/update/${this.id}`);
+  }
+
+  archiveRecipient() {
+    if (ActiveRecipientModule.details.id) {
+      ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
+    }
   }
 
   openHoldModal() {
