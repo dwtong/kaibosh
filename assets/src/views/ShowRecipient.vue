@@ -22,6 +22,8 @@
       </div>
     </div>
 
+    <RecipientMessageBox />
+
     <div class="columns">
       <div class="column is-half">
         <div class="box">
@@ -104,6 +106,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import OnboardingCheckbox from "@/components/form/OnboardingCheckbox.vue";
+import RecipientMessageBox from "@/components/form/RecipientMessageBox.vue";
 import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
 import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
@@ -118,6 +121,7 @@ import { BasesModule } from "../store/modules/bases";
   components: {
     HoldModal,
     OnboardingCheckbox,
+    RecipientMessageBox,
     RecipientStatusTag,
     ScheduledSessionCard,
     ScheduledSessionModal,
