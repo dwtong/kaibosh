@@ -8,22 +8,12 @@
       <section class="modal-card-body">
         <div class="columns">
           <div class="column">
-            <b-field label="Start date">
-              <b-datepicker
-                placeholder="Click to select..."
-                v-model="startDate"
-                icon-pack="fas"
-              >
-              </b-datepicker>
-            </b-field>
-            <b-field label="End date">
-              <b-datepicker
-                placeholder="Click to select..."
-                :disabled="disableEndDate"
-                v-model="endDate"
-              >
-              </b-datepicker>
-            </b-field>
+            <DateField name="start date" v-model="startDate" required="true" />
+            <DateField
+              name="End date"
+              v-model="endDate"
+              :disabled="disableEndDate"
+            />
 
             <b-checkbox
               type="is-info"
@@ -75,9 +65,10 @@ import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
 import { ActiveRecipientModule } from "../store/modules/active-recipient";
 import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
+import DateField from "@/components/form/DateField.vue";
 import toast from "@/helpers/toast";
 
-@Component({ components: { AllocationQuantitiesInput } })
+@Component({ components: { AllocationQuantitiesInput, DateField } })
 export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
