@@ -18,7 +18,7 @@
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <HoldStatusLabel :status="session.hold_status" />
+          <HoldStatusTag :status="session.hold_status" />
         </div>
       </div>
     </div>
@@ -50,9 +50,9 @@ import { IScheduledSession, IHold, IFoodCategory } from "@/types";
 import { BasesModule } from "../store/modules/bases";
 import HoldsTable from "@/components/HoldsTable.vue";
 import AllocationsTable from "@/components/AllocationsTable.vue";
-import HoldStatusLabel from "@/components/HoldStatusLabel.vue";
+import HoldStatusTag from "@/components/form/HoldStatusTag.vue";
 
-@Component({ components: { HoldsTable, AllocationsTable, HoldStatusLabel } })
+@Component({ components: { HoldsTable, AllocationsTable, HoldStatusTag } })
 export default class ScheduledSessionCard extends Vue {
   @Prop(Object) readonly session!: IScheduledSession;
   isOpen: boolean = false;

@@ -45,6 +45,8 @@ export interface IRecipient {
   physical_address?: string;
   base_id?: string;
   primary_contact?: IContact;
+  has_met_kaibosh?: boolean;
+  has_signed_terms?: boolean;
 }
 
 export interface IRecipientListItem {

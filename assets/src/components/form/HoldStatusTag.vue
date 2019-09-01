@@ -7,12 +7,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IHold } from "../types";
+import { IHold } from "@/types";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import { sortBy } from "lodash";
 
 @Component
-export default class HoldStatusLabel extends Vue {
+export default class HoldStatusTag extends Vue {
   @Prop() readonly status!: string;
 
   get labelType() {

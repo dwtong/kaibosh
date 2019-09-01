@@ -13,6 +13,7 @@
         v-model="recipient.physical_address"
         label="Physical address"
       />
+      <DateField name="start date" v-model="startedAt" />
     </div>
 
     <div class="box">
@@ -34,13 +35,14 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import AddressField from "@/components/form/AddressField.vue";
 import BaseSelect from "@/components/form/BaseSelect.vue";
+import DateField from "@/components/form/DateField.vue";
 import InputField from "@/components/form/InputField.vue";
 import { IContact, IRecipient } from "@/types";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import toast from "@/helpers/toast";
 
 @Component({
-  components: { AddressField, BaseSelect, InputField },
+  components: { AddressField, BaseSelect, DateField, InputField },
   $_veeValidate: { validator: "new" }
 })
 export default class RecipientForm extends Vue {
@@ -57,13 +59,14 @@ export default class RecipientForm extends Vue {
     phone_mobile: ""
   };
 
+  startedAt: Date | null = null;
+
   async submit() {
     const formIsValid = await this.$validator.validateAll();
 
     if (formIsValid) {
       this.saveRecipient();
-    }
-    {
+    } else {
       toast.error("Failed to save recipient.", true);
     }
   }
@@ -72,8 +75,20 @@ export default class RecipientForm extends Vue {
     if (this.recipientId) {
       await ActiveRecipientModule.fetchRecipient(this.recipientId);
       this.recipient = ActiveRecipientModule.details;
+
       if (ActiveRecipientModule.details.primary_contact) {
         this.contact = { ...ActiveRecipientModule.details.primary_contact };
+      }
+
+      if (ActiveRecipientModule.details.started_at) {
+        // TODO: Handle date formatting consistently - either format in backend or frontend
+        // @ts-ignore
+        const dateValues = ActiveRecipientModule.details.started_at.split("/");
+        this.startedAt = new Date(
+          dateValues[2],
+          dateValues[1] - 1,
+          dateValues[0]
+        );
       }
     }
   }
@@ -83,6 +98,10 @@ export default class RecipientForm extends Vue {
       primary_contact_attributes: this.contact,
       ...this.recipient
     };
+
+    if (this.startedAt) {
+      params.started_at = this.startedAt;
+    }
 
     if (this.recipientId) {
       await ActiveRecipientModule.updateRecipient(params);
