@@ -40,7 +40,7 @@ class AllRecipients extends VuexModule {
       );
     }
 
-    if (this.filteredBase !== "0") {
+    if (this.filteredBase.toString() !== "0") {
       list = list.filter(r => r.base_id === this.filteredBase);
     }
 

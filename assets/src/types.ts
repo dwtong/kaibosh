@@ -68,6 +68,7 @@ export interface IScheduledSession {
   recipient_id: string;
   session_slot?: ISessionSlot;
   session_slot_id?: string;
+  hold_status?: string;
 }
 
 export interface IStatus {
