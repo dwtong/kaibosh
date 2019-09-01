@@ -156,6 +156,11 @@ export default class ShowRecipient extends Vue {
     }
   }
 
+  beforeRouteLeave(to: any, from: any, next: any) {
+    ActiveRecipientModule.resetActiveRecipient();
+    next();
+  }
+
   get contact() {
     return ActiveRecipientModule.details.primary_contact;
   }
@@ -214,5 +219,9 @@ export default class ShowRecipient extends Vue {
 .loading {
   height: 100%;
   width: 100%;
+}
+
+.title-box {
+  height: 60px;
 }
 </style>
