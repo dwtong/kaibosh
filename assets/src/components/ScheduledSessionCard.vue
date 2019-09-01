@@ -18,7 +18,7 @@
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <HoldStatusLabel :holds="session.holds" />
+          <HoldStatusLabel :status="session.hold_status" />
         </div>
       </div>
     </div>

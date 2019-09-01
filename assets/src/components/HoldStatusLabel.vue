@@ -1,5 +1,7 @@
 <template>
-  <b-tag rounded :type="labelType" size="is-medium">{{ label }}</b-tag>
+  <b-tag rounded :type="labelType" size="is-medium">{{
+    status ? status : "active"
+  }}</b-tag>
 </template>
 
 <script lang="ts">
@@ -11,23 +13,10 @@ import { sortBy } from "lodash";
 
 @Component
 export default class HoldStatusLabel extends Vue {
-  @Prop() readonly holds!: IHold;
-
-  get hold() {
-    return sortBy(this.holds, ["starts_at"])[0];
-  }
-
-  get label() {
-    if (this.hold) {
-      // @ts-ignore - lodash sortBy breaks check
-      return `On hold from ${this.hold.starts_at}`;
-    } else {
-      return "active";
-    }
-  }
+  @Prop() readonly status!: string;
 
   get labelType() {
-    if (this.hold) {
+    if (this.status) {
       return "is-warning";
     } else {
       return "is-primary";

@@ -27,9 +27,13 @@
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
 
+          <RecipientStatusTag
+            :status="details.status"
+            withLabel="true"
+            size="is-medium"
+          />
           <InfoField label="Full Legal Name" :value="details.name" />
           <InfoField label="Base" :value="baseName" />
-          <InfoField label="Status" :value="details.status" />
           <InfoField
             label="Physical Address"
             :value="details.physical_address"
@@ -94,6 +98,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
 import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
@@ -106,6 +111,7 @@ import { BasesModule } from "../store/modules/bases";
 @Component({
   components: {
     HoldModal,
+    RecipientStatusTag,
     ScheduledSessionCard,
     ScheduledSessionModal,
     InfoField
