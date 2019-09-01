@@ -5,26 +5,16 @@
 
       <div
         v-if="details.status !== 'archived'"
-        class="field has-addons buttons is-pulled-right"
+        class="field buttons is-pulled-right"
       >
         <p class="control">
-          <a @click="openCreateSessionModal" class="button">
-            Add Sorting Session
+          <a @click="archiveRecipient" class="button is-danger">
+            Archive Recipient
           </a>
         </p>
         <p class="control">
-          <a @click="openHoldModal" class="button">
-            Add Hold Date
-          </a>
-        </p>
-        <p class="control">
-          <a @click="updateRecipient" class="button ">
-            Edit
-          </a>
-        </p>
-        <p class="control">
-          <a @click="archiveRecipient" class="button ">
-            Archive
+          <a @click="updateRecipient" class="button is-info">
+            Edit Recipient
           </a>
         </p>
       </div>
@@ -79,7 +69,25 @@
         </div>
 
         <div class="box">
-          <h2 class="title is-4 is-inline-block">Sorting Sessions</h2>
+          <div class="title-box">
+            <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
+
+            <div
+              v-if="details.status !== 'archived'"
+              class="field buttons is-pulled-right"
+            >
+              <p class="control">
+                <a @click="openHoldModal" class="button is-warning">
+                  Add Hold Date
+                </a>
+              </p>
+              <p class="control">
+                <a @click="openCreateSessionModal" class="button is-info">
+                  Add Sorting Session
+                </a>
+              </p>
+            </div>
+          </div>
 
           <div v-for="session in scheduledSessions" :key="session.id">
             <ScheduledSessionCard
@@ -216,6 +224,12 @@ export default class ShowRecipient extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.buttons {
+  .button {
+    margin-left: 7px;
+  }
+}
+
 .loading {
   height: 100%;
   width: 100%;
