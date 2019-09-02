@@ -3,28 +3,15 @@
     <div class="title-box">
       <h1 class="title is-inline-block">{{ details.name }}</h1>
 
-      <div
-        v-if="details.status !== 'archived'"
-        class="field has-addons buttons is-pulled-right"
-      >
+      <div v-if="status !== 'archived'" class="field buttons is-pulled-right">
         <p class="control">
-          <a @click="openCreateSessionModal" class="button">
-            Add Sorting Session
+          <a @click="archiveRecipient" class="button is-danger">
+            Archive Recipient
           </a>
         </p>
         <p class="control">
-          <a @click="openHoldModal" class="button">
-            Add Hold Date
-          </a>
-        </p>
-        <p class="control">
-          <a @click="updateRecipient" class="button ">
-            Edit
-          </a>
-        </p>
-        <p class="control">
-          <a @click="archiveRecipient" class="button ">
-            Archive
+          <a @click="updateRecipient" class="button is-info">
+            Edit Recipient
           </a>
         </p>
       </div>
@@ -32,13 +19,13 @@
 
     <RecipientMessageBox />
 
-    <div v-if="details.status !== 'archived'" class="columns">
+    <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
 
           <RecipientStatusTag
-            :status="details.status"
+            :status="status"
             withLabel="true"
             size="is-medium"
           />
@@ -79,7 +66,25 @@
         </div>
 
         <div class="box">
-          <h2 class="title is-4 is-inline-block">Sorting Sessions</h2>
+          <div class="title-box">
+            <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
+
+            <div
+              v-if="status !== 'archived'"
+              class="field buttons is-pulled-right"
+            >
+              <p class="control">
+                <a @click="openHoldModal" class="button is-warning">
+                  Add Hold Date
+                </a>
+              </p>
+              <p class="control">
+                <a @click="openCreateSessionModal" class="button is-info">
+                  Add Sorting Session
+                </a>
+              </p>
+            </div>
+          </div>
 
           <div v-for="session in scheduledSessions" :key="session.id">
             <ScheduledSessionCard
@@ -156,6 +161,11 @@ export default class ShowRecipient extends Vue {
     }
   }
 
+  beforeRouteLeave(to: any, from: any, next: any) {
+    ActiveRecipientModule.resetActiveRecipient();
+    next();
+  }
+
   get contact() {
     return ActiveRecipientModule.details.primary_contact;
   }
@@ -167,6 +177,10 @@ export default class ShowRecipient extends Vue {
 
   get details() {
     return ActiveRecipientModule.details;
+  }
+
+  get status() {
+    return ActiveRecipientModule.status;
   }
 
   get scheduledSessions() {
@@ -211,8 +225,18 @@ export default class ShowRecipient extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.buttons {
+  .button {
+    margin-left: 7px;
+  }
+}
+
 .loading {
   height: 100%;
   width: 100%;
+}
+
+.title-box {
+  height: 60px;
 }
 </style>

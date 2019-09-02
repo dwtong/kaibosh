@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "@/helpers/toast";
 
-const basePath = "/api/v1";
+const basePath = "/api";
 
 const service = axios.create({
   baseURL: basePath

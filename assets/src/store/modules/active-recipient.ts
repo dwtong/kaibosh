@@ -26,6 +26,7 @@ const defaultRecipientDetails = {
 @Module({ name: "activeRecipient", store: Store, dynamic: true })
 class ActiveRecipient extends VuexModule {
   details: IRecipient = defaultRecipientDetails;
+  status: string = "";
   scheduledSessions: IScheduledSession[] = [];
 
   errors: any = null;
@@ -50,8 +51,9 @@ class ActiveRecipient extends VuexModule {
     try {
       const recipient = await RecipientService.get(id);
       const scheduledSessions = await ScheduledSessionService.get(id);
-      this.context.commit("setRecipientDetails", recipient);
-      this.context.dispatch("fetchRecipientSessions", id);
+      await this.context.commit("setRecipientDetails", recipient);
+      await this.context.commit("setRecipientStatus", recipient.status);
+      await this.context.commit("setScheduledSessions", scheduledSessions);
     } catch (e) {
       this.context.commit("setRecipientErrors", e);
     }
@@ -59,19 +61,17 @@ class ActiveRecipient extends VuexModule {
 
   @Mutation
   setScheduledSessions(scheduledSessions: []) {
-    this.scheduledSessions = scheduledSessions;
+    Vue.set(this, "scheduledSessions", scheduledSessions);
   }
 
-  @Action
-  async fetchRecipientSessions(id: string) {
-    if (id) {
-      try {
-        const scheduledSessions = await ScheduledSessionService.get(id);
-        this.context.commit("setScheduledSessions", scheduledSessions);
-      } catch (e) {
-        this.context.commit("setRecipientErrors", e);
-      }
-    }
+  @Mutation
+  addRecipientSession(scheduledSession: any) {
+    this.scheduledSessions.push(scheduledSession);
+  }
+
+  @Mutation
+  setRecipientStatus(status: string) {
+    this.status = status;
   }
 
   @Action
@@ -109,36 +109,36 @@ class ActiveRecipient extends VuexModule {
   @Action
   async createHolds(holds: IHold[]) {
     await holds.forEach(hold => HoldService.create(hold));
-    // TODO: Mutate holds instead of refreshing all sessions
-    this.context.dispatch("fetchRecipientSessions", this.details.id);
+    // TODO: Mutate sessions instead of refreshing recipient
+    await this.context.dispatch("fetchRecipient", this.details.id);
   }
 
   @Action
   async deleteHold(hold: IHold) {
     await HoldService.destroy(hold.id!);
-    // TODO: Mutate holds instead of refreshing all sessions
-    this.context.dispatch("fetchRecipientSessions", this.details.id);
+    // TODO: Mutate sessions instead of refreshing recipient
+    await this.context.dispatch("fetchRecipient", this.details.id);
   }
 
   @Action
   async createScheduledSession(session: IScheduledSession) {
-    await ScheduledSessionService.create({ session });
-    // TODO: Mutate sessions instead of refreshing all sessions
-    this.context.dispatch("fetchRecipientSessions", this.details.id);
+    const response = await ScheduledSessionService.create({ session });
+    // TODO: Mutate sessions instead of refreshing recipient
+    await this.context.dispatch("fetchRecipient", this.details.id);
   }
 
   @Action
   async updateScheduledSession(session: IScheduledSession) {
     await ScheduledSessionService.update(session.id!, { session });
-    // TODO: Mutate sessions instead of refreshing all sessions
-    this.context.dispatch("fetchRecipientSessions", this.details.id);
+    // TODO: Mutate sessions instead of refreshing recipient
+    await this.context.dispatch("fetchRecipient", this.details.id);
   }
 
   @Action
   async deleteScheduledSession(sessionId: string) {
     await ScheduledSessionService.destroy(sessionId);
-    // TODO: Mutate sessions instead of refreshing all sessions
-    this.context.dispatch("fetchRecipientSessions", this.details.id);
+    // TODO: Mutate sessions instead of refreshing recipient
+    await this.context.dispatch("fetchRecipient", this.details.id);
   }
 }
 
