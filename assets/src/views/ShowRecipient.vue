@@ -3,10 +3,7 @@
     <div class="title-box">
       <h1 class="title is-inline-block">{{ details.name }}</h1>
 
-      <div
-        v-if="details.status !== 'archived'"
-        class="field buttons is-pulled-right"
-      >
+      <div v-if="status !== 'archived'" class="field buttons is-pulled-right">
         <p class="control">
           <a @click="archiveRecipient" class="button is-danger">
             Archive Recipient
@@ -22,13 +19,13 @@
 
     <RecipientMessageBox />
 
-    <div v-if="details.status !== 'archived'" class="columns">
+    <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
 
           <RecipientStatusTag
-            :status="details.status"
+            :status="status"
             withLabel="true"
             size="is-medium"
           />
@@ -73,7 +70,7 @@
             <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
 
             <div
-              v-if="details.status !== 'archived'"
+              v-if="status !== 'archived'"
               class="field buttons is-pulled-right"
             >
               <p class="control">
@@ -180,6 +177,10 @@ export default class ShowRecipient extends Vue {
 
   get details() {
     return ActiveRecipientModule.details;
+  }
+
+  get status() {
+    return ActiveRecipientModule.status;
   }
 
   get scheduledSessions() {
