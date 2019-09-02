@@ -5,13 +5,13 @@
 
       <div v-if="status !== 'archived'" class="field buttons is-pulled-right">
         <p class="control">
-          <a @click="archiveRecipient" class="button is-danger">
-            Archive Recipient
+          <a @click="updateRecipient" class="button is-info">
+            Edit Recipient
           </a>
         </p>
         <p class="control">
-          <a @click="updateRecipient" class="button is-info">
-            Edit Recipient
+          <a @click="archiveRecipient" class="button is-danger">
+            Archive Recipient
           </a>
         </p>
       </div>
@@ -66,27 +66,38 @@
         </div>
 
         <div class="box">
-          <div class="title-box">
+          <div class="">
             <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
 
-            <div
-              v-if="status !== 'archived'"
-              class="field buttons is-pulled-right"
-            >
-              <p class="control">
-                <a @click="openHoldModal" class="button is-warning">
-                  Add Hold Date
-                </a>
-              </p>
+            <div v-if="status !== 'archived'" class="field buttons">
               <p class="control">
                 <a @click="openCreateSessionModal" class="button is-info">
                   Add Sorting Session
                 </a>
               </p>
+              <p class="control">
+                <b-tooltip
+                  v-if="scheduledSessions.length === 0"
+                  label="Hold date cannot be added without session"
+                  position="is-bottom"
+                  type="is-warning"
+                >
+                  <a disabled="true" class="button is-warning">
+                    Add Hold Date
+                  </a>
+                </b-tooltip>
+                <a v-else @click="openHoldModal" class="button is-warning"
+                  >Add Hold Date</a
+                >
+              </p>
             </div>
           </div>
 
-          <div v-for="session in scheduledSessions" :key="session.id">
+          <div
+            v-for="session in scheduledSessions"
+            :key="session.id"
+            class="sessions-box"
+          >
             <ScheduledSessionCard
               :session="session"
               @edit="openEditSessionModal(session)"
@@ -227,13 +238,17 @@ export default class ShowRecipient extends Vue {
 <style lang="scss" scoped>
 .buttons {
   .button {
-    margin-left: 7px;
+    margin-right: 7px;
   }
 }
 
 .loading {
   height: 100%;
   width: 100%;
+}
+
+.sessions-box {
+  margin-top: 25px;
 }
 
 .title-box {
