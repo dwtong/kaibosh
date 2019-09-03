@@ -8,11 +8,20 @@
       <section class="modal-card-body">
         <div class="columns">
           <div class="column">
-            <DateField name="start date" v-model="startDate" required="true" />
             <DateField
+              name="start date"
+              v-model="startDate"
+              required="true"
+              ref="startDate"
+              data-vv-as="start date"
+            />
+            <DateField
+              :required="!disableEndDate"
               name="End date"
               v-model="endDate"
               :disabled="disableEndDate"
+              v-validate="'date_format:dd/MM/yyyy|after:startDate'"
+              data-vv-as="end date"
             />
 
             <b-checkbox
@@ -28,6 +37,7 @@
           type="is-info"
           :value="allSessions"
           @input="toggleAllSessions"
+          :required="sessionHolds.length === 0"
           class="end-date-checkbox"
           >All sessions</b-checkbox
         >
@@ -68,11 +78,14 @@ import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vu
 import DateField from "@/components/form/DateField.vue";
 import toast from "@/helpers/toast";
 
-@Component({ components: { AllocationQuantitiesInput, DateField } })
+@Component({
+  components: { AllocationQuantitiesInput, DateField },
+  $_veeValidate: { validator: "new" }
+})
 export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
-  endDate: Date = new Date();
+  endDate: Date | null = null;
   disableEndDate: boolean = false;
   allSessions: boolean = false;
   sessions: IScheduledSession[] = [];
@@ -84,8 +97,19 @@ export default class HoldModal extends Vue {
   }
 
   async saveHold() {
+    const formIsValid = await this.$validator.validateAll();
+
+    if (formIsValid && this.sessionHolds.length > 0) {
+      await ActiveRecipientModule.createHolds(this.sessionHolds);
+      this.$emit("close");
+      toast.success("Session hold created.");
+    }
+  }
+
+  get sessionHolds() {
     const endDate = this.disableEndDate ? null : this.endDate;
-    const sessionHolds = this.sessions
+
+    return this.sessions
       .filter(s => s.enabled)
       .map(s => {
         return {
@@ -95,10 +119,6 @@ export default class HoldModal extends Vue {
         };
       })
       .filter(h => h !== null);
-    await ActiveRecipientModule.createHolds(sessionHolds);
-
-    this.$emit("close");
-    toast.success("Session hold created.");
   }
 
   toggleEndDate(isDisabled: boolean) {
