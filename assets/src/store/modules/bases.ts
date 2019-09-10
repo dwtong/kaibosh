@@ -12,7 +12,7 @@ import FoodCategoryService from "@/services/food-category-service";
 import SessionSlotService from "@/services/session-slot-service";
 
 @Module({ name: "bases", store: Store, dynamic: true })
-export default class Bases extends VuexModule {
+class Bases extends VuexModule {
   errors: string[] = [];
   loading: boolean = false;
   list: IBase[] = [];

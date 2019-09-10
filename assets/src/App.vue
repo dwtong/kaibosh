@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <div class="sidenav">
-      <NavBar />
-    </div>
-    <div class="main">
-      <section class="section">
-        <div class="container is-fluid">
-          <router-view></router-view>
-        </div>
-      </section>
+    <div>
+      <div v-if="showNav" class="sidenav">
+        <NavBar />
+      </div>
+      <div class="main" :class="{ 'with-nav': showNav }">
+        <section class="section">
+          <div class="container is-fluid">
+            <router-view></router-view>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -17,17 +19,25 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import NavBar from "@/components/NavBar.vue";
+import { UserModule } from "@/store/modules/user";
 
 @Component({ components: { NavBar } })
-export default class App extends Vue {}
+export default class App extends Vue {
+  get showNav() {
+    return UserModule.isAuthenticated;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .main {
-  margin-left: $navbar-width;
   background-color: $app-background;
   min-height: 100vh;
   overflow: hidden;
+
+  &.with-nav {
+    margin-left: $navbar-width;
+  }
 }
 
 .sidenav {

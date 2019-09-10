@@ -37,6 +37,11 @@ export interface IHold {
   ends_at: string;
 }
 
+export interface ILoginCreds {
+  email: string;
+  password: string;
+}
+
 export interface IRecipient {
   name: string;
   id?: string;
