@@ -10,7 +10,7 @@ export default {
           : "Please try again later or contact support."
       }`,
       type: "is-danger",
-      position: "is-bottom",
+      position: "is-top",
       duration: 10000
     });
   },

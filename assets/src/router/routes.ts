@@ -4,6 +4,7 @@ import ListRecipients from "@/views/ListRecipients.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
+import UserSettings from "@/views/UserSettings.vue";
 import { UserModule } from "@/store/modules/user";
 
 const ifNotAuthenticated = (to: any, from: any, next: any) => {
@@ -52,6 +53,12 @@ export default [
   {
     path: "/recipients/update/:id",
     component: UpdateRecipient,
+    beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/settings",
+    component: UserSettings,
     beforeEnter: ifAuthenticated,
     props: true
   },
