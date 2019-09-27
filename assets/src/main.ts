@@ -7,6 +7,31 @@ import Store from "@/store";
 import Buefy from "buefy";
 import VeeValidate from "vee-validate";
 import Vue from "vue";
+import Rollbar from "vue-rollbar";
+import LogRocket from "logrocket";
+
+if (process.env.NODE_ENV === "production") {
+  LogRocket.init("7qg6ha/kaibosh-platform");
+
+  Vue.use(Rollbar, {
+    accessToken: "1d62c1d20fcc4120aa42aecbaece2e9b",
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    enabled: process.env.NODE_ENV === "production",
+    environment: process.env.NODE_ENV,
+    payload: {
+      client: {
+        javascript: {
+          code_version: "version-1"
+        }
+      }
+    },
+    transform: (obj: any) => {
+      obj.sessionURL = LogRocket.sessionURL;
+      return obj;
+    }
+  });
+}
 
 Vue.use(VeeValidate, { inject: false });
 
