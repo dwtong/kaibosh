@@ -1,11 +1,33 @@
 import axios from "axios";
 import toast from "@/helpers/toast";
+import auth from "@/helpers/auth";
 
 const basePath = "/api";
 
 const service = axios.create({
   baseURL: basePath
 });
+
+service.interceptors.request.use(config => {
+  const authHeaders = auth.loadAuthToken();
+  config.headers = { ...config.headers, ...authHeaders };
+  return config;
+});
+
+service.interceptors.response.use(
+  response => {
+    if (response.headers.client) {
+      auth.saveAuthToken(response.headers);
+    }
+    return response;
+  },
+  error => {
+    if (error.response.status === 401) {
+      auth.deleteAuthToken();
+    }
+    return error;
+  }
+);
 
 export const get = async (resource: string, params?: object) => {
   try {

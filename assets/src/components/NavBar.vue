@@ -25,7 +25,23 @@
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <a>View Schedule</a>
+        <a>Show Next</a>
+      </li>
+      <li>
+        <a>Find Schedule</a>
+      </li>
+    </ul>
+
+    <p class="menu-label">Settings</p>
+    <ul class="menu-list">
+      <li>
+        <a>User Settings</a>
+      </li>
+      <li>
+        <a>Import/Export Data</a>
+      </li>
+      <li>
+        <a @click="logout">Logout</a>
       </li>
     </ul>
   </aside>
@@ -35,11 +51,19 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import { UserModule } from "@/store/modules/user";
+import Router from "@/router";
+import authService from "../services/auth-service";
 
 @Component
 export default class NavBar extends Vue {
   resetRecipientFilters() {
     AllRecipientsModule.resetFilters();
+  }
+
+  async logout() {
+    await UserModule.logout();
+    Router.push("/login");
   }
 }
 </script>

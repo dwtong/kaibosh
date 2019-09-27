@@ -1,30 +1,58 @@
 import CreateRecipient from "@/views/CreateRecipient.vue";
 import UpdateRecipient from "@/views/UpdateRecipient.vue";
 import ListRecipients from "@/views/ListRecipients.vue";
+import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
+import { UserModule } from "@/store/modules/user";
+
+const ifNotAuthenticated = (to: any, from: any, next: any) => {
+  if (!UserModule.isAuthenticated) {
+    next();
+  } else {
+    next("/recipients");
+  }
+};
+
+const ifAuthenticated = (to: any, from: any, next: any) => {
+  if (UserModule.isAuthenticated) {
+    next();
+  } else {
+    next("/login");
+  }
+};
 
 export default [
   {
+    path: "/login",
+    component: Login,
+    beforeEnter: ifNotAuthenticated
+  },
+  {
     path: "/",
+    beforeEnter: ifAuthenticated,
     redirect: "/recipients"
   },
   {
+    path: "/recipients",
     component: ListRecipients,
-    path: "/recipients"
+    beforeEnter: ifAuthenticated
   },
   {
+    path: "/recipients/new",
     component: CreateRecipient,
-    path: "/recipients/new"
+    beforeEnter: ifAuthenticated
   },
   {
-    component: ShowRecipient,
     path: "/recipients/:id",
+    component: ShowRecipient,
+    beforeEnter: ifAuthenticated,
     props: true
   },
   {
-    component: UpdateRecipient,
     path: "/recipients/update/:id",
+    component: UpdateRecipient,
+    beforeEnter: ifAuthenticated,
     props: true
   },
   {
