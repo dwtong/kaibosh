@@ -12,6 +12,20 @@ export default {
     return !!window.localStorage.getItem("client");
   },
 
+  saveAuthTokenFromUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const client = urlParams.get("client");
+    const accessToken = urlParams.get("access-token");
+    const uid = urlParams.get("uid");
+
+    if (client && accessToken && uid) {
+      localStorage.setItem("client", client);
+      localStorage.setItem("uid", uid);
+      localStorage.setItem("access-token", accessToken);
+      localStorage.setItem("token-type", "Bearer");
+    }
+  },
+
   saveAuthToken(headers: IAuthToken) {
     if (headers.client && headers["access-token"]) {
       localStorage.setItem("client", headers.client);

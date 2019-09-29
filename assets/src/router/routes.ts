@@ -1,9 +1,11 @@
+import auth from "@/helpers/auth";
 import CreateRecipient from "@/views/CreateRecipient.vue";
 import UpdateRecipient from "@/views/UpdateRecipient.vue";
 import ListRecipients from "@/views/ListRecipients.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
 import { UserModule } from "@/store/modules/user";
 
@@ -21,6 +23,11 @@ const ifAuthenticated = (to: any, from: any, next: any) => {
   } else {
     next("/login");
   }
+};
+
+const saveResetParams = (to: any, from: any, next: any) => {
+  auth.saveAuthTokenFromUrlParams();
+  next();
 };
 
 export default [
@@ -60,6 +67,12 @@ export default [
     path: "/settings",
     component: UserSettings,
     beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/reset_password",
+    component: ResetPassword,
+    beforeEnter: saveResetParams,
     props: true
   },
   {

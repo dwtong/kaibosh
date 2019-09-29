@@ -5,7 +5,37 @@
         <div class="logo">
           <img src="@/assets/images/kaibosh.png" alt />
         </div>
-        <form class="login" @submit.prevent="login">
+        <form v-if="forgotten" class="login" @submit.prevent="resetPassword">
+          <div class="field">
+            <label class="label">Email</label>
+            <p class="control has-icons-left">
+              <input v-model="email" class="input" type="email" />
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </p>
+          </div>
+          <div v-if="showError" class="field">
+            <p class="error-msg">
+              Reset password failed. Please try again.
+            </p>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button class="button is-primary">
+                Reset Password
+              </button>
+              <a
+                @click="toggleForgotten"
+                class="button is-text forgotten-button"
+              >
+                Login
+              </a>
+            </p>
+          </div>
+        </form>
+
+        <form v-else class="login" @submit.prevent="login">
           <div class="field">
             <label class="label">Email</label>
             <p class="control has-icons-left">
@@ -34,6 +64,12 @@
               <button class="button is-primary">
                 Login
               </button>
+              <a
+                @click="toggleForgotten"
+                class="button is-text forgotten-button"
+              >
+                Forgotten Password?
+              </a>
             </p>
           </div>
         </form>
@@ -48,12 +84,14 @@ import { Component } from "vue-property-decorator";
 import AuthService from "@/services/auth-service";
 import Router from "@/router";
 import { UserModule } from "../store/modules/user";
+import toast from "@/helpers/toast";
 
 @Component
 export default class Login extends Vue {
   email: string = "";
   password: string = "";
   showError = false;
+  forgotten = false;
 
   async login() {
     await UserModule.login({ email: this.email, password: this.password });
@@ -62,6 +100,20 @@ export default class Login extends Vue {
     } else {
       this.showError = true;
     }
+  }
+
+  async resetPassword() {
+    await UserModule.resetPassword(this.email);
+    if (UserModule.passwordUpdated) {
+      toast.success("Password reset email sent.");
+    } else {
+      this.showError = true;
+    }
+  }
+
+  toggleForgotten() {
+    this.showError = false;
+    this.forgotten = !this.forgotten;
   }
 }
 </script>
@@ -73,6 +125,15 @@ export default class Login extends Vue {
 
 .button {
   margin-top: 1rem;
+}
+
+.forgotten-button {
+  padding-top: 0.4rem;
+  font-size: 0.9rem;
+  color: white !important;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
 }
 
 .field {
