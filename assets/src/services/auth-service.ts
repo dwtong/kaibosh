@@ -7,6 +7,16 @@ export default {
   signIn: (params: ILoginCreds) => {
     return post(`${resource}/sign_in`, params);
   },
+  createUser: (email: string) => {
+    const password = Math.random().toString(36);
+
+    return post(`${resource}/`, {
+      email,
+      password,
+      password_confirmation: password,
+      confirm_success_url: `${window.location.origin}/`
+    });
+  },
   resetPassword: (email: string) => {
     return post(`${resource}/password`, {
       email,
