@@ -109,7 +109,7 @@ class ActiveRecipient extends VuexModule {
   @Action
   async createHolds(holds: IHold[]) {
     for (const hold of holds) {
-      await HoldService.create(hold)
+      await HoldService.create(hold);
     }
     // TODO: Mutate sessions instead of refreshing recipient
     await this.context.dispatch("fetchRecipient", this.details.id);
