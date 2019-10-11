@@ -9,7 +9,9 @@
       @input="$emit('input', $event)"
       :data-vv-as="label"
       :name="name"
-      v-validate="{ required: required }"
+      v-validate="validationRules"
+      :type="type"
+      :vid="name"
     />
   </b-field>
 </template>
@@ -23,11 +25,17 @@ import { Validator } from "vee-validate";
 export default class InputField extends Vue {
   @Prop() readonly value: any;
   @Prop({ default: "" }) readonly name!: string;
+  @Prop({ default: "text" }) readonly type!: string;
   @Prop({ default: false }) readonly required!: boolean;
+  @Prop({ default: {} }) readonly validation!: object;
   @Inject("$validator") $validator!: Validator;
 
   get label() {
     return this.name.replace(/-/g, " ");
+  }
+
+  get validationRules() {
+    return { required: this.required, ...this.validation };
   }
 }
 </script>

@@ -13,12 +13,36 @@ import { ILoginCreds } from "@/types";
 @Module({ name: "user", store: Store, dynamic: true })
 class User extends VuexModule {
   isAuthenticated: boolean = auth.authTokenIsPresent();
+  passwordUpdated: boolean = false;
 
   @Action
   async login(params: ILoginCreds) {
     const response = await AuthService.signIn(params);
     if (response) {
       this.context.commit("setAuthenticated", true);
+    }
+  }
+
+  @Action
+  async createUser(email: string) {
+    await AuthService.createUser(email);
+  }
+
+  @Action
+  async resetPassword(email: string) {
+    this.context.commit("setPasswordUpdated", false);
+    const response = await AuthService.resetPassword(email);
+    if (response) {
+      this.context.commit("setPasswordUpdated", true);
+    }
+  }
+
+  @Action
+  async updatePassword(password: string) {
+    this.context.commit("setPasswordUpdated", false);
+    const response = await AuthService.changePassword(password, password);
+    if (response) {
+      this.context.commit("setPasswordUpdated", true);
     }
   }
 
@@ -32,6 +56,11 @@ class User extends VuexModule {
   @Mutation
   setAuthenticated(isAuthenticated: boolean) {
     this.isAuthenticated = isAuthenticated;
+  }
+
+  @Mutation
+  setPasswordUpdated(passwordUpdated: boolean) {
+    this.passwordUpdated = passwordUpdated;
   }
 }
 

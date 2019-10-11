@@ -14,6 +14,11 @@
         label="Physical address"
       />
       <DateField name="start date" v-model="startedAt" />
+      <InputField
+        name="description"
+        v-model="recipient.description"
+        type="textarea"
+      />
     </div>
 
     <div class="box">

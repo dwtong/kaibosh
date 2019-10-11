@@ -36,6 +36,7 @@
             :value="details.physical_address"
           />
           <InfoField label="Start Date" :value="details.started_at" />
+          <InfoField label="Description" :value="details.description" />
         </div>
 
         <div class="box">

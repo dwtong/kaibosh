@@ -45,6 +45,7 @@ export interface ILoginCreds {
 export interface IRecipient {
   name: string;
   id?: string;
+  description?: string;
   status?: string;
   started_at?: Date;
   physical_address?: string;

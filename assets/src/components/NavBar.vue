@@ -12,13 +12,14 @@
           to="/recipients"
           active-class="is-active"
           exact
-          >View Recipients</router-link
         >
+          View Recipients
+        </router-link>
       </li>
       <li>
-        <router-link to="/recipients/new" active-class="is-active" exact
-          >Add New Recipient</router-link
-        >
+        <router-link to="/recipients/new" active-class="is-active" exact>
+          Add New Recipient
+        </router-link>
       </li>
     </ul>
 
@@ -35,7 +36,9 @@
     <p class="menu-label">Settings</p>
     <ul class="menu-list">
       <li>
-        <a>User Settings</a>
+        <router-link to="/settings" active-class="is-active">
+          User Settings
+        </router-link>
       </li>
       <li>
         <a>Import/Export Data</a>
