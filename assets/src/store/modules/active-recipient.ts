@@ -50,10 +50,12 @@ class ActiveRecipient extends VuexModule {
   async fetchRecipient(id: string) {
     try {
       const recipient = await RecipientService.get(id);
-      const scheduledSessions = await ScheduledSessionService.get(id);
-      await this.context.commit("setRecipientDetails", recipient);
-      await this.context.commit("setRecipientStatus", recipient.status);
-      await this.context.commit("setScheduledSessions", scheduledSessions);
+      const scheduledSessions = await ScheduledSessionService.getForRecipient(
+        id
+      );
+      this.context.commit("setRecipientDetails", recipient);
+      this.context.commit("setRecipientStatus", recipient.status);
+      this.context.commit("setScheduledSessions", scheduledSessions);
     } catch (e) {
       this.context.commit("setRecipientErrors", e);
     }
@@ -86,8 +88,8 @@ class ActiveRecipient extends VuexModule {
       errors = e;
       details = defaultRecipientDetails;
     } finally {
-      await this.context.commit("setRecipientErrors", errors);
-      await this.context.commit("setRecipientDetails", details);
+      this.context.commit("setRecipientErrors", errors);
+      this.context.commit("setRecipientDetails", details);
     }
   }
 
@@ -97,13 +99,13 @@ class ActiveRecipient extends VuexModule {
       recipient.id,
       recipient
     );
-    await this.context.commit("setRecipientDetails", updatedRecipient);
+    this.context.commit("setRecipientDetails", updatedRecipient);
   }
 
   @Action
   async archiveRecipient(recipientId: string) {
     const updatedRecipient = await RecipientService.destroy(recipientId);
-    await this.context.commit("setRecipientDetails", updatedRecipient);
+    this.context.commit("setRecipientDetails", updatedRecipient);
   }
 
   @Action
