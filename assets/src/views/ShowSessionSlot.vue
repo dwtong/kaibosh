@@ -12,7 +12,7 @@
         >
         <div class="card">
           <div class="card-image">
-            <figure class="image is-2by1">
+            <figure class="image is-5by1">
               <img src="@/assets/images/500x100.png" alt />
             </figure>
           </div>
@@ -45,10 +45,12 @@ import { capitalize } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
+import { BasesModule } from "@/store/modules/bases";
 
 @Component
 export default class ShowSessionSlot extends Vue {
   @Prop(String) readonly id!: string;
+
   async created() {
     await SessionSlotsModule.fetchAllocationsForSlot(this.id);
   }
@@ -66,8 +68,9 @@ export default class ShowSessionSlot extends Vue {
   }
 
   get sessionName() {
-    return "Monday 10:00am";
+    return "Schedule";
   }
+
   get foodCategories() {
     const result = SessionSlotsModule.allocationsByFoodCategory;
     return result;

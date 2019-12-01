@@ -26,12 +26,9 @@
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/sessions/1" active-class="is-active" exact>
-          Show next
+        <router-link to="/sessions" active-class="is-active" exact>
+          Find Session
         </router-link>
-      </li>
-      <li>
-        <a>Find Schedule</a>
       </li>
     </ul>
 
@@ -41,9 +38,6 @@
         <router-link to="/settings" active-class="is-active">
           User Settings
         </router-link>
-      </li>
-      <li>
-        <a>Import/Export Data</a>
       </li>
       <li>
         <a @click="logout">Logout</a>

@@ -11,21 +11,7 @@
         <div class="columns">
           <div class="column">
             <p class="subtitle">Select session time and day</p>
-            <b-field class="form-field">
-              <b-select
-                name="session"
-                placeholder="Select an option"
-                expanded
-                v-model="selectedSessionSlotId"
-              >
-                <option
-                  v-for="slot in sessionSlots"
-                  :key="slot.id"
-                  :value="slot.id"
-                  >{{ slot.day }} - {{ slot.time }}</option
-                >
-              </b-select>
-            </b-field>
+            <SessionSlotSelect v-model="selectedSessionSlotId" />
           </div>
         </div>
 
@@ -59,15 +45,15 @@ import { ActiveRecipientModule } from "../store/modules/active-recipient";
 import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
+import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 
-@Component({ components: { AllocationQuantitiesInput } })
+@Component({ components: { SessionSlotSelect, AllocationQuantitiesInput } })
 export default class ScheduledSessionModal extends Vue {
   @Prop() readonly recipientId!: string;
   @Prop() readonly baseId: string | undefined;
   @Prop() readonly session?: IScheduledSession;
   loading: boolean = true;
   allocations: IAllocation[] = [];
-  sessionSlots: ISessionSlot[] = [];
   selectedSessionSlotId: string = "";
 
   created() {
@@ -78,8 +64,6 @@ export default class ScheduledSessionModal extends Vue {
 
       this.selectedSessionSlotId = this.session.session_slot!.id;
     }
-
-    this.sessionSlots = BasesModule.sessionSlots;
   }
 
   async saveSession() {

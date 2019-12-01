@@ -20,6 +20,13 @@ class Bases extends VuexModule {
   foodCategories: IFoodCategory[] = [];
   sessionSlots: ISessionSlot[] = [];
 
+  get sessionSlotById() {
+    return (id: string) => {
+      const slot = this.sessionSlots.find(s => s.id === id);
+      return slot ? `${slot.day} ${slot.time}` : "";
+    };
+  }
+
   get baseNameById() {
     return (id: string) => {
       const base = this.list.find(b => b.id === id);
