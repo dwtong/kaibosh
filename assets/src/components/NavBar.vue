@@ -26,7 +26,9 @@
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <a>Show Next</a>
+        <router-link to="/sessions/1" active-class="is-active" exact>
+          Show next
+        </router-link>
       </li>
       <li>
         <a>Find Schedule</a>

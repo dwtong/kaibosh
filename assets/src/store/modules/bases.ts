@@ -7,6 +7,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
+import { sortBy } from "lodash";
 import BaseService from "@/services/base-service";
 import FoodCategoryService from "@/services/food-category-service";
 import SessionSlotService from "@/services/session-slot-service";
@@ -28,6 +29,10 @@ class Bases extends VuexModule {
 
   get foodCategoryById() {
     return (id: string) => this.foodCategories.find(fc => fc.id === id);
+  }
+
+  get orderedFoodCategories() {
+    return sortBy(this.foodCategories, ["name"]);
   }
 
   @Mutation
