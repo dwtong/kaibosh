@@ -9,7 +9,7 @@
         v-for="category in foodCategories"
         :key="category.id"
         class="column is-one-third"
-        >
+      >
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
@@ -19,24 +19,33 @@
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title is-4">{{ capitalize(category.food_category.name) }}</p>
+                <p class="title is-4">
+                  {{ capitalize(category.food_category.name) }}
+                </p>
               </div>
             </div>
 
             <div class="content">
-              <div v-for="allocation in category.allocations" :key="allocation.id">
+              <div
+                v-for="allocation in category.allocations"
+                :key="allocation.id"
+              >
                 <div class="allocation-recipient">
                   <span class="tag is-pulled-right is-rounded">
-                    {{ allocation.quantity > 0 ? allocation.quantity_label: "no max" }}
+                    {{
+                      allocation.quantity > 0
+                        ? allocation.quantity_label
+                        : "no max"
+                    }}
                   </span>
-                  {{ allocation.recipient.name }}</div>
+                  {{ allocation.recipient.name }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -55,15 +64,15 @@ export default class ShowSessionSlot extends Vue {
     await SessionSlotsModule.fetchAllocationsForSlot(this.id);
   }
 
-  capitalize(string: string) {
-    return capitalize(string);
+  capitalize(str: string) {
+    return capitalize(str);
   }
 
   quantity(allocation: any) {
     if (parseInt(allocation.quantity, 10) > 0) {
-      return `(${allocation.quantity_label})`
+      return `(${allocation.quantity_label})`;
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -104,8 +113,6 @@ export default class ShowSessionSlot extends Vue {
     font-size: 0.8rem;
   }
 }
-
-
 
 .title-box {
   height: 60px;

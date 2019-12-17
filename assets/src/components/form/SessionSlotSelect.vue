@@ -40,13 +40,5 @@ export default class SessionSlotSelect extends Vue {
   get sessionSlots() {
     return BasesModule.sessionSlots;
   }
-  async created() {
-    try {
-      const response = await BaseService.get();
-      this.list = response;
-    } catch {
-      this.list = [];
-    }
-  }
 }
 </script>
