@@ -1,5 +1,3 @@
-import Router from "@/router";
-
 interface IAuthToken {
   client: string;
   uid: string;

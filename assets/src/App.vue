@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <div v-if="showNav" class="sidenav">
+      <div v-if="showNav" class="sidenav is-hidden-print">
         <NavBar />
       </div>
       <div class="main" :class="{ 'with-nav': showNav }">
@@ -37,6 +37,9 @@ export default class App extends Vue {
 
   &.with-nav {
     margin-left: $navbar-width;
+    @media print {
+      margin-left: 0;
+    }
   }
 }
 

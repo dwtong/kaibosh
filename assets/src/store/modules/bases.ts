@@ -7,6 +7,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
+import { sortBy } from "lodash";
 import BaseService from "@/services/base-service";
 import FoodCategoryService from "@/services/food-category-service";
 import SessionSlotService from "@/services/session-slot-service";
@@ -19,6 +20,13 @@ class Bases extends VuexModule {
   foodCategories: IFoodCategory[] = [];
   sessionSlots: ISessionSlot[] = [];
 
+  get sessionSlotById() {
+    return (id: string) => {
+      const slot = this.sessionSlots.find(s => s.id === id);
+      return slot ? `${slot.day} ${slot.time}` : "";
+    };
+  }
+
   get baseNameById() {
     return (id: string) => {
       const base = this.list.find(b => b.id === id);
@@ -28,6 +36,10 @@ class Bases extends VuexModule {
 
   get foodCategoryById() {
     return (id: string) => this.foodCategories.find(fc => fc.id === id);
+  }
+
+  get orderedFoodCategories() {
+    return sortBy(this.foodCategories, ["name"]);
   }
 
   @Mutation

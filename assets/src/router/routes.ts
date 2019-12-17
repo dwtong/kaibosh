@@ -5,6 +5,8 @@ import ListRecipients from "@/views/ListRecipients.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
+import ShowSessionSlot from "@/views/ShowSessionSlot.vue";
+import ListSessionSlots from "@/views/ListSessionSlots.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
 import { UserModule } from "@/store/modules/user";
@@ -60,6 +62,18 @@ export default [
   {
     path: "/recipients/update/:id",
     component: UpdateRecipient,
+    beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/sessions",
+    component: ListSessionSlots,
+    beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/sessions/:id",
+    component: ShowSessionSlot,
     beforeEnter: ifAuthenticated,
     props: true
   },

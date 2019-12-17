@@ -57,6 +57,12 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.is-hidden-print {
+  @media print {
+    display: none;
+  }
+}
+
 p {
   &.subtitle {
     font-size: 0.8rem;
