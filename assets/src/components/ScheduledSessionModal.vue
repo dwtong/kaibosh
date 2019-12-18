@@ -12,10 +12,14 @@
           <div class="column">
             <p class="subtitle">Select session time and day</p>
             <SessionSlotSelect v-model="selectedSessionSlotId" />
+
+            <p v-if="!sessionIsValid" class="error-msg">
+              Selected session already exists.
+            </p>
           </div>
         </div>
 
-        <div v-if="selectedSessionSlotId" class="columns">
+        <div v-if="selectedSessionSlotId && sessionIsValid" class="columns">
           <div class="column">
             <p class="subtitle">Choose food categories</p>
             <AllocationQuantitiesInput v-model="allocations" />
@@ -28,7 +32,7 @@
           <button class="button is-light" type="button" @click="$emit('close')">
             Cancel
           </button>
-          <button type="submit" class="button is-info" @click="saveSession">
+          <button :disabled="!selectedSessionSlotId || !sessionIsValid" type="submit" class="button is-info" @click="saveSession">
             Save
           </button>
         </div>
@@ -41,7 +45,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
-import { ActiveRecipientModule } from "../store/modules/active-recipient";
+import RecipientSessions from "../store/modules/recipient-sessions";
 import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
@@ -52,6 +56,7 @@ export default class ScheduledSessionModal extends Vue {
   @Prop() readonly recipientId!: string;
   @Prop() readonly baseId: string | undefined;
   @Prop() readonly session?: IScheduledSession;
+  @Prop() readonly sessions?: IScheduledSession[];
   loading: boolean = true;
   allocations: IAllocation[] = [];
   selectedSessionSlotId: string = "";
@@ -66,6 +71,12 @@ export default class ScheduledSessionModal extends Vue {
     }
   }
 
+
+  get sessionIsValid() {
+    const session = this.sessions!.find((s: IScheduledSession) => s.session_slot && s.session_slot.id === this.selectedSessionSlotId);
+    return !session;
+  }
+
   async saveSession() {
     const params = {
       recipient_id: this.recipientId,
@@ -74,12 +85,12 @@ export default class ScheduledSessionModal extends Vue {
     };
 
     if (this.session) {
-      await ActiveRecipientModule.updateScheduledSession({
+      await RecipientSessions.updateSession({
         ...params,
         ...this.session
       });
     } else {
-      await ActiveRecipientModule.createScheduledSession(params);
+      await RecipientSessions.createSession(params);
     }
 
     this.$emit("close");
@@ -95,5 +106,10 @@ export default class ScheduledSessionModal extends Vue {
 
 .modal-card-foot {
   justify-content: right;
+}
+
+.error-msg {
+  font-size: 0.8rem;
+  color: red;
 }
 </style>

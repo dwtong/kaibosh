@@ -112,6 +112,7 @@
             :baseId="details.base_id"
             :recipientId="details.id"
             :session="selectedSession"
+            :sessions="scheduledSessions"
             @close="isScheduledSessionModalActive = false"
           />
         </b-modal>
@@ -136,6 +137,7 @@ import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
 import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
 import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import RecipientSessions from "@/store/modules/recipient-sessions";
 import HoldModal from "@/components/HoldModal.vue";
 import InfoField from "@/components/form/InfoField.vue";
 import { IRecipient, IScheduledSession } from "@/types";
@@ -162,6 +164,7 @@ export default class ShowRecipient extends Vue {
   async created() {
     await Promise.all([
       ActiveRecipientModule.fetchRecipient(this.id),
+      RecipientSessions.fetchSessions(this.id),
       BasesModule.fetchBases(),
       BasesModule.fetchFoodCategories()
     ]);
@@ -196,7 +199,7 @@ export default class ShowRecipient extends Vue {
   }
 
   get scheduledSessions() {
-    return ActiveRecipientModule.scheduledSessions;
+    return RecipientSessions.sessions;
   }
 
   updateRecipient() {
@@ -228,7 +231,7 @@ export default class ShowRecipient extends Vue {
       message: "Are you sure you wish to remove this session?",
       type: "is-danger",
       onConfirm: async () => {
-        await ActiveRecipientModule.deleteScheduledSession(sessionId);
+        await RecipientSessions.deleteSession(sessionId);
         toast.success("Deleted session.");
       }
     });

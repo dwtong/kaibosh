@@ -72,7 +72,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
-import { ActiveRecipientModule } from "../store/modules/active-recipient";
+import RecipientSessions from "../store/modules/recipient-sessions";
 import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import DateField from "@/components/form/DateField.vue";
@@ -100,7 +100,7 @@ export default class HoldModal extends Vue {
     const formIsValid = await this.$validator.validateAll();
 
     if (formIsValid && this.sessionHolds.length > 0) {
-      await ActiveRecipientModule.createHolds(this.sessionHolds);
+      await RecipientSessions.createHolds(this.sessionHolds);
       this.$emit("close");
       toast.success("Session hold created.");
     }
@@ -113,7 +113,7 @@ export default class HoldModal extends Vue {
       .filter(s => s.enabled)
       .map(s => {
         return {
-          scheduled_session_id: s.id!,
+          session_id: s.id!,
           starts_at: this.startDate.toString(),
           ends_at: endDate ? endDate.toString() : ""
         };

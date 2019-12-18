@@ -16,7 +16,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IHold } from "../types";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import RecipientSessions from "@/store/modules/recipient-sessions";
 import { sortBy } from "lodash";
 
 @Component
@@ -29,8 +29,8 @@ export default class HoldTr extends Vue {
   }
 
   removeHold(hold: IHold) {
-    ActiveRecipientModule.deleteHold({
-      scheduled_session_id: this.sessionId,
+    RecipientSessions.deleteHold({
+      session_id: this.sessionId,
       ...hold
     });
   }
