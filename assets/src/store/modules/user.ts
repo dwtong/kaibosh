@@ -9,6 +9,7 @@ import {
 import auth from "@/helpers/auth";
 import AuthService from "@/services/auth-service";
 import { ILoginCreds } from "@/types";
+import Router from "@/router";
 
 @Module({ name: "user", store: Store, dynamic: true })
 class User extends VuexModule {
@@ -51,6 +52,7 @@ class User extends VuexModule {
     await AuthService.signOut();
     auth.deleteAuthToken();
     this.context.commit("setAuthenticated", false);
+    Router.push("/login");
   }
 
   @Mutation

@@ -51,7 +51,6 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
 import { UserModule } from "@/store/modules/user";
-import Router from "@/router";
 import authService from "../services/auth-service";
 
 @Component
@@ -62,7 +61,6 @@ export default class NavBar extends Vue {
 
   async logout() {
     await UserModule.logout();
-    Router.push("/login");
   }
 }
 </script>
