@@ -64,6 +64,7 @@ export default class ShowSessionSlot extends Vue {
 
   async created() {
     await SessionSlotsModule.fetchAllocationsForSlot(this.id);
+    await SessionSlotsModule.fetchSessionSlot(this.id);
   }
 
   recipientOnHold(allocation: any) {
@@ -83,7 +84,7 @@ export default class ShowSessionSlot extends Vue {
   }
 
   get sessionName() {
-    return "Schedule";
+    return SessionSlotsModule.sessionName;
   }
 
   get foodCategories() {
