@@ -53,6 +53,12 @@ class ActiveRecipient extends VuexModule {
     }
   }
 
+  @Action
+  async fetchRecipientStatus(id: string) {
+    const recipient = await RecipientService.get(id);
+    this.context.commit("setRecipientStatus", recipient.status);
+  }
+
   @Mutation
   setRecipientStatus(status: string) {
     this.status = status;
