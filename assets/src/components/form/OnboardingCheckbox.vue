@@ -22,6 +22,8 @@ export default class OnboardingCheckbox extends Vue {
       id: this.id,
       [this.name]: !this.value
     });
+
+    await ActiveRecipientModule.fetchRecipientStatus(this.id);
   }
 }
 </script>

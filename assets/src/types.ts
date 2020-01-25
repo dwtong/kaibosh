@@ -32,7 +32,7 @@ export interface IFoodCategory {
 
 export interface IHold {
   id?: string;
-  scheduled_session_id: string;
+  session_id: string;
   starts_at: string;
   ends_at: string;
 }

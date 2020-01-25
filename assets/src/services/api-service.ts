@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "@/helpers/toast";
 import auth from "@/helpers/auth";
+import { UserModule } from "@/store/modules/user";
 
 const basePath = "/api";
 
@@ -23,7 +24,7 @@ service.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
-      auth.deleteAuthToken();
+      UserModule.logout();
     }
     return error;
   }

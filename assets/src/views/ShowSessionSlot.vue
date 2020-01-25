@@ -31,14 +31,16 @@
                 :key="allocation.id"
               >
                 <div class="allocation-recipient">
-                  <span class="tag is-pulled-right is-rounded">
+                  <span v-if="!recipientOnHold(allocation)" class="tag is-pulled-right is-rounded">
                     {{
                       allocation.quantity > 0
                         ? allocation.quantity_label
                         : "no max"
                     }}
                   </span>
+                <span :class="{ 'inactive': recipientOnHold(allocation) }">
                   {{ allocation.recipient.name }}
+                </span>
                 </div>
               </div>
             </div>
@@ -62,6 +64,11 @@ export default class ShowSessionSlot extends Vue {
 
   async created() {
     await SessionSlotsModule.fetchAllocationsForSlot(this.id);
+    await SessionSlotsModule.fetchSessionSlot(this.id);
+  }
+
+  recipientOnHold(allocation: any) {
+    return allocation.recipient.status === 'on_hold';
   }
 
   capitalize(str: string) {
@@ -77,7 +84,7 @@ export default class ShowSessionSlot extends Vue {
   }
 
   get sessionName() {
-    return "Schedule";
+    return SessionSlotsModule.sessionName;
   }
 
   get foodCategories() {
@@ -106,6 +113,11 @@ export default class ShowSessionSlot extends Vue {
 
 .card {
   height: 100%;
+}
+
+.inactive {
+  text-decoration-line: line-through;
+  color: darkgray;
 }
 
 .print {
