@@ -6,6 +6,7 @@ import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
 import ShowSessionSlot from "@/views/ShowSessionSlot.vue";
+import SessionSlotsForWeek from "@/views/SessionSlotsForWeek.vue";
 import ListSessionSlots from "@/views/ListSessionSlots.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
@@ -68,6 +69,12 @@ export default [
   {
     path: "/sessions",
     component: ListSessionSlots,
+    beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/sessions/week",
+    component: SessionSlotsForWeek,
     beforeEnter: ifAuthenticated,
     props: true
   },
