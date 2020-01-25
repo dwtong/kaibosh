@@ -1,7 +1,12 @@
 <template>
   <div class="print">
     <div class="title-box">
-      <h1 class="title is-inline-block">{{ sessionName }}</h1>
+      <h1 v-if="sessionDate" class="title">
+        {{ sessionDate | moment("dddd h:mma") }}
+      </h1>
+      <h2 class="subtitle is-4">
+        {{ sessionDate | moment("MMMM Do, Y") }}
+      </h2>
     </div>
 
     <div class="columns is-multiline is-centered">
@@ -13,7 +18,7 @@
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img src="@/assets/images/500x100.png" alt />
+              <img src="@/assets/images/produce.png" alt />
             </figure>
           </div>
           <div class="card-content">
@@ -31,16 +36,19 @@
                 :key="allocation.id"
               >
                 <div class="allocation-recipient">
-                  <span v-if="!recipientOnHold(allocation)" class="tag is-pulled-right is-rounded">
+                  <span
+                    v-if="!recipientOnHold(allocation)"
+                    class="tag is-pulled-right is-rounded"
+                  >
                     {{
                       allocation.quantity > 0
                         ? allocation.quantity_label
                         : "no max"
                     }}
                   </span>
-                <span :class="{ 'inactive': recipientOnHold(allocation) }">
-                  {{ allocation.recipient.name }}
-                </span>
+                  <span :class="{ inactive: recipientOnHold(allocation) }">
+                    {{ allocation.recipient.name }}
+                  </span>
                 </div>
               </div>
             </div>
@@ -63,12 +71,20 @@ export default class ShowSessionSlot extends Vue {
   @Prop(String) readonly id!: string;
 
   async created() {
-    await SessionSlotsModule.fetchAllocationsForSlot(this.id);
-    await SessionSlotsModule.fetchSessionSlot(this.id);
+    let date = this.$route.query.date;
+
+    if (typeof date !== "string") {
+      date = "";
+    }
+
+    await SessionSlotsModule.fetchAllocationsForSlot({
+      sessionSlotId: this.id,
+      sessionDate: date
+    });
   }
 
   recipientOnHold(allocation: any) {
-    return allocation.recipient.status === 'on_hold';
+    return allocation.recipient.status === "on_hold";
   }
 
   capitalize(str: string) {
@@ -83,13 +99,12 @@ export default class ShowSessionSlot extends Vue {
     }
   }
 
-  get sessionName() {
-    return SessionSlotsModule.sessionName;
+  get foodCategories() {
+    return SessionSlotsModule.allocationsByFoodCategory;
   }
 
-  get foodCategories() {
-    const result = SessionSlotsModule.allocationsByFoodCategory;
-    return result;
+  get sessionDate() {
+    return SessionSlotsModule.date;
   }
 }
 </script>
@@ -127,16 +142,18 @@ export default class ShowSessionSlot extends Vue {
 }
 
 .title-box {
-  height: 60px;
+  height: 100px !important;
+
+  .subtitle {
+    margin-top: 0.4rem !important;
+  }
 
   .title {
-    &.is-4 {
-      margin-left: 0 !important;
-      margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-bottom: 0.4rem !important;
 
-      @media print {
-        font-size: 1rem;
-      }
+    @media print {
+      font-size: 1rem;
     }
   }
 }

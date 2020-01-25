@@ -13,7 +13,8 @@ import SessionSlotService from "@/services/session-slot-service";
 @Module({ name: "sessionSlots", store: Store, dynamic: true })
 class SessionSlots extends VuexModule {
   allocationsByFoodCategory: any = [];
-  details: ISessionSlot = {id: "", time: "", day: ""};
+  details: ISessionSlot = { id: "", time: "", day: "" };
+  date: any = "";
 
   @Action
   async fetchSessionSlot(sessionSlotId: string) {
@@ -22,15 +23,23 @@ class SessionSlots extends VuexModule {
   }
 
   @Action
-  async fetchAllocationsForSlot(sessionSlotId: string) {
-    const allocations = await AllocationService.getForSessionSlot(sessionSlotId);
+  async fetchAllocationsForSlot({
+    sessionSlotId,
+    sessionDate
+  }: {
+    sessionSlotId: string;
+    sessionDate: string;
+  }) {
+    const { allocations, date } = await AllocationService.getForSessionSlot(
+      sessionSlotId,
+      sessionDate
+    );
+    this.context.commit("setDate", date);
     this.context.commit("setAllocations", allocations);
   }
 
   @Mutation
   setSessionSlot(sessionSlot: ISessionSlot) {
-    console.log("doiing it")
-    console.log(sessionSlot)
     this.details = sessionSlot;
   }
 
@@ -39,12 +48,9 @@ class SessionSlots extends VuexModule {
     this.allocationsByFoodCategory = allocations;
   }
 
-  get sessionName() {
-    if (this.details.day && this.details.time) {
-      return `${this.details.day} ${this.details.time}`;
-    } else {
-      return "";
-    }
+  @Mutation
+  setDate(date: string) {
+    this.date = new Date(date);
   }
 }
 
