@@ -6,7 +6,7 @@
     <div class="columns">
       <div class="column">
         <BaseSelect
-          v-model="baseId"
+          :value="baseId"
           label="Kaibosh Base"
           required="true"
           @input="onBaseSelect"
@@ -17,7 +17,10 @@
           <p class="control">
             <b-tooltip label="Previous Week">
               <router-link
-                :to="`/sessions/week?date=${previousWeek}`"
+                :to="{
+                  path: '/sessions/week',
+                  query: { date: previousWeek, base_id: baseId }
+                }"
                 class="button is-large"
               >
                 <span class="icon is-small">
@@ -30,7 +33,10 @@
           <p class="control">
             <b-tooltip label="Next Week">
               <router-link
-                :to="`/sessions/week?date=${nextWeek}`"
+                :to="{
+                  path: '/sessions/week',
+                  query: { date: nextWeek, base_id: baseId }
+                }"
                 class="button is-large"
               >
                 <span class="icon is-small">
@@ -101,21 +107,30 @@ import { Component } from "vue-property-decorator";
 import { BasesModule } from "../store/modules/bases";
 import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
+import Router from "@/router";
 import date from "@/helpers/date";
+import moment from "moment";
 
 @Component({ components: { BaseSelect, SessionSlotSelect } })
 export default class SessionSlotsForWeek extends Vue {
-  baseId: string = "0";
   sessionSlotId: string = "0";
-  showSessionOptions = false;
+  showSessionOptions = true;
 
-  async onBaseSelect() {
-    await BasesModule.fetchSessionSlots({
-      baseId: this.baseId,
-      date: date.getISODate(this.weekOfDate)
-    });
+  async created() {
+    if (this.baseId !== "0") {
+      await BasesModule.fetchSessionSlots({
+        baseId: this.baseId,
+        date: date.getISODate(this.weekOfDate)
+      });
 
-    this.showSessionOptions = true;
+      this.showSessionOptions = true;
+    } else {
+      this.showSessionOptions = false;
+    }
+  }
+
+  async onBaseSelect(baseId: string) {
+    Router.replace({ query: { base_id: baseId } });
   }
 
   sessionsForDay(day: string) {
@@ -123,9 +138,17 @@ export default class SessionSlotsForWeek extends Vue {
   }
 
   dateForDay(day: string) {
-    const dateForDay = this.$moment(this.weekOfDate);
+    const dateForDay = moment(this.weekOfDate);
     const dayIndex = date.days.findIndex(d => d === day);
     return dateForDay.add(dayIndex, "day");
+  }
+
+  get baseId() {
+    if (this.$route.query.base_id) {
+      return this.$route.query.base_id.toString();
+    } else {
+      return "0";
+    }
   }
 
   get sessionSlots() {
@@ -154,12 +177,12 @@ export default class SessionSlotsForWeek extends Vue {
   }
 
   get nextWeek() {
-    let today = this.$moment(this.weekOfDate);
+    let today = moment(this.weekOfDate);
     return date.getISODate(today.add(7, "day").toDate());
   }
 
   get previousWeek() {
-    let today = this.$moment(this.weekOfDate);
+    let today = moment(this.weekOfDate);
     return date.getISODate(today.add(-7, "day").toDate());
   }
 }
