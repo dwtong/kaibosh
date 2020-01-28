@@ -13,7 +13,13 @@ import SessionSlotService from "@/services/session-slot-service";
 @Module({ name: "sessionSlots", store: Store, dynamic: true })
 class SessionSlots extends VuexModule {
   allocationsByFoodCategory: any = [];
-  details: ISessionSlot = { id: "", time: "", day: "" };
+  details: ISessionSlot = {
+    id: "",
+    time: "",
+    day: "",
+    date: "",
+    recipients: []
+  };
   date: any = "";
 
   @Action

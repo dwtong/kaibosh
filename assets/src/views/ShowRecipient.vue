@@ -170,9 +170,9 @@ export default class ShowRecipient extends Vue {
     ]);
 
     if (ActiveRecipientModule.details) {
-      await BasesModule.fetchSessionSlots(
-        ActiveRecipientModule.details.base_id!
-      );
+      await BasesModule.fetchSessionSlots({
+        baseId: ActiveRecipientModule.details.base_id!
+      });
     }
   }
 

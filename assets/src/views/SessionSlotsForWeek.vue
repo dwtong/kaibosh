@@ -5,12 +5,7 @@
     </div>
     <div class="columns">
       <div class="column">
-        <BaseSelect
-          :value="baseId"
-          label="Kaibosh Base"
-          required="true"
-          @input="onBaseSelect"
-        />
+        <BaseSelect :value="baseId" required="true" @input="onBaseSelect" />
       </div>
       <div class="column">
         <div class="is-pulled-right field has-addons">
@@ -21,7 +16,7 @@
                   path: '/sessions/week',
                   query: { date: previousWeek, base_id: baseId }
                 }"
-                class="button is-large"
+                class="button"
               >
                 <span class="icon is-small">
                   <i class="fas fa-arrow-left"></i>
@@ -31,13 +26,26 @@
           </p>
 
           <p class="control">
+            <router-link
+              :to="{
+                path: '/sessions/week',
+                query: { base_id: baseId }
+              }"
+              class="button"
+              :class="{ 'is-static': isToday }"
+            >
+              Today
+            </router-link>
+          </p>
+
+          <p class="control">
             <b-tooltip label="Next Week">
               <router-link
                 :to="{
                   path: '/sessions/week',
                   query: { date: nextWeek, base_id: baseId }
                 }"
-                class="button is-large"
+                class="button"
               >
                 <span class="icon is-small">
                   <i class="fas fa-arrow-right"></i>
@@ -166,9 +174,17 @@ export default class SessionSlotsForWeek extends Vue {
     return date.days;
   }
 
+  get isToday() {
+    const today = date.getISODate(date.getMonday(new Date()));
+    const weekOf = date.getISODate(this.weekOfDate);
+
+    return today === weekOf;
+  }
+
   get weekOfDate() {
     let weekOfDate;
-    let dateParam = this.$route.query.date && this.$route.query.date.toString();
+    const dateParam =
+      this.$route.query.date && this.$route.query.date.toString();
 
     if (dateParam && dateParam.length > 0) {
       weekOfDate = new Date(dateParam);
@@ -180,12 +196,12 @@ export default class SessionSlotsForWeek extends Vue {
   }
 
   get nextWeek() {
-    let today = moment(this.weekOfDate);
+    const today = moment(this.weekOfDate);
     return date.getISODate(today.add(7, "day").toDate());
   }
 
   get previousWeek() {
-    let today = moment(this.weekOfDate);
+    const today = moment(this.weekOfDate);
     return date.getISODate(today.add(-7, "day").toDate());
   }
 }
