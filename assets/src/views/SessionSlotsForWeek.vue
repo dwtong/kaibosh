@@ -80,7 +80,7 @@
                     v-for="recipient in session.recipients"
                     :key="recipient.id"
                   >
-                    {{ recipient.name }}
+                    <AllocationRecipient :recipient="recipient" />
                   </div>
                 </div>
               </div>
@@ -105,13 +105,16 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { BasesModule } from "../store/modules/bases";
+import AllocationRecipient from "@/components/AllocationRecipient.vue";
 import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 import Router from "@/router";
 import date from "@/helpers/date";
 import moment from "moment";
 
-@Component({ components: { BaseSelect, SessionSlotSelect } })
+@Component({
+  components: { AllocationRecipient, BaseSelect, SessionSlotSelect }
+})
 export default class SessionSlotsForWeek extends Vue {
   sessionSlotId: string = "0";
   showSessionOptions = true;

@@ -35,21 +35,10 @@
                 v-for="allocation in category.allocations"
                 :key="allocation.id"
               >
-                <div class="allocation-recipient">
-                  <span
-                    v-if="!recipientOnHold(allocation)"
-                    class="tag is-pulled-right is-rounded"
-                  >
-                    {{
-                      allocation.quantity > 0
-                        ? allocation.quantity_label
-                        : "no max"
-                    }}
-                  </span>
-                  <span :class="{ inactive: recipientOnHold(allocation) }">
-                    {{ allocation.recipient.name }}
-                  </span>
-                </div>
+                <AllocationRecipient
+                  :allocation="allocation"
+                  :recipient="allocation.recipient"
+                />
               </div>
             </div>
           </div>
@@ -65,8 +54,9 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
 import { BasesModule } from "@/store/modules/bases";
+import AllocationRecipient from "@/components/AllocationRecipient.vue";
 
-@Component
+@Component({ components: { AllocationRecipient } })
 export default class ShowSessionSlot extends Vue {
   @Prop(String) readonly id!: string;
 
@@ -81,10 +71,6 @@ export default class ShowSessionSlot extends Vue {
       sessionSlotId: this.id,
       sessionDate: date
     });
-  }
-
-  recipientOnHold(allocation: any) {
-    return allocation.recipient.status === "on_hold";
   }
 
   capitalize(str: string) {
@@ -110,29 +96,12 @@ export default class ShowSessionSlot extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.allocation-recipient {
-  margin-bottom: 0.8rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  .tag {
-    font-weight: 800;
-    margin-left: 0.1rem;
-  }
-}
-
 .box {
   padding: 1rem 0.2rem;
 }
 
 .card {
   height: 100%;
-}
-
-.inactive {
-  text-decoration-line: line-through;
-  color: darkgray;
 }
 
 .print {
