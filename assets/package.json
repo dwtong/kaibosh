@@ -21,6 +21,7 @@
     "vee-validate": "^2.2.11",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
+    "vue-moment": "^4.1.0",
     "vue-property-decorator": "^8.1.0",
     "vue-rollbar": "^1.0.0",
     "vue-router": "^3.0.6",
