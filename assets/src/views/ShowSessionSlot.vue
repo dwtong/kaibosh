@@ -18,7 +18,7 @@
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img src="@/assets/images/produce.png" alt />
+              <img :src="imagePath(category.food_category.name)" alt />
             </figure>
           </div>
           <div class="card-content">
@@ -32,7 +32,7 @@
 
             <div class="content">
               <div
-                v-for="allocation in category.allocations"
+                v-for="allocation in sortCategories(category.allocations)"
                 :key="allocation.id"
               >
                 <AllocationRecipient
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { capitalize } from "lodash";
+import { capitalize, snakeCase, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
@@ -75,6 +75,16 @@ export default class ShowSessionSlot extends Vue {
 
   capitalize(str: string) {
     return capitalize(str);
+  }
+
+  sortCategories(list: any) {
+    return sortBy(list, ["recipient.status", "recipient.name"]);
+  }
+
+  imagePath(str: string) {
+    const fileName = snakeCase(str);
+    const images = require.context("@/assets/images/foods", false, /\.png$/);
+    return images("./" + fileName + ".png");
   }
 
   quantity(allocation: any) {
