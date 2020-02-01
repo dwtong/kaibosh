@@ -34,14 +34,28 @@ export default class AllocationRecipient extends Vue {
   overflow: hidden;
   text-overflow: ellipsis;
 
+  @media print {
+    margin-bottom: 0.2rem;
+  }
+
   .tag {
     font-weight: 800;
     margin-left: 0.1rem;
+
+    @media print {
+      font-size: 12px;
+      padding-top: 2px;
+      font-weight: 600;
+    }
   }
 }
 
 .inactive {
   text-decoration-line: line-through;
   color: darkgray;
+
+  @media print {
+    color: #4a4a4a;
+  }
 }
 </style>

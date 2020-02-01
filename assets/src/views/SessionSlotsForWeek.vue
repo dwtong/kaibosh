@@ -74,13 +74,8 @@
                 <p class="card-header-title">
                   {{ session.time }}
                 </p>
-
-                <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </a>
               </header>
+
               <div class="card-content">
                 <div v-if="session.recipients.length === 0">No recipients.</div>
                 <div v-else class="content">
@@ -206,3 +201,9 @@ export default class SessionSlotsForWeek extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-header {
+  background-color: #e6e6e6;
+}
+</style>

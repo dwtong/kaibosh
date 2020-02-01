@@ -13,18 +13,22 @@
       <div
         v-for="category in foodCategories"
         :key="category.id"
-        class="column is-one-third"
+        class="column card-column"
       >
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img :src="imagePath(category.food_category.name)" alt />
+              <img
+                class="food-image"
+                :src="imagePath(category.food_category.name)"
+                alt
+              />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title is-4">
+                <p class="title food-title is-4">
                   {{ capitalize(category.food_category.name) }}
                 </p>
               </div>
@@ -112,11 +116,50 @@ export default class ShowSessionSlot extends Vue {
 
 .card {
   height: 100%;
+
+  @media print {
+    border: 1px solid gray;
+    box-shadow: unset;
+    -webkit-box-shadow: unset;
+  }
+}
+
+.card-column {
+  -webkit-box-flex: 0;
+  -ms-flex: none;
+  flex: none;
+  width: 33.3333%;
+
+  @media print {
+    margin: 0;
+    padding: 10px;
+  }
+}
+
+.card-content {
+  @media print {
+    padding: 8px;
+  }
+}
+
+.card-image {
+  @media print {
+    $padding: 10px;
+    padding: $padding;
+    margin-top: -$padding;
+    margin-bottom: -$padding;
+  }
+}
+
+.food-title {
+  @media print {
+    font-size: 20px !important;
+  }
 }
 
 .print {
   @media print {
-    font-size: 0.8rem;
+    font-size: 20px;
   }
 }
 
@@ -130,10 +173,6 @@ export default class ShowSessionSlot extends Vue {
   .title {
     margin-left: 0 !important;
     margin-bottom: 0.4rem !important;
-
-    @media print {
-      font-size: 1rem;
-    }
   }
 }
 </style>
