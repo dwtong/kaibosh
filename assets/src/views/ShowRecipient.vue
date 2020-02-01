@@ -143,6 +143,7 @@ import InfoField from "@/components/form/InfoField.vue";
 import { IRecipient, IScheduledSession } from "@/types";
 import toast from "../helpers/toast";
 import { BasesModule } from "../store/modules/bases";
+import { sortBy } from "lodash";
 
 @Component({
   components: {
@@ -199,7 +200,7 @@ export default class ShowRecipient extends Vue {
   }
 
   get scheduledSessions() {
-    return RecipientSessions.sessions;
+    return sortBy(RecipientSessions.sessions, ["session_slot.date"]);
   }
 
   updateRecipient() {
