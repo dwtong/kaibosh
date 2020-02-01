@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <RecipientMessageBox />
+    <RecipientMessageBox :status="status" />
 
     <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">

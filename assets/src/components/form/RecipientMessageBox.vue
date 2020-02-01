@@ -35,15 +35,13 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 
 @Component
 export default class RecipientMessageBox extends Vue {
-  get status() {
-    return ActiveRecipientModule.details.status;
-  }
+  @Prop({ default: "" }) readonly status!: string;
 
   get name() {
     return ActiveRecipientModule.details.name;
