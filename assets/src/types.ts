@@ -57,7 +57,7 @@ export interface IRecipient {
 
 export interface IRecipientListItem {
   name: string;
-  base_id: string;
+  base_id?: string;
   id: string;
   status: string;
 }
@@ -66,6 +66,8 @@ export interface ISessionSlot {
   id: string;
   day: string;
   time: string;
+  date: string;
+  recipients: IRecipientListItem[];
 }
 
 export interface IScheduledSession {

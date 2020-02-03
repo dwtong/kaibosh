@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="title-box">
-      <h1 class="title is-inline-block">{{ details.name }}</h1>
+      <b-loading :active.sync="isLoading"></b-loading>
+
+      <h1 v-if="!isLoading" class="title is-inline-block">
+        {{ details.name }}
+      </h1>
 
       <div v-if="status !== 'archived'" class="field buttons is-pulled-right">
         <p class="control">
@@ -17,7 +21,7 @@
       </div>
     </div>
 
-    <RecipientMessageBox />
+    <RecipientMessageBox :status="status" @reactivate="reactivateRecipient" />
 
     <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">
@@ -28,15 +32,29 @@
             :status="status"
             withLabel="true"
             size="is-medium"
+            :isLoading="isLoading"
           />
-          <InfoField label="Full Legal Name" :value="details.name" />
-          <InfoField label="Base" :value="baseName" />
           <InfoField
+            :isLoading="isLoading"
+            label="Full Legal Name"
+            :value="details.name"
+          />
+          <InfoField :isLoading="isLoading" label="Base" :value="baseName" />
+          <InfoField
+            :isLoading="isLoading"
             label="Physical Address"
             :value="details.physical_address"
           />
-          <InfoField label="Start Date" :value="details.started_at" />
-          <InfoField label="Description" :value="details.description" />
+          <InfoField
+            :isLoading="isLoading"
+            label="Start Date"
+            :value="details.started_at"
+          />
+          <InfoField
+            :isLoading="isLoading"
+            label="Description"
+            :value="details.description"
+          />
         </div>
 
         <div class="box">
@@ -60,10 +78,26 @@
         <div class="box">
           <h2 class="title is-4">Primary Contact</h2>
 
-          <InfoField label="Name" :value="contact.name" />
-          <InfoField label="Email" :value="contact.email" />
-          <InfoField label="Mobile" :value="contact.phone_mobile" />
-          <InfoField label="Landline" :value="contact.phone_landline" />
+          <InfoField
+            :isLoading="isLoading"
+            label="Name"
+            :value="contact.name"
+          />
+          <InfoField
+            :isLoading="isLoading"
+            label="Email"
+            :value="contact.email"
+          />
+          <InfoField
+            :isLoading="isLoading"
+            label="Mobile"
+            :value="contact.phone_mobile"
+          />
+          <InfoField
+            :isLoading="isLoading"
+            label="Landline"
+            :value="contact.phone_landline"
+          />
         </div>
 
         <div class="box">
@@ -94,16 +128,18 @@
             </div>
           </div>
 
-          <div
-            v-for="session in scheduledSessions"
-            :key="session.id"
-            class="sessions-box"
-          >
-            <ScheduledSessionCard
-              :session="session"
-              @edit="openEditSessionModal(session)"
-              @remove="confirmSessionDeletion(session.id)"
-            />
+          <div v-if="!isLoading">
+            <div
+              v-for="session in scheduledSessions"
+              :key="session.id"
+              class="sessions-box"
+            >
+              <ScheduledSessionCard
+                :session="session"
+                @edit="openEditSessionModal(session)"
+                @remove="confirmSessionDeletion(session.id)"
+              />
+            </div>
           </div>
         </div>
 
@@ -143,6 +179,7 @@ import InfoField from "@/components/form/InfoField.vue";
 import { IRecipient, IScheduledSession } from "@/types";
 import toast from "../helpers/toast";
 import { BasesModule } from "../store/modules/bases";
+import { sortBy } from "lodash";
 
 @Component({
   components: {
@@ -160,6 +197,7 @@ export default class ShowRecipient extends Vue {
   isHoldModalActive: boolean = false;
   isScheduledSessionModalActive: boolean = false;
   selectedSession: IScheduledSession | null = null;
+  isLoading = true;
 
   async created() {
     await Promise.all([
@@ -170,10 +208,12 @@ export default class ShowRecipient extends Vue {
     ]);
 
     if (ActiveRecipientModule.details) {
-      await BasesModule.fetchSessionSlots(
-        ActiveRecipientModule.details.base_id!
-      );
+      await BasesModule.fetchSessionSlots({
+        baseId: ActiveRecipientModule.details.base_id!
+      });
     }
+
+    this.isLoading = false;
   }
 
   beforeRouteLeave(to: any, from: any, next: any) {
@@ -199,17 +239,39 @@ export default class ShowRecipient extends Vue {
   }
 
   get scheduledSessions() {
-    return RecipientSessions.sessions;
+    return sortBy(RecipientSessions.sessions, ["session_slot.date"]);
   }
 
   updateRecipient() {
     this.$router.push(`/recipients/update/${this.id}`);
   }
 
-  archiveRecipient() {
+  async archiveRecipient() {
+    this.isLoading = true;
+
     if (ActiveRecipientModule.details.id) {
-      ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
+      await ActiveRecipientModule.archiveRecipient(
+        ActiveRecipientModule.details.id
+      );
+      await ActiveRecipientModule.fetchRecipientStatus(this.id);
     }
+
+    this.isLoading = false;
+  }
+
+  async reactivateRecipient() {
+    this.isLoading = true;
+
+    if (ActiveRecipientModule.details.id) {
+      await ActiveRecipientModule.updateRecipient({
+        id: ActiveRecipientModule.details.id,
+        archived_at: null
+      });
+
+      await ActiveRecipientModule.fetchRecipientStatus(this.id);
+    }
+
+    this.isLoading = false;
   }
 
   openHoldModal() {

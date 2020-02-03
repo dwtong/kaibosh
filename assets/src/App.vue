@@ -7,7 +7,7 @@
       <div class="main" :class="{ 'with-nav': showNav }">
         <section class="section">
           <div class="container is-fluid">
-            <router-view></router-view>
+            <router-view :key="$route.fullPath"></router-view>
           </div>
         </section>
       </div>

@@ -1,25 +1,34 @@
 <template>
   <div class="print">
     <div class="title-box">
-      <h1 class="title is-inline-block">{{ sessionName }}</h1>
+      <h1 v-if="sessionDate" class="title">
+        {{ sessionDate | moment("dddd h:mma") }}
+      </h1>
+      <h2 class="subtitle is-4">
+        {{ sessionDate | moment("MMMM Do, Y") }}
+      </h2>
     </div>
 
     <div class="columns is-multiline is-centered">
       <div
         v-for="category in foodCategories"
         :key="category.id"
-        class="column is-one-third"
+        class="column card-column"
       >
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img src="@/assets/images/500x100.png" alt />
+              <img
+                class="food-image"
+                :src="imagePath(category.food_category.name)"
+                alt
+              />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title is-4">
+                <p class="title food-title is-4">
                   {{ capitalize(category.food_category.name) }}
                 </p>
               </div>
@@ -27,21 +36,13 @@
 
             <div class="content">
               <div
-                v-for="allocation in category.allocations"
+                v-for="allocation in sortCategories(category.allocations)"
                 :key="allocation.id"
               >
-                <div class="allocation-recipient">
-                  <span v-if="!recipientOnHold(allocation)" class="tag is-pulled-right is-rounded">
-                    {{
-                      allocation.quantity > 0
-                        ? allocation.quantity_label
-                        : "no max"
-                    }}
-                  </span>
-                <span :class="{ 'inactive': recipientOnHold(allocation) }">
-                  {{ allocation.recipient.name }}
-                </span>
-                </div>
+                <AllocationRecipient
+                  :allocation="allocation"
+                  :recipient="allocation.recipient"
+                />
               </div>
             </div>
           </div>
@@ -52,27 +53,42 @@
 </template>
 
 <script lang="ts">
-import { capitalize } from "lodash";
+import { capitalize, snakeCase, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
 import { BasesModule } from "@/store/modules/bases";
+import AllocationRecipient from "@/components/AllocationRecipient.vue";
 
-@Component
+@Component({ components: { AllocationRecipient } })
 export default class ShowSessionSlot extends Vue {
   @Prop(String) readonly id!: string;
 
   async created() {
-    await SessionSlotsModule.fetchAllocationsForSlot(this.id);
-    await SessionSlotsModule.fetchSessionSlot(this.id);
-  }
+    let date = this.$route.query.date;
 
-  recipientOnHold(allocation: any) {
-    return allocation.recipient.status === 'on_hold';
+    if (typeof date !== "string") {
+      date = "";
+    }
+
+    await SessionSlotsModule.fetchAllocationsForSlot({
+      sessionSlotId: this.id,
+      sessionDate: date
+    });
   }
 
   capitalize(str: string) {
     return capitalize(str);
+  }
+
+  sortCategories(list: any) {
+    return sortBy(list, ["recipient.status", "recipient.name"]);
+  }
+
+  imagePath(str: string) {
+    const fileName = snakeCase(str);
+    const images = require.context("@/assets/images/foods", false, /\.png$/);
+    return images("./" + fileName + ".png");
   }
 
   quantity(allocation: any) {
@@ -83,61 +99,80 @@ export default class ShowSessionSlot extends Vue {
     }
   }
 
-  get sessionName() {
-    return SessionSlotsModule.sessionName;
+  get foodCategories() {
+    return SessionSlotsModule.allocationsByFoodCategory;
   }
 
-  get foodCategories() {
-    const result = SessionSlotsModule.allocationsByFoodCategory;
-    return result;
+  get sessionDate() {
+    return SessionSlotsModule.date;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.allocation-recipient {
-  margin-bottom: 0.8rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  .tag {
-    font-weight: 800;
-    margin-left: 0.1rem;
-  }
-}
-
 .box {
   padding: 1rem 0.2rem;
 }
 
 .card {
   height: 100%;
+
+  @media print {
+    border: 1px solid gray;
+    box-shadow: unset;
+    -webkit-box-shadow: unset;
+  }
 }
 
-.inactive {
-  text-decoration-line: line-through;
-  color: darkgray;
+.card-column {
+  -webkit-box-flex: 0;
+  -ms-flex: none;
+  flex: none;
+  width: 33.3333%;
+
+  @media print {
+    margin: 0;
+    padding: 10px;
+  }
+}
+
+.card-content {
+  @media print {
+    padding: 8px;
+  }
+}
+
+.card-image {
+  @media print {
+    $padding: 10px;
+    padding: $padding;
+    margin-top: -$padding;
+    margin-bottom: -$padding;
+  }
+}
+
+.food-title {
+  @media print {
+    font-size: 20px !important;
+  }
 }
 
 .print {
   @media print {
-    font-size: 0.8rem;
+    font-size: 20px;
   }
 }
 
 .title-box {
-  height: 60px;
+  height: 100px !important;
+
+  .subtitle {
+    margin-top: 0.4rem !important;
+  }
 
   .title {
-    &.is-4 {
-      margin-left: 0 !important;
-      margin-bottom: 0 !important;
-
-      @media print {
-        font-size: 1rem;
-      }
-    }
+    margin-left: 0 !important;
+    margin-bottom: 0.4rem !important;
   }
 }
 </style>

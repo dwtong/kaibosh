@@ -70,8 +70,14 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchSessionSlots(baseId: string) {
-    const bases = await SessionSlotService.getForBase(baseId);
+  async fetchSessionSlots({
+    baseId: baseId,
+    date: date
+  }: {
+    baseId: string;
+    date?: string;
+  }) {
+    const bases = await SessionSlotService.getForBase(baseId, date);
     this.context.commit("setSessionSlots", bases);
   }
 }

@@ -27,7 +27,7 @@ export default class InputField extends Vue {
   @Prop({ default: "" }) readonly name!: string;
   @Prop({ default: "text" }) readonly type!: string;
   @Prop({ default: false }) readonly required!: boolean;
-  @Prop({ default: {} }) readonly validation!: object;
+  @Prop(Object) readonly validation!: object;
   @Inject("$validator") $validator!: Validator;
 
   get label() {
@@ -35,7 +35,8 @@ export default class InputField extends Vue {
   }
 
   get validationRules() {
-    return { required: this.required, ...this.validation };
+    const rules = this.validation ? this.validation : {};
+    return { required: this.required, ...rules };
   }
 }
 </script>

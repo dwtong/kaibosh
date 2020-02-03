@@ -32,7 +32,12 @@
           <button class="button is-light" type="button" @click="$emit('close')">
             Cancel
           </button>
-          <button :disabled="!selectedSessionSlotId || !sessionIsValid" type="submit" class="button is-info" @click="saveSession">
+          <button
+            :disabled="!selectedSessionSlotId || !sessionIsValid"
+            type="submit"
+            class="button is-info"
+            @click="saveSession"
+          >
             Save
           </button>
         </div>
@@ -57,7 +62,6 @@ export default class ScheduledSessionModal extends Vue {
   @Prop() readonly baseId: string | undefined;
   @Prop() readonly session?: IScheduledSession;
   @Prop() readonly sessions?: IScheduledSession[];
-  loading: boolean = true;
   allocations: IAllocation[] = [];
   selectedSessionSlotId: string = "";
 
@@ -71,9 +75,11 @@ export default class ScheduledSessionModal extends Vue {
     }
   }
 
-
   get sessionIsValid() {
-    const session = this.sessions!.find((s: IScheduledSession) => s.session_slot && s.session_slot.id === this.selectedSessionSlotId);
+    const session = this.sessions!.find(
+      (s: IScheduledSession) =>
+        s.session_slot && s.session_slot.id === this.selectedSessionSlotId
+    );
     return !session;
   }
 

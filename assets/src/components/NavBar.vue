@@ -26,8 +26,8 @@
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/sessions" active-class="is-active" exact>
-          Find Session
+        <router-link to="/sessions/week" active-class="is-active" exact>
+          Sessions By Week
         </router-link>
       </li>
     </ul>
