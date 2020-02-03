@@ -2,20 +2,23 @@
   <div class="field">
     <label class="label">{{ label }}</label>
     <transition name="fade">
-      <div v-if="value" class="control">
+      <div v-if="value && !isLoading" class="control">
         <p class="text">{{ value }}</p>
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    show: () => true
-  },
-  props: ["label", "value"]
-};
+<script lang="ts">
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+
+@Component
+export default class InfoField extends Vue {
+  @Prop({ default: "" }) readonly label!: string;
+  @Prop({ default: "" }) readonly value!: string;
+  @Prop({ default: false }) readonly isLoading!: boolean;
+}
 </script>
 
 <style lang="scss" scoped>

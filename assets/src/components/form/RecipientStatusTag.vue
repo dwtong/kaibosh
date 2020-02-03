@@ -20,9 +20,14 @@ export default class RecipientStatusTag extends Vue {
   @Prop({ default: "" }) readonly status!: string;
   @Prop({ default: "is-small" }) readonly size!: string;
   @Prop({ default: false }) readonly withLabel!: boolean;
+  @Prop({ default: false }) readonly isLoading!: boolean;
 
   get label() {
-    return this.status.replace("_", " ");
+    if (!this.isLoading) {
+      return this.status.replace("_", " ");
+    } else {
+      return "";
+    }
   }
 
   get type(): string {
@@ -33,7 +38,11 @@ export default class RecipientStatusTag extends Vue {
       pending: "is-info"
     };
 
-    return types[this.status];
+    if (!this.isLoading) {
+      return types[this.status];
+    } else {
+      return "is-gray-darker";
+    }
   }
 }
 </script>

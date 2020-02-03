@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="submit">
+    <b-loading :active.sync="isLoading"></b-loading>
     <div class="box">
       <h1 class="title">Organisation Details</h1>
 
@@ -65,6 +66,7 @@ export default class RecipientForm extends Vue {
   };
 
   startedAt: Date | null = null;
+  isLoading: boolean = true;
 
   async submit() {
     const formIsValid = await this.$validator.validateAll();
@@ -96,6 +98,8 @@ export default class RecipientForm extends Vue {
         );
       }
     }
+
+    this.isLoading = false;
   }
 
   async saveRecipient() {
