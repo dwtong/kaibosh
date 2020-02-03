@@ -36,12 +36,12 @@ class SessionSlots extends VuexModule {
     sessionSlotId: string;
     sessionDate: string;
   }) {
-    const { allocations, date } = await AllocationService.getForSessionSlot(
-      sessionSlotId,
-      sessionDate
-    );
+    const {
+      food_allocations,
+      date
+    } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
     this.context.commit("setDate", date);
-    this.context.commit("setAllocations", allocations);
+    this.context.commit("setAllocations", food_allocations);
   }
 
   @Mutation
