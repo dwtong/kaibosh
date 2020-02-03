@@ -21,7 +21,11 @@
       </div>
     </div>
 
-    <RecipientMessageBox :status="status" @reactivate="reactivateRecipient" />
+    <RecipientMessageBox
+      v-if="!isLoading"
+      :status="status"
+      @reactivate="reactivateRecipient"
+    />
 
     <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">

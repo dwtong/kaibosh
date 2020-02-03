@@ -1,5 +1,6 @@
 <template>
   <div class="print">
+    <b-loading :active.sync="isLoading"></b-loading>
     <div class="title-box">
       <h1 v-if="sessionDate" class="title">
         {{ sessionDate | moment("dddd h:mma") }}
@@ -40,6 +41,7 @@
                 :key="allocation.id"
               >
                 <AllocationRecipient
+                  v-if="!isLoading"
                   :allocation="allocation"
                   :recipient="allocation.recipient"
                 />
@@ -63,6 +65,7 @@ import AllocationRecipient from "@/components/AllocationRecipient.vue";
 @Component({ components: { AllocationRecipient } })
 export default class ShowSessionSlot extends Vue {
   @Prop(String) readonly id!: string;
+  isLoading = true;
 
   async created() {
     let date = this.$route.query.date;
@@ -75,6 +78,8 @@ export default class ShowSessionSlot extends Vue {
       sessionSlotId: this.id,
       sessionDate: date
     });
+
+    this.isLoading = false;
   }
 
   capitalize(str: string) {
