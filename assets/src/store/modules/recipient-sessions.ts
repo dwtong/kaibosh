@@ -8,7 +8,7 @@ import {
   Mutation,
   VuexModule
 } from "vuex-module-decorators";
-import { ActiveRecipientModule } from '@/store/modules/active-recipient'
+import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import HoldService from "@/services/session-hold-service";
 import ScheduledSessionService from "@/services/scheduled-session-service";
 
@@ -47,7 +47,9 @@ class RecipientSessions extends VuexModule {
 
   @Mutation
   modifySession(updatedSession: IScheduledSession, sessionId: string) {
-    const sessionIndex = this.sessions.findIndex((s: IScheduledSession) => s.id === sessionId);
+    const sessionIndex = this.sessions.findIndex(
+      (s: IScheduledSession) => s.id === sessionId
+    );
     Vue.set(this.sessions, sessionIndex, updatedSession);
   }
 
@@ -60,8 +62,8 @@ class RecipientSessions extends VuexModule {
     const session = this.sessionById(holds[0].session_id);
 
     if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id)
-      this.fetchSessions(session.recipient_id)
+      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
+      this.fetchSessions(session.recipient_id);
     }
   }
 
@@ -71,8 +73,8 @@ class RecipientSessions extends VuexModule {
     const session = this.sessionById(hold.session_id);
 
     if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id)
-      this.fetchSessions(session.recipient_id)
+      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
+      this.fetchSessions(session.recipient_id);
     }
   }
 
@@ -81,8 +83,8 @@ class RecipientSessions extends VuexModule {
     await ScheduledSessionService.create({ session });
 
     if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id)
-      this.fetchSessions(session.recipient_id)
+      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
+      this.fetchSessions(session.recipient_id);
     }
   }
 
@@ -91,8 +93,8 @@ class RecipientSessions extends VuexModule {
     await ScheduledSessionService.update(session.id!, { session });
 
     if (session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id)
-      this.fetchSessions(session.recipient_id)
+      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
+      this.fetchSessions(session.recipient_id);
     }
   }
 
@@ -102,8 +104,8 @@ class RecipientSessions extends VuexModule {
     const session = this.sessionById(sessionId);
 
     if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id)
-      this.fetchSessions(session.recipient_id)
+      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
+      this.fetchSessions(session.recipient_id);
     }
   }
 }
