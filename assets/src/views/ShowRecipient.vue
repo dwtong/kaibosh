@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <RecipientMessageBox :status="status" />
+    <RecipientMessageBox :status="status" @reactivate="reactivateRecipient" />
 
     <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">
@@ -246,10 +246,32 @@ export default class ShowRecipient extends Vue {
     this.$router.push(`/recipients/update/${this.id}`);
   }
 
-  archiveRecipient() {
+  async archiveRecipient() {
+    this.isLoading = true;
+
     if (ActiveRecipientModule.details.id) {
-      ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
+      await ActiveRecipientModule.archiveRecipient(
+        ActiveRecipientModule.details.id
+      );
+      await ActiveRecipientModule.fetchRecipientStatus(this.id);
     }
+
+    this.isLoading = false;
+  }
+
+  async reactivateRecipient() {
+    this.isLoading = true;
+
+    if (ActiveRecipientModule.details.id) {
+      await ActiveRecipientModule.updateRecipient({
+        id: ActiveRecipientModule.details.id,
+        archived_at: null
+      });
+
+      await ActiveRecipientModule.fetchRecipientStatus(this.id);
+    }
+
+    this.isLoading = false;
   }
 
   openHoldModal() {

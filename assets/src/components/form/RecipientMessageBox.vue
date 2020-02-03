@@ -48,12 +48,7 @@ export default class RecipientMessageBox extends Vue {
   }
 
   reactivate() {
-    if (ActiveRecipientModule.details.id) {
-      ActiveRecipientModule.updateRecipient({
-        id: ActiveRecipientModule.details.id,
-        archived_at: null
-      });
-    }
+    this.$emit("reactivate");
   }
 }
 </script>
