@@ -8,7 +8,7 @@
     <ul class="menu-list">
       <li>
         <router-link
-          v-on:click.native="resetRecipientFilters"
+          v-on:click.native="resetRecipientNameFilter"
           to="/recipients"
           active-class="is-active"
           exact
@@ -55,8 +55,8 @@ import authService from "../services/auth-service";
 
 @Component
 export default class NavBar extends Vue {
-  resetRecipientFilters() {
-    AllRecipientsModule.resetFilters();
+  resetRecipientNameFilter() {
+    AllRecipientsModule.updateNameFilter("");
   }
 
   async logout() {

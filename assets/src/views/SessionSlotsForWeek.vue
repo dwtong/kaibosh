@@ -5,7 +5,7 @@
     </div>
     <div class="columns">
       <div class="column">
-        <BaseSelect :value="baseId" required="true" @input="onBaseSelect" />
+        <BaseSelect :value="baseId" required="true" @input="setBase" />
       </div>
       <div class="column">
         <div class="is-pulled-right field has-addons">
@@ -121,13 +121,11 @@ import moment from "moment";
 export default class SessionSlotsForWeek extends Vue {
   sessionSlotId: string = "0";
   showSessionOptions = true;
+  baseId = localStorage.getItem("baseId") || "0";
 
   async created() {
     if (this.baseId !== "0") {
-      await BasesModule.fetchSessionSlots({
-        baseId: this.baseId,
-        date: date.getISODate(this.weekOfDate)
-      });
+      this.fetchSessions();
 
       this.showSessionOptions = true;
     } else {
@@ -135,8 +133,10 @@ export default class SessionSlotsForWeek extends Vue {
     }
   }
 
-  async onBaseSelect(baseId: string) {
-    Router.replace({ query: { base_id: baseId } });
+  async setBase(baseId: string) {
+    localStorage.setItem("baseId", baseId);
+    this.baseId = baseId;
+    await this.fetchSessions();
   }
 
   sessionsForDay(day: string) {
@@ -149,12 +149,11 @@ export default class SessionSlotsForWeek extends Vue {
     return dateForDay.add(dayIndex, "day");
   }
 
-  get baseId() {
-    if (this.$route.query.base_id) {
-      return this.$route.query.base_id.toString();
-    } else {
-      return "0";
-    }
+  async fetchSessions() {
+    await BasesModule.fetchSessionSlots({
+      baseId: this.baseId,
+      date: date.getISODate(this.weekOfDate)
+    });
   }
 
   get sessionSlots() {
