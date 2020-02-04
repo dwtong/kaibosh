@@ -70,6 +70,7 @@ export default class RecipientsFilter extends Vue {
 
   updateBaseFilter(baseId: string) {
     AllRecipientsModule.updateBaseFilter(baseId);
+    localStorage.setItem("baseId", baseId);
   }
 
   updateNameFilter(name: string) {

@@ -14,7 +14,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;1. Have their start date set to today or
           earlier.<br />
           &nbsp;&nbsp;&nbsp;&nbsp;2. Have all 'Onboarding' items checked off.<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;3. Have at least one scheduled session set.<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;3. Have at least one sorting session set.<br />
         </p>
       </b-message>
 
