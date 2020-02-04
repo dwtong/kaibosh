@@ -76,11 +76,12 @@ export default class ScheduledSessionModal extends Vue {
   }
 
   get sessionIsValid() {
-    const session = this.sessions!.find(
+    const isExistingSession = !!this.session;
+    const newSessionExists = this.sessions!.find(
       (s: IScheduledSession) =>
         s.session_slot && s.session_slot.id === this.selectedSessionSlotId
     );
-    return !session;
+    return isExistingSession || !newSessionExists;
   }
 
   async saveSession() {
