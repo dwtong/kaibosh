@@ -41,7 +41,7 @@ export default [
   {
     path: "/",
     beforeEnter: ifAuthenticated,
-    redirect: "/recipients"
+    redirect: "/sessions/week"
   },
   {
     path: "/recipients",

@@ -1,12 +1,15 @@
 <template>
-  <div class="allocation-recipient">
+  <div @click="viewRecipient" class="allocation-recipient">
     <span
       v-if="allocation && !recipientOnHold(recipient)"
       class="tag is-pulled-right is-rounded"
     >
       {{ allocation.quantity > 0 ? allocation.quantity_label : "no max" }}
     </span>
-    <span :class="{ inactive: recipientOnHold(recipient) }">
+    <span
+      :class="{ inactive: recipientOnHold(recipient) }"
+      class="button is-text"
+    >
       {{ recipient.name }}
     </span>
   </div>
@@ -24,12 +27,15 @@ export default class AllocationRecipient extends Vue {
   recipientOnHold(recipient: any) {
     return recipient.status === "on_hold";
   }
+
+  viewRecipient() {
+    this.$router.push(`/recipients/${this.recipient.id}`);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .allocation-recipient {
-  margin-bottom: 0.8rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,9 +56,14 @@ export default class AllocationRecipient extends Vue {
   }
 }
 
+.is-text {
+  margin-bottom: 0rem !important;
+  text-decoration: none !important;
+}
+
 .inactive {
-  text-decoration-line: line-through;
-  color: darkgray;
+  text-decoration-line: line-through !important;
+  color: darkgray !important;
 
   @media print {
     color: #4a4a4a;

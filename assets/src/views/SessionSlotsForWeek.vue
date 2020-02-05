@@ -80,7 +80,7 @@
                 <div v-if="session.recipients.length === 0">No recipients.</div>
                 <div v-else class="content">
                   <div
-                    v-for="recipient in session.recipients"
+                    v-for="recipient in sortRecipients(session.recipients)"
                     :key="recipient.id"
                   >
                     <AllocationRecipient :recipient="recipient" />
@@ -114,6 +114,7 @@ import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 import Router from "@/router";
 import date from "@/helpers/date";
 import moment from "moment";
+import { sortBy } from "lodash";
 
 @Component({
   components: { AllocationRecipient, BaseSelect, SessionSlotSelect }
@@ -141,6 +142,10 @@ export default class SessionSlotsForWeek extends Vue {
 
   sessionsForDay(day: string) {
     return this.sessionSlots.filter(s => s.day === day);
+  }
+
+  sortRecipients(list: any) {
+    return sortBy(list, ["name"]);
   }
 
   dateForDay(day: string) {
