@@ -4,6 +4,15 @@
       <img src="@/assets/images/kaibosh.png" alt />
     </div>
 
+    <p class="menu-label">Schedule</p>
+    <ul class="menu-list">
+      <li>
+        <router-link to="/sessions/week" active-class="is-active" exact>
+          Sessions By Week
+        </router-link>
+      </li>
+    </ul>
+
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
@@ -19,15 +28,6 @@
       <li>
         <router-link to="/recipients/new" active-class="is-active" exact>
           Add New Recipient
-        </router-link>
-      </li>
-    </ul>
-
-    <p class="menu-label">Schedule</p>
-    <ul class="menu-list">
-      <li>
-        <router-link to="/sessions/week" active-class="is-active" exact>
-          Sessions By Week
         </router-link>
       </li>
     </ul>
