@@ -98,6 +98,7 @@ class AllRecipients extends VuexModule {
 
   @Mutation
   setFilterDefaults() {
+    this.filteredBase = "0";
     this.filteredName = "";
     this.filteredStatus.forEach(f => (f.enabled = false));
   }
