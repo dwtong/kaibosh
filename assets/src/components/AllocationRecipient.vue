@@ -36,10 +36,6 @@ export default class AllocationRecipient extends Vue {
 
 <style lang="scss" scoped>
 .allocation-recipient {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
   @media print {
     margin-bottom: 0.2rem;
   }
@@ -47,6 +43,7 @@ export default class AllocationRecipient extends Vue {
   .tag {
     font-weight: 800;
     margin-left: 0.1rem;
+    margin-top: 0.4rem;
 
     @media print {
       font-size: 12px;
@@ -59,6 +56,11 @@ export default class AllocationRecipient extends Vue {
 .is-text {
   margin-bottom: 0rem !important;
   text-decoration: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  display: block;
+  text-align: left;
 }
 
 .inactive {
