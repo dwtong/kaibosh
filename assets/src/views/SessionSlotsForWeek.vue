@@ -138,6 +138,7 @@ export default class SessionSlotsForWeek extends Vue {
     localStorage.setItem("baseId", baseId);
     this.baseId = baseId;
     await this.fetchSessions();
+    this.showSessionOptions = true;
   }
 
   sessionsForDay(day: string) {
