@@ -13,6 +13,11 @@ import LogRocket from "logrocket";
 
 if (process.env.NODE_ENV === "production") {
   LogRocket.init("7qg6ha/kaibosh-platform");
+  const user = localStorage.getItem("uid");
+
+  if (user) {
+    LogRocket.identify(user);
+  }
 
   Vue.use(Rollbar, {
     accessToken: "1d62c1d20fcc4120aa42aecbaece2e9b",

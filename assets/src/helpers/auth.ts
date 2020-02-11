@@ -1,3 +1,5 @@
+import LogRocket from "logrocket";
+
 interface IAuthToken {
   client: string;
   uid: string;
@@ -18,9 +20,10 @@ export default {
 
     if (client && accessToken && uid) {
       localStorage.setItem("client", client);
-      localStorage.setItem("uid", uid);
       localStorage.setItem("access-token", accessToken);
       localStorage.setItem("token-type", "Bearer");
+      localStorage.setItem("uid", uid);
+      LogRocket.identify(uid);
     }
   },
 
