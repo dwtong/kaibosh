@@ -5,8 +5,8 @@ import ListRecipients from "@/views/ListRecipients.vue";
 import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
-import ShowSessionSlot from "@/views/ShowSessionSlot.vue";
-import SessionSlotsForWeek from "@/views/SessionSlotsForWeek.vue";
+import SessionAllocations from "@/views/SessionAllocations.vue";
+import SessionsByWeek from "@/views/SessionsByWeek.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
 import { UserModule } from "@/store/modules/user";
@@ -67,13 +67,13 @@ export default [
   },
   {
     path: "/sessions/week",
-    component: SessionSlotsForWeek,
+    component: SessionsByWeek,
     beforeEnter: ifAuthenticated,
     props: true
   },
   {
     path: "/sessions/:id",
-    component: ShowSessionSlot,
+    component: SessionAllocations,
     beforeEnter: ifAuthenticated,
     props: true
   },

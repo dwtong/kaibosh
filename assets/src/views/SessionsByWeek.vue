@@ -119,7 +119,7 @@ import { sortBy } from "lodash";
 @Component({
   components: { AllocationRecipient, BaseSelect, SessionSlotSelect }
 })
-export default class SessionSlotsForWeek extends Vue {
+export default class SessionsByWeek extends Vue {
   sessionSlotId: string = "0";
   showSessionOptions = true;
   baseId = localStorage.getItem("baseId") || "0";
