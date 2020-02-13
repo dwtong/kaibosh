@@ -1,3 +1,5 @@
+const CompressionPlugin = require("compression-webpack-plugin");
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -19,6 +21,7 @@ module.exports = {
           changeOrigin: true
         }
       }
-    }
+    },
+    plugins: [new CompressionPlugin()]
   }
 };
