@@ -28,10 +28,23 @@
         s.type = "text/javascript";
         s.async = true;
         s.src =
-          "//api.usersnap.com/load/9fe57eff-6cab-4685-bda6-de6b7f980d62.js";
+          "//api.usersnap.com/load/9fe57eff-6cab-4685-bda6-de6b7f980d62.js?onload=onUsersnapLoad";
         var x = document.getElementsByTagName("script")[0];
         x.parentNode.insertBefore(s, x);
       })();
+    </script>
+    <script>
+      window.onUsersnapLoad = function(api) {
+        api.init({
+          fields: {
+            email: {
+              initialValue: localStorage.getItem("uid"),
+              label: "Email",
+              required: false
+            }
+          }
+        });
+      };
     </script>
   </body>
 </html>

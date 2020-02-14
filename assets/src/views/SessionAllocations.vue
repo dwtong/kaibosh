@@ -63,7 +63,7 @@ import { BasesModule } from "@/store/modules/bases";
 import AllocationRecipient from "@/components/AllocationRecipient.vue";
 
 @Component({ components: { AllocationRecipient } })
-export default class ShowSessionSlot extends Vue {
+export default class SessionAllocations extends Vue {
   @Prop(String) readonly id!: string;
   isLoading = true;
 
@@ -93,7 +93,7 @@ export default class ShowSessionSlot extends Vue {
   imagePath(str: string) {
     const fileName = snakeCase(str);
     const images = require.context("@/assets/images/foods", false, /\.png$/);
-    return images("./" + fileName + ".png");
+    return images("./" + fileName + "-min.png");
   }
 
   quantity(allocation: any) {
