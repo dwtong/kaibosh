@@ -6,6 +6,7 @@ import Login from "@/views/Login.vue";
 import NotFound from "@/views/NotFound.vue";
 import ShowRecipient from "@/views/ShowRecipient.vue";
 import SessionAllocations from "@/views/SessionAllocations.vue";
+import SessionRecipientDescriptions from "@/views/SessionRecipientDescriptions.vue";
 import SessionsByWeek from "@/views/SessionsByWeek.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
@@ -74,6 +75,12 @@ export default [
   {
     path: "/sessions/:id",
     component: SessionAllocations,
+    beforeEnter: ifAuthenticated,
+    props: true
+  },
+  {
+    path: "/sessions/:id/descriptions",
+    component: SessionRecipientDescriptions,
     beforeEnter: ifAuthenticated,
     props: true
   },

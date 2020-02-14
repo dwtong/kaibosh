@@ -306,12 +306,6 @@ export default class ShowRecipient extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.buttons {
-  .button {
-    margin-right: 7px;
-  }
-}
-
 .loading {
   height: 100%;
   width: 100%;
