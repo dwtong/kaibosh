@@ -57,6 +57,20 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.buttons {
+  &.is-pulled-right {
+    .button {
+      margin-left: 0.4rem;
+    }
+  }
+}
+
+.button {
+  @media print {
+    display: none;
+  }
+}
+
 .is-hidden-print {
   @media print {
     display: none;

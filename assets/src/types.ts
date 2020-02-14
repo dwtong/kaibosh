@@ -60,6 +60,7 @@ export interface IRecipientListItem {
   base_id?: string;
   id: string;
   status: string;
+  description?: string;
 }
 
 export interface ISessionSlot {

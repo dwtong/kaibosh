@@ -2,6 +2,21 @@
   <div class="print">
     <b-loading :active.sync="isLoading"></b-loading>
     <div class="title-box">
+      <div class="field buttons is-pulled-right">
+        <p class="control">
+          <router-link
+            :to="`/sessions/${id}/descriptions`"
+            tag="button"
+            class="button is-primary"
+            >Recipient Descriptions</router-link
+          >
+        </p>
+
+        <p class="control">
+          <PrintButton label="Print Session" />
+        </p>
+      </div>
+
       <h1 v-if="sessionDate" class="title">
         {{ sessionDate | moment("dddd h:mma") }}
       </h1>
@@ -61,8 +76,9 @@ import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
 import { BasesModule } from "@/store/modules/bases";
 import AllocationRecipient from "@/components/AllocationRecipient.vue";
+import PrintButton from "@/components/PrintButton.vue";
 
-@Component({ components: { AllocationRecipient } })
+@Component({ components: { AllocationRecipient, PrintButton } })
 export default class SessionAllocations extends Vue {
   @Prop(String) readonly id!: string;
   isLoading = true;
