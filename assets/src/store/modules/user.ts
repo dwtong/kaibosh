@@ -8,13 +8,15 @@ import {
 } from "vuex-module-decorators";
 import auth from "@/helpers/auth";
 import AuthService from "@/services/auth-service";
-import { ILoginCreds } from "@/types";
+import UserService from "@/services/user-service";
+import { ILoginCreds, IUser } from "@/types";
 import Router from "@/router";
 
 @Module({ name: "user", store: Store, dynamic: true })
 class User extends VuexModule {
   isAuthenticated: boolean = auth.authTokenIsPresent();
   passwordUpdated: boolean = false;
+  users: IUser[] = [];
 
   @Action
   async login(params: ILoginCreds) {
@@ -27,6 +29,12 @@ class User extends VuexModule {
   @Action
   async createUser(email: string) {
     await AuthService.createUser(email);
+  }
+
+  @Action
+  async fetchUsers() {
+    const users = await UserService.get();
+    this.context.commit("setUsers", users);
   }
 
   @Action
@@ -58,6 +66,11 @@ class User extends VuexModule {
   @Mutation
   setAuthenticated(isAuthenticated: boolean) {
     this.isAuthenticated = isAuthenticated;
+  }
+
+  @Mutation
+  setUsers(users: IUser[]) {
+    this.users = users;
   }
 
   @Mutation

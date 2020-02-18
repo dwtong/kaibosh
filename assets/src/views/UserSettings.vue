@@ -6,6 +6,13 @@
       </div>
 
       <div class="box">
+        <h1 class="title">Users</h1>
+        <div v-for="user in users" :key="user.email">
+          {{ user.email }}
+        </div>
+      </div>
+
+      <div class="box">
         <h1 class="title">Add New User</h1>
         <form @submit.prevent="addUser">
           <InputField
@@ -37,6 +44,14 @@ import toast from "@/helpers/toast";
 })
 export default class UserSettings extends Vue {
   newUserEmail: string = "";
+
+  created() {
+    UserModule.fetchUsers();
+  }
+
+  get users() {
+    return UserModule.users;
+  }
 
   async addUser() {
     await UserModule.createUser(this.newUserEmail);
