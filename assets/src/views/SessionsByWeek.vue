@@ -122,7 +122,7 @@ import { sortBy } from "lodash";
 export default class SessionsByWeek extends Vue {
   sessionSlotId: string = "0";
   showSessionOptions = true;
-  baseId = localStorage.getItem("baseId") || "0";
+  baseId = localStorage.getItem("baseId");
 
   async created() {
     if (this.baseId !== "0") {
@@ -156,10 +156,12 @@ export default class SessionsByWeek extends Vue {
   }
 
   async fetchSessions() {
-    await BasesModule.fetchSessionSlots({
-      baseId: this.baseId,
-      date: date.getISODate(this.weekOfDate)
-    });
+    if (this.baseId) {
+      await BasesModule.fetchSessionSlots({
+        baseId: this.baseId,
+        date: date.getISODate(this.weekOfDate)
+      });
+    }
   }
 
   get sessionSlots() {

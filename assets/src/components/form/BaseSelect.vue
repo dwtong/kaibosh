@@ -9,7 +9,7 @@
       :value="value"
       @input="$emit('input', $event)"
       name="base"
-      placeholder="Select an option"
+      placeholder="Please select a base..."
       v-validate="{ required: required }"
       expanded
     >
