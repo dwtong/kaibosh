@@ -91,3 +91,7 @@ export interface IStatus {
 export interface IStatusLabelGroup {
   [key: string]: string;
 }
+
+export interface IUser {
+  email: string;
+}
