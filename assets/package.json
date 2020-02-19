@@ -19,6 +19,7 @@
     "lodash": "^4.17.11",
     "logrocket": "^1.0.3",
     "logrocket-vuex": "0.0.3",
+    "v-click-outside": "^3.0.1",
     "vee-validate": "^2.2.11",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",

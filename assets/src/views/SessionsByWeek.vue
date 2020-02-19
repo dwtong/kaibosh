@@ -8,52 +8,7 @@
         <BaseSelect :value="baseId" required="true" @input="setBase" />
       </div>
       <div class="column">
-        <div class="is-pulled-right field has-addons">
-          <p class="control">
-            <b-tooltip label="Previous Week">
-              <router-link
-                :to="{
-                  path: '/sessions/week',
-                  query: { date: previousWeek, base_id: baseId }
-                }"
-                class="button"
-              >
-                <span class="icon is-small">
-                  <i class="fas fa-arrow-left"></i>
-                </span>
-              </router-link>
-            </b-tooltip>
-          </p>
-
-          <p class="control">
-            <router-link
-              :to="{
-                path: '/sessions/week',
-                query: { base_id: baseId }
-              }"
-              class="button"
-              :class="{ 'is-static': isToday }"
-            >
-              Today
-            </router-link>
-          </p>
-
-          <p class="control">
-            <b-tooltip label="Next Week">
-              <router-link
-                :to="{
-                  path: '/sessions/week',
-                  query: { date: nextWeek, base_id: baseId }
-                }"
-                class="button"
-              >
-                <span class="icon is-small">
-                  <i class="fas fa-arrow-right"></i>
-                </span>
-              </router-link>
-            </b-tooltip>
-          </p>
-        </div>
+        <WeekDateControls :baseId="baseId" :date="weekOfDate" />
       </div>
     </div>
 
@@ -84,6 +39,7 @@ import { BasesModule } from "../store/modules/bases";
 import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 import SessionSummaryCard from "@/components/SessionSummaryCard.vue";
+import WeekDateControls from "@/components/WeekDateControls.vue";
 import Router from "@/router";
 import date from "@/helpers/date";
 import moment from "moment";
@@ -93,7 +49,8 @@ import { sortBy } from "lodash";
   components: {
     BaseSelect,
     SessionSlotSelect,
-    SessionSummaryCard
+    SessionSummaryCard,
+    WeekDateControls
   }
 })
 export default class SessionsByWeek extends Vue {
@@ -149,13 +106,6 @@ export default class SessionsByWeek extends Vue {
     return date.days;
   }
 
-  get isToday() {
-    const today = date.getISODate(date.getMonday(new Date()));
-    const weekOf = date.getISODate(this.weekOfDate);
-
-    return today === weekOf;
-  }
-
   get weekOfDate() {
     let weekOfDate;
     const dateParam =
@@ -168,16 +118,6 @@ export default class SessionsByWeek extends Vue {
     }
 
     return date.getMonday(weekOfDate);
-  }
-
-  get nextWeek() {
-    const today = moment(this.weekOfDate);
-    return date.getISODate(today.add(7, "day").toDate());
-  }
-
-  get previousWeek() {
-    const today = moment(this.weekOfDate);
-    return date.getISODate(today.add(-7, "day").toDate());
   }
 }
 </script>
