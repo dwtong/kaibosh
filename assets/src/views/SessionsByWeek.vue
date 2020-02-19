@@ -69,34 +69,7 @@
             :key="session.id"
             class="column is-half"
           >
-            <div class="card">
-              <header class="card-header">
-                <p class="card-header-title">
-                  {{ session.time }}
-                </p>
-              </header>
-
-              <div class="card-content">
-                <div v-if="session.recipients.length === 0">No recipients.</div>
-                <div v-else class="content">
-                  <div
-                    v-for="recipient in sortRecipients(session.recipients)"
-                    :key="recipient.id"
-                  >
-                    <AllocationRecipient :recipient="recipient" />
-                  </div>
-                </div>
-              </div>
-              <footer class="card-footer">
-                <router-link
-                  :to="
-                    `/sessions/${session.id}?date=${session.date.split(' ')[0]}`
-                  "
-                  class="card-footer-item"
-                  >View Session</router-link
-                >
-              </footer>
-            </div>
+            <SessionSummaryCard :session="session" />
           </div>
         </div>
       </div>
@@ -108,16 +81,20 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { BasesModule } from "../store/modules/bases";
-import AllocationRecipient from "@/components/AllocationRecipient.vue";
 import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
+import SessionSummaryCard from "@/components/SessionSummaryCard.vue";
 import Router from "@/router";
 import date from "@/helpers/date";
 import moment from "moment";
 import { sortBy } from "lodash";
 
 @Component({
-  components: { AllocationRecipient, BaseSelect, SessionSlotSelect }
+  components: {
+    BaseSelect,
+    SessionSlotSelect,
+    SessionSummaryCard
+  }
 })
 export default class SessionsByWeek extends Vue {
   sessionSlotId: string = "0";
@@ -142,11 +119,7 @@ export default class SessionsByWeek extends Vue {
   }
 
   sessionsForDay(day: string) {
-    return this.sessionSlots.filter(s => s.day === day);
-  }
-
-  sortRecipients(list: any) {
-    return sortBy(list, ["name"]);
+    return sortBy(this.sessionSlots.filter(s => s.day === day), "date");
   }
 
   dateForDay(day: string) {

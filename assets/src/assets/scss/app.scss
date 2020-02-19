@@ -63,6 +63,12 @@ $colors: map-merge($colors, $addColors);
       margin-left: 0.4rem;
     }
   }
+
+  &:not(.is-pulled-right) {
+    .button {
+      margin-right: 0.4rem;
+    }
+  }
 }
 
 .button {
