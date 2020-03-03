@@ -34,7 +34,7 @@ export default class AllocationsTable extends Vue {
   }
 
   allocationQuantityLabel(allocation: IAllocation) {
-    if (parseInt(allocation.quantity.charAt(0), 10)) {
+    if (parseFloat(allocation.quantity)) {
       return `${allocation.quantity_label} (max)`;
     } else {
       return "no limit";
