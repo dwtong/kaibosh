@@ -18,7 +18,7 @@
                   :value="getFoodQuantity(food)"
                   @input="setFoodQuantity(food, $event.target.value)"
                   :disabled="!food.enabled"
-                  type="number"
+                  type="text"
                 />
               </p>
               <p class="control">
@@ -94,21 +94,15 @@ export default class AllocationQuantitiesInput extends Vue {
     this.$emit("input", allocations);
   }
 
-  setFoodQuantity(food: IAllocationCategory, quantity: number) {
-    if (quantity && quantity > 0) {
-      food.quantity = quantity.toString();
-      food.enabled = true;
-    } else {
-      food.quantity = "0";
-      food.enabled = false;
-    }
+  setFoodQuantity(food: IAllocationCategory, quantity: string) {
+    food.quantity = quantity;
   }
 
   getFoodQuantity(food: IAllocationCategory): string {
-    if (parseInt(food.quantity, 10) > 0) {
-      return food.quantity.toString();
-    } else {
+    if (food.quantity == "0.0") {
       return "";
+    } else {
+      return food.quantity;
     }
   }
 }
