@@ -13,12 +13,10 @@
           <div class="level-item">
             <div class="field has-addons">
               <p class="control">
-                <input
-                  class="input food-quantity"
+                <AllocationQuantitesSelect
                   :value="getFoodQuantity(food)"
-                  @input="setFoodQuantity(food, $event.target.value)"
+                  @input="setFoodQuantity(food, $event)"
                   :disabled="!food.enabled"
-                  type="text"
                 />
               </p>
               <p class="control">
@@ -38,8 +36,9 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import { IAllocation, IAllocationCategory, IFoodCategory } from "../types";
 import { BasesModule } from "../store/modules/bases";
 import { sortBy } from "lodash";
+import AllocationQuantitesSelect from "@/components/form/AllocationQuantitesSelect.vue";
 
-@Component
+@Component({ components: { AllocationQuantitesSelect } })
 export default class AllocationQuantitiesInput extends Vue {
   @Prop() readonly value!: IAllocation[];
   allocationCategories: any = [];
@@ -63,7 +62,7 @@ export default class AllocationQuantitiesInput extends Vue {
         return {
           id: null,
           enabled: false,
-          quantity: 0,
+          quantity: "0.0",
           quantity_label: "",
           food_category_id: fc.id,
           name: fc.name
@@ -99,7 +98,7 @@ export default class AllocationQuantitiesInput extends Vue {
   }
 
   getFoodQuantity(food: IAllocationCategory): string {
-    if (food.quantity == "0.0") {
+    if (food.quantity === "0.0") {
       return "";
     } else {
       return food.quantity;
