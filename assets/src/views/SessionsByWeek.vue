@@ -1,23 +1,30 @@
 <template>
   <div>
-    <div class="title-box">
+    <div class="title-box is-hidden-print">
       <h1 class="title is-inline-block">Session Schedule</h1>
     </div>
     <div class="columns">
-      <div class="column">
-        <BaseSelect :value="baseId" required="true" @input="setBase" />
+      <div class="column is-hidden-print">
+        <BaseSelect class="" :value="baseId" required="true" @input="setBase" />
       </div>
-      <div class="column">
+      <div class="column is-hidden-print">
         <WeekDateControls :baseId="baseId" :date="weekOfDate" />
       </div>
     </div>
 
     <div v-if="showSessionOptions">
-      <div class="box" v-for="day in days" :key="day">
+      <div
+        class="box"
+        v-for="day in days"
+        :key="day"
+        :class="{ 'is-hidden-print': sessionsForDay(day).length === 0 }"
+      >
         <h2 class="title is-4">
           {{ dateForDay(day) | moment("dddd Do MMMM YYYY") }}
         </h2>
-        <div v-if="sessionsForDay(day).length === 0">No sessions.</div>
+        <div v-if="sessionsForDay(day).length === 0" class="is-hidden-print">
+          No sessions.
+        </div>
         <div v-else class="columns">
           <div
             v-for="session in sessionsForDay(day)"
@@ -123,7 +130,20 @@ export default class SessionsByWeek extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.box {
+  @media print {
+    padding: 10px;
+  }
+}
+
 .card-header {
   background-color: #e6e6e6;
+}
+
+.title {
+  @media print {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
 }
 </style>

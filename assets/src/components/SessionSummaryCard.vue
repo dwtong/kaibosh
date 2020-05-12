@@ -7,7 +7,9 @@
     </header>
 
     <div class="card-content">
-      <div v-if="session.recipients.length === 0">No recipients.</div>
+      <div v-if="session.recipients.length === 0" class="is-hidden-print">
+        No recipients.
+      </div>
       <div v-else class="content">
         <div
           v-for="recipient in sortRecipients(session.recipients)"
@@ -17,7 +19,7 @@
         </div>
       </div>
     </div>
-    <footer class="card-footer">
+    <footer class="card-footer is-hidden-print">
       <router-link
         :to="`/sessions/${session.id}?date=${session.date.split(' ')[0]}`"
         class="card-footer-item"
@@ -42,3 +44,19 @@ export default class SessionSummaryCard extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.card-content {
+  @media print {
+    padding: 5px;
+    font-size: 12px;
+  }
+}
+
+.card-header-title {
+  @media print {
+    padding: 5px;
+    font-size: 12px;
+  }
+}
+</style>

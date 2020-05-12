@@ -154,6 +154,7 @@ export default class SessionAllocations extends Vue {
   @media print {
     margin: 0;
     padding: 10px;
+    width: 50%;
   }
 }
 
@@ -172,9 +173,23 @@ export default class SessionAllocations extends Vue {
   }
 }
 
+.food-image {
+  @media print {
+    display: none;
+  }
+}
+
 .food-title {
   @media print {
-    font-size: 20px !important;
+    font-size: 16px !important;
+    background-color: rgb(200, 200, 200);
+    padding: 4px;
+  }
+}
+
+.media {
+  @media print {
+    margin-bottom: 10px !important;
   }
 }
 
@@ -187,13 +202,27 @@ export default class SessionAllocations extends Vue {
 .title-box {
   height: 100px !important;
 
+  @media print {
+    height: 60px !important;
+  }
+
   .subtitle {
     margin-top: 0.4rem !important;
+
+    @media print {
+      font-size: 20px;
+      margin-top: 0px !important;
+    }
   }
 
   .title {
     margin-left: 0 !important;
     margin-bottom: 0.4rem !important;
+
+    @media print {
+      font-size: 20px;
+      margin-bottom: 0px !important;
+    }
   }
 }
 </style>

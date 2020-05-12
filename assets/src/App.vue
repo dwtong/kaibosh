@@ -35,6 +35,10 @@ export default class App extends Vue {
   min-height: 100vh;
   overflow: hidden;
 
+  @media print {
+    background-color: white;
+  }
+
   &.with-nav {
     margin-left: $navbar-width;
     @media print {
