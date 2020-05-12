@@ -18,16 +18,16 @@ $github-invert: findColorInvert($github);
 $addColors: (
   "twitter": (
     $twitter,
-    $twitter-invert
+    $twitter-invert,
   ),
   "linkedin": (
     $linkedin,
-    $linkedin-invert
+    $linkedin-invert,
   ),
   "github": (
     $github,
-    $github-invert
-  )
+    $github-invert,
+  ),
 );
 $colors: map-merge($colors, $addColors);
 
@@ -80,6 +80,14 @@ $colors: map-merge($colors, $addColors);
 .is-hidden-print {
   @media print {
     display: none;
+  }
+}
+
+.print-only {
+  display: none;
+
+  @media print {
+    display: inherit;
   }
 }
 
