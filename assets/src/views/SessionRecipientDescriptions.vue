@@ -1,6 +1,11 @@
 <template>
   <div class="page">
-    <div class="field buttons is-pulled-right with-margins">
+    <div class="field buttons is-pulled-right with-margins is-hidden-print">
+      <p class="control">
+        <b-checkbox class="with-margins" type="is-info" v-model="includeOnHold"
+          >Include recipients that are on hold</b-checkbox
+        >
+      </p>
       <p class="control">
         <button class="button is-primary" @click="goBack">
           Back to session
@@ -15,20 +20,13 @@
       {{ sessionDate | moment("dddd h:mma") }}
     </h1>
 
-    <b-checkbox
-      class="with-margins is-pulled-right"
-      type="is-info"
-      v-model="includeOnHold"
-      >Include recipients that are on hold</b-checkbox
-    >
-
     <div
       class="recipient with-margins"
       v-for="recipient in recipients"
       :key="recipient.id"
     >
       <h2 class="subtitle">{{ recipient.name }}</h2>
-      <p>{{ recipient.description }}</p>
+      <div v-html="recipient.description"></div>
     </div>
   </div>
 </template>
@@ -95,21 +93,21 @@ export default class GenerateDescriptionsButton extends Vue {
   left: 0;
   top: 0;
   background-color: white;
-  font-size: 24px;
+  font-size: 16px;
   color: black;
 }
 
 .title {
   margin-top: 2rem;
-  font-size: 40px;
+  font-size: 24px;
   color: black;
 }
 
 .subtitle {
-  margin-top: 3rem;
-  margin-bottom: 0.7rem !important;
+  margin-top: 35px;
+  margin-bottom: 5px !important;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 18px;
   color: black;
 }
 </style>

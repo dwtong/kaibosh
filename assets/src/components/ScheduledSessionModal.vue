@@ -108,7 +108,7 @@ export default class ScheduledSessionModal extends Vue {
 
 <style lang="scss" scoped>
 .modal-card {
-  width: 400px;
+  width: 450px;
 }
 
 .modal-card-foot {

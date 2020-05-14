@@ -58,6 +58,7 @@
             :isLoading="isLoading"
             label="Description"
             :value="details.description"
+            renderHTML="true"
           />
         </div>
 

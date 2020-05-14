@@ -3,7 +3,8 @@
     <label class="label">{{ label }}</label>
     <transition name="fade">
       <div v-if="value && !isLoading" class="control">
-        <p class="text">{{ value }}</p>
+        <p v-if="renderHTML" class="text" v-html="value"></p>
+        <p v-else class="text">{{ value }}</p>
       </div>
     </transition>
   </div>
@@ -18,6 +19,7 @@ export default class InfoField extends Vue {
   @Prop({ default: "" }) readonly label!: string;
   @Prop({ default: "" }) readonly value!: string;
   @Prop({ default: false }) readonly isLoading!: boolean;
+  @Prop({ default: false }) readonly renderHTML!: boolean;
 }
 </script>
 
