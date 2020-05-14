@@ -49,8 +49,10 @@ class Bases extends VuexModule {
 
   @Action
   async fetchFoodCategories() {
-    const categories = await FoodCategoryService.get();
-    this.context.commit("setFoodCategories", categories);
+    if (this.foodCategories.length === 0) {
+      const categories = await FoodCategoryService.get();
+      this.context.commit("setFoodCategories", categories);
+    }
   }
 
   @Mutation
@@ -60,8 +62,10 @@ class Bases extends VuexModule {
 
   @Action
   async fetchBases() {
-    const bases = await BaseService.get();
-    this.context.commit("setBases", bases);
+    if (this.list.length === 0) {
+      const bases = await BaseService.get();
+      this.context.commit("setBases", bases);
+    }
   }
 
   @Mutation
