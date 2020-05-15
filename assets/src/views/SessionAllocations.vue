@@ -36,7 +36,7 @@
             <figure class="image is-5by1">
               <img
                 class="food-image"
-                :src="imagePath(category.food_category.name)"
+                :src="imagePath(category.food_category.image_name)"
                 alt
               />
             </figure>
@@ -106,10 +106,9 @@ export default class SessionAllocations extends Vue {
     return sortBy(list, ["recipient.status", "recipient.name"]);
   }
 
-  imagePath(str: string) {
-    const fileName = snakeCase(str);
+  imagePath(imageName: string) {
     const images = require.context("@/assets/images/foods", false, /\.png$/);
-    return images("./" + fileName + "-min.png");
+    return images("./" + imageName + "-min.png");
   }
 
   quantity(allocation: any) {
