@@ -1,11 +1,5 @@
 import Store from "@/store";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import auth from "@/helpers/auth";
 import AuthService from "@/services/auth-service";
 import UserService from "@/services/user-service";

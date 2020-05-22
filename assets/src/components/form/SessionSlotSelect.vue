@@ -13,9 +13,7 @@
       v-validate="{ required: required }"
       expanded
     >
-      <option v-for="slot in sessionSlots" :key="slot.id" :value="slot.id">
-        {{ slot.day }} - {{ slot.time }}
-      </option>
+      <option v-for="slot in sessionSlots" :key="slot.id" :value="slot.id"> {{ slot.day }} - {{ slot.time }} </option>
     </b-select>
   </b-field>
 </template>

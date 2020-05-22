@@ -2,9 +2,7 @@
   <form @submit.prevent="">
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">
-          {{ this.session ? "Edit " : "Add" }} Sorting Session
-        </p>
+        <p class="modal-card-title">{{ this.session ? "Edit " : "Add" }} Sorting Session</p>
       </header>
 
       <section class="modal-card-body">
@@ -67,9 +65,7 @@ export default class ScheduledSessionModal extends Vue {
 
   created() {
     if (this.session) {
-      this.allocations = this.session.allocations
-        ? [...this.session.allocations]
-        : [];
+      this.allocations = this.session.allocations ? [...this.session.allocations] : [];
 
       this.selectedSessionSlotId = this.session.session_slot!.id;
     }
@@ -78,8 +74,7 @@ export default class ScheduledSessionModal extends Vue {
   get sessionIsValid() {
     const isExistingSession = !!this.session;
     const newSessionExists = this.sessions!.find(
-      (s: IScheduledSession) =>
-        s.session_slot && s.session_slot.id === this.selectedSessionSlotId
+      (s: IScheduledSession) => s.session_slot && s.session_slot.id === this.selectedSessionSlotId
     );
     return isExistingSession || !newSessionExists;
   }

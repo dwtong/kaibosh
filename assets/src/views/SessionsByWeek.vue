@@ -13,12 +13,7 @@
     </div>
 
     <div v-if="showSessionOptions">
-      <div
-        class="box"
-        v-for="day in days"
-        :key="day"
-        :class="{ 'is-hidden-print': sessionsForDay(day).length === 0 }"
-      >
+      <div class="box" v-for="day in days" :key="day" :class="{ 'is-hidden-print': sessionsForDay(day).length === 0 }">
         <h2 class="title is-4">
           {{ dateForDay(day) | moment("dddd Do MMMM YYYY") }}
         </h2>
@@ -26,11 +21,7 @@
           No sessions.
         </div>
         <div v-else class="columns">
-          <div
-            v-for="session in sessionsForDay(day)"
-            :key="session.id"
-            class="column is-half"
-          >
+          <div v-for="session in sessionsForDay(day)" :key="session.id" class="column is-half">
             <SessionSummaryCard :session="session" />
           </div>
         </div>
@@ -83,7 +74,10 @@ export default class SessionsByWeek extends Vue {
   }
 
   sessionsForDay(day: string) {
-    return sortBy(this.sessionSlots.filter(s => s.day === day), "date");
+    return sortBy(
+      this.sessionSlots.filter(s => s.day === day),
+      "date"
+    );
   }
 
   dateForDay(day: string) {
@@ -115,8 +109,7 @@ export default class SessionsByWeek extends Vue {
 
   get weekOfDate() {
     let weekOfDate;
-    const dateParam =
-      this.$route.query.date && this.$route.query.date.toString();
+    const dateParam = this.$route.query.date && this.$route.query.date.toString();
 
     if (dateParam && dateParam.length > 0) {
       weekOfDate = new Date(dateParam);

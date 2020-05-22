@@ -5,21 +5,10 @@
       <h1 class="title">Organisation Details</h1>
 
       <InputField name="name" v-model="recipient.name" required="true" />
-      <BaseSelect
-        v-model="recipient.base_id"
-        label="Kaibosh base"
-        required="true"
-      />
-      <AddressField
-        v-model="recipient.physical_address"
-        label="Physical address"
-      />
+      <BaseSelect v-model="recipient.base_id" label="Kaibosh base" required="true" />
+      <AddressField v-model="recipient.physical_address" label="Physical address" />
       <DateField name="start date" v-model="startedAt" />
-      <InputField
-        name="description"
-        v-model="recipient.description"
-        type="textarea"
-      />
+      <InputField name="description" v-model="recipient.description" type="textarea" />
     </div>
 
     <div class="box">
@@ -91,11 +80,7 @@ export default class RecipientForm extends Vue {
         // TODO: Handle date formatting consistently - either format in backend or frontend
         // @ts-ignore
         const dateValues = ActiveRecipientModule.details.started_at.split("/");
-        this.startedAt = new Date(
-          dateValues[2],
-          dateValues[1] - 1,
-          dateValues[0]
-        );
+        this.startedAt = new Date(dateValues[2], dateValues[1] - 1, dateValues[0]);
       }
     }
 

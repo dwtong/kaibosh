@@ -1,10 +1,6 @@
 <template>
   <table>
-    <tr
-      v-for="allocation in sortedAllocations"
-      :key="allocation.id"
-      :allocation="allocation"
-    >
+    <tr v-for="allocation in sortedAllocations" :key="allocation.id" :allocation="allocation">
       <td>{{ allocation.foodCategory }}</td>
       <td>{{ allocation.quantityLabel }}</td>
     </tr>

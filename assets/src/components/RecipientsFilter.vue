@@ -2,11 +2,7 @@
   <div>
     <div class="filter-box">
       <p class="subtitle">Filter By Base</p>
-      <BaseSelect
-        @input="updateBaseFilter($event)"
-        :value="filteredBase"
-        all="true"
-      />
+      <BaseSelect @input="updateBaseFilter($event)" :value="filteredBase" all="true" />
     </div>
 
     <div class="filter-box">
@@ -27,12 +23,7 @@
 
     <div class="filter-box">
       <p class="subtitle">Filter By Status</p>
-      <div
-        v-for="filter in filteredStatus"
-        :key="filter.name"
-        :id="filter.name + '-filter'"
-        class="field"
-      >
+      <div v-for="filter in filteredStatus" :key="filter.name" :id="filter.name + '-filter'" class="field">
         <b-checkbox
           @input="toggleStatusFilter(filter.name)"
           :name="filter.name"

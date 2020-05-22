@@ -20,11 +20,7 @@
       {{ sessionDate | moment("dddd h:mma") }}
     </h1>
 
-    <div
-      class="recipient with-margins"
-      v-for="recipient in recipients"
-      :key="recipient.id"
-    >
+    <div class="recipient with-margins" v-for="recipient in recipients" :key="recipient.id">
       <h2 class="subtitle">{{ recipient.name }}</h2>
       <div v-html="recipient.description"></div>
     </div>
@@ -47,9 +43,7 @@ export default class GenerateDescriptionsButton extends Vue {
     if (this.includeOnHold) {
       return SessionSlotsModule.orderedRecipients;
     } else {
-      return SessionSlotsModule.orderedRecipients.filter(
-        r => r.status !== "on_hold"
-      );
+      return SessionSlotsModule.orderedRecipients.filter(r => r.status !== "on_hold");
     }
   }
 

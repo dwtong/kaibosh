@@ -4,10 +4,7 @@
     <div class="title-box">
       <div class="field buttons is-pulled-right">
         <p class="control">
-          <router-link
-            :to="`/sessions/${id}/descriptions`"
-            tag="button"
-            class="button is-primary"
+          <router-link :to="`/sessions/${id}/descriptions`" tag="button" class="button is-primary"
             >Recipient Descriptions</router-link
           >
         </p>
@@ -26,19 +23,11 @@
     </div>
 
     <div class="columns is-multiline is-centered">
-      <div
-        v-for="category in foodCategories"
-        :key="category.id"
-        class="column card-column"
-      >
+      <div v-for="category in foodCategories" :key="category.id" class="column card-column">
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img
-                class="food-image"
-                :src="imagePath(category.food_category.image_name)"
-                alt
-              />
+              <img class="food-image" :src="imagePath(category.food_category.image_name)" alt />
             </figure>
           </div>
           <div class="card-content">
@@ -51,15 +40,8 @@
             </div>
 
             <div class="content">
-              <div
-                v-for="allocation in sortCategories(category.allocations)"
-                :key="allocation.id"
-              >
-                <AllocationRecipient
-                  v-if="!isLoading"
-                  :allocation="allocation"
-                  :recipient="allocation.recipient"
-                />
+              <div v-for="allocation in sortCategories(category.allocations)" :key="allocation.id">
+                <AllocationRecipient v-if="!isLoading" :allocation="allocation" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>

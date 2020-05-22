@@ -45,9 +45,7 @@ describe("RecipientsTableFilter.vue", () => {
 
     it("renders active status label", () => {
       const wrapper = mount(RecipientsTableFilter, { store, localVue, stubs });
-      const activeStatusLabel = wrapper.find(
-        "#active-filter > .b-checkbox > .control-label"
-      );
+      const activeStatusLabel = wrapper.find("#active-filter > .b-checkbox > .control-label");
       expect(activeStatusLabel.text()).toEqual("Active");
     });
 

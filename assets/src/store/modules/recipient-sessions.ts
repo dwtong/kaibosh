@@ -1,13 +1,7 @@
 import Vue from "vue";
 import Store from "@/store";
 import { IHold, IScheduledSession } from "@/types";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import HoldService from "@/services/session-hold-service";
 import ScheduledSessionService from "@/services/scheduled-session-service";
@@ -26,9 +20,7 @@ class RecipientSessions extends VuexModule {
   @Action
   async fetchSessions(recipientId: string) {
     try {
-      const sessions = await ScheduledSessionService.getForRecipient(
-        recipientId
-      );
+      const sessions = await ScheduledSessionService.getForRecipient(recipientId);
       this.context.commit("setSessions", sessions);
     } catch (e) {
       this.context.commit("setErrors", e);
@@ -47,9 +39,7 @@ class RecipientSessions extends VuexModule {
 
   @Mutation
   modifySession(updatedSession: IScheduledSession, sessionId: string) {
-    const sessionIndex = this.sessions.findIndex(
-      (s: IScheduledSession) => s.id === sessionId
-    );
+    const sessionIndex = this.sessions.findIndex((s: IScheduledSession) => s.id === sessionId);
     Vue.set(this.sessions, sessionIndex, updatedSession);
   }
 

@@ -1,12 +1,6 @@
 import { IBase, IFoodCategory, ISessionSlot } from "@/types";
 import Store from "@/store";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { sortBy } from "lodash";
 import BaseService from "@/services/base-service";
 import FoodCategoryService from "@/services/food-category-service";
@@ -74,13 +68,7 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchSessionSlots({
-    baseId: baseId,
-    date: date
-  }: {
-    baseId: string;
-    date?: string;
-  }) {
+  async fetchSessionSlots({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
     const bases = await SessionSlotService.getForBase(baseId, date);
     this.context.commit("setSessionSlots", bases);
   }

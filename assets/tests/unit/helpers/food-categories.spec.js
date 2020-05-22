@@ -42,15 +42,10 @@ const sessionWithAllocations = {
 
 describe("mapEnabledFoodCategories", () => {
   it("marks food categories as enabled when session allocation exists", () => {
-    const categories = mapEnabledFoodCategories(
-      sessionWithAllocations,
-      foodCategories
-    );
+    const categories = mapEnabledFoodCategories(sessionWithAllocations, foodCategories);
 
     const expected = sessionWithAllocations.allocations[0];
-    const actual = categories.find(
-      c => c.id == sessionWithAllocations.allocations[0].id
-    );
+    const actual = categories.find(c => c.id == sessionWithAllocations.allocations[0].id);
 
     expect(categories.filter(c => c.enabled).length).toEqual(3);
     expect(actual.id).toEqual(expected.id);
@@ -61,10 +56,7 @@ describe("mapEnabledFoodCategories", () => {
   });
 
   it("marks food categories as disabled when no session allocation exists", () => {
-    const categories = mapEnabledFoodCategories(
-      sessionWithoutAllocations,
-      foodCategories
-    );
+    const categories = mapEnabledFoodCategories(sessionWithoutAllocations, foodCategories);
 
     const expected = foodCategories[0];
     const actual = categories.find(c => c.food_category_id == expected.id);
@@ -78,10 +70,7 @@ describe("mapEnabledFoodCategories", () => {
   });
 
   it("includes both enabled and disabled categories", () => {
-    const categories = mapEnabledFoodCategories(
-      sessionWithAllocations,
-      foodCategories
-    );
+    const categories = mapEnabledFoodCategories(sessionWithAllocations, foodCategories);
 
     expect(categories.length).toEqual(9);
     expect(categories.filter(c => c.enabled == true).length).toEqual(3);
@@ -89,10 +78,7 @@ describe("mapEnabledFoodCategories", () => {
   });
 
   it("returns categories in alphabetical order", () => {
-    const categories = mapEnabledFoodCategories(
-      sessionWithAllocations,
-      foodCategories
-    );
+    const categories = mapEnabledFoodCategories(sessionWithAllocations, foodCategories);
 
     expect(categories[0].name).toEqual("Bakery");
     expect(categories[8].name).toEqual("Sandwiches");

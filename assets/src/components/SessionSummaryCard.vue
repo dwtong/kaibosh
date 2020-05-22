@@ -11,18 +11,13 @@
         No recipients.
       </div>
       <div v-else class="content">
-        <div
-          v-for="recipient in sortRecipients(session.recipients)"
-          :key="recipient.id"
-        >
+        <div v-for="recipient in sortRecipients(session.recipients)" :key="recipient.id">
           <AllocationRecipient :recipient="recipient" />
         </div>
       </div>
     </div>
     <footer class="card-footer is-hidden-print">
-      <router-link
-        :to="`/sessions/${session.id}?date=${session.date.split(' ')[0]}`"
-        class="card-footer-item"
+      <router-link :to="`/sessions/${session.id}?date=${session.date.split(' ')[0]}`" class="card-footer-item"
         >View Session</router-link
       >
     </footer>

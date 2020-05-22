@@ -1,8 +1,6 @@
 <template>
   <div class="field">
-    <b-checkbox :value="value" @input="$emit('input', $event)" type="is-info">{{
-      label
-    }}</b-checkbox>
+    <b-checkbox :value="value" @input="$emit('input', $event)" type="is-info">{{ label }}</b-checkbox>
   </div>
 </template>
 

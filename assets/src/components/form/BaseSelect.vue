@@ -14,9 +14,7 @@
       expanded
     >
       <option v-if="all" :value="allValue">All</option>
-      <option v-for="base in list" :key="base.id" :value="base.id">{{
-        base.name
-      }}</option>
+      <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>
     </b-select>
   </b-field>
 </template>

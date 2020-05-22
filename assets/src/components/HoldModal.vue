@@ -8,13 +8,7 @@
       <section class="modal-card-body">
         <div class="columns">
           <div class="column">
-            <DateField
-              name="start date"
-              v-model="startDate"
-              required="true"
-              ref="startDate"
-              data-vv-as="start date"
-            />
+            <DateField name="start date" v-model="startDate" required="true" ref="startDate" data-vv-as="start date" />
             <DateField
               :required="!disableEndDate"
               name="End date"
@@ -24,12 +18,7 @@
               data-vv-as="end date"
             />
 
-            <b-checkbox
-              type="is-info"
-              @input="toggleEndDate"
-              class="end-date-checkbox"
-              >No end date</b-checkbox
-            >
+            <b-checkbox type="is-info" @input="toggleEndDate" class="end-date-checkbox">No end date</b-checkbox>
           </div>
         </div>
         <p class="subtitle">Sessions</p>
@@ -43,12 +32,7 @@
         >
 
         <div v-for="session in sessions" :key="session.id">
-          <b-checkbox
-            type="is-info"
-            class="end-date-checkbox"
-            v-model="session.enabled"
-            :disabled="allSessions"
-          >
+          <b-checkbox type="is-info" class="end-date-checkbox" v-model="session.enabled" :disabled="allSessions">
             {{ sessionSlotLabel(session) }}
           </b-checkbox>
         </div>

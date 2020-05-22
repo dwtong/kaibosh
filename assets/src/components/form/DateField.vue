@@ -1,9 +1,5 @@
 <template>
-  <b-field
-    :label="label"
-    :type="{ 'is-danger': $validator.errors.has(name) }"
-    :message="$validator.errors.first(name)"
-  >
+  <b-field :label="label" :type="{ 'is-danger': $validator.errors.has(name) }" :message="$validator.errors.first(name)">
     <b-datepicker
       placeholder="Click to select..."
       :value="value"

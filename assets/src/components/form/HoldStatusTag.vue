@@ -1,7 +1,5 @@
 <template>
-  <b-tag rounded :type="labelType" size="is-medium">{{
-    status ? status : "active"
-  }}</b-tag>
+  <b-tag rounded :type="labelType" size="is-medium">{{ status ? status : "active" }}</b-tag>
 </template>
 
 <script lang="ts">

@@ -1,15 +1,7 @@
 <template>
   <b-field>
-    <b-select
-      :disabled="disabled"
-      :value="value"
-      @input="$emit('input', $event)"
-    >
-      <option
-        v-for="option in options"
-        :key="option.value"
-        :value="disabled ? null : option.value"
-      >
+    <b-select :disabled="disabled" :value="value" @input="$emit('input', $event)">
+      <option v-for="option in options" :key="option.value" :value="disabled ? null : option.value">
         {{ option.name }}
       </option>
     </b-select>

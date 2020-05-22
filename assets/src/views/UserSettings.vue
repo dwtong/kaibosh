@@ -15,12 +15,7 @@
       <div class="box">
         <h1 class="title">Add New User</h1>
         <form @submit.prevent="addUser">
-          <InputField
-            name="email"
-            v-model="newUserEmail"
-            type="email"
-            :validation="{ email: true }"
-          />
+          <InputField name="email" v-model="newUserEmail" type="email" :validation="{ email: true }" />
           <button type="submit" class="button is-primary is-pulled-right">
             Create User
           </button>

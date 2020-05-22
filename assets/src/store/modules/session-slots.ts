@@ -1,13 +1,7 @@
 import { sortBy } from "lodash";
 import { ISessionSlot } from "@/types";
 import Store from "@/store";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import AllocationService from "@/services/allocation-service";
 import SessionSlotService from "@/services/session-slot-service";
 
@@ -34,17 +28,8 @@ class SessionSlots extends VuexModule {
   }
 
   @Action
-  async fetchAllocationsForSlot({
-    sessionSlotId,
-    sessionDate
-  }: {
-    sessionSlotId: string;
-    sessionDate: string;
-  }) {
-    const {
-      food_allocations,
-      date
-    } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
+  async fetchAllocationsForSlot({ sessionSlotId, sessionDate }: { sessionSlotId: string; sessionDate: string }) {
+    const { food_allocations, date } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
     this.context.commit("setDate", date);
     this.context.commit("setAllocations", food_allocations);
   }

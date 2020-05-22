@@ -2,12 +2,7 @@
   <form @submit.prevent>
     <h1 class="title">Update Password</h1>
 
-    <InputField
-      name="password"
-      v-model="password"
-      type="password"
-      :validation="{ required: true, min: 8 }"
-    />
+    <InputField name="password" v-model="password" type="password" :validation="{ required: true, min: 8 }" />
     <InputField
       name="confirm-password"
       v-model="passwordConfirmation"

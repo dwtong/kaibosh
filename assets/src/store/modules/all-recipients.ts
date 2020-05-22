@@ -1,13 +1,7 @@
 import RecipientService from "@/services/recipient-service";
 import Store from "@/store";
 import { IRecipientListItem, IStatus } from "@/types";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 @Module({ name: "allRecipients", store: Store, dynamic: true })
 class AllRecipients extends VuexModule {
@@ -35,9 +29,7 @@ class AllRecipients extends VuexModule {
     }
 
     if (this.filteredName && this.filteredName !== "") {
-      list = list.filter(r =>
-        r.name.toLowerCase().includes(this.filteredName!.toLowerCase())
-      );
+      list = list.filter(r => r.name.toLowerCase().includes(this.filteredName!.toLowerCase()));
     }
 
     if (this.filteredBase && this.filteredBase.toString() !== "0") {

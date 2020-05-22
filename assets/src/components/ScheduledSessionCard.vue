@@ -1,16 +1,10 @@
 <template>
   <b-collapse aria-id="contentIdForA11y3" :open="isOpen" class="session-card">
-    <div
-      slot="trigger"
-      aria-controls="contentIdForA11y3"
-      class="level box header"
-    >
+    <div slot="trigger" aria-controls="contentIdForA11y3" class="level box header">
       <div class="level-left">
         <div class="level-item">
           <p>
-            <span class="has-text-weight-semibold is-size-5 day-text"
-              >{{ session.session_slot.day }}
-            </span>
+            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.session_slot.day }} </span>
             <span class="is-size-5">{{ session.session_slot.time }}</span>
           </p>
         </div>

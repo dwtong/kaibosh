@@ -21,45 +21,19 @@
       </div>
     </div>
 
-    <RecipientMessageBox
-      v-if="!isLoading"
-      :status="status"
-      @reactivate="reactivateRecipient"
-    />
+    <RecipientMessageBox v-if="!isLoading" :status="status" @reactivate="reactivateRecipient" />
 
     <div v-if="status !== 'archived'" class="columns">
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
 
-          <RecipientStatusTag
-            :status="status"
-            withLabel="true"
-            size="is-medium"
-            :isLoading="isLoading"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Full Legal Name"
-            :value="details.name"
-          />
+          <RecipientStatusTag :status="status" withLabel="true" size="is-medium" :isLoading="isLoading" />
+          <InfoField :isLoading="isLoading" label="Full Legal Name" :value="details.name" />
           <InfoField :isLoading="isLoading" label="Base" :value="baseName" />
-          <InfoField
-            :isLoading="isLoading"
-            label="Physical Address"
-            :value="details.physical_address"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Start Date"
-            :value="details.started_at"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Description"
-            :value="details.description"
-            renderHTML="true"
-          />
+          <InfoField :isLoading="isLoading" label="Physical Address" :value="details.physical_address" />
+          <InfoField :isLoading="isLoading" label="Start Date" :value="details.started_at" />
+          <InfoField :isLoading="isLoading" label="Description" :value="details.description" renderHTML="true" />
         </div>
 
         <div class="box">
@@ -83,26 +57,10 @@
         <div class="box">
           <h2 class="title is-4">Primary Contact</h2>
 
-          <InfoField
-            :isLoading="isLoading"
-            label="Name"
-            :value="contact.name"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Email"
-            :value="contact.email"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Mobile"
-            :value="contact.phone_mobile"
-          />
-          <InfoField
-            :isLoading="isLoading"
-            label="Landline"
-            :value="contact.phone_landline"
-          />
+          <InfoField :isLoading="isLoading" label="Name" :value="contact.name" />
+          <InfoField :isLoading="isLoading" label="Email" :value="contact.email" />
+          <InfoField :isLoading="isLoading" label="Mobile" :value="contact.phone_mobile" />
+          <InfoField :isLoading="isLoading" label="Landline" :value="contact.phone_landline" />
         </div>
 
         <div class="box">
@@ -126,19 +84,13 @@
                     Add Hold Date
                   </a>
                 </b-tooltip>
-                <a v-else @click="openHoldModal" class="button is-warning"
-                  >Add Hold Date</a
-                >
+                <a v-else @click="openHoldModal" class="button is-warning">Add Hold Date</a>
               </p>
             </div>
           </div>
 
           <div v-if="!isLoading">
-            <div
-              v-for="session in scheduledSessions"
-              :key="session.id"
-              class="sessions-box"
-            >
+            <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
               <ScheduledSessionCard
                 :session="session"
                 @edit="openEditSessionModal(session)"
@@ -159,10 +111,7 @@
         </b-modal>
 
         <b-modal :active.sync="isHoldModalActive" has-modal-card>
-          <HoldModal
-            @close="isHoldModalActive = false"
-            :scheduledSessions="scheduledSessions"
-          />
+          <HoldModal @close="isHoldModalActive = false" :scheduledSessions="scheduledSessions" />
         </b-modal>
       </div>
     </div>
@@ -199,8 +148,8 @@ import { sortBy } from "lodash";
 })
 export default class ShowRecipient extends Vue {
   @Prop(String) readonly id!: string;
-  isHoldModalActive: boolean = false;
-  isScheduledSessionModalActive: boolean = false;
+  isHoldModalActive = false;
+  isScheduledSessionModalActive = false;
   selectedSession: IScheduledSession | null = null;
   isLoading = true;
 
@@ -255,9 +204,7 @@ export default class ShowRecipient extends Vue {
     this.isLoading = true;
 
     if (ActiveRecipientModule.details.id) {
-      await ActiveRecipientModule.archiveRecipient(
-        ActiveRecipientModule.details.id
-      );
+      await ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
       await ActiveRecipientModule.fetchRecipientStatus(this.id);
     }
 

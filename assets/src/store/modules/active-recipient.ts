@@ -1,13 +1,7 @@
 import Vue from "vue";
 import Store from "@/store";
 import { IRecipient, IHold } from "@/types";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import RecipientService from "@/services/recipient-service";
 
 const defaultRecipientDetails = {
@@ -83,10 +77,7 @@ class ActiveRecipient extends VuexModule {
 
   @Action
   async updateRecipient(recipient: any) {
-    const updatedRecipient = await RecipientService.update(
-      recipient.id,
-      recipient
-    );
+    const updatedRecipient = await RecipientService.update(recipient.id, recipient);
     this.context.commit("setRecipientDetails", updatedRecipient);
   }
 

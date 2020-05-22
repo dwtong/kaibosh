@@ -18,10 +18,10 @@ module.exports = {
       proxy: {
         "^/api": {
           target: "http://localhost:3000",
-          changeOrigin: true,
-        },
-      },
+          changeOrigin: true
+        }
+      }
     },
-    plugins: [new CompressionPlugin()],
+    plugins: [new CompressionPlugin()]
   }
 };
