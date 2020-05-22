@@ -49,22 +49,22 @@ class RecipientSessions extends VuexModule {
       await HoldService.create(hold);
     }
 
-    const session = this.sessionById(holds[0].session_id);
+    const session = this.sessionById(holds[0].sessionId);
 
-    if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
-      this.fetchSessions(session.recipient_id);
+    if (session && session.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 
   @Action
   async deleteHold(hold: IHold) {
     await HoldService.destroy(hold.id!);
-    const session = this.sessionById(hold.session_id);
+    const session = this.sessionById(hold.sessionId);
 
-    if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
-      this.fetchSessions(session.recipient_id);
+    if (session && session.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 
@@ -72,9 +72,9 @@ class RecipientSessions extends VuexModule {
   async createSession(session: IScheduledSession) {
     await ScheduledSessionService.create({ session });
 
-    if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
-      this.fetchSessions(session.recipient_id);
+    if (session && session.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 
@@ -82,9 +82,9 @@ class RecipientSessions extends VuexModule {
   async updateSession(session: IScheduledSession) {
     await ScheduledSessionService.update(session.id!, { session });
 
-    if (session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
-      this.fetchSessions(session.recipient_id);
+    if (session.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 
@@ -93,9 +93,9 @@ class RecipientSessions extends VuexModule {
     await ScheduledSessionService.destroy(sessionId);
     const session = this.sessionById(sessionId);
 
-    if (session && session.recipient_id) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipient_id);
-      this.fetchSessions(session.recipient_id);
+    if (session && session.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 }

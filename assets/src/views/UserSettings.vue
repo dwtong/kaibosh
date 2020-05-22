@@ -35,6 +35,7 @@ import toast from "@/helpers/toast";
 
 @Component({
   components: { PasswordResetForm, InputField },
+  // eslint-disable-next-line @typescript-eslint/camelcase
   $_veeValidate: { validator: "new" }
 })
 export default class UserSettings extends Vue {

@@ -64,6 +64,7 @@ import toast from "@/helpers/toast";
 
 @Component({
   components: { AllocationQuantitiesInput, DateField },
+  // eslint-disable-next-line @typescript-eslint/camelcase
   $_veeValidate: { validator: "new" }
 })
 export default class HoldModal extends Vue {
@@ -97,9 +98,9 @@ export default class HoldModal extends Vue {
       .filter(s => s.enabled)
       .map(s => {
         return {
-          session_id: s.id!,
-          starts_at: this.startDate.toString(),
-          ends_at: endDate ? endDate.toString() : ""
+          sessionId: s.id!,
+          startsAt: this.startDate.toString(),
+          endsAt: endDate ? endDate.toString() : ""
         };
       })
       .filter(h => h !== null);
@@ -115,8 +116,8 @@ export default class HoldModal extends Vue {
   }
 
   sessionSlotLabel(session: IScheduledSession) {
-    if (session.session_slot) {
-      return `${session.session_slot.day} ${session.session_slot.time}`;
+    if (session.sessionSlot) {
+      return `${session.sessionSlot.day} ${session.sessionSlot.time}`;
     } else {
       return "";
     }

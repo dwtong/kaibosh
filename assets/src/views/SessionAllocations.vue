@@ -95,7 +95,7 @@ export default class SessionAllocations extends Vue {
 
   quantity(allocation: any) {
     if (parseInt(allocation.quantity, 10) > 0) {
-      return `(${allocation.quantity_label})`;
+      return `(${allocation.quantityLabel})`;
     } else {
       return "";
     }

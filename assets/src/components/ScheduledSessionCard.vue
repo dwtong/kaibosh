@@ -4,15 +4,15 @@
       <div class="level-left">
         <div class="level-item">
           <p>
-            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.session_slot.day }} </span>
-            <span class="is-size-5">{{ session.session_slot.time }}</span>
+            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.sessionSlot.day }} </span>
+            <span class="is-size-5">{{ session.sessionSlot.time }}</span>
           </p>
         </div>
       </div>
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <HoldStatusTag :status="session.hold_status" />
+          <HoldStatusTag :status="session.holdStatus" />
         </div>
       </div>
     </div>

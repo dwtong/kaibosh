@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="food in allocationCategories" :key="food.food_category_id">
+    <div v-for="food in allocationCategories" :key="food.foodCategoryId">
       <div class="level box" :class="{ disabled: food.enabled == false }">
         <div class="level-left">
           <div class="level-item">
@@ -47,15 +47,15 @@ export default class AllocationQuantitiesInput extends Vue {
     const allocations = this.value;
 
     const allocationCategories = BasesModule.foodCategories.map(fc => {
-      const allocation = allocations.find(a => a.food_category_id === fc.id);
+      const allocation = allocations.find(a => a.foodCategoryId === fc.id);
 
       if (allocation) {
         return {
           id: allocation.id,
           enabled: true,
           quantity: allocation.quantity,
-          quantity_label: allocation.quantity_label,
-          food_category_id: fc.id,
+          quantityLabel: allocation.quantityLabel,
+          foodCategoryId: fc.id,
           name: fc.name
         };
       } else {
@@ -63,8 +63,8 @@ export default class AllocationQuantitiesInput extends Vue {
           id: null,
           enabled: false,
           quantity: "0.0",
-          quantity_label: "",
-          food_category_id: fc.id,
+          quantityLabel: "",
+          foodCategoryId: fc.id,
           name: fc.name
         };
       }
@@ -79,7 +79,7 @@ export default class AllocationQuantitiesInput extends Vue {
       .map((allocation: IAllocationCategory) => {
         if (allocation.enabled) {
           return {
-            food_category_id: allocation.food_category_id,
+            foodCategoryId: allocation.foodCategoryId,
             quantity: allocation.quantity,
             id: allocation.id
           };

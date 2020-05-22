@@ -14,29 +14,29 @@ const foodCategories = [
 
 const sessionWithoutAllocations = {
   id: 31,
-  recipient_id: 11,
-  session_slot: { id: 6, day: "Saturday", time: "11:00AM" },
+  recipientId: 11,
+  sessionSlot: { id: 6, day: "Saturday", time: "11:00AM" },
   allocations: []
 };
 
 const sessionWithAllocations = {
   id: 31,
-  recipient_id: 11,
-  session_slot: { id: 6, day: "Saturday", time: "11:00AM" },
+  recipientId: 11,
+  sessionSlot: { id: 6, day: "Saturday", time: "11:00AM" },
   allocations: [
     {
       id: 72,
-      food_category_id: 3,
+      foodCategoryId: 3,
       quantity: "2.0",
-      quantity_label: "2 boxes"
+      quantityLabel: "2 boxes"
     },
     {
       id: 73,
-      food_category_id: 4,
+      foodCategoryId: 4,
       quantity: "0.0",
-      quantity_label: "no boxes"
+      quantityLabel: "no boxes"
     },
-    { id: 74, food_category_id: 5, quantity: "0.0", quantity_label: "no boxes" }
+    { id: 74, foodCategoryId: 5, quantity: "0.0", quantityLabel: "no boxes" }
   ]
 };
 
@@ -49,9 +49,9 @@ describe("mapEnabledFoodCategories", () => {
 
     expect(categories.filter(c => c.enabled).length).toEqual(3);
     expect(actual.id).toEqual(expected.id);
-    expect(actual.food_category_id).toEqual(expected.food_category_id);
+    expect(actual.foodCategoryId).toEqual(expected.foodCategoryId);
     expect(actual.quantity).toEqual(expected.quantity);
-    expect(actual.quantity_label).toEqual(expected.quantity_label);
+    expect(actual.quantityLabel).toEqual(expected.quantityLabel);
     expect(actual.enabled).toEqual(true);
   });
 
@@ -59,14 +59,14 @@ describe("mapEnabledFoodCategories", () => {
     const categories = mapEnabledFoodCategories(sessionWithoutAllocations, foodCategories);
 
     const expected = foodCategories[0];
-    const actual = categories.find(c => c.food_category_id == expected.id);
+    const actual = categories.find(c => c.foodCategoryId == expected.id);
 
     expect(categories.length).toEqual(foodCategories.length);
     expect(actual.id).toEqual(null);
-    expect(actual.food_category_id).toEqual(expected.id);
+    expect(actual.foodCategoryId).toEqual(expected.id);
     expect(actual.quantity).toEqual(0);
     expect(actual.enabled).toEqual(false);
-    expect(actual.quantity_label).toEqual("");
+    expect(actual.quantityLabel).toEqual("");
   });
 
   it("includes both enabled and disabled categories", () => {

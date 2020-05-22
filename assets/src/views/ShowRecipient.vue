@@ -31,8 +31,8 @@
           <RecipientStatusTag :status="status" withLabel="true" size="is-medium" :isLoading="isLoading" />
           <InfoField :isLoading="isLoading" label="Full Legal Name" :value="details.name" />
           <InfoField :isLoading="isLoading" label="Base" :value="baseName" />
-          <InfoField :isLoading="isLoading" label="Physical Address" :value="details.physical_address" />
-          <InfoField :isLoading="isLoading" label="Start Date" :value="details.started_at" />
+          <InfoField :isLoading="isLoading" label="Physical Address" :value="details.physicalAddress" />
+          <InfoField :isLoading="isLoading" label="Start Date" :value="details.startedAt" />
           <InfoField :isLoading="isLoading" label="Description" :value="details.description" renderHTML="true" />
         </div>
 
@@ -40,15 +40,15 @@
           <h2 class="title is-4">Onboarding</h2>
           <OnboardingCheckbox
             label="Terms and conditions are signed"
-            name="has_signed_terms"
+            name="hasSignedTerms"
             :id="details.id"
-            :value="details.has_signed_terms"
+            :value="details.hasSignedTerms"
           />
           <OnboardingCheckbox
             label="Have met Kaibosh in person"
-            name="has_met_kaibosh"
+            name="hasMetKaibosh"
             :id="details.id"
-            :value="details.has_met_kaibosh"
+            :value="details.hasMetKaibosh"
           />
         </div>
       </div>
@@ -59,8 +59,8 @@
 
           <InfoField :isLoading="isLoading" label="Name" :value="contact.name" />
           <InfoField :isLoading="isLoading" label="Email" :value="contact.email" />
-          <InfoField :isLoading="isLoading" label="Mobile" :value="contact.phone_mobile" />
-          <InfoField :isLoading="isLoading" label="Landline" :value="contact.phone_landline" />
+          <InfoField :isLoading="isLoading" label="Mobile" :value="contact.phoneMobile" />
+          <InfoField :isLoading="isLoading" label="Landline" :value="contact.phoneLandline" />
         </div>
 
         <div class="box">
@@ -102,7 +102,7 @@
 
         <b-modal :active.sync="isScheduledSessionModalActive" has-modal-card>
           <ScheduledSessionModal
-            :baseId="details.base_id"
+            :baseId="details.baseId"
             :recipientId="details.id"
             :session="selectedSession"
             :sessions="scheduledSessions"
@@ -161,9 +161,9 @@ export default class ShowRecipient extends Vue {
       BasesModule.fetchFoodCategories()
     ]);
 
-    if (ActiveRecipientModule.details) {
+    if (ActiveRecipientModule.details?.baseId) {
       await BasesModule.fetchSessionSlots({
-        baseId: ActiveRecipientModule.details.base_id!
+        baseId: ActiveRecipientModule.details.baseId
       });
     }
 
@@ -176,11 +176,11 @@ export default class ShowRecipient extends Vue {
   }
 
   get contact() {
-    return ActiveRecipientModule.details.primary_contact;
+    return ActiveRecipientModule.details.primaryContact;
   }
 
   get baseName() {
-    const baseId = ActiveRecipientModule.details.base_id;
+    const baseId = ActiveRecipientModule.details.baseId;
     return BasesModule.baseNameById(baseId!);
   }
 
@@ -193,7 +193,7 @@ export default class ShowRecipient extends Vue {
   }
 
   get scheduledSessions() {
-    return sortBy(RecipientSessions.sessions, ["session_slot.date"]);
+    return sortBy(RecipientSessions.sessions, ["sessionSlot.date"]);
   }
 
   updateRecipient() {
@@ -217,7 +217,7 @@ export default class ShowRecipient extends Vue {
     if (ActiveRecipientModule.details.id) {
       await ActiveRecipientModule.updateRecipient({
         id: ActiveRecipientModule.details.id,
-        archived_at: null
+        archivedAt: null
       });
 
       await ActiveRecipientModule.fetchRecipientStatus(this.id);

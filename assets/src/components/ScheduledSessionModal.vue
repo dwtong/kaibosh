@@ -67,23 +67,23 @@ export default class ScheduledSessionModal extends Vue {
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
 
-      this.selectedSessionSlotId = this.session.session_slot!.id;
+      this.selectedSessionSlotId = this.session.sessionSlot!.id;
     }
   }
 
   get sessionIsValid() {
     const isExistingSession = !!this.session;
     const newSessionExists = this.sessions!.find(
-      (s: IScheduledSession) => s.session_slot && s.session_slot.id === this.selectedSessionSlotId
+      (s: IScheduledSession) => s.sessionSlot && s.sessionSlot.id === this.selectedSessionSlotId
     );
     return isExistingSession || !newSessionExists;
   }
 
   async saveSession() {
     const params = {
-      recipient_id: this.recipientId,
-      session_slot_id: this.selectedSessionSlotId,
-      allocations_attributes: this.allocations
+      recipientId: this.recipientId,
+      sessionSlotId: this.selectedSessionSlotId,
+      allocationsAttributes: this.allocations
     };
 
     if (this.session) {

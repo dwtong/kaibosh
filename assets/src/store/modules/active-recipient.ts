@@ -6,12 +6,12 @@ import RecipientService from "@/services/recipient-service";
 
 const defaultRecipientDetails = {
   name: "",
-  base_id: "0",
-  primary_contact: {
+  baseId: "0",
+  primaryContact: {
     name: "",
     email: "",
-    phone_landline: "",
-    phone_mobile: ""
+    phoneLandline: "",
+    phoneMobile: ""
   }
 };
 

@@ -1,4 +1,6 @@
 import axios from "axios";
+import camelCaseKeys from "camelcase-keys";
+import snakeCaseKeys from "snakecase-keys";
 import toast from "@/helpers/toast";
 import auth from "@/helpers/auth";
 import { UserModule } from "@/store/modules/user";
@@ -8,6 +10,22 @@ const basePath = "/api";
 const service = axios.create({
   baseURL: basePath
 });
+
+service.defaults.transformResponse = [
+  (data, headers) => {
+    if (data && headers["content-type"].includes("application/json")) {
+      return camelCaseKeys(JSON.parse(data), { deep: true });
+    }
+  }
+];
+
+service.defaults.transformRequest = [
+  (data, headers) => {
+    if (data && headers["content-type"].includes("application/json")) {
+      return JSON.stringify(snakeCaseKeys(data, { deep: true }));
+    }
+  }
+];
 
 service.interceptors.request.use(config => {
   const authHeaders = auth.loadAuthToken();

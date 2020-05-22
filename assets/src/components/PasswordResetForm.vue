@@ -27,6 +27,7 @@ import InputField from "@/components/form/InputField.vue";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
 
+// eslint-disable-next-line @typescript-eslint/camelcase
 @Component({ components: { InputField }, $_veeValidate: { validator: "new" } })
 export default class PasswordResetForm extends Vue {
   password = "";

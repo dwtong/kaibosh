@@ -1,16 +1,16 @@
 export interface IAllocation {
-  food_category_id: string;
+  foodCategoryId: string;
   id: string;
   quantity: string;
-  quantity_label: string;
+  quantityLabel: string;
 }
 
 export interface IAllocationCategory {
-  food_category_id: string;
+  foodCategoryId: string;
   enabled?: boolean;
   id: string;
   quantity: string;
-  quantity_label: string;
+  quantityLabel: string;
 }
 
 export interface IBase {
@@ -21,8 +21,8 @@ export interface IBase {
 export interface IContact {
   name: string;
   email: string;
-  phone_landline: string;
-  phone_mobile: string;
+  phoneLandline: string;
+  phoneMobile: string;
 }
 
 export interface IFoodCategory {
@@ -32,9 +32,9 @@ export interface IFoodCategory {
 
 export interface IHold {
   id?: string;
-  session_id: string;
-  starts_at: string;
-  ends_at: string;
+  sessionId: string;
+  startsAt: string;
+  endsAt: string;
 }
 
 export interface ILoginCreds {
@@ -47,17 +47,17 @@ export interface IRecipient {
   id?: string;
   description?: string;
   status?: string;
-  started_at?: Date;
-  physical_address?: string;
-  base_id?: string;
-  primary_contact?: IContact;
-  has_met_kaibosh?: boolean;
-  has_signed_terms?: boolean;
+  startedAt?: Date | string;
+  physicalAddress?: string;
+  baseId?: string;
+  primaryContact?: IContact;
+  hasMetKaibosh?: boolean;
+  hasSignedTerms?: boolean;
 }
 
 export interface IRecipientListItem {
   name: string;
-  base_id?: string;
+  baseId?: string;
   id: string;
   status: string;
   description?: string;
@@ -76,10 +76,10 @@ export interface IScheduledSession {
   enabled?: boolean;
   holds?: IHold[];
   id?: string;
-  recipient_id: string;
-  session_slot?: ISessionSlot;
-  session_slot_id?: string;
-  hold_status?: string;
+  recipientId: string;
+  sessionSlot?: ISessionSlot;
+  sessionSlotId?: string;
+  holdStatus?: string;
 }
 
 export interface IStatus {

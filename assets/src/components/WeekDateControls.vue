@@ -55,7 +55,7 @@ export default class SessionsByWeek extends Vue {
   }
 
   goToDate(date?: string) {
-    const query: any = { base_id: this.baseId };
+    const query: any = { baseId: this.baseId };
 
     if (date) {
       query.date = date;

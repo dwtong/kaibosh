@@ -37,7 +37,7 @@ export default class AllocationRecipient extends Vue {
   }
 
   quantityLabel(allocation: any) {
-    return allocation.quantity > 0 ? allocation.quantity_label : "no max";
+    return allocation.quantity > 0 ? allocation.quantityLabel : "no max";
   }
 }
 </script>

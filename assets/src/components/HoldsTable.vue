@@ -25,21 +25,21 @@ export default class HoldTr extends Vue {
   @Prop() readonly sessionId!: string;
 
   get sortedHolds() {
-    return sortBy(this.holds, ["starts_at"]);
+    return sortBy(this.holds, ["startsAt"]);
   }
 
   removeHold(hold: IHold) {
     RecipientSessions.deleteHold({
-      session_id: this.sessionId,
+      sessionId: this.sessionId,
       ...hold
     });
   }
 
   label(hold: IHold) {
-    if (hold.ends_at) {
-      return `${hold.starts_at} - ${hold.ends_at}`;
+    if (hold.endsAt) {
+      return `${hold.startsAt} - ${hold.endsAt}`;
     } else {
-      return `${hold.starts_at} - (no end date)`;
+      return `${hold.startsAt} - (no end date)`;
     }
   }
 }

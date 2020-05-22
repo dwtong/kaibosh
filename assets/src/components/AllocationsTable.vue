@@ -31,14 +31,14 @@ export default class AllocationsTable extends Vue {
 
   allocationQuantityLabel(allocation: IAllocation) {
     if (parseFloat(allocation.quantity)) {
-      return `${allocation.quantity_label} (max)`;
+      return `${allocation.quantityLabel} (max)`;
     } else {
       return "no limit";
     }
   }
 
   foodCategoryName(allocation: IAllocation) {
-    const fc = BasesModule.foodCategoryById(allocation.food_category_id);
+    const fc = BasesModule.foodCategoryById(allocation.foodCategoryId);
 
     if (fc) {
       return fc.name;
