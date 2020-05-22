@@ -1,0 +1,10 @@
+linters:
+
+  PropertySortOrder:
+    enabled: false
+
+  StringQuotes:
+    style: double_quotes
+
+  LeadingZero:
+    style: include_zero

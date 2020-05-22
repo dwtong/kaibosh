@@ -294,7 +294,7 @@ export default class ShowRecipient extends Vue {
   }
 
   confirmSessionDeletion(sessionId: string) {
-    this.$dialog.confirm({
+    this.$buefy.dialog.confirm({
       message: "Are you sure you wish to remove this session?",
       type: "is-danger",
       onConfirm: async () => {

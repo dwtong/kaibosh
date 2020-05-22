@@ -4,7 +4,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: `
+        prependData: `
           @import "~bulma/sass/utilities/functions";  
           @import "@/assets/scss/_variables.scss";
         `
@@ -18,10 +18,10 @@ module.exports = {
       proxy: {
         "^/api": {
           target: "http://localhost:3000",
-          changeOrigin: true
-        }
-      }
+          changeOrigin: true,
+        },
+      },
     },
-    plugins: [new CompressionPlugin()]
+    plugins: [new CompressionPlugin()],
   }
 };
