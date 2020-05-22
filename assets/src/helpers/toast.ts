@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Toast } from "buefy/dist/components/toast";
 
 export default {

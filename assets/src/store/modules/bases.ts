@@ -9,7 +9,7 @@ import SessionSlotService from "@/services/session-slot-service";
 @Module({ name: "bases", store: Store, dynamic: true })
 class Bases extends VuexModule {
   errors: string[] = [];
-  loading: boolean = false;
+  loading = false;
   list: IBase[] = [];
   foodCategories: IFoodCategory[] = [];
   sessionSlots: ISessionSlot[] = [];

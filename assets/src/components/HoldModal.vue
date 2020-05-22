@@ -70,8 +70,8 @@ export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
   endDate: Date | null = null;
-  disableEndDate: boolean = false;
-  allSessions: boolean = false;
+  disableEndDate = false;
+  allSessions = false;
   sessions: IScheduledSession[] = [];
 
   created() {

@@ -38,7 +38,7 @@ import { IRecipientListItem } from "@/types";
 
 @Component({ components: { RecipientStatusTag } })
 export default class RecipientsTable extends Vue {
-  loading: boolean = false;
+  loading = false;
 
   async created() {
     this.loading = AllRecipientsModule.filteredList.length === 0;

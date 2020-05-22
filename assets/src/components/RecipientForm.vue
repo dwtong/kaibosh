@@ -55,7 +55,7 @@ export default class RecipientForm extends Vue {
   };
 
   startedAt: Date | null = null;
-  isLoading: boolean = true;
+  isLoading = true;
 
   async submit() {
     const formIsValid = await this.$validator.validateAll();

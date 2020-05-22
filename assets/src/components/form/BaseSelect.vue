@@ -36,7 +36,7 @@ export default class BaseSelect extends Vue {
   @Inject("$validator") $validator!: Validator;
 
   list: IBase[] = [];
-  allValue: number = 0;
+  allValue = 0;
 
   async created() {
     await BasesModule.fetchBases();

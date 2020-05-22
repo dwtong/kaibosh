@@ -61,7 +61,7 @@ export default class ScheduledSessionModal extends Vue {
   @Prop() readonly session?: IScheduledSession;
   @Prop() readonly sessions?: IScheduledSession[];
   allocations: IAllocation[] = [];
-  selectedSessionSlotId: string = "";
+  selectedSessionSlotId = "";
 
   created() {
     if (this.session) {

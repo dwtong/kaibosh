@@ -75,15 +75,14 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import AuthService from "@/services/auth-service";
 import Router from "@/router";
 import { UserModule } from "../store/modules/user";
 import toast from "@/helpers/toast";
 
 @Component
 export default class Login extends Vue {
-  email: string = "";
-  password: string = "";
+  email = "";
+  password = "";
   showError = false;
   forgotten = false;
 

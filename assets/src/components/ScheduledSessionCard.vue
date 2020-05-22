@@ -49,7 +49,7 @@ import HoldStatusTag from "@/components/form/HoldStatusTag.vue";
 @Component({ components: { HoldsTable, AllocationsTable, HoldStatusTag } })
 export default class ScheduledSessionCard extends Vue {
   @Prop(Object) readonly session!: IScheduledSession;
-  isOpen: boolean = false;
+  isOpen = false;
 
   toggleIsOpen() {
     this.isOpen = !this.isOpen;

@@ -38,7 +38,7 @@ import toast from "@/helpers/toast";
   $_veeValidate: { validator: "new" }
 })
 export default class UserSettings extends Vue {
-  newUserEmail: string = "";
+  newUserEmail = "";
 
   created() {
     UserModule.fetchUsers();

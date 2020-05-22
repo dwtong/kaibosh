@@ -18,7 +18,7 @@ const defaultRecipientDetails = {
 @Module({ name: "activeRecipient", store: Store, dynamic: true })
 class ActiveRecipient extends VuexModule {
   details: IRecipient = defaultRecipientDetails;
-  status: string = "";
+  status = "";
   errors: any = null;
 
   @Mutation

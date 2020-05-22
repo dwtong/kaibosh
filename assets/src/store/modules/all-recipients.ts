@@ -6,8 +6,8 @@ import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-dec
 @Module({ name: "allRecipients", store: Store, dynamic: true })
 class AllRecipients extends VuexModule {
   list: IRecipientListItem[] = [];
-  filteredBase: string = "0";
-  filteredName: string = "";
+  filteredBase = "0";
+  filteredName = "";
   filteredStatus: IStatus[] = [
     { label: "Active", name: "active", enabled: false },
     { label: "Pending", name: "pending", enabled: false },

@@ -9,7 +9,7 @@ import Router from "@/router";
 @Module({ name: "user", store: Store, dynamic: true })
 class User extends VuexModule {
   isAuthenticated: boolean = auth.authTokenIsPresent();
-  passwordUpdated: boolean = false;
+  passwordUpdated = false;
   users: IUser[] = [];
 
   @Action

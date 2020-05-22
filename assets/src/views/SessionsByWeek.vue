@@ -52,7 +52,7 @@ import { sortBy } from "lodash";
   }
 })
 export default class SessionsByWeek extends Vue {
-  sessionSlotId: string = "0";
+  sessionSlotId = "0";
   showSessionOptions = true;
   baseId = localStorage.getItem("baseId");
 
