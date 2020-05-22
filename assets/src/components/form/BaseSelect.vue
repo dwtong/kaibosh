@@ -25,7 +25,7 @@
 import { Component, Inject, Prop } from "vue-property-decorator";
 import Vue from "vue";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
-import BaseService from "@/services/base-service";
+import { BasesModule } from "@/store/modules/bases";
 import { IBase } from "@/types";
 import { Validator } from "vee-validate";
 
@@ -41,12 +41,8 @@ export default class BaseSelect extends Vue {
   allValue: number = 0;
 
   async created() {
-    try {
-      const response = await BaseService.get();
-      this.list = response;
-    } catch {
-      this.list = [];
-    }
+    await BasesModule.fetchBases();
+    this.list = BasesModule.list;
   }
 }
 </script>

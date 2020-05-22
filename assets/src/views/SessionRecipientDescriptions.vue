@@ -45,9 +45,9 @@ export default class GenerateDescriptionsButton extends Vue {
 
   get recipients() {
     if (this.includeOnHold) {
-      return SessionSlotsModule.details.recipients;
+      return SessionSlotsModule.orderedRecipients;
     } else {
-      return SessionSlotsModule.details.recipients.filter(
+      return SessionSlotsModule.orderedRecipients.filter(
         r => r.status !== "on_hold"
       );
     }

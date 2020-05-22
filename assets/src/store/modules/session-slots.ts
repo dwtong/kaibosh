@@ -1,3 +1,4 @@
+import { sortBy } from "lodash";
 import { ISessionSlot } from "@/types";
 import Store from "@/store";
 import {
@@ -21,6 +22,10 @@ class SessionSlots extends VuexModule {
     recipients: []
   };
   date: any = "";
+
+  get orderedRecipients() {
+    return sortBy(this.details.recipients, ["name"]);
+  }
 
   @Action
   async fetchSessionSlot(sessionSlotId: string) {
