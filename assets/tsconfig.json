@@ -6,14 +6,13 @@
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
+    "noImplicitAny": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "skipLibCheck": true, // Remove after this is fixed https://github.com/buefy/buefy/issues/1507
     "baseUrl": ".",
     "types": ["webpack-env", "jest"],
-    "noImplicitAny": true,
     "paths": {
       "@/*": ["src/*"]
     },
