@@ -8,7 +8,8 @@ import { UserModule } from "@/store/modules/user";
 const basePath = "/api";
 
 const service = axios.create({
-  baseURL: basePath
+  baseURL: basePath,
+  headers: { "Content-Type": "application/json" }
 });
 
 service.defaults.transformResponse = [
@@ -23,7 +24,7 @@ service.defaults.transformResponse = [
 
 service.defaults.transformRequest = [
   (data, headers) => {
-    if (data && headers["content-type"].includes("application/json")) {
+    if (data && headers["Content-Type"].includes("application/json")) {
       return JSON.stringify(snakeCaseKeys(data, { deep: true }));
     } else {
       return data;
@@ -45,7 +46,7 @@ service.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       UserModule.logout();
     }
     return error;
