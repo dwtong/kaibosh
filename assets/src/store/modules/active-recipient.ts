@@ -1,6 +1,5 @@
-import Vue from "vue";
 import Store from "@/store";
-import { IRecipient, IHold } from "@/types";
+import { IRecipient } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import RecipientService from "@/services/recipient-service";
 

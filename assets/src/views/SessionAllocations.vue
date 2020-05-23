@@ -27,14 +27,14 @@
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img class="food-image" :src="imagePath(category.food_category.image_name)" alt />
+              <img class="food-image" :src="imagePath(category.foodCategory.imageName)" alt />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
                 <p class="title food-title is-4">
-                  {{ capitalize(category.food_category.name) }}
+                  {{ capitalize(category.foodCategory.name) }}
                 </p>
               </div>
             </div>
@@ -52,13 +52,13 @@
 </template>
 
 <script lang="ts">
-import { capitalize, snakeCase, sortBy } from "lodash";
+import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
-import { BasesModule } from "@/store/modules/bases";
 import AllocationRecipient from "@/components/AllocationRecipient.vue";
 import PrintButton from "@/components/PrintButton.vue";
+import { IAllocation, IRecipient } from "../types";
 
 @Component({ components: { AllocationRecipient, PrintButton } })
 export default class SessionAllocations extends Vue {
@@ -84,7 +84,7 @@ export default class SessionAllocations extends Vue {
     return capitalize(str);
   }
 
-  sortCategories(list: any) {
+  sortCategories(list: IRecipient) {
     return sortBy(list, ["recipient.status", "recipient.name"]);
   }
 
@@ -93,7 +93,7 @@ export default class SessionAllocations extends Vue {
     return images("./" + imageName + "-min.png");
   }
 
-  quantity(allocation: any) {
+  quantity(allocation: IAllocation) {
     if (parseInt(allocation.quantity, 10) > 0) {
       return `(${allocation.quantityLabel})`;
     } else {

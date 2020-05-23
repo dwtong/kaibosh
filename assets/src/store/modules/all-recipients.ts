@@ -29,7 +29,7 @@ class AllRecipients extends VuexModule {
     }
 
     if (this.filteredName && this.filteredName !== "") {
-      list = list.filter(r => r.name.toLowerCase().includes(this.filteredName!.toLowerCase()));
+      list = list.filter(r => r.name.toLowerCase().includes(this.filteredName?.toLowerCase()));
     }
 
     if (this.filteredBase && this.filteredBase.toString() !== "0") {

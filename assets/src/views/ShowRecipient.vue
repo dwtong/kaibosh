@@ -24,6 +24,7 @@
     <RecipientMessageBox v-if="!isLoading" :status="status" @reactivate="reactivateRecipient" />
 
     <div v-if="status !== 'archived'" class="columns">
+      npm
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
@@ -130,10 +131,11 @@ import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import HoldModal from "@/components/HoldModal.vue";
 import InfoField from "@/components/form/InfoField.vue";
-import { IRecipient, IScheduledSession } from "@/types";
+import { IScheduledSession, IContact } from "@/types";
 import toast from "../helpers/toast";
 import { BasesModule } from "../store/modules/bases";
 import { sortBy } from "lodash";
+import { Route } from "vue-router";
 
 @Component({
   components: {
@@ -170,18 +172,19 @@ export default class ShowRecipient extends Vue {
     this.isLoading = false;
   }
 
-  beforeRouteLeave(to: any, from: any, next: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  beforeRouteLeave(to: Route, from: Route, next: any) {
     ActiveRecipientModule.resetActiveRecipient();
     next();
   }
 
-  get contact() {
-    return ActiveRecipientModule.details.primaryContact;
+  get contact(): IContact {
+    return ActiveRecipientModule.details.primaryContact ?? { name: "", phoneLandline: "", phoneMobile: "", email: "" };
   }
 
   get baseName() {
     const baseId = ActiveRecipientModule.details.baseId;
-    return BasesModule.baseNameById(baseId!);
+    return baseId ? BasesModule.baseNameById(baseId) : "";
   }
 
   get details() {
@@ -240,15 +243,17 @@ export default class ShowRecipient extends Vue {
     this.isScheduledSessionModalActive = true;
   }
 
-  confirmSessionDeletion(sessionId: string) {
-    this.$buefy.dialog.confirm({
-      message: "Are you sure you wish to remove this session?",
-      type: "is-danger",
-      onConfirm: async () => {
-        await RecipientSessions.deleteSession(sessionId);
-        toast.success("Deleted session.");
-      }
-    });
+  confirmSessionDeletion(sessionId?: string) {
+    if (sessionId) {
+      this.$buefy.dialog.confirm({
+        message: "Are you sure you wish to remove this session?",
+        type: "is-danger",
+        onConfirm: async () => {
+          await RecipientSessions.deleteSession(sessionId);
+          toast.success("Deleted session.");
+        }
+      });
+    }
   }
 }
 </script>

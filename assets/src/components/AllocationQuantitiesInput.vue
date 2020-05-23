@@ -33,7 +33,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { IAllocation, IAllocationCategory, IFoodCategory } from "../types";
+import { IAllocation, IAllocationCategory } from "../types";
 import { BasesModule } from "../store/modules/bases";
 import { sortBy } from "lodash";
 import AllocationQuantitesSelect from "@/components/form/AllocationQuantitesSelect.vue";

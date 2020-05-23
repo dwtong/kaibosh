@@ -7,6 +7,8 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

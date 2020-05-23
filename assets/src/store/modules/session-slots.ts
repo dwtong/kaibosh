@@ -29,9 +29,9 @@ class SessionSlots extends VuexModule {
 
   @Action
   async fetchAllocationsForSlot({ sessionSlotId, sessionDate }: { sessionSlotId: string; sessionDate: string }) {
-    const { food_allocations, date } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
+    const { foodAllocations, date } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
     this.context.commit("setDate", date);
-    this.context.commit("setAllocations", food_allocations);
+    this.context.commit("setAllocations", foodAllocations);
   }
 
   @Mutation

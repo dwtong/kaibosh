@@ -33,7 +33,7 @@ class RecipientSessions extends VuexModule {
   }
 
   @Mutation
-  addSession(session: any) {
+  addSession(session: IScheduledSession) {
     this.sessions.push(session);
   }
 
@@ -59,12 +59,14 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async deleteHold(hold: IHold) {
-    await HoldService.destroy(hold.id!);
-    const session = this.sessionById(hold.sessionId);
+    if (hold.id) {
+      await HoldService.destroy(hold.id);
+      const session = this.sessionById(hold.sessionId);
 
-    if (session && session.recipientId) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
+      if (session?.recipientId) {
+        ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+        this.fetchSessions(session.recipientId);
+      }
     }
   }
 
@@ -72,7 +74,7 @@ class RecipientSessions extends VuexModule {
   async createSession(session: IScheduledSession) {
     await ScheduledSessionService.create({ session });
 
-    if (session && session.recipientId) {
+    if (session?.recipientId) {
       ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
       this.fetchSessions(session.recipientId);
     }
@@ -80,11 +82,13 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async updateSession(session: IScheduledSession) {
-    await ScheduledSessionService.update(session.id!, { session });
+    if (session.id) {
+      await ScheduledSessionService.update(session.id, { session });
 
-    if (session.recipientId) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
+      if (session.recipientId) {
+        ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+        this.fetchSessions(session.recipientId);
+      }
     }
   }
 
@@ -93,7 +97,7 @@ class RecipientSessions extends VuexModule {
     await ScheduledSessionService.destroy(sessionId);
     const session = this.sessionById(sessionId);
 
-    if (session && session.recipientId) {
+    if (session?.recipientId) {
       ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
       this.fetchSessions(session.recipientId);
     }

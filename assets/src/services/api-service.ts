@@ -15,6 +15,8 @@ service.defaults.transformResponse = [
   (data, headers) => {
     if (data && headers["content-type"].includes("application/json")) {
       return camelCaseKeys(JSON.parse(data), { deep: true });
+    } else {
+      return data;
     }
   }
 ];
@@ -23,6 +25,8 @@ service.defaults.transformRequest = [
   (data, headers) => {
     if (data && headers["content-type"].includes("application/json")) {
       return JSON.stringify(snakeCaseKeys(data, { deep: true }));
+    } else {
+      return data;
     }
   }
 ];

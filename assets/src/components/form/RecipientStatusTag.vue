@@ -33,6 +33,7 @@ export default class RecipientStatusTag extends Vue {
   get type(): string {
     const types: IStatusLabelGroup = {
       active: "is-primary",
+      // eslint-disable-next-line @typescript-eslint/camelcase
       on_hold: "is-warning",
       archived: "is-gray-darker",
       pending: "is-info"

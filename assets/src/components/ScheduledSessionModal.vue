@@ -47,9 +47,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
+import { IScheduledSession, IAllocation } from "../types";
 import RecipientSessions from "../store/modules/recipient-sessions";
-import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
@@ -66,14 +65,13 @@ export default class ScheduledSessionModal extends Vue {
   created() {
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
-
-      this.selectedSessionSlotId = this.session.sessionSlot!.id;
+      this.selectedSessionSlotId = this.session.sessionSlot?.id ?? "";
     }
   }
 
   get sessionIsValid() {
     const isExistingSession = !!this.session;
-    const newSessionExists = this.sessions!.find(
+    const newSessionExists = this.sessions?.find(
       (s: IScheduledSession) => s.sessionSlot && s.sessionSlot.id === this.selectedSessionSlotId
     );
     return isExistingSession || !newSessionExists;

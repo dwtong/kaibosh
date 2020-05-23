@@ -1,4 +1,4 @@
-import { get, post, put } from "./api-service";
+import { get } from "./api-service";
 
 const resource = "sessions/slots";
 
