@@ -216,15 +216,20 @@ export default class ShowRecipient extends Vue {
 
   async reactivateRecipient() {
     this.isLoading = true;
+    console.log("reactivate");
 
     if (ActiveRecipientModule.details.id) {
+      console.log("reactivate if");
       await ActiveRecipientModule.updateRecipient({
         id: ActiveRecipientModule.details.id,
         archivedAt: null
       });
+      console.log("reactivate fetch");
 
       await ActiveRecipientModule.fetchRecipientStatus(this.id);
     }
+
+    console.log("reactivate done");
 
     this.isLoading = false;
   }
