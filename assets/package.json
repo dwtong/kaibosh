@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
+    "lint:fix": "vue-cli-service lint --fix --quiet",
+    "lint:check": "vue-cli-service lint",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,ts,tsx,vue}\""
   },
   "dependencies": {
