@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, Prop } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import Checkbox from "@/components/form/Checkbox.vue";
 import Vue from "vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
@@ -17,7 +17,7 @@ export default class OnboardingCheckbox extends Vue {
   @Prop() readonly value!: boolean;
   @Prop({ default: "" }) readonly label!: string;
 
-  async toggleValue(event: any) {
+  async toggleValue() {
     await ActiveRecipientModule.updateRecipient({
       id: this.id,
       [this.name]: !this.value

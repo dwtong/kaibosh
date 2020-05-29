@@ -40,8 +40,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession, IHold, IFoodCategory } from "@/types";
-import { BasesModule } from "../store/modules/bases";
+import { IScheduledSession } from "@/types";
 import HoldsTable from "@/components/HoldsTable.vue";
 import AllocationsTable from "@/components/AllocationsTable.vue";
 import HoldStatusTag from "@/components/form/HoldStatusTag.vue";

@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Inject, Prop } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
 
 @Component

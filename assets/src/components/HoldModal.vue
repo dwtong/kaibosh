@@ -55,9 +55,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession, IAllocation, ISessionSlot } from "../types";
+import { IScheduledSession } from "../types";
 import RecipientSessions from "../store/modules/recipient-sessions";
-import { BasesModule } from "../store/modules/bases";
 import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
 import DateField from "@/components/form/DateField.vue";
 import toast from "@/helpers/toast";

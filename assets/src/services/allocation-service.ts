@@ -4,7 +4,7 @@ const resource = "allocations";
 
 export default {
   getForSessionSlot: (id: string, date?: string) => {
-    const params: any = { sessionSlotId: id };
+    const params: { sessionSlotId: string; date?: string } = { sessionSlotId: id };
 
     if (date && date.length > 0) {
       params.date = date;

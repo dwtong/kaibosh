@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import auth from "@/helpers/auth";
 import CreateRecipient from "@/views/CreateRecipient.vue";
 import UpdateRecipient from "@/views/UpdateRecipient.vue";
@@ -11,8 +13,9 @@ import SessionsByWeek from "@/views/SessionsByWeek.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import UserSettings from "@/views/UserSettings.vue";
 import { UserModule } from "@/store/modules/user";
+import { Route } from "vue-router";
 
-const ifNotAuthenticated = (to: any, from: any, next: any) => {
+const ifNotAuthenticated = (to: Route, from: Route, next: any) => {
   if (!UserModule.isAuthenticated) {
     next();
   } else {
@@ -20,7 +23,7 @@ const ifNotAuthenticated = (to: any, from: any, next: any) => {
   }
 };
 
-const ifAuthenticated = (to: any, from: any, next: any) => {
+const ifAuthenticated = (to: Route, from: Route, next: any) => {
   if (UserModule.isAuthenticated) {
     next();
   } else {
@@ -28,7 +31,7 @@ const ifAuthenticated = (to: any, from: any, next: any) => {
   }
 };
 
-const saveResetParams = (to: any, from: any, next: any) => {
+const saveResetParams = (to: Route, from: Route, next: any) => {
   auth.saveAuthTokenFromUrlParams();
   next();
 };

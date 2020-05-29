@@ -46,7 +46,6 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
 import { UserModule } from "@/store/modules/user";
-import authService from "../services/auth-service";
 
 @Component
 export default class NavBar extends Vue {

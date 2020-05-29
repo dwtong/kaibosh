@@ -9,7 +9,7 @@ import ScheduledSessionService from "@/services/scheduled-session-service";
 @Module({ name: "recipientSessions", store: Store, dynamic: true })
 class RecipientSessions extends VuexModule {
   sessions: IScheduledSession[] = [];
-  errors: any = null;
+  errors = null;
 
   get sessionById() {
     return (id: string) => {

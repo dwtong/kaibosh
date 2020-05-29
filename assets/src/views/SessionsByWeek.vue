@@ -38,7 +38,6 @@ import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 import SessionSummaryCard from "@/components/SessionSummaryCard.vue";
 import WeekDateControls from "@/components/WeekDateControls.vue";
-import Router from "@/router";
 import date from "@/helpers/date";
 import moment from "moment";
 import { sortBy } from "lodash";

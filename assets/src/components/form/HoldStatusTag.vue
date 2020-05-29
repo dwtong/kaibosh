@@ -5,9 +5,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IHold } from "@/types";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import { sortBy } from "lodash";
 
 @Component
 export default class HoldStatusTag extends Vue {
