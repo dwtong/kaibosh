@@ -47,7 +47,7 @@ export interface IRecipient {
   id?: string;
   description?: string;
   status?: string;
-  startedAt?: Date | string;
+  startedAt?: Date;
   physicalAddress?: string;
   baseId?: string;
   primaryContact?: IContact;

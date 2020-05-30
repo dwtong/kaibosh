@@ -58,10 +58,10 @@ import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
 import AllocationRecipient from "@/components/AllocationRecipient.vue";
 import PrintButton from "@/components/PrintButton.vue";
-import { IAllocation, IRecipient } from "../types";
+import { IAllocation, IRecipient } from "@/types";
 
 @Component({ components: { AllocationRecipient, PrintButton } })
-export default class SessionAllocations extends Vue {
+export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
   isLoading = true;
 

@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import auth from "@/helpers/auth";
-import CreateRecipient from "@/views/CreateRecipient.vue";
-import UpdateRecipient from "@/views/UpdateRecipient.vue";
-import ListRecipients from "@/views/ListRecipients.vue";
-import Login from "@/views/Login.vue";
+import CreateRecipient from "@/views/recipients/CreateRecipient.vue";
+import UpdateRecipient from "@/views/recipients/UpdateRecipient.vue";
+import ListRecipients from "@/views/recipients/ListRecipients.vue";
+import ShowRecipient from "@/views/recipients/ShowRecipient.vue";
+
+import ShowSession from "@/views/sessions/ShowSession.vue";
+import ListSessions from "@/views/sessions/ListSessions.vue";
+import PrintRecipientDescriptions from "@/views/sessions/PrintRecipientDescriptions.vue";
+
+import Login from "@/views/users/Login.vue";
+import ResetPassword from "@/views/users/ResetPassword.vue";
+import Settings from "@/views/users/Settings.vue";
+
 import NotFound from "@/views/NotFound.vue";
-import ShowRecipient from "@/views/ShowRecipient.vue";
-import SessionAllocations from "@/views/SessionAllocations.vue";
-import SessionRecipientDescriptions from "@/views/SessionRecipientDescriptions.vue";
-import SessionsByWeek from "@/views/SessionsByWeek.vue";
-import ResetPassword from "@/views/ResetPassword.vue";
-import UserSettings from "@/views/UserSettings.vue";
+
+import auth from "@/helpers/auth";
 import { UserModule } from "@/store/modules/user";
 import { Route } from "vue-router";
 
@@ -71,25 +75,25 @@ export default [
   },
   {
     path: "/sessions/week",
-    component: SessionsByWeek,
+    component: ListSessions,
     beforeEnter: ifAuthenticated,
     props: true
   },
   {
     path: "/sessions/:id",
-    component: SessionAllocations,
+    component: ShowSession,
     beforeEnter: ifAuthenticated,
     props: true
   },
   {
     path: "/sessions/:id/descriptions",
-    component: SessionRecipientDescriptions,
+    component: PrintRecipientDescriptions,
     beforeEnter: ifAuthenticated,
     props: true
   },
   {
     path: "/settings",
-    component: UserSettings,
+    component: Settings,
     beforeEnter: ifAuthenticated,
     props: true
   },

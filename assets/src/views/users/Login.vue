@@ -76,7 +76,7 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Router from "@/router";
-import { UserModule } from "../store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
 
 @Component

@@ -35,8 +35,7 @@ import moment from "moment";
 import WeekDatePicker from "@/components/WeekDatePicker.vue";
 
 @Component({ components: { WeekDatePicker } })
-export default class SessionsByWeek extends Vue {
-  @Prop(String) readonly baseId!: string;
+export default class WeekDateControls extends Vue {
   @Prop(Date) readonly date!: Date;
 
   get nextWeek() {
@@ -55,13 +54,7 @@ export default class SessionsByWeek extends Vue {
   }
 
   goToDate(date?: string) {
-    const query: any = { baseId: this.baseId };
-
-    if (date) {
-      query.date = date;
-    }
-
-    Router.push({ path: "/sessions/week", query });
+    Router.push({ path: "/sessions/week", query: { date } });
   }
 }
 </script>

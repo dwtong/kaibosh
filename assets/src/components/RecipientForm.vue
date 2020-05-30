@@ -55,7 +55,7 @@ export default class RecipientForm extends Vue {
     phoneMobile: ""
   };
 
-  startedAt: Date | null = null;
+  startedAt: Date = new Date();
   isLoading = true;
 
   async submit() {
@@ -78,10 +78,7 @@ export default class RecipientForm extends Vue {
       }
 
       if (ActiveRecipientModule.details.startedAt) {
-        // TODO: Handle date formatting consistently - either format in backend or frontend
-        // eslint-disable-next-line
-        const dateValues = ActiveRecipientModule.details.startedAt.split("/");
-        this.startedAt = new Date(dateValues[2], dateValues[1] - 1, dateValues[0]);
+        this.startedAt = ActiveRecipientModule.details.startedAt;
       }
     }
 

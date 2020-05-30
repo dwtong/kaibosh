@@ -38,7 +38,7 @@ import toast from "@/helpers/toast";
   // eslint-disable-next-line @typescript-eslint/camelcase
   $_veeValidate: { validator: "new" }
 })
-export default class UserSettings extends Vue {
+export default class Settings extends Vue {
   newUserEmail = "";
 
   created() {

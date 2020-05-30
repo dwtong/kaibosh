@@ -24,7 +24,6 @@
     <RecipientMessageBox v-if="!isLoading" :status="status" @reactivate="reactivateRecipient" />
 
     <div v-if="status !== 'archived'" class="columns">
-      npm
       <div class="column is-half">
         <div class="box">
           <h2 class="title is-4">Organisation Details</h2>
@@ -132,7 +131,7 @@ import RecipientSessions from "@/store/modules/recipient-sessions";
 import HoldModal from "@/components/HoldModal.vue";
 import InfoField from "@/components/form/InfoField.vue";
 import { IScheduledSession, IContact } from "@/types";
-import toast from "../helpers/toast";
+import toast from "@/helpers/toast";
 import Bases from "@/store/modules/bases";
 import { sortBy } from "lodash";
 import { Route } from "vue-router";

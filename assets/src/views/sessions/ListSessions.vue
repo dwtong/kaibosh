@@ -50,7 +50,7 @@ import { sortBy } from "lodash";
     WeekDateControls
   }
 })
-export default class SessionsByWeek extends Vue {
+export default class ListSessions extends Vue {
   sessionSlotId = "0";
   showSessionOptions = true;
   baseId = localStorage.getItem("baseId");
