@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Inject, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import { BasesModule } from "@/store/modules/bases";
+import Bases from "@/store/modules/bases";
 import { IBase } from "@/types";
 import { Validator } from "vee-validate";
 
@@ -38,8 +38,8 @@ export default class BaseSelect extends Vue {
   allValue = 0;
 
   async created() {
-    await BasesModule.fetchBases();
-    this.list = BasesModule.list;
+    await Bases.fetchBases();
+    this.list = Bases.list;
   }
 }
 </script>

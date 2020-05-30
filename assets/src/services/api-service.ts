@@ -35,6 +35,11 @@ service.defaults.transformRequest = [
 service.interceptors.request.use(config => {
   const authHeaders = auth.loadAuthToken();
   config.headers = { ...config.headers, ...authHeaders };
+
+  if (config.params) {
+    config.params = snakeCaseKeys(config.params, { deep: true });
+  }
+
   return config;
 });
 

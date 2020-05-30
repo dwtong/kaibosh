@@ -33,7 +33,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { BasesModule } from "../store/modules/bases";
+import Bases from "@/store/modules/bases";
 import BaseSelect from "@/components/form/BaseSelect.vue";
 import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
 import SessionSummaryCard from "@/components/SessionSummaryCard.vue";
@@ -87,7 +87,7 @@ export default class SessionsByWeek extends Vue {
 
   async fetchSessions() {
     if (this.baseId) {
-      await BasesModule.fetchSessionSlots({
+      await Bases.fetchSessionSlots({
         baseId: this.baseId,
         date: date.getISODate(this.weekOfDate)
       });
@@ -95,7 +95,7 @@ export default class SessionsByWeek extends Vue {
   }
 
   get sessionSlots() {
-    return BasesModule.sessionSlots;
+    return Bases.sessionSlots;
   }
 
   get showSubmitButton() {

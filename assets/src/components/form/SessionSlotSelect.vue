@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Inject, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import { BasesModule } from "@/store/modules/bases";
+import Bases from "@/store/modules/bases";
 import { Validator } from "vee-validate";
 import { sortBy } from "lodash";
 
@@ -33,7 +33,7 @@ export default class SessionSlotSelect extends Vue {
   @Inject("$validator") $validator!: Validator;
 
   get sessionSlots() {
-    return sortBy(BasesModule.sessionSlots, ["date"]);
+    return sortBy(Bases.sessionSlots, ["date"]);
   }
 }
 </script>

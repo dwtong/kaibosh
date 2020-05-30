@@ -133,7 +133,7 @@ import HoldModal from "@/components/HoldModal.vue";
 import InfoField from "@/components/form/InfoField.vue";
 import { IScheduledSession, IContact } from "@/types";
 import toast from "../helpers/toast";
-import { BasesModule } from "../store/modules/bases";
+import Bases from "@/store/modules/bases";
 import { sortBy } from "lodash";
 import { Route } from "vue-router";
 
@@ -159,12 +159,12 @@ export default class ShowRecipient extends Vue {
     await Promise.all([
       ActiveRecipientModule.fetchRecipient(this.id),
       RecipientSessions.fetchSessions(this.id),
-      BasesModule.fetchBases(),
-      BasesModule.fetchFoodCategories()
+      Bases.fetchBases(),
+      Bases.fetchFoodCategories()
     ]);
 
     if (ActiveRecipientModule.details?.baseId) {
-      await BasesModule.fetchSessionSlots({
+      await Bases.fetchSessionSlots({
         baseId: ActiveRecipientModule.details.baseId
       });
     }
@@ -184,7 +184,7 @@ export default class ShowRecipient extends Vue {
 
   get baseName() {
     const baseId = ActiveRecipientModule.details.baseId;
-    return baseId ? BasesModule.baseNameById(baseId) : "";
+    return baseId ? Bases.baseNameById(baseId) : "";
   }
 
   get details() {

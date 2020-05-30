@@ -57,7 +57,7 @@ class Bases extends VuexModule {
   @Action
   async fetchBases() {
     if (this.list.length === 0) {
-      const bases = await BaseService.get();
+      const bases: IBase[] = await BaseService.get();
       this.context.commit("setBases", bases);
     }
   }
@@ -74,4 +74,4 @@ class Bases extends VuexModule {
   }
 }
 
-export const BasesModule = getModule(Bases);
+export default getModule(Bases);
