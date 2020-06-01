@@ -16,7 +16,11 @@ module.exports = {
   },
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    // TODO: Remove explicit anys
+    "@typescript-eslint/no-explicit-any": "off",
+    // TODO: Better type interfaces
+    "@typescript-eslint/interface-name-prefix": "off"
   },
   overrides: [
     {
