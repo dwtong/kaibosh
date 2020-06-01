@@ -47,11 +47,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession, IAllocation } from "../types";
-import RecipientSessions from "../store/modules/recipient-sessions";
-import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
+import { IScheduledSession, IAllocation } from "@/types";
+import RecipientSessions from "@/store/modules/recipient-sessions";
+import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
-import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
+import SessionSlotSelect from "@/components/ui/SessionSlotSelect.vue";
 
 @Component({ components: { SessionSlotSelect, AllocationQuantitiesInput } })
 export default class ScheduledSessionModal extends Vue {

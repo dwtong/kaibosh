@@ -10,12 +10,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IAllocation } from "../types";
+import { IAllocation } from "@/types";
 import Bases from "@/store/modules/bases";
 import { sortBy } from "lodash";
 
 @Component
-export default class AllocationsTable extends Vue {
+export default class AllocationList extends Vue {
   @Prop() readonly allocations!: IAllocation[];
 
   get sortedAllocations() {

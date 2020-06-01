@@ -33,10 +33,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { IAllocation, IAllocationCategory } from "../types";
-import Bases from "../store/modules/bases";
+import { IAllocation, IAllocationCategory } from "@/types";
+import Bases from "@/store/modules/bases";
 import { sortBy } from "lodash";
-import AllocationQuantitesSelect from "@/components/form/AllocationQuantitesSelect.vue";
+import AllocationQuantitesSelect from "@/components/ui/AllocationQuantitesSelect.vue";
 
 @Component({ components: { AllocationQuantitesSelect } })
 export default class AllocationQuantitiesInput extends Vue {

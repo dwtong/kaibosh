@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import RecipientForm from "@/components/RecipientForm.vue";
+import RecipientForm from "@/components/recipient/RecipientForm.vue";
 
 @Component({ components: { RecipientForm } })
 export default class UpdateRecipient extends Vue {

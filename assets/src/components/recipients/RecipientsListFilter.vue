@@ -41,12 +41,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import BaseSelect from "@/components/form/BaseSelect.vue";
+import BaseSelect from "@/components/ui/BaseSelect.vue";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
 import { IStatus } from "@/types";
 
 @Component({ components: { BaseSelect } })
-export default class RecipientsFilter extends Vue {
+export default class RecipientsListFilter extends Vue {
   get filteredBase(): string {
     return AllRecipientsModule.filteredBase;
   }

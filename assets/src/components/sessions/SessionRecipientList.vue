@@ -12,7 +12,7 @@
       </div>
       <div v-else class="content">
         <div v-for="recipient in sortRecipients(session.recipients)" :key="recipient.id">
-          <AllocationRecipient :recipient="recipient" />
+          <SessionRecipient :recipient="recipient" />
         </div>
       </div>
     </div>
@@ -27,11 +27,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import AllocationRecipient from "@/components/AllocationRecipient.vue";
+import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import { sortBy } from "lodash";
 
-@Component({ components: { AllocationRecipient } })
-export default class SessionSummaryCard extends Vue {
+@Component({ components: { SessionRecipient } })
+export default class SessionRecipientList extends Vue {
   @Prop() readonly session!: any;
 
   sortRecipients(list: any) {

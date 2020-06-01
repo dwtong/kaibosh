@@ -121,15 +121,15 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import OnboardingCheckbox from "@/components/form/OnboardingCheckbox.vue";
-import RecipientMessageBox from "@/components/form/RecipientMessageBox.vue";
-import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
-import ScheduledSessionCard from "@/components/ScheduledSessionCard.vue";
-import ScheduledSessionModal from "@/components/ScheduledSessionModal.vue";
+import OnboardingCheckbox from "@/components/ui/OnboardingCheckbox.vue";
+import RecipientMessageBox from "@/components/ui/RecipientMessageBox.vue";
+import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
+import ScheduledSessionCard from "@/components/recipient/ScheduledSessionCard.vue";
+import ScheduledSessionModal from "@/components/recipient/ScheduledSessionModal.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import RecipientSessions from "@/store/modules/recipient-sessions";
-import HoldModal from "@/components/HoldModal.vue";
-import InfoField from "@/components/form/InfoField.vue";
+import HoldModal from "@/components/recipient/HoldModal.vue";
+import InfoField from "@/components/ui/InfoField.vue";
 import { IScheduledSession, IContact } from "@/types";
 import toast from "@/helpers/toast";
 import Bases from "@/store/modules/bases";
@@ -215,20 +215,15 @@ export default class ShowRecipient extends Vue {
 
   async reactivateRecipient() {
     this.isLoading = true;
-    console.log("reactivate");
 
     if (ActiveRecipientModule.details.id) {
-      console.log("reactivate if");
       await ActiveRecipientModule.updateRecipient({
         id: ActiveRecipientModule.details.id,
         archivedAt: null
       });
-      console.log("reactivate fetch");
 
       await ActiveRecipientModule.fetchRecipientStatus(this.id);
     }
-
-    console.log("reactivate done");
 
     this.isLoading = false;
   }

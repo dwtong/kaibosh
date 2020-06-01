@@ -3,7 +3,7 @@
     <div slot="trigger" aria-controls="contentIdForA11y3" class="level box header">
       <div class="level-left">
         <div class="level-item">
-          <p>
+          <p v-if="session.sessionSlot">
             <span class="has-text-weight-semibold is-size-5 day-text">{{ session.sessionSlot.day }} </span>
             <span class="is-size-5">{{ session.sessionSlot.time }}</span>
           </p>
@@ -18,14 +18,14 @@
     </div>
     <div class="box">
       <div class="card-content">
-        <div v-if="session.holds.length > 0" class="content">
+        <div v-if="session.holds && session.holds.length > 0" class="content">
           <p class="label">Session Holds</p>
-          <HoldsTable :holds="session.holds" :sessionId="session.id" />
+          <HoldsList :holds="session.holds" :sessionId="session.id" />
         </div>
 
         <div class="content">
           <p class="label">Food Allocations</p>
-          <AllocationsTable :allocations="session.allocations" />
+          <AllocationList :allocations="session.allocations" />
         </div>
 
         <div class="buttons">
@@ -41,11 +41,11 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession } from "@/types";
-import HoldsTable from "@/components/HoldsTable.vue";
-import AllocationsTable from "@/components/AllocationsTable.vue";
-import HoldStatusTag from "@/components/form/HoldStatusTag.vue";
+import HoldsList from "@/components/recipient/HoldsList.vue";
+import AllocationList from "@/components/recipient/AllocationList.vue";
+import HoldStatusTag from "@/components/ui/HoldStatusTag.vue";
 
-@Component({ components: { HoldsTable, AllocationsTable, HoldStatusTag } })
+@Component({ components: { HoldsList, AllocationList, HoldStatusTag } })
 export default class ScheduledSessionCard extends Vue {
   @Prop(Object) readonly session!: IScheduledSession;
   isOpen = false;

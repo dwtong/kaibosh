@@ -24,7 +24,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class AllocationRecipient extends Vue {
+export default class SessionRecipient extends Vue {
   @Prop(Object) readonly allocation!: any;
   @Prop(Object) readonly recipient!: any;
 

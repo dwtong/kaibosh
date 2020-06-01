@@ -22,7 +22,7 @@
         </div>
         <div v-else class="columns">
           <div v-for="session in sessionsForDay(day)" :key="session.id" class="column is-half">
-            <SessionSummaryCard :session="session" />
+            <SessionRecipientList :session="session" />
           </div>
         </div>
       </div>
@@ -34,10 +34,10 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Bases from "@/store/modules/bases";
-import BaseSelect from "@/components/form/BaseSelect.vue";
-import SessionSlotSelect from "@/components/form/SessionSlotSelect.vue";
-import SessionSummaryCard from "@/components/SessionSummaryCard.vue";
-import WeekDateControls from "@/components/WeekDateControls.vue";
+import BaseSelect from "@/components/ui/BaseSelect.vue";
+import SessionSlotSelect from "@/components/ui/SessionSlotSelect.vue";
+import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue";
+import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
 import date from "@/helpers/date";
 import moment from "moment";
 import { sortBy } from "lodash";
@@ -46,7 +46,7 @@ import { sortBy } from "lodash";
   components: {
     BaseSelect,
     SessionSlotSelect,
-    SessionSummaryCard,
+    SessionRecipientList,
     WeekDateControls
   }
 })

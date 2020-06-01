@@ -10,13 +10,13 @@
     <div class="columns">
       <div class="column">
         <div class="box">
-          <RecipientsTable />
+          <RecipientsList />
         </div>
       </div>
 
       <div class="column is-one-quarter">
         <div class="box">
-          <RecipientsFilter />
+          <RecipientsListFilter />
         </div>
       </div>
     </div>
@@ -26,9 +26,9 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import RecipientsTable from "@/components/RecipientsTable.vue";
-import RecipientsFilter from "@/components/RecipientsFilter.vue";
+import RecipientsList from "@/components/recipients/RecipientsList.vue";
+import RecipientsListFilter from "@/components/recipients/RecipientsListFilter.vue";
 
-@Component({ components: { RecipientsTable, RecipientsFilter } })
+@Component({ components: { RecipientsList, RecipientsListFilter } })
 export default class ListRecipients extends Vue {}
 </script>

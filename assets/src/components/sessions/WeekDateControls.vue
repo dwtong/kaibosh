@@ -32,7 +32,7 @@ import { Component, Prop } from "vue-property-decorator";
 import Router from "@/router";
 import dateHelper from "@/helpers/date";
 import moment from "moment";
-import WeekDatePicker from "@/components/WeekDatePicker.vue";
+import WeekDatePicker from "@/components/ui/WeekDatePicker.vue";
 
 @Component({ components: { WeekDatePicker } })
 export default class WeekDateControls extends Vue {

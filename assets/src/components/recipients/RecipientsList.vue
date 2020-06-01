@@ -33,11 +33,11 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { AllRecipientsModule } from "@/store/modules/all-recipients";
-import RecipientStatusTag from "@/components/form/RecipientStatusTag.vue";
+import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import { IRecipientListItem } from "@/types";
 
 @Component({ components: { RecipientStatusTag } })
-export default class RecipientsTable extends Vue {
+export default class RecipientsList extends Vue {
   loading = false;
 
   async created() {

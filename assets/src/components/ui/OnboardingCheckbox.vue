@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import Checkbox from "@/components/form/Checkbox.vue";
+import Checkbox from "@/components/ui/Checkbox.vue";
 import Vue from "vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 

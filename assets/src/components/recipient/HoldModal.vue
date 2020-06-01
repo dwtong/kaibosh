@@ -55,10 +55,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession } from "../types";
-import RecipientSessions from "../store/modules/recipient-sessions";
-import AllocationQuantitiesInput from "@/components/AllocationQuantitiesInput.vue";
-import DateField from "@/components/form/DateField.vue";
+import { IScheduledSession } from "@/types";
+import RecipientSessions from "@/store/modules/recipient-sessions";
+import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
+import DateField from "@/components/ui/DateField.vue";
 import toast from "@/helpers/toast";
 
 @Component({
@@ -97,7 +97,7 @@ export default class HoldModal extends Vue {
       .filter(s => s.enabled)
       .map(s => {
         return {
-          sessionId: s.id!,
+          sessionId: s.id ?? "",
           startsAt: this.startDate.toString(),
           endsAt: endDate ? endDate.toString() : ""
         };

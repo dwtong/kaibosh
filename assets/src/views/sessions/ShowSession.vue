@@ -41,7 +41,7 @@
 
             <div class="content">
               <div v-for="allocation in sortCategories(category.allocations)" :key="allocation.id">
-                <AllocationRecipient v-if="!isLoading" :allocation="allocation" :recipient="allocation.recipient" />
+                <SessionRecipient v-if="!isLoading" :allocation="allocation" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>
@@ -56,11 +56,11 @@ import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
-import AllocationRecipient from "@/components/AllocationRecipient.vue";
-import PrintButton from "@/components/PrintButton.vue";
+import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
+import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
 
-@Component({ components: { AllocationRecipient, PrintButton } })
+@Component({ components: { SessionRecipient, PrintButton } })
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
   isLoading = true;

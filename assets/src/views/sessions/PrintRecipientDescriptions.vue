@@ -31,7 +31,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
-import PrintButton from "@/components/PrintButton.vue";
+import PrintButton from "@/components/ui/PrintButton.vue";
 import Router from "@/router";
 
 @Component({ components: { PrintButton } })

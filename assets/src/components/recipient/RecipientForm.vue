@@ -28,10 +28,10 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import AddressField from "@/components/form/AddressField.vue";
-import BaseSelect from "@/components/form/BaseSelect.vue";
-import DateField from "@/components/form/DateField.vue";
-import InputField from "@/components/form/InputField.vue";
+import AddressField from "@/components/ui/AddressField.vue";
+import BaseSelect from "@/components/ui/BaseSelect.vue";
+import DateField from "@/components/ui/DateField.vue";
+import InputField from "@/components/ui/InputField.vue";
 import { IContact, IRecipient } from "@/types";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import toast from "@/helpers/toast";

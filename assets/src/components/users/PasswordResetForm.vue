@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import InputField from "@/components/form/InputField.vue";
+import InputField from "@/components/ui/InputField.vue";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
 

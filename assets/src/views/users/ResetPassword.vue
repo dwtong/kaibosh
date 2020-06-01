@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import PasswordResetForm from "@/components/PasswordResetForm.vue";
+import PasswordResetForm from "@/components/users/PasswordResetForm.vue";
 
 @Component({ components: { PasswordResetForm } })
 export default class ResetPassword extends Vue {}

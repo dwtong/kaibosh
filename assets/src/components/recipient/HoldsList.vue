@@ -15,7 +15,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IHold } from "../types";
+import { IHold } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import { sortBy } from "lodash";
 
