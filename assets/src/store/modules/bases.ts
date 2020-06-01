@@ -1,12 +1,6 @@
 import { IBase, IFoodCategory, ISessionSlot } from "@/types";
 import Store from "@/store";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { sortBy } from "lodash";
 import BaseService from "@/services/base-service";
 import FoodCategoryService from "@/services/food-category-service";
@@ -15,7 +9,7 @@ import SessionSlotService from "@/services/session-slot-service";
 @Module({ name: "bases", store: Store, dynamic: true })
 class Bases extends VuexModule {
   errors: string[] = [];
-  loading: boolean = false;
+  loading = false;
   list: IBase[] = [];
   foodCategories: IFoodCategory[] = [];
   sessionSlots: ISessionSlot[] = [];
@@ -63,7 +57,7 @@ class Bases extends VuexModule {
   @Action
   async fetchBases() {
     if (this.list.length === 0) {
-      const bases = await BaseService.get();
+      const bases: IBase[] = await BaseService.get();
       this.context.commit("setBases", bases);
     }
   }
@@ -74,16 +68,10 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchSessionSlots({
-    baseId: baseId,
-    date: date
-  }: {
-    baseId: string;
-    date?: string;
-  }) {
+  async fetchSessionSlots({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
     const bases = await SessionSlotService.getForBase(baseId, date);
     this.context.commit("setSessionSlots", bases);
   }
 }
 
-export const BasesModule = getModule(Bases);
+export default getModule(Bases);

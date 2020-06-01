@@ -1,30 +1,23 @@
-import Vue from "vue";
 import Store from "@/store";
-import { IRecipient, IHold } from "@/types";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { IRecipient } from "@/types";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import RecipientService from "@/services/recipient-service";
 
 const defaultRecipientDetails = {
   name: "",
-  base_id: "0",
-  primary_contact: {
+  baseId: "0",
+  primaryContact: {
     name: "",
     email: "",
-    phone_landline: "",
-    phone_mobile: ""
+    phoneLandline: "",
+    phoneMobile: ""
   }
 };
 
 @Module({ name: "activeRecipient", store: Store, dynamic: true })
 class ActiveRecipient extends VuexModule {
   details: IRecipient = defaultRecipientDetails;
-  status: string = "";
+  status = "";
   errors: any = null;
 
   @Mutation
@@ -83,10 +76,7 @@ class ActiveRecipient extends VuexModule {
 
   @Action
   async updateRecipient(recipient: any) {
-    const updatedRecipient = await RecipientService.update(
-      recipient.id,
-      recipient
-    );
+    const updatedRecipient = await RecipientService.update(recipient.id, recipient);
     this.context.commit("setRecipientDetails", updatedRecipient);
   }
 

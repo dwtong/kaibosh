@@ -1,11 +1,5 @@
 import Store from "@/store";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import auth from "@/helpers/auth";
 import AuthService from "@/services/auth-service";
 import UserService from "@/services/user-service";
@@ -15,7 +9,7 @@ import Router from "@/router";
 @Module({ name: "user", store: Store, dynamic: true })
 class User extends VuexModule {
   isAuthenticated: boolean = auth.authTokenIsPresent();
-  passwordUpdated: boolean = false;
+  passwordUpdated = false;
   users: IUser[] = [];
 
   @Action

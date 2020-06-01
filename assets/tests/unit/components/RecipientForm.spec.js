@@ -6,7 +6,10 @@ import RecipientForm from "@/components/RecipientForm.vue";
 import state from "@/store/modules/bases/state";
 
 const localVue = createLocalVue();
-const bases = [{ id: 1, name: "Base 1" }, { id: 2, name: "Base 2" }];
+const bases = [
+  { id: 1, name: "Base 1" },
+  { id: 2, name: "Base 2" }
+];
 
 localVue.use(Vuex);
 localVue.use(Buefy);

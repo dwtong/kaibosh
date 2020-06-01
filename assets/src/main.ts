@@ -28,11 +28,12 @@ if (process.env.NODE_ENV === "production") {
     payload: {
       client: {
         javascript: {
+          // eslint-disable-next-line @typescript-eslint/camelcase
           code_version: "version-1"
         }
       }
     },
-    transform: (obj: any) => {
+    transform: (obj: Record<string, unknown>) => {
       obj.sessionURL = LogRocket.sessionURL;
       return obj;
     }

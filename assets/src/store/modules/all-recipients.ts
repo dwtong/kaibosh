@@ -1,19 +1,13 @@
 import RecipientService from "@/services/recipient-service";
 import Store from "@/store";
 import { IRecipientListItem, IStatus } from "@/types";
-import {
-  Action,
-  getModule,
-  Module,
-  Mutation,
-  VuexModule
-} from "vuex-module-decorators";
+import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 @Module({ name: "allRecipients", store: Store, dynamic: true })
 class AllRecipients extends VuexModule {
   list: IRecipientListItem[] = [];
-  filteredBase: string = "0";
-  filteredName: string = "";
+  filteredBase = "0";
+  filteredName = "";
   filteredStatus: IStatus[] = [
     { label: "Active", name: "active", enabled: false },
     { label: "Pending", name: "pending", enabled: false },
@@ -35,13 +29,11 @@ class AllRecipients extends VuexModule {
     }
 
     if (this.filteredName && this.filteredName !== "") {
-      list = list.filter(r =>
-        r.name.toLowerCase().includes(this.filteredName!.toLowerCase())
-      );
+      list = list.filter(r => r.name.toLowerCase().includes(this.filteredName?.toLowerCase()));
     }
 
     if (this.filteredBase && this.filteredBase.toString() !== "0") {
-      list = list.filter(r => r.base_id === this.filteredBase);
+      list = list.filter(r => r.baseId === this.filteredBase);
     }
 
     return list;

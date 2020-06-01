@@ -13,20 +13,20 @@ export default {
     return post(`${resource}/`, {
       email,
       password,
-      password_confirmation: password,
-      confirm_success_url: `${window.location.origin}/`
+      passwordConfirmation: password,
+      confirmSuccessUrl: `${window.location.origin}/`
     });
   },
   resetPassword: (email: string) => {
     return post(`${resource}/password`, {
       email,
-      redirect_url: `${window.location.origin}/reset_password`
+      redirectUrl: `${window.location.origin}/reset_password`
     });
   },
   changePassword: (password: string, confirmation: string) => {
     return put(`${resource}/password`, {
       password,
-      password_confirmation: confirmation
+      passwordConfirmation: confirmation
     });
   },
   signOut: () => destroy(`${resource}/sign_out`)

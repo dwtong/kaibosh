@@ -1,6 +1,6 @@
 import LogRocket from "logrocket";
 
-interface IAuthToken {
+interface AuthToken {
   client: string;
   uid: string;
   "access-token": string;
@@ -27,7 +27,7 @@ export default {
     }
   },
 
-  saveAuthToken(headers: IAuthToken) {
+  saveAuthToken(headers: AuthToken) {
     if (headers.client && headers["access-token"]) {
       localStorage.setItem("client", headers.client);
       localStorage.setItem("uid", headers.uid);
@@ -36,12 +36,12 @@ export default {
     }
   },
 
-  loadAuthToken(): IAuthToken {
+  loadAuthToken(): AuthToken {
     return {
-      client: window.localStorage.getItem("client")!,
-      uid: window.localStorage.getItem("uid")!,
-      "access-token": window.localStorage.getItem("access-token")!,
-      "token-type": window.localStorage.getItem("token-type")!
+      client: window.localStorage.getItem("client") ?? "",
+      uid: window.localStorage.getItem("uid") ?? "",
+      "access-token": window.localStorage.getItem("access-token") ?? "",
+      "token-type": window.localStorage.getItem("token-type") ?? ""
     };
   },
 

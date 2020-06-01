@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/ui/NavBar.vue";
 import { UserModule } from "@/store/modules/user";
 
 @Component({ components: { NavBar } })
