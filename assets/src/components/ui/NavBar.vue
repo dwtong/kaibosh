@@ -44,13 +44,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import AllRecipients from "@/store/modules/all-recipients";
 import { UserModule } from "@/store/modules/user";
 
 @Component
 export default class NavBar extends Vue {
   resetRecipientNameFilter() {
-    AllRecipientsModule.updateNameFilter("");
+    AllRecipients.updateNameFilter("");
   }
 
   async logout() {

@@ -2,21 +2,21 @@
   <div>
     <div class="title-box">
       <h1 class="title is-inline-block">Food Recipients</h1>
-      <router-link to="/recipients/new" tag="button" class="button is-primary is-pulled-right"
-        >Add New Recipient</router-link
-      >
+      <router-link to="/recipients/new" tag="button" class="button is-primary is-pulled-right">
+        Add New Recipient
+      </router-link>
     </div>
 
     <div class="columns">
       <div class="column">
         <div class="box">
-          <RecipientsList />
+          <RecipientsList :recipients="recipientsList" :loading="isLoading" />
         </div>
       </div>
 
       <div class="column is-one-quarter">
         <div class="box">
-          <RecipientsListFilter />
+          <RecipientsFilterPanel />
         </div>
       </div>
     </div>
@@ -27,8 +27,21 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import RecipientsList from "@/components/recipients/RecipientsList.vue";
-import RecipientsListFilter from "@/components/recipients/RecipientsListFilter.vue";
+import RecipientsFilterPanel from "@/components/recipients/RecipientsFilterPanel.vue";
+import AllRecipients from "@/store/modules/all-recipients";
 
-@Component({ components: { RecipientsList, RecipientsListFilter } })
-export default class ListRecipients extends Vue {}
+@Component({ components: { RecipientsList, RecipientsFilterPanel } })
+export default class ListRecipients extends Vue {
+  isLoading = false;
+
+  async created() {
+    this.isLoading = AllRecipients.filteredList.length === 0;
+    await AllRecipients.fetchRecipients();
+    this.isLoading = false;
+  }
+
+  get recipientsList() {
+    return AllRecipients.filteredList;
+  }
+}
 </script>
