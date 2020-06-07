@@ -5,11 +5,11 @@ import Router from "@/router";
 import Store from "@/store";
 
 import Buefy from "buefy";
-import VeeValidate from "vee-validate";
 import VueMoment from "vue-moment";
 import Vue from "vue";
 import Rollbar from "vue-rollbar";
 import LogRocket from "logrocket";
+import "./vee-validate";
 
 if (process.env.NODE_ENV === "production") {
   LogRocket.init("7qg6ha/kaibosh-platform");
@@ -39,8 +39,6 @@ if (process.env.NODE_ENV === "production") {
     }
   });
 }
-
-Vue.use(VeeValidate, { inject: false });
 
 Vue.use(Buefy, {
   defaultIconPack: "fas",

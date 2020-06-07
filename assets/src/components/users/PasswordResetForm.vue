@@ -1,55 +1,35 @@
 <template>
-  <form @submit.prevent>
+  <ValidatedForm @submit="updatePassword">
     <h1 class="title">Update Password</h1>
-
-    <InputField name="password" v-model="password" type="password" :validation="{ required: true, min: 8 }" />
-    <InputField
-      name="confirm-password"
-      v-model="passwordConfirmation"
-      type="password"
-      :validation="{ required: true, min: 8, is: password }"
-    />
-    <b-button
-      @click="updatePassword"
-      :loading="updatingPassword"
-      type="submit"
-      class="button is-primary is-pulled-right"
-    >
-      Update Password
-    </b-button>
-  </form>
+    <PasswordField v-model="password" with-confirmation="true" />
+    <SubmitButton :is-submitting="updatingPassword" />
+  </ValidatedForm>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import InputField from "@/components/ui/InputField.vue";
+import PasswordField from "@/components/ui/PasswordField.vue";
+import SubmitButton from "@/components/ui/SubmitButton.vue";
+import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
 
-// eslint-disable-next-line @typescript-eslint/camelcase
-@Component({ components: { InputField }, $_veeValidate: { validator: "new" } })
+@Component({ components: { PasswordField, SubmitButton, ValidatedForm } })
 export default class PasswordResetForm extends Vue {
   password = "";
-  passwordConfirmation = "";
-  error!: string;
   updatingPassword = false;
 
   async updatePassword() {
     this.updatingPassword = true;
-    const formIsValid = await this.$validator.validateAll();
 
-    if (formIsValid) {
-      await UserModule.updatePassword(this.password);
+    await UserModule.updatePassword(this.password);
 
-      if (UserModule.passwordUpdated) {
-        toast.success("Password updated.");
-        this.$router.push("/");
-      } else {
-        toast.error("Failed to update password.");
-      }
+    if (UserModule.passwordUpdated) {
+      toast.success("Password updated.");
+      this.$router.push("/");
     } else {
-      toast.error("Failed to update password.", true);
+      toast.error("Failed to update password.");
     }
 
     this.updatingPassword = false;

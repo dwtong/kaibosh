@@ -1,0 +1,36 @@
+<template>
+  <ValidationProvider :vid="name" :name="$attrs.name || $attrs.label" :rules="rules" v-slot="{ errors }">
+    <b-field class="field" v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors">
+      <b-input :value="value" @input="input" v-bind="$attrs" :type="type" />
+    </b-field>
+  </ValidationProvider>
+</template>
+
+<script lang="ts">
+import { Component, Emit, Prop } from "vue-property-decorator";
+import { ValidationProvider } from "vee-validate";
+import Vue from "vue";
+
+@Component({ components: { ValidationProvider } })
+export default class ValidatedInput extends Vue {
+  @Prop() readonly value!: string;
+  @Prop({ default: "" }) readonly name!: string;
+  @Prop({ default: "text" }) readonly type!: string;
+  @Prop(Object) readonly rules!: object;
+
+  get label() {
+    return this.name.replace(/-/g, " ");
+  }
+
+  @Emit()
+  input(event: Event) {
+    return event;
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.field {
+  margin-bottom: 0.75rem;
+}
+</style>
