@@ -1,46 +1,40 @@
 <template>
-  <form @submit.prevent="submit">
-    <b-loading :active.sync="isLoading"></b-loading>
+  <ValidatedForm @submit="submit">
     <div class="box">
       <h1 class="title">Organisation Details</h1>
 
-      <InputField name="name" v-model="recipient.name" required="true" />
+      <ValidatedInput label="name" v-model="recipient.name" :rules="{ required: true }" />
       <BaseSelect v-model="recipient.baseId" label="Kaibosh base" required="true" />
       <AddressField v-model="recipient.physicalAddress" label="Physical address" />
       <DateField name="start date" v-model="startedAt" />
-      <InputField name="description" v-model="recipient.description" type="textarea" />
+      <ValidatedInput label="description" v-model="recipient.description" type="textarea" />
     </div>
 
     <div class="box">
       <h1 class="title">Primary Contact Details</h1>
 
-      <InputField name="contact-name" v-model="contact.name" />
-      <InputField name="contact-email" v-model="contact.email" />
-      <InputField name="contact-landline" v-model="contact.phoneLandline" />
-      <InputField name="contact-mobile" v-model="contact.phoneMobile" />
+      <ValidatedInput label="contact name" v-model="contact.name" />
+      <ValidatedInput label="contact email" v-model="contact.email" />
+      <ValidatedInput label="contact landline" v-model="contact.phoneLandline" />
+      <ValidatedInput label="contact mobile" v-model="contact.phoneMobile" />
     </div>
     <button type="submit" class="button is-primary is-pulled-right">
       Save Recipient
     </button>
-  </form>
+  </ValidatedForm>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Emit, Prop } from "vue-property-decorator";
 import AddressField from "@/components/ui/AddressField.vue";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import DateField from "@/components/ui/DateField.vue";
-import InputField from "@/components/ui/InputField.vue";
+import ValidatedInput from "@/components/ui/ValidatedInput.vue";
+import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { IContact, IRecipient } from "@/types";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import toast from "@/helpers/toast";
 
-@Component({
-  components: { AddressField, BaseSelect, DateField, InputField },
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  $_veeValidate: { validator: "new" }
-})
+@Component({ components: { AddressField, BaseSelect, DateField, ValidatedForm, ValidatedInput } })
 export default class RecipientForm extends Vue {
   @Prop(String) readonly recipientId!: string;
 
@@ -56,56 +50,19 @@ export default class RecipientForm extends Vue {
   };
 
   startedAt: Date = new Date();
-  isLoading = true;
 
-  async submit() {
-    const formIsValid = await this.$validator.validateAll();
-
-    if (formIsValid) {
-      this.saveRecipient();
-    } else {
-      toast.error("Failed to save recipient.", true);
-    }
+  @Emit()
+  submit(): IRecipient {
+    return { primaryContact: this.contact, startedAt: this.startedAt, ...this.recipient };
   }
 
   async created() {
-    if (this.recipientId) {
-      await ActiveRecipientModule.fetchRecipient(this.recipientId);
-      this.recipient = ActiveRecipientModule.details;
-
-      if (ActiveRecipientModule.details.primaryContact) {
-        this.contact = { ...ActiveRecipientModule.details.primaryContact };
-      }
-
-      if (ActiveRecipientModule.details.startedAt) {
-        this.startedAt = ActiveRecipientModule.details.startedAt;
-      }
+    if (this.recipient.primaryContact) {
+      this.contact = { ...this.recipient.primaryContact };
     }
 
-    this.isLoading = false;
-  }
-
-  async saveRecipient() {
-    const params = {
-      primaryContactAttributes: this.contact,
-      ...this.recipient
-    };
-
-    if (this.startedAt) {
-      params.startedAt = this.startedAt;
-    }
-
-    if (this.recipientId) {
-      await ActiveRecipientModule.updateRecipient(params);
-      this.$router.push(`/recipients/${this.recipientId}`);
-      toast.success("Recipient updated.");
-    } else {
-      await ActiveRecipientModule.createRecipient(params);
-
-      if (ActiveRecipientModule.details.id) {
-        this.$router.push(`/recipients/${ActiveRecipientModule.details.id}`);
-        toast.success("Recipient created.");
-      }
+    if (this.recipient.startedAt) {
+      this.startedAt = this.recipient.startedAt;
     }
   }
 }

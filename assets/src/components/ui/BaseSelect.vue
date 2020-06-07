@@ -1,38 +1,30 @@
 <template>
-  <b-field
+  <ValidatedSelect
+    name="base"
+    :rules="{ required: required }"
+    :value="value"
+    @input="input"
     :label="label"
-    :type="{ 'is-danger': $validator.errors.has('base') }"
-    :message="$validator.errors.first('base')"
-    class="form-field"
+    placeholder="Select a base..."
   >
-    <b-select
-      :value="value"
-      @input="$emit('input', $event)"
-      name="base"
-      placeholder="Please select a base..."
-      v-validate="{ required: required }"
-      expanded
-    >
-      <option v-if="all" :value="allValue">All</option>
-      <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>
-    </b-select>
-  </b-field>
+    <option v-if="all" :value="allValue">All</option>
+    <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>
+  </ValidatedSelect>
 </template>
 
 <script lang="ts">
-import { Component, Inject, Prop } from "vue-property-decorator";
+import { Component, Emit, Prop } from "vue-property-decorator";
 import Vue from "vue";
 import Bases from "@/store/modules/bases";
 import { IBase } from "@/types";
-import { Validator } from "vee-validate";
+import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
 
-@Component
+@Component({ components: { ValidatedSelect } })
 export default class BaseSelect extends Vue {
   @Prop({ default: false }) readonly all!: boolean;
   @Prop({ default: false }) readonly required!: boolean;
   @Prop({ default: "" }) readonly label!: string;
   @Prop() readonly value!: string;
-  @Inject("$validator") $validator!: Validator;
 
   list: IBase[] = [];
   allValue = 0;
@@ -40,6 +32,11 @@ export default class BaseSelect extends Vue {
   async created() {
     await Bases.fetchBases();
     this.list = Bases.list;
+  }
+
+  @Emit()
+  input(event: Event) {
+    return event;
   }
 }
 </script>

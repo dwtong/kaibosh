@@ -6,7 +6,7 @@ setInteractionMode("lazy");
 
 extend("required", {
   ...required,
-  message: fieldName => `${fieldName} is required`
+  message: fieldName => `${capitalize(fieldName)} is required`
 });
 
 extend("is", {

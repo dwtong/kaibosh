@@ -31,9 +31,3 @@ export default class ValidatedInput extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.field {
-  margin-bottom: 0.75rem;
-}
-</style>
