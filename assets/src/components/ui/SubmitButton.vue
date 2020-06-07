@@ -1,6 +1,6 @@
 <template>
-  <button type="submit" :class="{ 'is-loading': isSubmitting }" class="button is-primary is-pulled-right">
-    Submit
+  <button type="submit" :class="{ 'is-loading': isSubmitting }" class="button is-primary">
+    <slot>Submit</slot>
   </button>
 </template>
 

@@ -2,7 +2,6 @@
   <div>
     <ValidatedInput
       label="Password"
-      name="password"
       :value="value"
       @input="input"
       type="password"
@@ -12,7 +11,6 @@
       v-if="withConfirmation"
       v-model="confirmationValue"
       label="Password confirmation"
-      name="password-confirmation"
       type="password"
       :validation="{ is: this.value, required: true }"
     />

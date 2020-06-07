@@ -1,29 +1,30 @@
-import { required, confirmed, email, min, is } from "vee-validate/dist/rules";
+import { required, excluded, email, min, is } from "vee-validate/dist/rules";
 import { setInteractionMode, extend } from "vee-validate";
+import { capitalize } from "lodash";
 
 setInteractionMode("lazy");
 
 extend("required", {
   ...required,
-  message: "This field is required"
+  message: fieldName => `${fieldName} is required`
 });
 
 extend("is", {
   ...is,
-  message: "This field does not match the previous field"
+  message: () => `Password does not match`
 });
 
 extend("min", {
   ...min,
-  message: "This field requires at least 8 characters"
+  message: fieldName => `the ${fieldName} must have at least 8 characters`
 });
 
 extend("email", {
   ...email,
-  message: "This field must be a valid email"
+  message: "Value must be a valid email"
 });
 
-extend("confirmed", {
-  ...confirmed,
-  message: "This field confirmation does not match"
+extend("excluded", {
+  ...excluded,
+  message: fieldName => `${capitalize(fieldName)} already exists`
 });

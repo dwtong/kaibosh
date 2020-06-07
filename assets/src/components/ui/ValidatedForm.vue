@@ -19,9 +19,3 @@ export default class ValidatedForm extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.form {
-  margin-bottom: 2.5rem;
-}
-</style>
