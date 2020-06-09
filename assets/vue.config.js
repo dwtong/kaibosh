@@ -13,6 +13,10 @@ module.exports = {
   },
   configureWebpack: {
     devServer: {
+      overlay: {
+        warnings: true,
+        errors: true
+      },
       disableHostCheck: true,
       hot: true,
       proxy: {
