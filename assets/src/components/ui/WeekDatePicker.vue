@@ -10,7 +10,7 @@
         inline
         v-click-outside="onClickOutside"
       >
-        <button class="button" @click="setDate(new Date())" :disabled="isToday">
+        <button class="button" @click="setDate(today)" :disabled="value === today">
           <span>Today</span>
         </button>
       </b-datepicker>
@@ -24,13 +24,14 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import dateHelper from "@/helpers/date";
 import vClickOutside from "v-click-outside";
+import { today } from "@/helpers/date";
 
 @Component({ directives: { clickOutside: vClickOutside.directive } })
 export default class WeekDatePicker extends Vue {
   @Prop(Date) readonly value!: Date;
   isVisible = false;
+  today = today;
 
   toggleDatePicker() {
     this.isVisible = !this.isVisible;
@@ -42,13 +43,6 @@ export default class WeekDatePicker extends Vue {
 
   setDate(value: Date) {
     this.$emit("input", value);
-  }
-
-  get isToday() {
-    const today = dateHelper.getISODate(dateHelper.getMonday(new Date()));
-    const weekOf = dateHelper.getISODate(this.value);
-
-    return today === weekOf;
   }
 }
 </script>

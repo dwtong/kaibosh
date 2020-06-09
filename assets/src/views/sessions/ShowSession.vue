@@ -15,10 +15,10 @@
       </div>
 
       <h1 v-if="sessionDate" class="title">
-        {{ sessionDate | moment("dddd h:mma") }}
+        {{ sessionDate | formatDate("dddd h:mma") }}
       </h1>
       <h2 class="subtitle is-4">
-        {{ sessionDate | moment("MMMM Do, Y") }}
+        {{ sessionDate | formatDate("MMMM Do, Y") }}
       </h2>
     </div>
 
@@ -59,8 +59,9 @@ import { SessionSlotsModule } from "@/store/modules/session-slots";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
+import { formatDate } from "@/helpers/date";
 
-@Component({ components: { SessionRecipient, PrintButton } })
+@Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
   isLoading = true;

@@ -5,7 +5,6 @@ import Router from "@/router";
 import Store from "@/store";
 
 import Buefy from "buefy";
-import VueMoment from "vue-moment";
 import Vue from "vue";
 import Rollbar from "vue-rollbar";
 import LogRocket from "logrocket";
@@ -46,8 +45,6 @@ Vue.use(Buefy, {
     return date.toLocaleDateString("en-GB");
   }
 });
-
-Vue.use(VueMoment);
 
 Vue.config.productionTip = false;
 

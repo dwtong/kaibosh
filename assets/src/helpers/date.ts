@@ -1,25 +1,18 @@
-export default {
-  getMonday(date: Date): Date {
-    const day = date.getDay() || 7;
+import { startOfDay, addWeeks, subWeeks, startOfWeek, format, addDays } from "date-fns";
 
-    if (day !== 1) {
-      date.setHours(-24 * (day - 1));
-    }
+export const listOfDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+export const today = startOfDay(new Date());
+export const thisWeek = startOfWeek(today, { weekStartsOn: 1 });
+export const lastWeek = subWeeks(thisWeek, 1);
+export const nextWeek = addWeeks(thisWeek, 1);
 
-    return date;
-  },
+export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
-  getISODate(date: Date): string {
-    const year = date.getFullYear().toString();
+export const formatDate = (date: Date, datePattern: string): string => {
+  return format(date, datePattern, {});
+};
 
-    let month = (date.getMonth() + 1).toString();
-    month = month.length === 1 ? `0${month}` : month;
-
-    let day = date.getDate().toString();
-    day = day.length === 1 ? `0${day}` : day;
-
-    return `${year}-${month}-${day}`;
-  },
-
-  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+export const dateOnDayOfWeek = (date: Date, day: string): Date => {
+  const dayIndex = listOfDays.findIndex(d => d === day);
+  return addDays(startOfWeek(date, { weekStartsOn: 1 }), dayIndex);
 };

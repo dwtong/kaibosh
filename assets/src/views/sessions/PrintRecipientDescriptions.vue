@@ -17,7 +17,7 @@
     </div>
 
     <h1 class="title with-margins" v-if="sessionDate">
-      {{ sessionDate | moment("dddd h:mma") }}
+      {{ sessionDate | formatDate("dddd h:mma") }}
     </h1>
 
     <div class="recipient with-margins" v-for="recipient in recipients" :key="recipient.id">
@@ -32,9 +32,10 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { SessionSlotsModule } from "@/store/modules/session-slots";
 import PrintButton from "@/components/ui/PrintButton.vue";
+import { formatDate } from "@/helpers/date";
 import Router from "@/router";
 
-@Component({ components: { PrintButton } })
+@Component({ components: { PrintButton }, filters: { formatDate } })
 export default class GenerateDescriptionsButton extends Vue {
   @Prop(String) readonly id!: string;
   includeOnHold = false;

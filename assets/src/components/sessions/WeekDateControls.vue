@@ -11,7 +11,7 @@
     </p>
 
     <p class="control">
-      <WeekDatePicker @input="goToSelectedDate($event)" :value="date" />
+      <WeekDatePicker @input="goToDate($event)" :value="date" />
     </p>
 
     <p class="control">
@@ -30,30 +30,17 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Router from "@/router";
-import dateHelper from "@/helpers/date";
-import moment from "moment";
+import { lastWeek, nextWeek, formatDate } from "@/helpers/date";
 import WeekDatePicker from "@/components/ui/WeekDatePicker.vue";
 
 @Component({ components: { WeekDatePicker } })
 export default class WeekDateControls extends Vue {
   @Prop(Date) readonly date!: Date;
+  nextWeek: Date = nextWeek;
+  previousWeek: Date = lastWeek;
 
-  get nextWeek() {
-    const today = moment(this.date);
-    return dateHelper.getISODate(today.add(7, "day").toDate());
-  }
-
-  get previousWeek() {
-    const today = moment(this.date);
-    return dateHelper.getISODate(today.add(-7, "day").toDate());
-  }
-
-  goToSelectedDate(date: Date) {
-    const dateString = dateHelper.getISODate(date);
-    this.goToDate(dateString);
-  }
-
-  goToDate(date?: string) {
+  goToDate(datetime: Date) {
+    const date = formatDate(datetime, "yyyy-MM-dd");
     Router.push({ path: "/sessions/week", query: { date } });
   }
 }
