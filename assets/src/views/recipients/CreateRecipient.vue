@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import RecipientForm from "@/components/recipient/RecipientForm.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
@@ -16,15 +16,6 @@ import toast from "@/helpers/toast";
 
 @Component({ components: { RecipientForm } })
 export default class CreateRecipient extends Vue {
-  @Prop(String) readonly recipientId!: string;
-
-  recipient!: IRecipient;
-
-  async created() {
-    await ActiveRecipientModule.fetchRecipient(this.recipientId);
-    this.recipient = ActiveRecipientModule.details;
-  }
-
   async createRecipient(params: IRecipient) {
     await ActiveRecipientModule.createRecipient(params);
 

@@ -3,9 +3,10 @@ import { IRecipient } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import RecipientService from "@/services/recipient-service";
 
-const defaultRecipientDetails = {
+export const defaultRecipientDetails: IRecipient = {
   name: "",
   baseId: "0",
+  startedAt: "",
   primaryContact: {
     name: "",
     email: "",

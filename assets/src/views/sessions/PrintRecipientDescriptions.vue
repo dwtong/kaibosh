@@ -22,7 +22,7 @@
 
     <div class="recipient with-margins" v-for="recipient in recipients" :key="recipient.id">
       <h2 class="subtitle">{{ recipient.name }}</h2>
-      <div v-html="recipient.description"></div>
+      <div v-html="recipient.descriptionHtml"></div>
     </div>
   </div>
 </template>

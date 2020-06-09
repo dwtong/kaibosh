@@ -33,7 +33,7 @@
           <InfoField :isLoading="isLoading" label="Base" :value="baseName" />
           <InfoField :isLoading="isLoading" label="Physical Address" :value="details.physicalAddress" />
           <InfoField :isLoading="isLoading" label="Start Date" :value="details.startedAt" />
-          <InfoField :isLoading="isLoading" label="Description" :value="details.description" renderHTML="true" />
+          <InfoField :isLoading="isLoading" label="Description" :value="details.descriptionHtml" renderHTML="true" />
         </div>
 
         <div class="box">
