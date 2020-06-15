@@ -9,7 +9,7 @@ export const nextWeek = addWeeks(thisWeek, 1);
 export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
 export const formatDate = (date: Date, datePattern: string): string => {
-  return format(date, datePattern, {});
+  return format(new Date(date), datePattern, {});
 };
 
 export const dateOnDayOfWeek = (date: Date, day: string): Date => {

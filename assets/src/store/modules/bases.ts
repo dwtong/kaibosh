@@ -21,6 +21,14 @@ class Bases extends VuexModule {
     };
   }
 
+  get sessionsForDay() {
+    return (day: string) =>
+      sortBy(
+        this.sessionSlots.filter(s => s.day === day),
+        "date"
+      );
+  }
+
   get baseNameById() {
     return (id: string) => {
       const base = this.list.find(b => b.id === id);

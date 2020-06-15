@@ -8,24 +8,12 @@
         <BaseSelect class="" :value="baseId" required="true" @input="setBase" />
       </div>
       <div class="column is-hidden-print">
-        <WeekDateControls :baseId="baseId" :date="weekOfDate" />
+        <WeekDateControls :base-id="baseId" :date="weekOfDate" />
       </div>
     </div>
 
     <div v-if="showSessionOptions">
-      <div class="box" v-for="day in days" :key="day" :class="{ 'is-hidden-print': sessionsForDay(day).length === 0 }">
-        <h2 class="title is-4">
-          {{ dateForDay(day) | moment("dddd Do MMMM YYYY") }}
-        </h2>
-        <div v-if="sessionsForDay(day).length === 0" class="is-hidden-print">
-          No sessions.
-        </div>
-        <div v-else class="columns">
-          <div v-for="session in sessionsForDay(day)" :key="session.id" class="column is-half">
-            <SessionRecipientList :session="session" />
-          </div>
-        </div>
-      </div>
+      <SessionListItem v-for="day in days" :key="day" />
     </div>
   </div>
 </template>
@@ -35,21 +23,11 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Bases from "@/store/modules/bases";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
-import SessionSlotSelect from "@/components/ui/SessionSlotSelect.vue";
-import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue";
+import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
-import date from "@/helpers/date";
-import moment from "moment";
-import { sortBy } from "lodash";
+import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
 
-@Component({
-  components: {
-    BaseSelect,
-    SessionSlotSelect,
-    SessionRecipientList,
-    WeekDateControls
-  }
-})
+@Component({ components: { BaseSelect, SessionListItem, WeekDateControls } })
 export default class ListSessions extends Vue {
   sessionSlotId = "0";
   showSessionOptions = true;
@@ -72,30 +50,11 @@ export default class ListSessions extends Vue {
     this.showSessionOptions = true;
   }
 
-  sessionsForDay(day: string) {
-    return sortBy(
-      this.sessionSlots.filter(s => s.day === day),
-      "date"
-    );
-  }
-
-  dateForDay(day: string) {
-    const dateForDay = moment(this.weekOfDate);
-    const dayIndex = date.days.findIndex(d => d === day);
-    return dateForDay.add(dayIndex, "day");
-  }
-
   async fetchSessions() {
     if (this.baseId) {
-      await Bases.fetchSessionSlots({
-        baseId: this.baseId,
-        date: date.getISODate(this.weekOfDate)
-      });
+      const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
+      await Bases.fetchSessionSlots({ baseId: this.baseId, date });
     }
-  }
-
-  get sessionSlots() {
-    return Bases.sessionSlots;
   }
 
   get showSubmitButton() {
@@ -103,20 +62,17 @@ export default class ListSessions extends Vue {
   }
 
   get days() {
-    return date.days;
+    return listOfDays;
   }
 
   get weekOfDate() {
-    let weekOfDate;
-    const dateParam = this.$route.query.date && this.$route.query.date.toString();
+    const dateParam = this.$route.query.date?.toString();
 
-    if (dateParam && dateParam.length > 0) {
-      weekOfDate = new Date(dateParam);
+    if (dateParam) {
+      return mondayOfWeek(new Date(dateParam));
     } else {
-      weekOfDate = new Date();
+      return thisWeek;
     }
-
-    return date.getMonday(weekOfDate);
   }
 }
 </script>

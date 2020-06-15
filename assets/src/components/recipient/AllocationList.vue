@@ -23,7 +23,7 @@ export default class AllocationList extends Vue {
       return {
         quantityLabel: this.allocationQuantityLabel(allocation),
         foodCategory: this.foodCategoryName(allocation),
-        ...allocation
+        id: allocation.id
       };
     });
     return sortBy(allocations, ["foodCategory"]);

@@ -58,15 +58,13 @@ class RecipientSessions extends VuexModule {
   }
 
   @Action
-  async deleteHold(hold: IHold) {
-    if (hold.id) {
-      await HoldService.destroy(hold.id);
-      const session = this.sessionById(hold.sessionId);
+  async deleteHold(holdId: string, sessionId: string) {
+    await HoldService.destroy(holdId);
+    const session = this.sessionById(sessionId);
 
-      if (session?.recipientId) {
-        ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-        this.fetchSessions(session.recipientId);
-      }
+    if (session?.recipientId) {
+      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      this.fetchSessions(session.recipientId);
     }
   }
 
