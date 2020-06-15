@@ -72,6 +72,16 @@ class Bases extends VuexModule {
     const bases = await SessionSlotService.getForBase(baseId, date);
     this.context.commit("setSessionSlots", bases);
   }
+
+  @Mutation
+  setLoading(loading: boolean) {
+    this.loading = loading;
+  }
+
+  @Action
+  async toggleLoading() {
+    this.context.commit("setLoading", !this.loading);
+  }
 }
 
 export default getModule(Bases);

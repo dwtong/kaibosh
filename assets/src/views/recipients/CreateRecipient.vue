@@ -13,6 +13,7 @@ import RecipientForm from "@/components/recipient/RecipientForm.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
+import { Route } from "vue-router/types/router";
 
 @Component({ components: { RecipientForm } })
 export default class CreateRecipient extends Vue {
@@ -23,6 +24,11 @@ export default class CreateRecipient extends Vue {
       this.$router.push(`/recipients/${ActiveRecipientModule.details.id}`);
       toast.success("Recipient created.");
     }
+  }
+
+  async beforeRouteEnter(to: Route, from: Route, next: any) {
+    await ActiveRecipientModule.resetActiveRecipient();
+    next();
   }
 }
 </script>

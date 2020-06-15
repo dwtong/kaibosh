@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <GlobalLoader />
     <div>
       <div v-if="showNav" class="sidenav is-hidden-print">
         <NavBar />
@@ -18,10 +19,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import GlobalLoader from "@/components/ui/GlobalLoader.vue";
 import NavBar from "@/components/ui/NavBar.vue";
 import { UserModule } from "@/store/modules/user";
 
-@Component({ components: { NavBar } })
+@Component({ components: { GlobalLoader, NavBar } })
 export default class App extends Vue {
   get showNav() {
     return UserModule.isAuthenticated;

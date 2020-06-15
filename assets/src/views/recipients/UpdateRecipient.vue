@@ -13,14 +13,14 @@ import RecipientForm from "@/components/recipient/RecipientForm.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
+import LoadRecipient from "@/mixins/load-recipient";
 
-@Component({ components: { RecipientForm } })
+@Component({ components: { RecipientForm }, mixins: [LoadRecipient] })
 export default class UpdateRecipient extends Vue {
   @Prop(String) readonly id!: string;
   recipient: IRecipient | null = null;
 
   async created() {
-    await ActiveRecipientModule.fetchRecipient(this.id);
     this.recipient = ActiveRecipientModule.details;
   }
 
