@@ -1,6 +1,6 @@
 <template>
   <ValidatedForm @submit="addUser">
-    <ValidatedInput label="email" v-model="newUserEmail" type="email" :rules="{ email: true, excluded: usersEmails }" />
+    <ValidatedInput v-model="newUserEmail" label="email" type="email" :rules="{ email: true, excluded: usersEmails }" />
     <SubmitButton>
       Create User
     </SubmitButton>

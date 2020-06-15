@@ -25,7 +25,7 @@
               <button class="button is-primary">
                 Reset Password
               </button>
-              <a @click="toggleForgotten" class="button is-text forgotten-button">
+              <a class="button is-text forgotten-button" @click="toggleForgotten">
                 Login
               </a>
             </p>
@@ -61,7 +61,7 @@
               <button class="button is-primary">
                 Login
               </button>
-              <a @click="toggleForgotten" class="button is-text forgotten-button">
+              <a class="button is-text forgotten-button" @click="toggleForgotten">
                 Forgotten Password?
               </a>
             </p>

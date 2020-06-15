@@ -2,7 +2,7 @@
   <form @submit.prevent="">
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ this.session ? "Edit " : "Add" }} Sorting Session</p>
+        <p class="modal-card-title">{{ session ? "Edit " : "Add" }} Sorting Session</p>
       </header>
 
       <section class="modal-card-body">

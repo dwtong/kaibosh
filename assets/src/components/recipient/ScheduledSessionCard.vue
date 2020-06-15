@@ -20,7 +20,7 @@
       <div class="card-content">
         <div v-if="session.holds && session.holds.length > 0" class="content">
           <p class="label">Session Holds</p>
-          <HoldsList :holds="session.holds" :sessionId="session.id" />
+          <HoldsList :holds="session.holds" :session-id="session.id" />
         </div>
 
         <div class="content">
@@ -29,8 +29,8 @@
         </div>
 
         <div class="buttons">
-          <a @click="$emit('edit')" class="button is-primary">Edit</a>
-          <a @click="$emit('remove')" class="button is-danger">Delete</a>
+          <a class="button is-primary" @click="$emit('edit')">Edit</a>
+          <a class="button is-danger" @click="$emit('remove')">Delete</a>
         </div>
       </div>
     </div>

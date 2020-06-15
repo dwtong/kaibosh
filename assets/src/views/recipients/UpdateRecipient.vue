@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
-      <RecipientForm v-if="recipient" @submit="updateRecipient" :recipient="recipient" />
+      <RecipientForm v-if="recipient" :recipient="recipient" @submit="updateRecipient" />
     </div>
   </div>
 </template>

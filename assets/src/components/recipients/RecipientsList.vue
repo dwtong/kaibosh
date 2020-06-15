@@ -2,7 +2,7 @@
   <b-table
     class="table"
     :data="recipients"
-    :loading="isLoading"
+    :loading="loading"
     hoverable
     striped
     default-sort-direction="asc"
@@ -10,7 +10,7 @@
     @click="viewRecipient"
   >
     <template v-slot:empty>
-      <div v-if="isLoading" class="pending"></div>
+      <div v-if="loading" class="pending"></div>
       <div v-else class="has-text-grey has-text-centered">
         <p><b-icon class="has-text-grey-lighter sad-icon" icon="frown" size="is-large"> </b-icon></p>
         <p>Nothing here.</p>
@@ -36,7 +36,7 @@ import { IRecipientListItem } from "@/types";
 
 @Component({ components: { RecipientStatusTag } })
 export default class RecipientsList extends Vue {
-  @Prop({ default: false }) readonly isLoading!: boolean;
+  @Prop({ default: false }) readonly loading!: boolean;
   @Prop({ default: [] }) readonly recipients!: IRecipientListItem[];
 
   viewRecipient(recipient: IRecipientListItem) {

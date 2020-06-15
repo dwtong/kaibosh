@@ -7,7 +7,7 @@
       </span>
     </div>
     <div class="is-hidden-print">
-      <div @click="viewRecipient" class="allocation-recipient">
+      <div class="allocation-recipient" @click="viewRecipient">
         <span v-if="allocation && !recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
           {{ quantityLabel(allocation) }}
         </span>

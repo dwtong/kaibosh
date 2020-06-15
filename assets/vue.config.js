@@ -14,7 +14,7 @@ module.exports = {
   configureWebpack: {
     devServer: {
       overlay: {
-        warnings: true,
+        warnings: false,
         errors: true
       },
       disableHostCheck: true,

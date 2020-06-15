@@ -15,8 +15,8 @@
               <p class="control">
                 <AllocationQuantitesSelect
                   :value="getFoodQuantity(food)"
-                  @input="setFoodQuantity(food, $event)"
                   :disabled="!food.enabled"
+                  @input="setFoodQuantity(food, $event)"
                 />
               </p>
               <p class="control">

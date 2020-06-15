@@ -3,10 +3,10 @@
     <b-datepicker
       placeholder="Click to select..."
       :value="dateValue"
-      @input="$emit('input', $event)"
       icon-pack="fas"
       :name="name"
       :disabled="disabled"
+      @input="$emit('input', $event)"
     />
   </b-field>
 </template>

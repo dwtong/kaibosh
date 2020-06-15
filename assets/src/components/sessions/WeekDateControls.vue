@@ -2,7 +2,7 @@
   <div class="is-pulled-right field has-addons">
     <p class="control">
       <b-tooltip label="Previous Week">
-        <button @click="goToDate(previousWeek)" class="button">
+        <button class="button" @click="goToDate(previousWeek)">
           <span class="icon is-small">
             <i class="fas fa-arrow-left"></i>
           </span>
@@ -11,12 +11,12 @@
     </p>
 
     <p class="control">
-      <WeekDatePicker @input="goToDate($event)" :value="date" />
+      <WeekDatePicker :value="date" @input="goToDate($event)" />
     </p>
 
     <p class="control">
       <b-tooltip label="Next Week">
-        <button @click="goToDate(nextWeek)" class="button">
+        <button class="button" @click="goToDate(nextWeek)">
           <span class="icon is-small">
             <i class="fas fa-arrow-right"></i>
           </span>

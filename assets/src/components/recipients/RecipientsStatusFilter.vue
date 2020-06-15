@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-for="filter in filteredStatus" :key="filter.name" :id="filter.name + '-filter'" class="field">
-      <b-checkbox @input="toggleStatusFilter(filter.name)" :name="filter.name" :value="filter.enabled" type="is-info">{{
+    <div v-for="filter in filteredStatus" :id="filter.name + '-filter'" :key="filter.name" class="field">
+      <b-checkbox :name="filter.name" :value="filter.enabled" type="is-info" @input="toggleStatusFilter(filter.name)">{{
         filter.label
       }}</b-checkbox>
     </div>

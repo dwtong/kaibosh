@@ -15,7 +15,7 @@
       <RecipientsStatusFilter />
     </div>
 
-    <a @click="resetFilters" id="reset-filter-link">Reset Filters</a>
+    <a id="reset-filter-link" @click="resetFilters">Reset Filters</a>
   </div>
 </template>
 

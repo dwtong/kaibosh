@@ -3,16 +3,16 @@
     <ValidatedInput
       label="Password"
       :value="value"
-      @input="input"
       type="password"
       :validation="{ min: 8, required: true }"
+      @input="input"
     />
     <ValidatedInput
       v-if="withConfirmation"
       v-model="confirmationValue"
       label="Password confirmation"
       type="password"
-      :validation="{ is: this.value, required: true }"
+      :validation="{ is: value, required: true }"
     />
   </div>
 </template>

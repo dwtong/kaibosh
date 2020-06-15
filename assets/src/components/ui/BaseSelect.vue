@@ -3,9 +3,9 @@
     name="base"
     :rules="{ required: required }"
     :value="value"
-    @input="input"
     :label="label"
     placeholder="Select a base..."
+    @input="input"
   >
     <option v-if="all" :value="allValue">All</option>
     <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>

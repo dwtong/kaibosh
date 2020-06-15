@@ -3,20 +3,20 @@
     <div class="box">
       <h1 class="title">Organisation Details</h1>
 
-      <ValidatedInput label="name" v-model="recipientDetails.name" :rules="{ required: true }" />
+      <ValidatedInput v-model="recipientDetails.name" label="name" :rules="{ required: true }" />
       <BaseSelect v-model="recipientDetails.baseId" label="Kaibosh base" required="true" />
       <AddressField v-model="recipientDetails.physicalAddress" label="Physical address" />
-      <DateField name="start date" v-model="recipientDetails.startedAt" />
-      <ValidatedInput label="description" v-model="recipientDetails.description" type="textarea" />
+      <DateField v-model="recipientDetails.startedAt" name="start date" />
+      <ValidatedInput v-model="recipientDetails.description" label="description" type="textarea" />
     </div>
 
     <div class="box">
       <h1 class="title">Primary Contact Details</h1>
 
-      <ValidatedInput label="contact name" v-model="recipientDetails.primaryContact.name" />
-      <ValidatedInput label="contact email" v-model="recipientDetails.primaryContact.email" :rules="{ email: true }" />
-      <ValidatedInput label="contact landline" v-model="recipientDetails.primaryContact.phoneLandline" />
-      <ValidatedInput label="contact mobile" v-model="recipientDetails.primaryContact.phoneMobile" />
+      <ValidatedInput v-model="recipientDetails.primaryContact.name" label="contact name" />
+      <ValidatedInput v-model="recipientDetails.primaryContact.email" label="contact email" :rules="{ email: true }" />
+      <ValidatedInput v-model="recipientDetails.primaryContact.phoneLandline" label="contact landline" />
+      <ValidatedInput v-model="recipientDetails.primaryContact.phoneMobile" label="contact mobile" />
     </div>
     <button type="submit" class="button is-primary is-pulled-right">
       Save Recipient

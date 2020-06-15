@@ -1,21 +1,21 @@
 <template>
   <div>
-    <b-field class="datepicker" v-if="isVisible">
+    <b-field v-if="isVisible" class="datepicker">
       <b-datepicker
         ref="datepicker"
+        v-click-outside="onClickOutside"
         :value="value"
-        @input="setDate($event)"
         :first-day-of-week="1"
         position="is-bottom-left"
         inline
-        v-click-outside="onClickOutside"
+        @input="setDate($event)"
       >
-        <button class="button" @click="setDate(today)" :disabled="value === today">
+        <button class="button" :disabled="value === today" @click="setDate(today)">
           <span>Today</span>
         </button>
       </b-datepicker>
     </b-field>
-    <button @click="toggleDatePicker" class="button">
+    <button class="button" @click="toggleDatePicker">
       Choose date
     </button>
   </div>

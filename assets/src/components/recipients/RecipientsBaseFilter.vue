@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect @input="updateBaseFilter($event)" :value="filteredBase" all="true" />
+  <BaseSelect :value="filteredBase" all="true" @input="updateBaseFilter($event)" />
 </template>
 
 <script lang="ts">

@@ -2,7 +2,7 @@
   <div class="page">
     <div class="field buttons is-pulled-right with-margins is-hidden-print">
       <p class="control">
-        <b-checkbox class="with-margins" type="is-info" v-model="includeOnHold"
+        <b-checkbox v-model="includeOnHold" class="with-margins" type="is-info"
           >Include recipients that are on hold</b-checkbox
         >
       </p>
@@ -16,12 +16,13 @@
       </p>
     </div>
 
-    <h1 class="title with-margins" v-if="sessionDate">
+    <h1 v-if="sessionDate" class="title with-margins">
       {{ sessionDate | formatDate("dddd h:mma") }}
     </h1>
 
-    <div class="recipient with-margins" v-for="recipient in recipients" :key="recipient.id">
+    <div v-for="recipient in recipients" :key="recipient.id" class="recipient with-margins">
       <h2 class="subtitle">{{ recipient.name }}</h2>
+      <!-- eslint-disable vue/no-v-html -->
       <div v-html="recipient.descriptionHtml"></div>
     </div>
   </div>

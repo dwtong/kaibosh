@@ -2,12 +2,12 @@
   <div class="field">
     <div class="control">
       <input
-        @input="updateNameFilter($event.target.value)"
-        :value="filteredName"
         id="name-filter"
+        :value="filteredName"
         type="text"
         class="input"
         placeholder="Recipient Name"
+        @input="updateNameFilter($event.target.value)"
       />
     </div>
   </div>

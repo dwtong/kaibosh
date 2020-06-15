@@ -10,7 +10,7 @@
     <div class="columns">
       <div class="column">
         <div class="box">
-          <RecipientsList :recipients="recipientsList" :loading="isLoading" />
+          <RecipientsList :recipients="recipientsList" :loading="loading" />
         </div>
       </div>
 
@@ -32,12 +32,11 @@ import AllRecipients from "@/store/modules/all-recipients";
 
 @Component({ components: { RecipientsList, RecipientsFilterPanel } })
 export default class ListRecipients extends Vue {
-  isLoading = false;
+  loading = AllRecipients.filteredList.length === 0;
 
   async created() {
-    this.isLoading = AllRecipients.filteredList.length === 0;
     await AllRecipients.fetchRecipients();
-    this.isLoading = false;
+    this.loading = false;
   }
 
   get recipientsList() {

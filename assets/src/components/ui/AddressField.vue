@@ -6,6 +6,16 @@
 
 <script>
 export default {
+  props: {
+    label: {
+      required: true,
+      type: String
+    },
+    value: {
+      required: true,
+      type: String
+    }
+  },
   mounted() {
     const script = document.createElement("script");
     script.setAttribute("src", "https://api.addressfinder.io/assets/v3/widget.js");
@@ -25,8 +35,6 @@ export default {
       }
     };
     document.head.appendChild(script);
-  },
-
-  props: ["label", "value"]
+  }
 };
 </script>
