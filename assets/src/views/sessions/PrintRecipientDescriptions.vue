@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { SessionSlotsModule } from "@/store/modules/session-slots";
+import SessionSlots from "@/store/modules/session-slots";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
 import Router from "@/router";
@@ -43,18 +43,18 @@ export default class GenerateDescriptionsButton extends Vue {
 
   get recipients() {
     if (this.includeOnHold) {
-      return SessionSlotsModule.orderedRecipients;
+      return SessionSlots.orderedRecipients;
     } else {
-      return SessionSlotsModule.orderedRecipients.filter(r => r.status !== "on_hold");
+      return SessionSlots.orderedRecipients.filter(r => r.status !== "on_hold");
     }
   }
 
   get sessionDate() {
-    return SessionSlotsModule.details.date;
+    return SessionSlots.details.date;
   }
 
   async created() {
-    await SessionSlotsModule.fetchSessionSlot(this.id);
+    await SessionSlots.fetchSessionSlot(this.id);
   }
 
   goBack() {

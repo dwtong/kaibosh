@@ -5,13 +5,13 @@
 
       <div v-if="status !== 'archived'" class="field buttons">
         <p class="control">
-          <a class="button is-info" @click="openCreateSessionModal">
+          <a class="button is-info" :disabled="loading" @click="openCreateSessionModal">
             Add Sorting Session
           </a>
         </p>
         <p class="control">
           <b-tooltip
-            v-if="scheduledSessions.length === 0"
+            v-if="loading || scheduledSessions.length === 0"
             label="Hold date cannot be added without session"
             position="is-bottom"
             type="is-warning"
@@ -63,6 +63,7 @@ import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
 import toast from "@/helpers/toast";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import SessionSlots from "@/store/modules/session-slots";
 
 @Component({ components: { InfoField, RecipientStatusTag, ScheduledSessionCard, ScheduledSessionModal } })
 export default class RecipientSortingSessions extends Vue {
@@ -73,6 +74,14 @@ export default class RecipientSortingSessions extends Vue {
   id = ActiveRecipientModule.details?.id ?? null;
   baseId = ActiveRecipientModule.details?.baseId;
   status = ActiveRecipientModule.status;
+  loading = true;
+
+  async created() {
+    if (this.id && this.baseId) {
+      await Promise.all([RecipientSessions.fetchSessions(this.id), SessionSlots.fetchList({ baseId: this.baseId })]);
+    }
+    this.loading = false;
+  }
 
   openHoldModal() {
     this.isHoldModalActive = true;

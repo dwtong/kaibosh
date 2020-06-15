@@ -1,23 +1,18 @@
 <template>
   <div class="box">
     <h2 class="title is-4">Onboarding</h2>
-    <template v-if="!recipient">
-      <b-skeleton size="is-large" width="75%" active></b-skeleton>
-    </template>
-    <template v-else>
-      <OnboardingCheckbox
-        :id="recipient.id"
-        label="Terms and conditions are signed"
-        name="hasSignedTerms"
-        :value="recipient.hasSignedTerms"
-      />
-      <OnboardingCheckbox
-        :id="recipient.id"
-        label="Have met Kaibosh in person"
-        name="hasMetKaibosh"
-        :value="recipient.hasMetKaibosh"
-      />
-    </template>
+    <OnboardingCheckbox
+      :id="recipient.id"
+      label="Terms and conditions are signed"
+      name="hasSignedTerms"
+      :value="recipient.hasSignedTerms"
+    />
+    <OnboardingCheckbox
+      :id="recipient.id"
+      label="Have met Kaibosh in person"
+      name="hasMetKaibosh"
+      :value="recipient.hasMetKaibosh"
+    />
   </div>
 </template>
 

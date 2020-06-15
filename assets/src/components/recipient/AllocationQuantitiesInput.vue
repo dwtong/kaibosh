@@ -112,6 +112,10 @@ export default class AllocationQuantitiesInput extends Vue {
   padding: 0.5rem;
 }
 
+.field {
+  margin-bottom: 0;
+}
+
 .disabled {
   .food-label {
     color: gray;

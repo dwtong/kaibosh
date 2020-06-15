@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import Bases from "@/store/modules/bases";
+import SessionSlots from "@/store/modules/session-slots";
 import { sortBy } from "lodash";
 
 @Component
@@ -26,7 +26,7 @@ export default class SessionSlotSelect extends Vue {
   @Prop() readonly value!: string;
 
   get sessionSlots() {
-    return sortBy(Bases.sessionSlots, ["date"]);
+    return sortBy(SessionSlots.list, ["date"]);
   }
 }
 </script>

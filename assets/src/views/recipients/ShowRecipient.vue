@@ -48,9 +48,7 @@ import RecipientOnboardingChecks from "@/components/recipient/RecipientOnboardin
 import RecipientContactDetails from "@/components/recipient/RecipientContactDetails.vue";
 import RecipientSortingSessions from "@/components/recipient/RecipientSortingSessions.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import RecipientSessions from "@/store/modules/recipient-sessions";
 import App from "@/store/modules/app";
-import SessionSlots from "@/store/modules/session-slots";
 import LoadRecipient from "@/mixins/load-recipient";
 
 @Component({
@@ -67,7 +65,7 @@ export default class ShowRecipient extends Vue {
   @Prop(String) readonly id!: string;
 
   get baseId() {
-    return ActiveRecipientModule.details?.baseId;
+    return ActiveRecipientModule.details?.baseId ?? "0";
   }
 
   get status() {
@@ -76,16 +74,6 @@ export default class ShowRecipient extends Vue {
 
   get name() {
     return ActiveRecipientModule.details?.name;
-  }
-
-  async created() {
-    await RecipientSessions.fetchSessions(this.id);
-
-    if (this.baseId) {
-      await SessionSlots.fetchSessionSlots({
-        baseId: this.baseId
-      });
-    }
   }
 
   async archiveRecipient() {

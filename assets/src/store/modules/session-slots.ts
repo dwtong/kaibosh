@@ -5,9 +5,10 @@ import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-dec
 import AllocationService from "@/services/allocation-service";
 import SessionSlotService from "@/services/session-slot-service";
 
-@Module({ name: "sessionSlots", store: Store, dynamic: true })
+@Module({ name: "SessionSlots", store: Store, dynamic: true })
 class SessionSlots extends VuexModule {
   allocationsByFoodCategory: any = [];
+  list: ISessionSlot[] = [];
   details: ISessionSlot = {
     id: "",
     time: "",
@@ -16,6 +17,25 @@ class SessionSlots extends VuexModule {
     recipients: []
   };
   date: any = "";
+
+  get sessionsForDay() {
+    return (day: string) =>
+      sortBy(
+        this.list.filter(s => s.day === day),
+        "date"
+      );
+  }
+
+  @Mutation
+  setlist(slots: ISessionSlot[]) {
+    this.list = slots;
+  }
+
+  @Action
+  async fetchList({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
+    const bases = await SessionSlotService.getForBase(baseId, date);
+    this.context.commit("setlist", bases);
+  }
 
   get orderedRecipients() {
     return sortBy(this.details.recipients, ["name"]);
@@ -50,4 +70,4 @@ class SessionSlots extends VuexModule {
   }
 }
 
-export const SessionSlotsModule = getModule(SessionSlots);
+export default getModule(SessionSlots);

@@ -55,7 +55,7 @@
 import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { SessionSlotsModule } from "@/store/modules/session-slots";
+import SessionSlots from "@/store/modules/session-slots";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
@@ -73,7 +73,7 @@ export default class ShowSession extends Vue {
       date = "";
     }
 
-    await SessionSlotsModule.fetchAllocationsForSlot({
+    await SessionSlots.fetchAllocationsForSlot({
       sessionSlotId: this.id,
       sessionDate: date
     });
@@ -103,11 +103,11 @@ export default class ShowSession extends Vue {
   }
 
   get foodCategories() {
-    return SessionSlotsModule.allocationsByFoodCategory;
+    return SessionSlots.allocationsByFoodCategory;
   }
 
   get sessionDate() {
-    return SessionSlotsModule.date;
+    return SessionSlots.date;
   }
 }
 </script>
