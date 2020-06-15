@@ -49,7 +49,8 @@ import RecipientContactDetails from "@/components/recipient/RecipientContactDeta
 import RecipientSortingSessions from "@/components/recipient/RecipientSortingSessions.vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 import RecipientSessions from "@/store/modules/recipient-sessions";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
+import SessionSlots from "@/store/modules/session-slots";
 import LoadRecipient from "@/mixins/load-recipient";
 
 @Component({
@@ -78,10 +79,10 @@ export default class ShowRecipient extends Vue {
   }
 
   async created() {
-    await Promise.all([RecipientSessions.fetchSessions(this.id), Bases.fetchBases(), Bases.fetchFoodCategories()]);
+    await RecipientSessions.fetchSessions(this.id);
 
     if (this.baseId) {
-      await Bases.fetchSessionSlots({
+      await SessionSlots.fetchSessionSlots({
         baseId: this.baseId
       });
     }
@@ -89,10 +90,10 @@ export default class ShowRecipient extends Vue {
 
   async archiveRecipient() {
     if (ActiveRecipientModule.details.id) {
-      Bases.toggleLoading();
+      App.enableLoading();
       await ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
       await ActiveRecipientModule.fetchRecipientStatus(this.id);
-      Bases.toggleLoading();
+      App.disableLoading();
     }
   }
 }

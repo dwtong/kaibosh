@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Component, Emit, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { IBase } from "@/types";
 import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
 
@@ -30,8 +30,7 @@ export default class BaseSelect extends Vue {
   allValue = 0;
 
   async created() {
-    await Bases.fetchBases();
-    this.list = Bases.list;
+    this.list = App.bases;
   }
 
   @Emit()

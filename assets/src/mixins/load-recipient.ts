@@ -1,5 +1,5 @@
 import { Route } from "vue-router/types/router";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 
 export default {
@@ -7,9 +7,9 @@ export default {
     const id = to.params.id;
 
     if (ActiveRecipientModule.details?.id?.toString() !== id) {
-      Bases.toggleLoading();
+      App.enableLoading();
       await ActiveRecipientModule.fetchRecipient(id);
-      Bases.toggleLoading();
+      App.disableLoading();
     }
 
     next();

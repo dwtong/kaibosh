@@ -11,7 +11,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IAllocation } from "@/types";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { sortBy } from "lodash";
 
 @Component
@@ -38,7 +38,7 @@ export default class AllocationList extends Vue {
   }
 
   foodCategoryName(allocation: IAllocation) {
-    const fc = Bases.foodCategoryById(allocation.foodCategoryId);
+    const fc = App.foodCategoryById(allocation.foodCategoryId);
 
     if (fc) {
       return fc.name;

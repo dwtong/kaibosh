@@ -5,12 +5,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 
 @Component
 export default class GlobalLoader extends Vue {
   get loading() {
-    return Bases.loading;
+    return App.loading;
   }
 }
 </script>

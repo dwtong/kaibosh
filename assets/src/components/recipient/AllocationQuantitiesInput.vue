@@ -34,7 +34,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { IAllocation, IAllocationCategory } from "@/types";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { sortBy } from "lodash";
 import AllocationQuantitesSelect from "@/components/ui/AllocationQuantitesSelect.vue";
 
@@ -46,7 +46,7 @@ export default class AllocationQuantitiesInput extends Vue {
   created() {
     const allocations = this.value;
 
-    const allocationCategories = Bases.foodCategories.map(fc => {
+    const allocationCategories = App.foodCategories.map(fc => {
       const allocation = allocations.find(a => a.foodCategoryId === fc.id);
 
       if (allocation) {

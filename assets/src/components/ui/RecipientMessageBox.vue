@@ -25,7 +25,7 @@
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 
 @Component
 export default class RecipientMessageBox extends Vue {
@@ -37,14 +37,14 @@ export default class RecipientMessageBox extends Vue {
 
   async reactivate() {
     if (ActiveRecipientModule.details.id) {
-      Bases.toggleLoading();
+      App.enableLoading();
       await ActiveRecipientModule.updateRecipient({
         id: ActiveRecipientModule.details.id,
         archivedAt: null
       });
 
       await ActiveRecipientModule.fetchRecipientStatus(ActiveRecipientModule.details.id);
-      Bases.toggleLoading();
+      App.disableLoading();
     }
   }
 }

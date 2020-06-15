@@ -18,15 +18,27 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import GlobalLoader from "@/components/ui/GlobalLoader.vue";
 import NavBar from "@/components/ui/NavBar.vue";
 import { UserModule } from "@/store/modules/user";
+import AppModule from "@/store/modules/app";
 
 @Component({ components: { GlobalLoader, NavBar } })
 export default class App extends Vue {
-  get showNav() {
+  get isAuthenticated() {
     return UserModule.isAuthenticated;
+  }
+
+  get showNav() {
+    return this.isAuthenticated;
+  }
+
+  @Watch("isAuthenticated", { immediate: true })
+  async onAuthenticate() {
+    if (this.isAuthenticated) {
+      await AppModule.fetchAll();
+    }
   }
 }
 </script>

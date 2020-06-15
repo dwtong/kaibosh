@@ -27,7 +27,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { formatDate } from "@/helpers/date";
 import { ActiveRecipientModule } from "@/store/modules/active-recipient";
 
@@ -47,7 +47,7 @@ export default class RecipientOrganisationDetails extends Vue {
   }
 
   get baseName() {
-    return ActiveRecipientModule.details?.baseId ? Bases.baseNameById(ActiveRecipientModule.details.baseId) : "";
+    return ActiveRecipientModule.details?.baseId ? App.baseNameById(ActiveRecipientModule.details.baseId) : "";
   }
 
   get startDate() {
