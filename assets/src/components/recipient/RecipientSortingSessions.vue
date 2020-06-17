@@ -5,7 +5,12 @@
 
       <div v-if="status !== 'archived'" class="field buttons">
         <p class="control">
-          <a class="button is-info" :disabled="loading" @click="openCreateSessionModal">
+          <a
+            class="button is-info"
+            :disabled="loading"
+            :class="{ 'is-loading': loading }"
+            @click="openCreateSessionModal"
+          >
             Add Sorting Session
           </a>
         </p>
@@ -25,7 +30,7 @@
       </div>
     </div>
 
-    <div>
+    <div v-if="!loading">
       <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
         <ScheduledSessionCard
           :session="session"
@@ -62,8 +67,7 @@ import RecipientSessions from "@/store/modules/recipient-sessions";
 import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
 import toast from "@/helpers/toast";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import SessionSlots from "@/store/modules/session-slots";
+import ActiveRecipient from "@/store/modules/active-recipient";
 
 @Component({ components: { InfoField, RecipientStatusTag, ScheduledSessionCard, ScheduledSessionModal } })
 export default class RecipientSortingSessions extends Vue {
@@ -71,14 +75,14 @@ export default class RecipientSortingSessions extends Vue {
   isScheduledSessionModalActive = false;
   selectedSession: IScheduledSession | null = null;
 
-  id = ActiveRecipientModule.details?.id ?? null;
-  baseId = ActiveRecipientModule.details?.baseId;
-  status = ActiveRecipientModule.status;
+  id = ActiveRecipient.details?.id ?? null;
+  baseId = ActiveRecipient.details?.baseId;
+  status = ActiveRecipient.status;
   loading = true;
 
   async created() {
     if (this.id && this.baseId) {
-      await Promise.all([RecipientSessions.fetchSessions(this.id), SessionSlots.fetchList({ baseId: this.baseId })]);
+      await RecipientSessions.fetchSessions(this.id);
     }
     this.loading = false;
   }

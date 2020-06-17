@@ -52,17 +52,20 @@ import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
 import SessionSlotSelect from "@/components/ui/SessionSlotSelect.vue";
+import SessionSlots from "@/store/modules/session-slots";
 
 @Component({ components: { SessionSlotSelect, AllocationQuantitiesInput } })
 export default class ScheduledSessionModal extends Vue {
   @Prop() readonly recipientId!: string;
-  @Prop() readonly baseId: string | undefined;
+  @Prop() readonly baseId!: string;
   @Prop() readonly session?: IScheduledSession;
   @Prop() readonly sessions?: IScheduledSession[];
   allocations: IAllocation[] = [];
   selectedSessionSlotId = "";
 
-  created() {
+  async created() {
+    await SessionSlots.fetchList({ baseId: this.baseId });
+
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
       this.selectedSessionSlotId = this.session.sessionSlot?.id ?? "";
