@@ -20,12 +20,12 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import OnboardingCheckbox from "@/components/ui/OnboardingCheckbox.vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 
 @Component({ components: { OnboardingCheckbox } })
 export default class RecipientOnboardingChecks extends Vue {
   get recipient() {
-    return ActiveRecipientModule.details;
+    return ActiveRecipient.details;
   }
 }
 </script>

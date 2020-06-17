@@ -47,7 +47,7 @@ import RecipientOrganisationDetails from "@/components/recipient/RecipientOrgani
 import RecipientOnboardingChecks from "@/components/recipient/RecipientOnboardingChecks.vue";
 import RecipientContactDetails from "@/components/recipient/RecipientContactDetails.vue";
 import RecipientSortingSessions from "@/components/recipient/RecipientSortingSessions.vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 import App from "@/store/modules/app";
 import LoadRecipient from "@/mixins/load-recipient";
 
@@ -65,22 +65,22 @@ export default class ShowRecipient extends Vue {
   @Prop(String) readonly id!: string;
 
   get baseId() {
-    return ActiveRecipientModule.details?.baseId ?? "0";
+    return ActiveRecipient.details?.baseId ?? "0";
   }
 
   get status() {
-    return ActiveRecipientModule.status;
+    return ActiveRecipient.status;
   }
 
   get name() {
-    return ActiveRecipientModule.details?.name;
+    return ActiveRecipient.details?.name;
   }
 
   async archiveRecipient() {
-    if (ActiveRecipientModule.details.id) {
+    if (ActiveRecipient.details.id) {
       App.enableLoading();
-      await ActiveRecipientModule.archiveRecipient(ActiveRecipientModule.details.id);
-      await ActiveRecipientModule.fetchRecipientStatus(this.id);
+      await ActiveRecipient.archiveRecipient(ActiveRecipient.details.id);
+      await ActiveRecipient.fetchRecipientStatus(this.id);
       App.disableLoading();
     }
   }

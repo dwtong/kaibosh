@@ -53,7 +53,7 @@ export default class ListSessions extends Vue {
   async fetchSessions() {
     if (this.baseId) {
       const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
-      await SessionSlots.fetchSessionSlots({ baseId: this.baseId, date });
+      await SessionSlots.fetchList({ baseId: this.baseId, date });
     }
   }
 

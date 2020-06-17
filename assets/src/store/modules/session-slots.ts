@@ -27,14 +27,14 @@ class SessionSlots extends VuexModule {
   }
 
   @Mutation
-  setlist(slots: ISessionSlot[]) {
+  setList(slots: ISessionSlot[]) {
     this.list = slots;
   }
 
   @Action
   async fetchList({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
-    const bases = await SessionSlotService.getForBase(baseId, date);
-    this.context.commit("setlist", bases);
+    const list = await SessionSlotService.getForBase(baseId, date);
+    this.context.commit("setList", list);
   }
 
   get orderedRecipients() {

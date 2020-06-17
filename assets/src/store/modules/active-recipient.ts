@@ -88,4 +88,4 @@ class ActiveRecipient extends VuexModule {
   }
 }
 
-export const ActiveRecipientModule = getModule(ActiveRecipient);
+export default getModule(ActiveRecipient);

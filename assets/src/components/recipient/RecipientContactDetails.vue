@@ -22,13 +22,13 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 import { IContact } from "@/types";
 
 @Component({ components: { InfoField, RecipientStatusTag } })
 export default class RecipientContactDetails extends Vue {
   get contact(): IContact {
-    return ActiveRecipientModule.details?.primaryContact;
+    return ActiveRecipient.details?.primaryContact;
   }
 
   get name() {

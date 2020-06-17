@@ -10,7 +10,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import RecipientForm from "@/components/recipient/RecipientForm.vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
 import LoadRecipient from "@/mixins/load-recipient";
@@ -21,11 +21,11 @@ export default class UpdateRecipient extends Vue {
   recipient: IRecipient | null = null;
 
   async created() {
-    this.recipient = ActiveRecipientModule.details;
+    this.recipient = ActiveRecipient.details;
   }
 
   async updateRecipient(params: IRecipient) {
-    await ActiveRecipientModule.updateRecipient(params);
+    await ActiveRecipient.updateRecipient(params);
     this.$router.push(`/recipients/${params.id}`);
     toast.success("Recipient updated.");
   }

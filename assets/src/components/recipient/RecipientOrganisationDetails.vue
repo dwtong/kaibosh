@@ -29,29 +29,29 @@ import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import App from "@/store/modules/app";
 import { formatDate } from "@/helpers/date";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 
 @Component({ components: { InfoField, RecipientStatusTag }, filters: { formatDate } })
 export default class RecipientOrganisationDetails extends Vue {
   get status() {
-    return ActiveRecipientModule?.status;
+    return ActiveRecipient?.status;
   }
   get name() {
-    return ActiveRecipientModule.details?.name;
+    return ActiveRecipient.details?.name;
   }
   get descriptionHtml() {
-    return ActiveRecipientModule.details?.descriptionHtml;
+    return ActiveRecipient.details?.descriptionHtml;
   }
   get address() {
-    return ActiveRecipientModule.details?.physicalAddress;
+    return ActiveRecipient.details?.physicalAddress;
   }
 
   get baseName() {
-    return ActiveRecipientModule.details?.baseId ? App.baseNameById(ActiveRecipientModule.details.baseId) : "";
+    return ActiveRecipient.details?.baseId ? App.baseNameById(ActiveRecipient.details.baseId) : "";
   }
 
   get startDate() {
-    const date = ActiveRecipientModule.details?.startedAt;
+    const date = ActiveRecipient.details?.startedAt;
     return date ? formatDate(new Date(date), "dd/MM/yyyy") : null;
   }
 }

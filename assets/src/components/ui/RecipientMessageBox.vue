@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 import App from "@/store/modules/app";
 
 @Component
@@ -32,18 +32,18 @@ export default class RecipientMessageBox extends Vue {
   @Prop({ default: "" }) readonly status!: string;
 
   get name() {
-    return ActiveRecipientModule.details.name;
+    return ActiveRecipient.details.name;
   }
 
   async reactivate() {
-    if (ActiveRecipientModule.details.id) {
+    if (ActiveRecipient.details.id) {
       App.enableLoading();
-      await ActiveRecipientModule.updateRecipient({
-        id: ActiveRecipientModule.details.id,
+      await ActiveRecipient.updateRecipient({
+        id: ActiveRecipient.details.id,
         archivedAt: null
       });
 
-      await ActiveRecipientModule.fetchRecipientStatus(ActiveRecipientModule.details.id);
+      await ActiveRecipient.fetchRecipientStatus(ActiveRecipient.details.id);
       App.disableLoading();
     }
   }
