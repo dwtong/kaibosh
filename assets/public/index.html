@@ -15,20 +15,26 @@
   </head>
   <body>
     <noscript>
-      <strong
-        >We're sorry but the Kaibosh app doesn't work properly without
-        JavaScript enabled. Please enable it to continue.</strong
-      >
+      <strong>
+        We're sorry but the Kaibosh app doesn't work properly without JavaScript enabled. Please enable it to continue.
+      </strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script async defer data-domain="app.kaibosh.org.nz" src="https://plausible.io/js/plausible.js"></script>
+    <script>
+      window.plausible =
+        window.plausible ||
+        function() {
+          (window.plausible.q = window.plausible.q || []).push(arguments);
+        };
+    </script>
     <script type="text/javascript">
       (function() {
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.async = true;
-        s.src =
-          "//api.usersnap.com/load/9fe57eff-6cab-4685-bda6-de6b7f980d62.js?onload=onUsersnapLoad";
+        s.src = "//api.usersnap.com/load/9fe57eff-6cab-4685-bda6-de6b7f980d62.js?onload=onUsersnapLoad";
         var x = document.getElementsByTagName("script")[0];
         x.parentNode.insertBefore(s, x);
       })();
