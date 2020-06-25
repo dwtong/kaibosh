@@ -30,18 +30,24 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Router from "@/router";
-import { lastWeek, nextWeek, formatDate } from "@/helpers/date";
+import { formatDate, subWeeks, addWeeks } from "@/helpers/date";
 import WeekDatePicker from "@/components/ui/WeekDatePicker.vue";
 
 @Component({ components: { WeekDatePicker } })
 export default class WeekDateControls extends Vue {
   @Prop(Date) readonly date!: Date;
-  nextWeek: Date = nextWeek;
-  previousWeek: Date = lastWeek;
 
   goToDate(datetime: Date) {
     const date = formatDate(datetime, "yyyy-MM-dd");
     Router.push({ path: "/sessions/week", query: { date } });
+  }
+
+  get previousWeek() {
+    return subWeeks(this.date, 1);
+  }
+
+  get nextWeek() {
+    return addWeeks(this.date, 1);
   }
 }
 </script>

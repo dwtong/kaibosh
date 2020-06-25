@@ -1,7 +1,7 @@
 <template>
   <div class="box" :class="{ 'is-hidden-print': sessions.length === 0 }">
     <h2 class="title is-4">
-      {{ sessionDate | formatDate("dddd Do MMMM YYYY") }}
+      {{ sessionDate | formatDate("EEEE do MMMM yyyy") }}
     </h2>
     <div v-if="sessions.length === 0" class="is-hidden-print">
       No sessions.
@@ -23,11 +23,11 @@ import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue
 
 @Component({ components: { SessionRecipientList }, filters: { formatDate } })
 export default class ListSessions extends Vue {
-  @Prop({ required: true }) readonly dateOfWeek!: Date;
+  @Prop({ required: true }) readonly weekOfDate!: Date;
   @Prop({ required: true }) readonly day!: string;
 
   get sessionDate() {
-    return dateOnDayOfWeek(this.dateOfWeek, this.day);
+    return dateOnDayOfWeek(this.weekOfDate, this.day);
   }
 
   get sessions() {

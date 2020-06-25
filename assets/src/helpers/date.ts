@@ -1,10 +1,8 @@
-import { startOfDay, addWeeks, subWeeks, startOfWeek, format, addDays } from "date-fns";
+import { startOfDay, startOfWeek, format, addDays } from "date-fns";
 
 export const listOfDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 export const today = startOfDay(new Date());
 export const thisWeek = startOfWeek(today, { weekStartsOn: 1 });
-export const lastWeek = subWeeks(thisWeek, 1);
-export const nextWeek = addWeeks(thisWeek, 1);
 
 export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
@@ -16,3 +14,5 @@ export const dateOnDayOfWeek = (date: Date, day: string): Date => {
   const dayIndex = listOfDays.findIndex(d => d === day);
   return addDays(startOfWeek(date, { weekStartsOn: 1 }), dayIndex);
 };
+
+export { subWeeks, addWeeks } from "date-fns";

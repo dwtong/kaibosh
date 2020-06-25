@@ -81,6 +81,12 @@ $colors: map-merge($colors, $addColors);
   margin-bottom: 1rem;
 }
 
+.datepicker {
+  .field {
+    margin-bottom: 0;
+  }
+}
+
 .is-hidden-print {
   @media print {
     display: none;

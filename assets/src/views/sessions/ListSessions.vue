@@ -13,7 +13,7 @@
     </div>
 
     <div v-if="showSessionOptions">
-      <SessionListItem v-for="day in days" :key="day" />
+      <SessionListItem v-for="day in days" :key="day" :week-of-date="weekOfDate" :day="day" />
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
 import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
+import App from "@/store/modules/app";
 
 @Component({ components: { BaseSelect, SessionListItem, WeekDateControls } })
 export default class ListSessions extends Vue {
@@ -34,7 +35,7 @@ export default class ListSessions extends Vue {
   baseId = localStorage.getItem("baseId");
 
   async created() {
-    if (this.baseId !== "0") {
+    if (this.baseId && this.baseId !== "0") {
       this.fetchSessions();
 
       this.showSessionOptions = true;
@@ -51,10 +52,13 @@ export default class ListSessions extends Vue {
   }
 
   async fetchSessions() {
+    App.enableLoading();
+
     if (this.baseId) {
       const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
       await SessionSlots.fetchList({ baseId: this.baseId, date });
     }
+    App.disableLoading();
   }
 
   get showSubmitButton() {

@@ -48,6 +48,10 @@ export default class SessionRecipientList extends Vue {
   }
 }
 
+.card-header {
+  background-color: #d9f5d9;
+}
+
 .card-header-title {
   @media print {
     padding: 5px;

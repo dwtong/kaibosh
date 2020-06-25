@@ -16,7 +16,6 @@
 import { Component, Emit, Prop } from "vue-property-decorator";
 import Vue from "vue";
 import App from "@/store/modules/app";
-import { IBase } from "@/types";
 import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
 
 @Component({ components: { ValidatedSelect } })
@@ -26,11 +25,10 @@ export default class BaseSelect extends Vue {
   @Prop({ default: "" }) readonly label!: string;
   @Prop() readonly value!: string;
 
-  list: IBase[] = [];
   allValue = 0;
 
-  async created() {
-    this.list = App.bases;
+  get list() {
+    return App.bases;
   }
 
   @Emit()
