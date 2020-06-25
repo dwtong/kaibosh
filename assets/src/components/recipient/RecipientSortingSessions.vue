@@ -5,15 +5,13 @@
 
       <div v-if="status !== 'archived'" class="field buttons">
         <p class="control">
-          <a
-            class="button is-info"
-            :disabled="loading"
-            :class="{ 'is-loading': loading }"
-            @click="openCreateSessionModal"
-          >
-            Add Sorting Session
-          </a>
+          <SessionCreateModal v-slot="{ open }" :base-id="baseId" :recipient-id="id" :sessions="scheduledSessions">
+            <a class="button is-info" :disabled="loading" :class="{ 'is-loading': loading }" @click="open">
+              Add Sorting Session
+            </a>
+          </SessionCreateModal>
         </p>
+
         <p class="control">
           <b-tooltip
             v-if="loading || scheduledSessions.length === 0"
@@ -32,23 +30,13 @@
 
     <div v-if="!loading">
       <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
-        <ScheduledSessionCard
+        <!-- <SessionCard
           :session="session"
-          @edit="openEditSessionModal(session)"
+          @edit="openEditSessionModal(session, open)"
           @remove="confirmSessionDeletion(session.id)"
-        />
+        /> -->
       </div>
     </div>
-
-    <b-modal :active.sync="isScheduledSessionModalActive" has-modal-card>
-      <ScheduledSessionModal
-        :base-id="baseId"
-        :recipient-id="id"
-        :session="selectedSession"
-        :sessions="scheduledSessions"
-        @close="isScheduledSessionModalActive = false"
-      />
-    </b-modal>
 
     <b-modal :active.sync="isHoldModalActive" has-modal-card>
       <HoldModal :scheduled-sessions="scheduledSessions" @close="isHoldModalActive = false" />
@@ -61,18 +49,16 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
-import ScheduledSessionCard from "@/components/recipient/ScheduledSessionCard.vue";
-import ScheduledSessionModal from "@/components/recipient/ScheduledSessionModal.vue";
+import SessionCard from "@/components/recipient/SessionCard.vue";
+import SessionCreateModal from "@/components/recipient/SessionCreateModal.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
-import toast from "@/helpers/toast";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { InfoField, RecipientStatusTag, ScheduledSessionCard, ScheduledSessionModal } })
+@Component({ components: { InfoField, RecipientStatusTag, SessionCard, SessionCreateModal } })
 export default class RecipientSortingSessions extends Vue {
   isHoldModalActive = false;
-  isScheduledSessionModalActive = false;
   selectedSession: IScheduledSession | null = null;
 
   id = ActiveRecipient.details?.id ?? null;
@@ -93,29 +79,6 @@ export default class RecipientSortingSessions extends Vue {
 
   get scheduledSessions() {
     return sortBy(RecipientSessions.sessions, ["sessionSlot.date"]);
-  }
-
-  openCreateSessionModal() {
-    this.selectedSession = null;
-    this.isScheduledSessionModalActive = true;
-  }
-
-  openEditSessionModal(session: IScheduledSession) {
-    this.selectedSession = session;
-    this.isScheduledSessionModalActive = true;
-  }
-
-  confirmSessionDeletion(sessionId?: string) {
-    if (sessionId) {
-      this.$buefy.dialog.confirm({
-        message: "Are you sure you wish to remove this session?",
-        type: "is-danger",
-        onConfirm: async () => {
-          await RecipientSessions.deleteSession(sessionId);
-          toast.success("Deleted session.");
-        }
-      });
-    }
   }
 }
 </script>

@@ -11,7 +11,7 @@
         </div>
         <div class="level-right">
           <div class="level-item">
-            <div class="field has-addons">
+            <div class="field allocation-field has-addons">
               <p class="control">
                 <AllocationQuantitesSelect
                   :value="getFoodQuantity(food)"
@@ -108,8 +108,13 @@ export default class AllocationQuantitiesInput extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.allocation-field {
+  padding-top: 0.4rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
 .box {
-  padding: 0.5rem;
+  padding: 0 0 0 0.5rem;
 }
 
 .field {

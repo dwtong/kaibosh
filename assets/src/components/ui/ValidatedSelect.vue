@@ -1,5 +1,5 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" :vid="name" :name="$attrs.label" :rules="rules">
+  <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules">
     <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors">
       <b-select :value="value" :name="name" :placeholder="placeholder" expanded @input="input">
         <slot />

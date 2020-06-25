@@ -2,7 +2,7 @@
   <ValidatedSelect
     :rules="{ required: required }"
     :value="value"
-    name="sessionSlot"
+    name="Session slot"
     placeholder="Select an option"
     expanded
     @input="$emit('input', $event)"
@@ -17,11 +17,13 @@ import Vue from "vue";
 import SessionSlots from "@/store/modules/session-slots";
 import { sortBy } from "lodash";
 import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
+import { IScheduledSession } from "@/types";
 
 @Component({ components: { ValidatedSelect } })
 export default class SessionSlotSelect extends Vue {
   @Prop({ default: false }) readonly required!: boolean;
   @Prop({ default: "" }) readonly label!: string;
+  @Prop() readonly sessions?: IScheduledSession[];
   @Prop() readonly value!: string;
 
   get sessionSlots() {

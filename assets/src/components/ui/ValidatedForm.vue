@@ -1,7 +1,7 @@
 <template>
-  <ValidationObserver v-slot="{ handleSubmit }" tag="div">
+  <ValidationObserver v-slot="{ handleSubmit, valid }" tag="div">
     <form class="form" @submit.prevent="handleSubmit(submit)">
-      <slot></slot>
+      <slot :valid="valid"></slot>
     </form>
   </ValidationObserver>
 </template>
