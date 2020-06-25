@@ -1,7 +1,7 @@
 <template>
   <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules">
     <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors">
-      <b-select :value="value" :name="name" :placeholder="placeholder" expanded @input="input">
+      <b-select :value="value" :name="name" :placeholder="placeholder" expanded :disabled="disabled" @input="input">
         <slot />
       </b-select>
     </b-field>
@@ -18,6 +18,7 @@ export default class ValidatedSelect extends Vue {
   @Prop() readonly name!: string;
   @Prop() readonly rules!: Record<string, any>;
   @Prop() readonly value!: string;
+  @Prop({ default: false }) readonly disabled!: boolean;
   @Prop({ default: "" }) readonly placeholder!: string;
 
   @Emit()

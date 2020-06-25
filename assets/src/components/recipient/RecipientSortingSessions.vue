@@ -5,11 +5,11 @@
 
       <div v-if="status !== 'archived'" class="field buttons">
         <p class="control">
-          <SessionCreateModal v-slot="{ open }" :base-id="baseId" :recipient-id="id" :sessions="scheduledSessions">
+          <SessionModal v-slot="{ open }" :base-id="baseId" :recipient-id="id" :sessions="scheduledSessions">
             <a class="button is-info" :disabled="loading" :class="{ 'is-loading': loading }" @click="open">
               Add Sorting Session
             </a>
-          </SessionCreateModal>
+          </SessionModal>
         </p>
 
         <p class="control">
@@ -30,11 +30,7 @@
 
     <div v-if="!loading">
       <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
-        <!-- <SessionCard
-          :session="session"
-          @edit="openEditSessionModal(session, open)"
-          @remove="confirmSessionDeletion(session.id)"
-        /> -->
+        <SessionCard :session="session" :sessions="scheduledSessions" :base-id="baseId" :recipient-id="id" />
       </div>
     </div>
 
@@ -50,13 +46,13 @@ import { Component } from "vue-property-decorator";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import SessionCard from "@/components/recipient/SessionCard.vue";
-import SessionCreateModal from "@/components/recipient/SessionCreateModal.vue";
+import SessionModal from "@/components/recipient/SessionModal.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { InfoField, RecipientStatusTag, SessionCard, SessionCreateModal } })
+@Component({ components: { InfoField, RecipientStatusTag, SessionCard, SessionModal } })
 export default class RecipientSortingSessions extends Vue {
   isHoldModalActive = false;
   selectedSession: IScheduledSession | null = null;

@@ -29,8 +29,16 @@
         </div>
 
         <div class="buttons">
-          <a class="button is-primary" @click="$emit('edit')">Edit</a>
-          <a class="button is-danger" @click="$emit('remove')">Delete</a>
+          <SessionModal
+            v-slot="{ open }"
+            :session="session"
+            :base-id="baseId"
+            :recipient-id="recipientId"
+            :sessions="sessions"
+          >
+            <a class="button is-primary" @click="open">Edit</a>
+          </SessionModal>
+          <a class="button is-danger" @click="confirmSessionDeletion">Delete</a>
         </div>
       </div>
     </div>
@@ -44,14 +52,33 @@ import { IScheduledSession } from "@/types";
 import HoldsList from "@/components/recipient/HoldsList.vue";
 import AllocationList from "@/components/recipient/AllocationList.vue";
 import HoldStatusTag from "@/components/ui/HoldStatusTag.vue";
+import RecipientSessions from "@/store/modules/recipient-sessions";
+import SessionModal from "@/components/recipient/SessionModal.vue";
+import toast from "@/helpers/toast";
 
-@Component({ components: { HoldsList, AllocationList, HoldStatusTag } })
-export default class ScheduledSessionCard extends Vue {
-  @Prop(Object) readonly session!: IScheduledSession;
+@Component({ components: { HoldsList, AllocationList, HoldStatusTag, SessionModal } })
+export default class SessionCard extends Vue {
+  @Prop({ required: true }) readonly session!: IScheduledSession;
+  @Prop({ required: true }) readonly sessions!: IScheduledSession[];
+  @Prop() readonly baseId!: string;
+  @Prop() readonly recipientId!: string;
   isOpen = false;
 
   toggleIsOpen() {
     this.isOpen = !this.isOpen;
+  }
+
+  confirmSessionDeletion() {
+    this.$buefy.dialog.confirm({
+      message: "Are you sure you wish to remove this session?",
+      type: "is-danger",
+      onConfirm: async () => {
+        if (this.session.id) {
+          await RecipientSessions.deleteSession(this.session.id);
+          toast.success("Deleted session.");
+        }
+      }
+    });
   }
 }
 </script>

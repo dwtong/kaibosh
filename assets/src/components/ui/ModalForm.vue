@@ -18,7 +18,7 @@
               <button class="button is-light" type="button" @click="close">
                 Cancel
               </button>
-              <SubmitButton :disabled="loading || invalid" :is-submitting="isSubmitting" type="is-info">
+              <SubmitButton :disabled="loading || invalid" type="is-info">
                 Save
               </SubmitButton>
             </div>
@@ -39,7 +39,6 @@ import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 export default class ModalForm extends Vue {
   @Prop() readonly loading!: string;
   @Prop({ default: false }) readonly value!: boolean;
-  isSubmitting = false;
 
   get isOpen() {
     return this.value;
@@ -54,7 +53,6 @@ export default class ModalForm extends Vue {
   }
 
   handleSubmit() {
-    this.isSubmitting = true;
     this.$emit("submit");
     this.close();
   }

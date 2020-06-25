@@ -2,6 +2,7 @@
   <ValidatedSelect
     :rules="{ required: required }"
     :value="value"
+    :disabled="disabled"
     name="Session slot"
     placeholder="Select an option"
     expanded
@@ -22,6 +23,7 @@ import { IScheduledSession } from "@/types";
 @Component({ components: { ValidatedSelect } })
 export default class SessionSlotSelect extends Vue {
   @Prop({ default: false }) readonly required!: boolean;
+  @Prop({ default: false }) readonly disabled!: boolean;
   @Prop({ default: "" }) readonly label!: string;
   @Prop() readonly sessions?: IScheduledSession[];
   @Prop() readonly value!: string;
