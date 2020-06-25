@@ -23,7 +23,9 @@
               Add Hold Date
             </a>
           </b-tooltip>
-          <a v-else class="button is-warning" @click="openHoldModal">Add Hold Date</a>
+          <HoldModal v-else v-slot="{ open }" :scheduled-sessions="scheduledSessions">
+            <a class="button is-warning" @click="open">Add Hold Date</a>
+          </HoldModal>
         </p>
       </div>
     </div>
@@ -33,10 +35,6 @@
         <SessionCard :session="session" :sessions="scheduledSessions" :base-id="baseId" :recipient-id="id" />
       </div>
     </div>
-
-    <b-modal :active.sync="isHoldModalActive" has-modal-card>
-      <HoldModal :scheduled-sessions="scheduledSessions" @close="isHoldModalActive = false" />
-    </b-modal>
   </div>
 </template>
 
@@ -45,6 +43,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
+import HoldModal from "@/components/recipient/HoldModal.vue";
 import SessionCard from "@/components/recipient/SessionCard.vue";
 import SessionModal from "@/components/recipient/SessionModal.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
@@ -52,11 +51,9 @@ import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { InfoField, RecipientStatusTag, SessionCard, SessionModal } })
+@Component({ components: { InfoField, HoldModal, RecipientStatusTag, SessionCard, SessionModal } })
 export default class RecipientSortingSessions extends Vue {
-  isHoldModalActive = false;
   selectedSession: IScheduledSession | null = null;
-
   id = ActiveRecipient.details?.id ?? null;
   baseId = ActiveRecipient.details?.baseId;
   status = ActiveRecipient.status;
@@ -67,10 +64,6 @@ export default class RecipientSortingSessions extends Vue {
       await RecipientSessions.fetchSessions(this.id);
     }
     this.loading = false;
-  }
-
-  openHoldModal() {
-    this.isHoldModalActive = true;
   }
 
   get scheduledSessions() {

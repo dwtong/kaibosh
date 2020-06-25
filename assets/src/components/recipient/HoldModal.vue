@@ -1,55 +1,41 @@
 <template>
-  <form @submit.prevent="">
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Set hold date</p>
-      </header>
+  <div>
+    <slot :open="openModal"></slot>
+    <ModalForm v-model="isOpen" @submit="saveHold">
+      <template v-slot:title>Set hold date</template>
 
-      <section class="modal-card-body">
-        <div class="columns">
-          <div class="column">
-            <DateField name="start date" v-model="startDate" required="true" ref="startDate" data-vv-as="start date" />
-            <DateField
-              :required="!disableEndDate"
-              name="End date"
-              v-model="endDate"
-              :disabled="disableEndDate"
-              v-validate="'date_format:dd/MM/yyyy|after:startDate'"
-              data-vv-as="end date"
-            />
+      <div class="columns">
+        <div class="column">
+          <DateField ref="startDate" v-model="startDate" name="start date" required="true" data-vv-as="start date" />
+          <DateField
+            v-model="endDate"
+            v-validate="'date_format:dd/MM/yyyy|after:startDate'"
+            :required="!disableEndDate"
+            name="End date"
+            :disabled="disableEndDate"
+            data-vv-as="end date"
+          />
 
-            <b-checkbox type="is-info" @input="toggleEndDate" class="end-date-checkbox">No end date</b-checkbox>
-          </div>
+          <b-checkbox type="is-info" class="end-date-checkbox" @input="toggleEndDate">No end date</b-checkbox>
         </div>
-        <p class="subtitle">Sessions</p>
-        <b-checkbox
-          type="is-info"
-          :value="allSessions"
-          @input="toggleAllSessions"
-          :required="sessionHolds.length === 0"
-          class="end-date-checkbox"
-          >All sessions</b-checkbox
-        >
+      </div>
+      <p class="subtitle">Sessions</p>
+      <b-checkbox
+        type="is-info"
+        :value="allSessions"
+        :required="sessionHolds.length === 0"
+        class="end-date-checkbox"
+        @input="toggleAllSessions"
+        >All sessions</b-checkbox
+      >
 
-        <div v-for="session in sessions" :key="session.id">
-          <b-checkbox type="is-info" class="end-date-checkbox" v-model="session.enabled" :disabled="allSessions">
-            {{ sessionSlotLabel(session) }}
-          </b-checkbox>
-        </div>
-      </section>
-
-      <footer class="modal-card-foot">
-        <div class="buttons">
-          <button class="button is-light" type="button" @click="$emit('close')">
-            Cancel
-          </button>
-          <button type="submit" class="button is-info" @click="saveHold">
-            Save
-          </button>
-        </div>
-      </footer>
-    </div>
-  </form>
+      <div v-for="session in sessions" :key="session.id">
+        <b-checkbox v-model="session.enabled" type="is-info" class="end-date-checkbox" :disabled="allSessions">
+          {{ sessionSlotLabel(session) }}
+        </b-checkbox>
+      </div>
+    </ModalForm>
+  </div>
 </template>
 
 <script lang="ts">
@@ -58,14 +44,11 @@ import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
+import ModalForm from "@/components/ui/ModalForm.vue";
 import DateField from "@/components/ui/DateField.vue";
 import toast from "@/helpers/toast";
 
-@Component({
-  components: { AllocationQuantitiesInput, DateField },
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  $_veeValidate: { validator: "new" }
-})
+@Component({ components: { AllocationQuantitiesInput, DateField, ModalForm } })
 export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
@@ -73,17 +56,17 @@ export default class HoldModal extends Vue {
   disableEndDate = false;
   allSessions = false;
   sessions: IScheduledSession[] = [];
+  isOpen = false;
 
-  created() {
+  openModal() {
     this.sessions = this.scheduledSessions.map(s => {
       return { enabled: false, ...s };
     });
+    this.isOpen = true;
   }
 
   async saveHold() {
-    const formIsValid = await this.$validator.validateAll();
-
-    if (formIsValid && this.sessionHolds.length > 0) {
+    if (this.sessionHolds.length > 0) {
       await RecipientSessions.createHolds(this.sessionHolds);
       this.$emit("close");
       toast.success("Session hold created.");
@@ -128,10 +111,6 @@ export default class HoldModal extends Vue {
 .end-date-checkbox {
   margin-top: 0.5rem;
   margin-left: 0.1rem;
-}
-
-.modal-card {
-  width: 400px;
 }
 
 .modal-card-body {

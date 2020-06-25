@@ -23,7 +23,7 @@ export default class DateField extends Vue {
   @Prop({ default: false }) readonly disabled!: boolean;
 
   get dateValue() {
-    if (this.value === "") {
+    if (!this.value || this.value === "") {
       return null;
     } else {
       return new Date(this.value);
