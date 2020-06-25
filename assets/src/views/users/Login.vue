@@ -78,6 +78,7 @@ import { Component } from "vue-property-decorator";
 import Router from "@/router";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
+import App from "@/store/modules/app";
 
 @Component
 export default class Login extends Vue {
@@ -87,10 +88,12 @@ export default class Login extends Vue {
   forgotten = false;
 
   async login() {
+    App.enableLoading();
     await UserModule.login({ email: this.email, password: this.password });
     if (UserModule.isAuthenticated) {
       Router.push("/");
     } else {
+      App.disableLoading();
       this.showError = true;
     }
   }
