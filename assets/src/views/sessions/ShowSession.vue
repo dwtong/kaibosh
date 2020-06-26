@@ -1,6 +1,5 @@
 <template>
   <div class="print">
-    <b-loading :active.sync="isLoading"></b-loading>
     <div class="title-box">
       <div class="field buttons is-pulled-right">
         <p class="control">
@@ -15,10 +14,10 @@
       </div>
 
       <h1 v-if="sessionDate" class="title">
-        {{ sessionDate | formatDate("dddd h:mma") }}
+        {{ sessionDate | formatDate("EEEE h:mma") }}
       </h1>
       <h2 class="subtitle is-4">
-        {{ sessionDate | formatDate("MMMM Do, Y") }}
+        {{ sessionDate | formatDate("MMMM do, Y") }}
       </h2>
     </div>
 
@@ -41,7 +40,7 @@
 
             <div class="content">
               <div v-for="allocation in sortCategories(category.allocations)" :key="allocation.id">
-                <SessionRecipient v-if="!isLoading" :allocation="allocation" :recipient="allocation.recipient" />
+                <SessionRecipient :allocation="allocation" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>
@@ -55,30 +54,34 @@
 import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import App from "@/store/modules/app";
 import SessionSlots from "@/store/modules/session-slots";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
 import { formatDate } from "@/helpers/date";
+import { Route } from "vue-router/types/router";
 
 @Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
-  isLoading = true;
 
-  async created() {
-    let date = this.$route.query.date;
+  async beforeRouteEnter(to: Route, from: Route, next: any) {
+    App.enableLoading();
+    let date = to.query.date;
 
     if (typeof date !== "string") {
       date = "";
     }
 
     await SessionSlots.fetchAllocationsForSlot({
-      sessionSlotId: this.id,
+      sessionSlotId: to.params.id,
       sessionDate: date
     });
 
-    this.isLoading = false;
+    App.disableLoading();
+
+    next();
   }
 
   capitalize(str: string) {
@@ -107,7 +110,8 @@ export default class ShowSession extends Vue {
   }
 
   get sessionDate() {
-    return SessionSlots.date;
+    const date = SessionSlots.date;
+    return date && date !== "" ? SessionSlots.date : null;
   }
 }
 </script>

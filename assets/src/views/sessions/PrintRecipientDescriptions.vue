@@ -17,13 +17,13 @@
     </div>
 
     <h1 v-if="sessionDate" class="title with-margins">
-      {{ sessionDate | formatDate("dddd h:mma") }}
+      {{ sessionDate | formatDate("EEEE h:mma") }}
     </h1>
 
     <div v-for="recipient in recipients" :key="recipient.id" class="recipient with-margins">
       <h2 class="subtitle">{{ recipient.name }}</h2>
       <!-- eslint-disable vue/no-v-html -->
-      <div v-html="recipient.descriptionHtml"></div>
+      <div v-html="recipient.description"></div>
     </div>
   </div>
 </template>
