@@ -82,7 +82,7 @@ export default class NavBar extends Vue {
     &:hover {
       border-radius: 1rem 0 0 1rem;
       background-color: $primary;
-      color: $text;
+      color: white;
     }
 
     &.is-active {
@@ -92,7 +92,7 @@ export default class NavBar extends Vue {
       &:hover {
         border-radius: 1rem 0 0 1rem;
         background-color: $primary;
-        color: $text;
+        color: white;
       }
     }
     color: white;
