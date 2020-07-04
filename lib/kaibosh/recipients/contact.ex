@@ -1,0 +1,26 @@
+defmodule Kaibosh.Recipients.Contact do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias Kaibosh.Recipients.Recipient
+
+  @allowed_attrs [:name, :email, :phone_landline, :phone_mobile, :recipient_id]
+  @required_attrs [:name, :recipient_id]
+
+  schema "contacts" do
+    belongs_to :recipient, Recipient
+
+    field :name, :string, null: false
+    field :email, :string
+    field :phone_landline, :string
+    field :phone_mobile, :string
+
+    timestamps()
+  end
+
+  @doc false
+  def changeset(%__MODULE__{} = record, attrs) do
+    record
+    |> cast(attrs, @allowed_attrs)
+    |> validate_required(@required_attrs)
+  end
+end
