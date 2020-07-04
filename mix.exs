@@ -20,7 +20,7 @@ defmodule Kaibosh.MixProject do
   def application do
     [
       mod: {Kaibosh.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -49,7 +49,7 @@ defmodule Kaibosh.MixProject do
       {:ex_machina, "~> 2.4", only: :test},
 
       # Dev
-      {:mix_test_watch, "~> 1.0", only: [:dev]},
+      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev}
     ]
   end
