@@ -24,6 +24,7 @@ defmodule Kaibosh.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Kaibosh.DataCase
+      import Kaibosh.Factory
     end
   end
 

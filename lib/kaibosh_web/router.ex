@@ -13,16 +13,32 @@ defmodule KaiboshWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    # TODO: check user is admin
+  end
+
   scope "/", KaiboshWeb do
     pipe_through :browser
 
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", KaiboshWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", KaiboshWeb do
+    pipe_through :api
+
+    resources "/organisations", OrganisationController, only: [:show] do
+      resources "/bases", BaseController, only: [:index]
+      resources "/staff", StaffController, only: [:index]
+    end
+  end
+
+  scope "/admin", KaiboshWeb.Admin do
+    pipe_through [:api, :admin]
+
+    resources "/organisations", OrganisationController, except: [:new, :edit]
+    resources "/bases", BaseController, except: [:new, :edit]
+    resources "/staff", StaffController, except: [:new, :edit]
+  end
 
   # Enables LiveDashboard only for development
   #
