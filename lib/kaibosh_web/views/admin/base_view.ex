@@ -1,6 +1,6 @@
 defmodule KaiboshWeb.Admin.BaseView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.BaseView
+  alias KaiboshWeb.Admin.BaseView
 
   def render("index.json", %{bases: bases}) do
     %{data: render_many(bases, BaseView, "base.json")}
@@ -11,7 +11,6 @@ defmodule KaiboshWeb.Admin.BaseView do
   end
 
   def render("base.json", %{base: base}) do
-    %{id: base.id,
-      name: base.name}
+    %{id: base.id, name: base.name}
   end
 end

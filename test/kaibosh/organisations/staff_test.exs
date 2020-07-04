@@ -10,26 +10,21 @@ defmodule Kaibosh.Organisations.StaffTest do
     @invalid_attrs %{first_name: nil, last_name: nil}
 
     test "list_staff/0 returns all staff" do
-      staff = insert(:staff)
-      result = Organisations.list_staff()
-      assert length(result) == 1
-      assert List.first(result).id == staff.id
+      staff = insert(:staff) |> Repo.forget(:base)
+      assert Organisations.list_staff() == [staff]
     end
 
     test "list_staff_for_org/1 returns staff for organisation" do
-      staff = insert(:staff)
+      org = insert(:organisation)
+      base = insert(:base, organisation: org)
+      staff = insert(:staff, base: base) |> Repo.forget(:base)
       insert(:staff)
-      result = Organisations.list_staff_for_org(staff.base.organisation_id)
-      assert length(result) == 1
-      assert List.first(result).id == staff.id
+      assert Organisations.list_staff_for_org(org.id) == [staff]
     end
 
     test "get_staff!/1 returns the staff with given id" do
-      staff = insert(:staff)
-      result = Organisations.get_staff!(staff.id)
-      assert result.id == staff.id
-      assert result.first_name == staff.first_name
-      assert result.last_name == staff.last_name
+      staff = insert(:staff) |> Repo.forget(:base)
+      assert Organisations.get_staff!(staff.id) == staff
     end
 
     test "create_staff/1 with valid data creates a staff" do
@@ -53,9 +48,9 @@ defmodule Kaibosh.Organisations.StaffTest do
     end
 
     test "update_staff/2 with invalid data returns error changeset" do
-      staff = insert(:staff)
+      staff = insert(:staff) |> Repo.forget(:base)
       assert {:error, %Ecto.Changeset{}} = Organisations.update_staff(staff, @invalid_attrs)
-      assert staff.id == Organisations.get_staff!(staff.id).id
+      assert Organisations.get_staff!(staff.id) == staff
     end
 
     test "delete_staff/1 deletes the staff" do

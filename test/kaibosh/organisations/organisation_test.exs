@@ -54,7 +54,7 @@ defmodule Kaibosh.Organisations.OrganisationTest do
       assert {:error, %Ecto.Changeset{}} =
                Organisations.update_organisation(organisation, @invalid_attrs)
 
-      assert organisation == Organisations.get_organisation!(organisation.id)
+      assert Organisations.get_organisation!(organisation.id) == organisation
     end
 
     test "delete_organisation/1 deletes the organisation" do

@@ -10,23 +10,21 @@ defmodule Kaibosh.Organisations.BaseTest do
     @invalid_attrs %{name: nil}
 
     test "list_bases/0 returns all bases" do
-      base = insert(:base)
-      result = Organisations.list_bases()
-      assert length(result) == 1
-      assert List.first(result).id == base.id
+      base = insert(:base) |> Repo.forget(:organisation)
+      assert Organisations.list_bases() == [base]
     end
 
     test "list_bases_for_org/1 returns bases for organisation" do
-      base = insert(:base)
+      base = insert(:base) |> Repo.forget(:organisation)
       insert(:base)
       result = Organisations.list_bases_for_org(base.organisation_id)
       assert length(result) == 1
-      assert List.first(result).id == base.id
+      assert List.first(result) == base
     end
 
     test "get_base!/1 returns the base with given id" do
-      base = insert(:base)
-      assert Organisations.get_base!(base.id).id == base.id
+      base = insert(:base) |> Repo.forget(:organisation)
+      assert Organisations.get_base!(base.id) == base
     end
 
     test "create_base/1 with valid data creates a base" do
@@ -48,9 +46,9 @@ defmodule Kaibosh.Organisations.BaseTest do
     end
 
     test "update_base/2 with invalid data returns error changeset" do
-      base = insert(:base)
+      base = insert(:base) |> Repo.forget(:organisation)
       assert {:error, %Ecto.Changeset{}} = Organisations.update_base(base, @invalid_attrs)
-      assert base.id == Organisations.get_base!(base.id).id
+      assert Organisations.get_base!(base.id) == base
     end
 
     test "delete_base/1 deletes the base" do

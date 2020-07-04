@@ -1,6 +1,6 @@
 defmodule KaiboshWeb.Admin.StaffView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.StaffView
+  alias KaiboshWeb.Admin.StaffView
 
   def render("index.json", %{staff: staff}) do
     %{data: render_many(staff, StaffView, "staff.json")}

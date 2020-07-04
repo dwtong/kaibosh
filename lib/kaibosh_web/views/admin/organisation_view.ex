@@ -1,6 +1,6 @@
 defmodule KaiboshWeb.Admin.OrganisationView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.OrganisationView
+  alias KaiboshWeb.Admin.OrganisationView
 
   def render("index.json", %{organisations: organisations}) do
     %{data: render_many(organisations, OrganisationView, "organisation.json")}
