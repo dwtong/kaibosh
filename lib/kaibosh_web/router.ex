@@ -38,6 +38,7 @@ defmodule KaiboshWeb.Router do
     resources "/organisations", OrganisationController, except: [:new, :edit]
     resources "/bases", BaseController, except: [:new, :edit]
     resources "/staff", StaffController, except: [:new, :edit]
+    resources "/sessions", SessionController, except: [:new, :edit]
 
     resources "/recipients", RecipientController, except: [:new, :edit] do
       resources "/contacts", ContactController, except: [:new, :edit, :index]
