@@ -1,7 +1,6 @@
 defmodule KaiboshWeb.Admin.SessionControllerTest do
   use KaiboshWeb.ConnCase
 
-  alias Kaibosh.Sessions
   alias Kaibosh.Sessions.Session
 
   @create_attrs %{

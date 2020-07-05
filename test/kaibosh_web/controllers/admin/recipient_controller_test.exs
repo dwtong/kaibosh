@@ -1,7 +1,6 @@
 defmodule KaiboshWeb.Admin.RecipientControllerTest do
   use KaiboshWeb.ConnCase
 
-  alias Kaibosh.Recipients
   alias Kaibosh.Recipients.Recipient
 
   @create_attrs %{name: "Test Recipient"}

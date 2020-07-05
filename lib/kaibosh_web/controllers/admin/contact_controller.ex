@@ -10,10 +10,7 @@ defmodule KaiboshWeb.Admin.ContactController do
     with {:ok, %Contact{} = contact} <- Recipients.create_contact(contact_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header(
-        "location",
-        Routes.recipient_contact_path(conn, :show, contact.recipient_id, contact)
-      )
+      |> put_resp_header("location", Routes.contact_path(conn, :show, contact))
       |> render("show.json", contact: contact)
     end
   end

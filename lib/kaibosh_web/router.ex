@@ -36,13 +36,16 @@ defmodule KaiboshWeb.Router do
     pipe_through [:api, :admin]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]
+    resources "/allocation_categories", AllocationCategoryController, except: [:new, :edit]
     resources "/bases", BaseController, except: [:new, :edit]
     resources "/staff", StaffController, except: [:new, :edit]
     resources "/sessions", SessionController, except: [:new, :edit]
 
-    resources "/recipients", RecipientController, except: [:new, :edit] do
-      resources "/contacts", ContactController, except: [:new, :edit, :index]
-    end
+    resources "/recipients", RecipientController, except: [:new, :edit]
+    resources "/allocations", AllocationController, except: [:new, :edit]
+    resources "/contacts", ContactController, except: [:new, :edit, :index]
+    resources "/recipient_sessions", RecipientSessionController, except: [:new, :edit]
+    resources "/holds", HoldController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
