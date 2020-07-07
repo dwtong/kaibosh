@@ -1,5 +1,6 @@
 defmodule Kaibosh.Factory do
   use ExMachina.Ecto, repo: Kaibosh.Repo
+  alias Kaibosh.Accounts
   alias Kaibosh.Organisations
   alias Kaibosh.Recipients
   alias Kaibosh.RecipientSessions
@@ -74,6 +75,20 @@ defmodule Kaibosh.Factory do
       first_name: "John",
       last_name: "Smith",
       base: build(:base)
+    }
+  end
+
+  def user_factory do
+    %Accounts.User{
+      email: sequence(:email, &"email#{&1}@test.com"),
+      password_hash: "xxxxxx"
+    }
+  end
+
+  def user_session_factory do
+    %Accounts.UserSession{
+      token: Ecto.UUID.generate(),
+      user: build(:user)
     }
   end
 end

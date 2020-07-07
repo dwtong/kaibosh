@@ -20,7 +20,7 @@ defmodule Kaibosh.MixProject do
   def application do
     [
       mod: {Kaibosh.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: env_extra_apps() ++ [:logger, :runtime_tools]
     ]
   end
 
@@ -44,6 +44,7 @@ defmodule Kaibosh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:argon2_elixir, "~> 2.3"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},
@@ -67,5 +68,12 @@ defmodule Kaibosh.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
+  end
+
+  defp env_extra_apps do
+    case Mix.env() do
+      :prod -> [:os_mon]
+      _ -> []
+    end
   end
 end

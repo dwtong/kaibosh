@@ -18,5 +18,9 @@ config :kaibosh, KaiboshWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :argon2_elixir,
+  t_cost: 1,
+  m_cost: 8
+
 # Print only warnings and errors during test
 config :logger, level: :warn
