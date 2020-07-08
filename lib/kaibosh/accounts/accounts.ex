@@ -47,10 +47,9 @@ defmodule Kaibosh.Accounts do
   end
 
   def sign_out(token) do
-    case Repo.get_by(UserSession, %{token: token}) do
-      nil -> {:error, :not_found}
-      user_session -> Repo.delete(user_session)
-    end
+    UserSession
+    |> where(token: ^token)
+    |> Repo.delete_all()
   end
 
   def get_user_session(session_token) do

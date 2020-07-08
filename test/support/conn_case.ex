@@ -26,6 +26,7 @@ defmodule KaiboshWeb.ConnCase do
       import KaiboshWeb.ConnCase
 
       alias KaiboshWeb.Router.Helpers, as: Routes
+      alias Kaibosh.Repo
 
       # The default endpoint for testing
       @endpoint KaiboshWeb.Endpoint

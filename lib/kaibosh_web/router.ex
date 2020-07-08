@@ -25,6 +25,12 @@ defmodule KaiboshWeb.Router do
 
   scope "/api", KaiboshWeb do
     pipe_through :api
+    post "/sign_in", UserSessionController, :create
+    delete "/sign_out", UserSessionController, :delete
+  end
+
+  scope "/api", KaiboshWeb do
+    pipe_through :api
 
     resources "/organisations", OrganisationController, only: [:show] do
       resources "/bases", BaseController, only: [:index]
