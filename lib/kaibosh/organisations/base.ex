@@ -19,5 +19,6 @@ defmodule Kaibosh.Organisations.Base do
     record
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
+    |> unique_constraint(:name, name: :bases_organisation_id_name_index)
   end
 end

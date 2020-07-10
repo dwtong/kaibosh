@@ -10,6 +10,6 @@ defmodule Kaibosh.Repo.Migrations.CreateBases do
     end
 
     create index(:bases, [:organisation_id])
-    create unique_index(:bases, [:name])
+    create unique_index(:bases, [:name, :organisation_id], name: :bases_organisation_id_name_index)
   end
 end
