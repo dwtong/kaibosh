@@ -1,0 +1,25 @@
+name: Elixir CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  MIX_ENV: test
+
+jobs:
+  build:
+    name: Check formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: "1.10.3" # Define the elixir version [required]
+          otp-version: "22.3" # Define the OTP version [required]
+      - name: Check formatting
+        run: mix format --check-formatted
