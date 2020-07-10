@@ -1,5 +1,6 @@
 defmodule KaiboshWeb.Router do
   use KaiboshWeb, :router
+  # alias KaiboshWeb.Plugs.Authenticate
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,6 +12,10 @@ defmodule KaiboshWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :api_auth do
+    # plug Authenticate
   end
 
   pipeline :admin do
@@ -25,12 +30,13 @@ defmodule KaiboshWeb.Router do
 
   scope "/api", KaiboshWeb do
     pipe_through :api
+
     post "/sign_in", UserSessionController, :create
     delete "/sign_out", UserSessionController, :delete
   end
 
   scope "/api", KaiboshWeb do
-    pipe_through :api
+    pipe_through [:api, :api_auth]
 
     resources "/organisations", OrganisationController, only: [:show] do
       resources "/bases", BaseController, only: [:index]
@@ -39,7 +45,7 @@ defmodule KaiboshWeb.Router do
   end
 
   scope "/admin", KaiboshWeb.Admin do
-    pipe_through [:api, :admin]
+    pipe_through [:api, :api_auth, :admin]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]
     resources "/allocation_categories", AllocationCategoryController, except: [:new, :edit]
