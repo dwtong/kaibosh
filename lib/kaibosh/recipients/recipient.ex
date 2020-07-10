@@ -37,5 +37,6 @@ defmodule Kaibosh.Recipients.Recipient do
     record
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
+    |> cast_assoc(:contact)
   end
 end

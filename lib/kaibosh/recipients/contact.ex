@@ -3,8 +3,9 @@ defmodule Kaibosh.Recipients.Contact do
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient
 
-  @allowed_attrs [:name, :email, :phone_landline, :phone_mobile, :recipient_id]
-  @required_attrs [:name, :recipient_id]
+  @allowed_attrs [:name, :email, :phone_landline, :phone_mobile]
+  @required_attrs [:name]
+  @email_regex ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
 
   schema "contacts" do
     belongs_to :recipient, Recipient
@@ -22,5 +23,6 @@ defmodule Kaibosh.Recipients.Contact do
     record
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
+    |> validate_format(:email, @email_regex)
   end
 end

@@ -55,7 +55,6 @@ defmodule KaiboshWeb.Router do
 
     resources "/recipients", RecipientController, except: [:new, :edit]
     resources "/allocations", AllocationController, except: [:new, :edit]
-    resources "/contacts", ContactController, except: [:new, :edit, :index]
     resources "/recipient_sessions", RecipientSessionController, except: [:new, :edit]
     resources "/holds", HoldController, except: [:new, :edit]
   end
