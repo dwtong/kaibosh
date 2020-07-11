@@ -5,7 +5,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         prependData: `
-          @import "~bulma/sass/utilities/functions";  
+          @import "~bulma/sass/utilities/functions";
           @import "@/assets/scss/_variables.scss";
         `
       }
@@ -17,7 +17,7 @@ module.exports = {
       hot: true,
       proxy: {
         "^/api": {
-          target: "http://localhost:3000",
+          target: "http://localhost:4000",
           changeOrigin: true
         }
       }

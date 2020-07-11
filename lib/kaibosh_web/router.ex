@@ -1,6 +1,6 @@
 defmodule KaiboshWeb.Router do
   use KaiboshWeb, :router
-  # alias KaiboshWeb.Plugs.Authenticate
+  alias KaiboshWeb.Plugs.Authenticate
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -15,20 +15,20 @@ defmodule KaiboshWeb.Router do
   end
 
   pipeline :api_auth do
-    # plug Authenticate
+    plug Authenticate
   end
 
   pipeline :admin do
     # TODO: check user is admin
   end
 
-  scope "/", KaiboshWeb do
-    pipe_through :browser
+  # scope "/", KaiboshWeb do
+  #   pipe_through :browser
 
-    get "/", PageController, :index
-  end
+  #   get "/", PageController, :index
+  # end
 
-  scope "/api", KaiboshWeb do
+  scope "/api/auth", KaiboshWeb do
     pipe_through :api
 
     post "/sign_in", UserSessionController, :create
@@ -44,7 +44,7 @@ defmodule KaiboshWeb.Router do
     end
   end
 
-  scope "/admin", KaiboshWeb.Admin do
+  scope "/api/admin", KaiboshWeb.Admin do
     pipe_through [:api, :api_auth, :admin]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]

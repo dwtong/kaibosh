@@ -45,7 +45,7 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(
   response => {
-    if (response.headers.client) {
+    if (response.headers.authorization) {
       auth.saveAuthToken(response.headers);
     }
     return response;
