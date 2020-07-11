@@ -27,6 +27,7 @@ defmodule KaiboshWeb.RecipientController do
 
   def update(conn, %{"id" => id, "recipient" => recipient_params}) do
     recipient = Recipients.get_recipient!(id)
+    recipient_params = build_params(recipient_params)
 
     with {:ok, %Recipient{} = recipient} <-
            Recipients.update_recipient(recipient, recipient_params) do
@@ -41,4 +42,23 @@ defmodule KaiboshWeb.RecipientController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  defp build_params(%{"has_signed_terms" => has_signed_terms} = params) do
+    params
+    |> Map.put("signed_terms_at", bool_to_timestamp(has_signed_terms))
+    |> Map.delete("has_signed_terms")
+    |> build_params()
+  end
+
+  defp build_params(%{"has_met_kaibosh" => has_met_kaibosh} = params) do
+    params
+    |> Map.put("met_kaibosh_at", bool_to_timestamp(has_met_kaibosh))
+    |> Map.delete("has_met_kaibosh")
+    |> build_params()
+  end
+
+  defp build_params(params), do: params
+
+  defp bool_to_timestamp(true), do: DateTime.utc_now()
+  defp bool_to_timestamp(false), do: nil
 end

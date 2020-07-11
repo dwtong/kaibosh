@@ -4,7 +4,12 @@ defmodule KaiboshWeb.RecipientControllerTest do
   alias Kaibosh.Recipients.Recipient
 
   @create_attrs %{name: "Test Recipient", contact: %{name: "Henry Harrison"}}
-  @update_attrs %{name: "Updated Recipient", contact: %{name: "Updated contact name"}}
+  @update_attrs %{
+    name: "Updated Recipient",
+    has_signed_terms: false,
+    has_met_kaibosh: true,
+    contact: %{name: "Updated contact name"}
+  }
   @invalid_attrs %{name: nil}
 
   setup %{conn: conn} do
@@ -45,7 +50,7 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert recipient["base_id"] == expected_recipient.base_id
       assert recipient["status"] == "pending"
       assert recipient["has_met_kaibosh"] == false
-      assert recipient["has_signed_terms"] == false
+      assert recipient["has_signed_terms"] == true
       assert recipient["started_at"] == expected_recipient.started_at
     end
   end
@@ -84,6 +89,8 @@ defmodule KaiboshWeb.RecipientControllerTest do
 
       assert recipient = json_response(conn, 200)
       assert recipient["name"] == @update_attrs.name
+      assert recipient["has_signed_terms"] == false
+      assert recipient["has_met_kaibosh"] == true
       assert recipient["contact"]["name"] == @update_attrs.contact.name
     end
 
@@ -103,7 +110,7 @@ defmodule KaiboshWeb.RecipientControllerTest do
   end
 
   defp create_recipient(_) do
-    recipient = insert(:recipient)
+    recipient = insert(:recipient, signed_terms_at: ~U[2020-01-01T00:00:00Z])
     contact = insert(:contact, recipient: recipient)
     %{recipient: contact.recipient, contact: contact}
   end

@@ -19,8 +19,10 @@ export default class OnboardingCheckbox extends Vue {
 
   async toggleValue() {
     await ActiveRecipientModule.updateRecipient({
-      id: this.id,
-      [this.name]: !this.value
+      recipient: {
+        id: this.id,
+        [this.name]: !this.value
+      }
     });
 
     await ActiveRecipientModule.fetchRecipientStatus(this.id);
