@@ -6,7 +6,7 @@ import RecipientService from "@/services/recipient-service";
 const defaultRecipientDetails = {
   name: "",
   baseId: "0",
-  primaryContact: {
+  contact: {
     name: "",
     email: "",
     phoneLandline: "",

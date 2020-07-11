@@ -178,7 +178,7 @@ export default class ShowRecipient extends Vue {
   }
 
   get contact(): IContact {
-    return ActiveRecipientModule.details.primaryContact ?? { name: "", phoneLandline: "", phoneMobile: "", email: "" };
+    return ActiveRecipientModule.details.contact ?? { name: "", phoneLandline: "", phoneMobile: "", email: "" };
   }
 
   get baseName() {

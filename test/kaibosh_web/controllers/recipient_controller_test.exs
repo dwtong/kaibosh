@@ -11,7 +11,7 @@ defmodule KaiboshWeb.RecipientControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index" do
+  describe "list recipients" do
     setup [:create_recipient]
 
     test "lists recipients with the correct attrs", %{conn: conn, recipient: expected_recipient} do
@@ -24,6 +24,29 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert recipient["name"] == expected_recipient.name
       assert recipient["base_id"] == expected_recipient.base_id
       assert recipient["status"] == "pending"
+    end
+  end
+
+  describe "show recipient" do
+    setup [:create_recipient]
+
+    test "shows recipient with the correct attrs", %{conn: conn, recipient: expected_recipient} do
+      conn = get(conn, Routes.recipient_path(conn, :show, expected_recipient.id))
+
+      assert recipient = json_response(conn, 200)
+
+      assert Map.keys(recipient) ==
+               ~w(base_id contact description has_met_kaibosh has_signed_terms id name physical_address started_at status)
+
+      assert Map.keys(recipient["contact"]) == ~w(email name phone_landline phone_mobile)
+
+      assert recipient["id"] == expected_recipient.id
+      assert recipient["name"] == expected_recipient.name
+      assert recipient["base_id"] == expected_recipient.base_id
+      assert recipient["status"] == "pending"
+      assert recipient["has_met_kaibosh"] == false
+      assert recipient["has_signed_terms"] == false
+      assert recipient["started_at"] == expected_recipient.started_at
     end
   end
 
@@ -76,6 +99,7 @@ defmodule KaiboshWeb.RecipientControllerTest do
 
   defp create_recipient(_) do
     recipient = insert(:recipient)
-    %{recipient: recipient}
+    contact = insert(:contact, recipient: recipient)
+    %{recipient: contact.recipient, contact: contact}
   end
 end

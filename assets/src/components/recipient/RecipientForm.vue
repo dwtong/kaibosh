@@ -73,8 +73,8 @@ export default class RecipientForm extends Vue {
       await ActiveRecipientModule.fetchRecipient(this.recipientId);
       this.recipient = ActiveRecipientModule.details;
 
-      if (ActiveRecipientModule.details.primaryContact) {
-        this.contact = { ...ActiveRecipientModule.details.primaryContact };
+      if (ActiveRecipientModule.details.contact) {
+        this.contact = { ...ActiveRecipientModule.details.contact };
       }
 
       if (ActiveRecipientModule.details.startedAt) {
@@ -87,7 +87,7 @@ export default class RecipientForm extends Vue {
 
   async saveRecipient() {
     const params = {
-      primaryContactAttributes: this.contact,
+      contactAttributes: this.contact,
       ...this.recipient
     };
 
