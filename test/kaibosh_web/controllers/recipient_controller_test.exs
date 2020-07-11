@@ -7,18 +7,23 @@ defmodule KaiboshWeb.RecipientControllerTest do
   @update_attrs %{name: "Updated Recipient"}
   @invalid_attrs %{name: nil}
 
-  def fixture(:recipient) do
-    insert(:recipient)
-  end
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
   describe "index" do
-    test "lists all recipients", %{conn: conn} do
+    setup [:create_recipient]
+
+    test "lists recipients with the correct attrs", %{conn: conn, recipient: expected_recipient} do
       conn = get(conn, Routes.recipient_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+
+      assert [recipient] = json_response(conn, 200)
+      assert Map.keys(recipient) == ~w(base_id id name status)
+
+      assert recipient["id"] == expected_recipient.id
+      assert recipient["name"] == expected_recipient.name
+      assert recipient["base_id"] == expected_recipient.base_id
+      assert recipient["status"] == "pending"
     end
   end
 
@@ -27,10 +32,10 @@ defmodule KaiboshWeb.RecipientControllerTest do
       base = insert(:base)
       attrs = Map.put(@create_attrs, :base_id, base.id)
       conn = post(conn, Routes.recipient_path(conn, :create), recipient: attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
-      assert %{"id" => id} = json_response(conn, 200)["data"]
+      assert %{"id" => id} = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -47,11 +52,11 @@ defmodule KaiboshWeb.RecipientControllerTest do
       recipient: %Recipient{id: id} = recipient
     } do
       conn = put(conn, Routes.recipient_path(conn, :update, recipient), recipient: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
+      assert %{"id" => ^id} = json_response(conn, 200)
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
 
-      assert %{"id" => id} = json_response(conn, 200)["data"]
+      assert %{"id" => id} = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn, recipient: recipient} do
@@ -70,7 +75,7 @@ defmodule KaiboshWeb.RecipientControllerTest do
   end
 
   defp create_recipient(_) do
-    recipient = fixture(:recipient)
+    recipient = insert(:recipient)
     %{recipient: recipient}
   end
 end

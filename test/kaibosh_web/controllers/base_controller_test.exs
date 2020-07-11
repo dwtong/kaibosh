@@ -15,7 +15,7 @@ defmodule KaiboshWeb.BaseControllerTest do
     test "renders base for organisation", %{conn: conn, base: base} do
       conn = get(conn, Routes.base_path(conn, :index))
 
-      response = List.first(json_response(conn, 200)["data"])
+      response = List.first(json_response(conn, 200))
 
       assert response["id"] == base.id
       assert response["name"] == base.name

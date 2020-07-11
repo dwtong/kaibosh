@@ -3,14 +3,19 @@ defmodule KaiboshWeb.RecipientView do
   alias KaiboshWeb.RecipientView
 
   def render("index.json", %{recipients: recipients}) do
-    %{data: render_many(recipients, RecipientView, "recipient.json")}
+    render_many(recipients, RecipientView, "recipient.json")
   end
 
   def render("show.json", %{recipient: recipient}) do
-    %{data: render_one(recipient, RecipientView, "recipient.json")}
+    render_one(recipient, RecipientView, "recipient.json")
   end
 
   def render("recipient.json", %{recipient: recipient}) do
-    %{id: recipient.id, name: recipient.name}
+    %{
+      id: recipient.id,
+      name: recipient.name,
+      status: "pending",
+      base_id: recipient.base_id
+    }
   end
 end
