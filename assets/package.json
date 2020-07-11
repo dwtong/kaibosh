@@ -58,7 +58,7 @@
     "fibers": "^5.0.0",
     "node-sass": "^4.12.0",
     "prettier": "^1.19.1",
-    "prettier-eslint": "^10.1.0",
+    "prettier-eslint": "^11.0.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.8.3",
     "vue-cli-plugin-buefy": "^0.3.7",
