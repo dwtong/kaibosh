@@ -49,9 +49,9 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert recipient["name"] == expected_recipient.name
       assert recipient["base_id"] == expected_recipient.base_id
       assert recipient["status"] == "pending"
-      assert recipient["has_met_kaibosh"] == false
+      assert recipient["has_met_kaibosh"] == true
       assert recipient["has_signed_terms"] == true
-      assert recipient["started_at"] == expected_recipient.started_at
+      assert recipient["started_at"] == DateTime.to_iso8601(expected_recipient.started_at)
     end
   end
 

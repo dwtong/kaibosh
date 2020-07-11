@@ -3,6 +3,7 @@ defmodule Kaibosh.Recipients.Recipient do
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
+  alias Kaibosh.Recipients.Recipient
 
   @allowed_attrs [
     :name,
@@ -33,10 +34,22 @@ defmodule Kaibosh.Recipients.Recipient do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = record, attrs) do
-    record
+  def changeset(%Recipient{} = recipient, attrs) do
+    recipient
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
     |> cast_assoc(:contact)
+  end
+
+  def status(%Recipient{archived_at: archived_at}) when not is_nil(archived_at), do: :archived
+  def status(%Recipient{started_at: nil}), do: :pending
+  def status(%Recipient{signed_terms_at: nil}), do: :pending
+  def status(%Recipient{met_kaibosh_at: nil}), do: :pending
+
+  def status(%Recipient{started_at: started_at}) do
+    cond do
+      DateTime.compare(started_at, DateTime.utc_now()) == :gt -> :pending
+      true -> :active
+    end
   end
 end

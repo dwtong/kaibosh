@@ -51,7 +51,10 @@ defmodule Kaibosh.Factory do
   def recipient_factory do
     %Recipients.Recipient{
       name: sequence(:name, &"Test Recipient #{&1}"),
-      base: build(:base)
+      base: build(:base),
+      signed_terms_at: ~U[2020-01-01T00:00:00Z],
+      met_kaibosh_at: ~U[2020-01-01T00:00:00Z],
+      started_at: ~U[2020-01-01T00:00:00Z]
     }
   end
 
