@@ -16,7 +16,7 @@ defmodule Kaibosh.Recipients do
     Recipient
     |> where(id: ^id)
     |> join(:left, [r], c in assoc(r, :contact))
-    |> preload([r, c], contact: c)
+    |> preload(:contact)
     |> Repo.one!()
   end
 
@@ -36,6 +36,11 @@ defmodule Kaibosh.Recipients do
 
   def delete_recipient(%Recipient{} = recipient) do
     Repo.delete(recipient)
+  end
+
+  def archive_recipient(%Recipient{} = recipient) do
+    recipient
+    |> update_recipient(%{archived_at: DateTime.utc_now()})
   end
 
   def change_recipient(%Recipient{} = recipient, attrs \\ %{}) do

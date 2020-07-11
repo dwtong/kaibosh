@@ -44,6 +44,12 @@ defmodule Kaibosh.RecipientsTest do
       assert recipient.contact.name == "New contact name"
     end
 
+    test "archive_recipient/2 marks the recipient as archived" do
+      recipient = insert(:recipient)
+      assert {:ok, %Recipient{} = recipient} = Recipients.archive_recipient(recipient)
+      assert today?(recipient.archived_at)
+    end
+
     test "update_recipient/2 with invalid data returns error changeset" do
       recipient = insert(:recipient) |> Repo.forget([:base])
       assert {:error, %Ecto.Changeset{}} = Recipients.update_recipient(recipient, @invalid_attrs)

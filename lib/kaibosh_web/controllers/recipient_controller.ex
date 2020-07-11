@@ -33,4 +33,12 @@ defmodule KaiboshWeb.RecipientController do
       render(conn, "show.json", recipient: recipient)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    recipient = Recipients.get_recipient!(id)
+
+    with {:ok, %Recipient{}} <- Recipients.archive_recipient(recipient) do
+      send_resp(conn, :no_content, "")
+    end
+  end
 end

@@ -25,6 +25,7 @@ defmodule Kaibosh.DataCase do
       import Ecto.Query
       import Kaibosh.DataCase
       import Kaibosh.Factory
+      import Kaibosh.DateHelper
     end
   end
 

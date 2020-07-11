@@ -60,6 +60,15 @@ defmodule KaiboshWeb.RecipientControllerTest do
     end
   end
 
+  describe "delete recipient" do
+    setup [:create_recipient]
+
+    test "archives chosen recipient", %{conn: conn, recipient: recipient} do
+      conn = delete(conn, Routes.recipient_path(conn, :delete, recipient))
+      assert response(conn, 204)
+    end
+  end
+
   defp create_recipient(_) do
     recipient = fixture(:recipient)
     %{recipient: recipient}
