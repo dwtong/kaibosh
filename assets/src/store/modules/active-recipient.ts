@@ -6,7 +6,7 @@ import RecipientService from "@/services/recipient-service";
 const defaultRecipientDetails = {
   name: "",
   baseId: "0",
-  contact: {
+  primaryContact: {
     name: "",
     email: "",
     phoneLandline: "",
@@ -75,7 +75,7 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
-  async updateRecipient(recipient: any) {
+  async updateRecipient({ recipient }: any) {
     const updatedRecipient = await RecipientService.update(recipient.id, recipient);
     this.context.commit("setRecipientDetails", updatedRecipient);
   }

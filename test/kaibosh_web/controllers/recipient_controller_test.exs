@@ -3,8 +3,8 @@ defmodule KaiboshWeb.RecipientControllerTest do
 
   alias Kaibosh.Recipients.Recipient
 
-  @create_attrs %{name: "Test Recipient"}
-  @update_attrs %{name: "Updated Recipient"}
+  @create_attrs %{name: "Test Recipient", contact: %{name: "Henry Harrison"}}
+  @update_attrs %{name: "Updated Recipient", contact: %{name: "Updated contact name"}}
   @invalid_attrs %{name: nil}
 
   setup %{conn: conn} do
@@ -58,7 +58,10 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
-      assert %{"id" => id} = json_response(conn, 200)
+
+      assert recipient = json_response(conn, 200)
+      assert recipient["name"] == @create_attrs.name
+      assert recipient["contact"]["name"] == @create_attrs.contact.name
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -79,7 +82,9 @@ defmodule KaiboshWeb.RecipientControllerTest do
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
 
-      assert %{"id" => id} = json_response(conn, 200)
+      assert recipient = json_response(conn, 200)
+      assert recipient["name"] == @update_attrs.name
+      assert recipient["contact"]["name"] == @update_attrs.contact.name
     end
 
     test "renders errors when data is invalid", %{conn: conn, recipient: recipient} do

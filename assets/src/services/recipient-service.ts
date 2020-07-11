@@ -7,6 +7,6 @@ export default {
   all: () => get(resource),
   get: (id: string) => get(`${resource}/${id}`),
   create: (params: IRecipient) => post(resource, params),
-  update: (id: string, params: IRecipient) => put(`${resource}/${id}`, params),
+  update: (id: string, recipient: IRecipient) => put(`${resource}/${id}`, { recipient }),
   destroy: (id: string) => destroy(`${resource}/${id}`)
 };

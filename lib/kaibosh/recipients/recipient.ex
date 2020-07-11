@@ -18,7 +18,7 @@ defmodule Kaibosh.Recipients.Recipient do
   @required_attrs [:name, :base_id]
 
   schema "recipients" do
-    has_one :contact, Contact
+    has_one :contact, Contact, on_replace: :update
     belongs_to :base, Base
 
     field :name, :string, null: false

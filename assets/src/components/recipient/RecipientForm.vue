@@ -87,12 +87,14 @@ export default class RecipientForm extends Vue {
 
   async saveRecipient() {
     const params = {
-      contactAttributes: this.contact,
-      ...this.recipient
+      recipient: {
+        ...this.recipient,
+        contact: this.contact
+      }
     };
 
     if (this.startedAt) {
-      params.startedAt = this.startedAt;
+      params.recipient.startedAt = this.startedAt;
     }
 
     if (this.recipientId) {
