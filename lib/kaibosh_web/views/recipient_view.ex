@@ -1,6 +1,6 @@
-defmodule KaiboshWeb.Admin.RecipientView do
+defmodule KaiboshWeb.RecipientView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.Admin.RecipientView
+  alias KaiboshWeb.RecipientView
 
   def render("index.json", %{recipients: recipients}) do
     %{data: render_many(recipients, RecipientView, "recipient.json")}

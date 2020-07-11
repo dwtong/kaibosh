@@ -1,4 +1,4 @@
-defmodule KaiboshWeb.Admin.RecipientControllerTest do
+defmodule KaiboshWeb.RecipientControllerTest do
   use KaiboshWeb.ConnCase
 
   alias Kaibosh.Recipients.Recipient
@@ -30,10 +30,7 @@ defmodule KaiboshWeb.Admin.RecipientControllerTest do
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
-
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
+      assert %{"id" => id} = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -54,27 +51,12 @@ defmodule KaiboshWeb.Admin.RecipientControllerTest do
 
       conn = get(conn, Routes.recipient_path(conn, :show, id))
 
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
+      assert %{"id" => id} = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, recipient: recipient} do
       conn = put(conn, Routes.recipient_path(conn, :update, recipient), recipient: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
-
-  describe "delete recipient" do
-    setup [:create_recipient]
-
-    test "deletes chosen recipient", %{conn: conn, recipient: recipient} do
-      conn = delete(conn, Routes.recipient_path(conn, :delete, recipient))
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
-        get(conn, Routes.recipient_path(conn, :show, recipient))
-      end
     end
   end
 
