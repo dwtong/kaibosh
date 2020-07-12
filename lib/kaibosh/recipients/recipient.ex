@@ -1,7 +1,6 @@
 defmodule Kaibosh.Recipients.Recipient do
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
   alias Kaibosh.Recipients.Recipient

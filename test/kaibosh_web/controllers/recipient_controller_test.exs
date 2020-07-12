@@ -105,7 +105,8 @@ defmodule KaiboshWeb.RecipientControllerTest do
 
     test "archives chosen recipient", %{conn: conn, recipient: recipient} do
       conn = delete(conn, Routes.recipient_path(conn, :delete, recipient))
-      assert response(conn, 204)
+      assert recipient = json_response(conn, 200)
+      assert recipient["status"] == "archived"
     end
   end
 

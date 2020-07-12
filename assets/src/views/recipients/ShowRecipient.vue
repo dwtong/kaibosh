@@ -218,8 +218,10 @@ export default class ShowRecipient extends Vue {
 
     if (ActiveRecipientModule.details.id) {
       await ActiveRecipientModule.updateRecipient({
-        id: ActiveRecipientModule.details.id,
-        archivedAt: null
+        recipient: {
+          id: ActiveRecipientModule.details.id,
+          archivedAt: null
+        }
       });
 
       await ActiveRecipientModule.fetchRecipientStatus(this.id);
