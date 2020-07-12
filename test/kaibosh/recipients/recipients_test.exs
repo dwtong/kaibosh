@@ -2,6 +2,7 @@ defmodule Kaibosh.RecipientsTest do
   use Kaibosh.DataCase
 
   alias Kaibosh.Recipients
+  alias Kaibosh.Recipients.Status
 
   describe "recipients" do
     alias Kaibosh.Recipients.Recipient
@@ -11,15 +12,16 @@ defmodule Kaibosh.RecipientsTest do
     @invalid_attrs %{name: nil}
 
     test "list_recipients/0 returns all recipients" do
-      recipient = insert(:recipient) |> Repo.forget(:base)
+      recipient = insert(:recipient) |> Repo.forget(:base) |> Status.put()
       assert Recipients.list_recipients() == [recipient]
     end
 
     test "get_recipient!/1 returns the recipient and contact with given id" do
       expected_recipient = insert(:recipient, contact: insert(:contact)) |> Repo.forget(:base)
       recipient = Recipients.get_recipient!(expected_recipient.id)
-      assert expected_recipient.name == recipient.name
-      assert expected_recipient.contact.name == recipient.contact.name
+      assert recipient.name == expected_recipient.name
+      assert recipient.contact.name == expected_recipient.contact.name
+      assert recipient.status == :pending
     end
 
     test "create_recipient/1 with valid data creates a recipient with a contact" do
@@ -28,6 +30,7 @@ defmodule Kaibosh.RecipientsTest do
       assert {:ok, %Recipient{} = recipient} = Recipients.create_recipient(attrs)
       assert recipient.name == "Recipient Org"
       assert recipient.contact.name == "Jenny Smith"
+      assert recipient.status == :pending
     end
 
     test "create_recipient/1 with invalid data returns error changeset" do
@@ -42,12 +45,22 @@ defmodule Kaibosh.RecipientsTest do
 
       assert recipient.name == "Updated name"
       assert recipient.contact.name == "New contact name"
+      assert recipient.status == :pending
+    end
+
+    test "archive_recipient/2 marks the recipient as archived" do
+      recipient = insert(:recipient)
+      assert is_nil(recipient.archived_at)
+
+      assert {:ok, %Recipient{} = recipient} = Recipients.archive_recipient(recipient)
+      refute is_nil(recipient.archived_at)
+      assert recipient.status == :archived
     end
 
     test "update_recipient/2 with invalid data returns error changeset" do
       recipient = insert(:recipient) |> Repo.forget([:base])
       assert {:error, %Ecto.Changeset{}} = Recipients.update_recipient(recipient, @invalid_attrs)
-      assert Recipients.get_recipient!(recipient.id) == recipient |> Repo.preload(:contact)
+      refute is_nil(Recipients.get_recipient!(recipient.id).name)
     end
 
     test "delete_recipient/1 deletes the recipient" do

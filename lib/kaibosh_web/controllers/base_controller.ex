@@ -5,8 +5,8 @@ defmodule KaiboshWeb.BaseController do
 
   action_fallback KaiboshWeb.FallbackController
 
-  def index(conn, %{"organisation_id" => org_id}) do
-    bases = Organisations.list_bases_for_org(org_id)
+  def index(conn, _params) do
+    bases = Organisations.list_bases()
     render(conn, "index.json", bases: bases)
   end
 end

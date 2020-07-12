@@ -178,7 +178,7 @@ export default class ShowRecipient extends Vue {
   }
 
   get contact(): IContact {
-    return ActiveRecipientModule.details.primaryContact ?? { name: "", phoneLandline: "", phoneMobile: "", email: "" };
+    return ActiveRecipientModule.details.contact ?? { name: "", phoneLandline: "", phoneMobile: "", email: "" };
   }
 
   get baseName() {
@@ -218,8 +218,10 @@ export default class ShowRecipient extends Vue {
 
     if (ActiveRecipientModule.details.id) {
       await ActiveRecipientModule.updateRecipient({
-        id: ActiveRecipientModule.details.id,
-        archivedAt: null
+        recipient: {
+          id: ActiveRecipientModule.details.id,
+          archivedAt: null
+        }
       });
 
       await ActiveRecipientModule.fetchRecipientStatus(this.id);

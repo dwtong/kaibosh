@@ -22,6 +22,7 @@ defmodule KaiboshWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
+      import Kaibosh.DateHelper
       import Kaibosh.Factory
       import KaiboshWeb.ConnCase
 

@@ -11,18 +11,21 @@ defmodule KaiboshWeb.Admin.BaseControllerTest do
   }
   @invalid_attrs %{name: nil}
 
-  def fixture(:base) do
-    insert(:base)
-  end
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
   describe "index" do
-    test "lists all bases", %{conn: conn} do
+    setup [:create_base]
+
+    test "lists all bases", %{conn: conn, base: expected_base} do
       conn = get(conn, Routes.base_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+
+      assert [base] = json_response(conn, 200)
+
+      assert Map.keys(base) == ~w(id name)
+      assert base["id"] == expected_base.id
+      assert base["name"] == expected_base.name
     end
   end
 
@@ -82,7 +85,7 @@ defmodule KaiboshWeb.Admin.BaseControllerTest do
   end
 
   defp create_base(_) do
-    base = fixture(:base)
+    base = insert(:base)
     %{base: base}
   end
 end

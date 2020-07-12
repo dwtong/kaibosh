@@ -38,10 +38,8 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/organisations", OrganisationController, only: [:show] do
-      resources "/bases", BaseController, only: [:index]
-      resources "/staff", StaffController, only: [:index]
-    end
+    resources "/bases", BaseController, only: [:index]
+    resources "/recipients", RecipientController, except: [:new, :edit]
   end
 
   scope "/api/admin", KaiboshWeb.Admin do
@@ -52,8 +50,6 @@ defmodule KaiboshWeb.Router do
     resources "/bases", BaseController, except: [:new, :edit]
     resources "/staff", StaffController, except: [:new, :edit]
     resources "/sessions", SessionController, except: [:new, :edit]
-
-    resources "/recipients", RecipientController, except: [:new, :edit]
     resources "/allocations", AllocationController, except: [:new, :edit]
     resources "/recipient_sessions", RecipientSessionController, except: [:new, :edit]
     resources "/holds", HoldController, except: [:new, :edit]
