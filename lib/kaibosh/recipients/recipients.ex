@@ -7,17 +7,21 @@ defmodule Kaibosh.Recipients do
   alias Kaibosh.Repo
 
   alias Kaibosh.Recipients.Recipient
+  alias Kaibosh.Recipients.Status
 
   def list_recipients do
-    Repo.all(Recipient)
+    Status.recipient_with_status_query()
+    |> Repo.all()
+    |> Enum.map(&Status.put/1)
   end
 
   def get_recipient!(id) do
-    Recipient
+    Status.recipient_with_status_query()
     |> where(id: ^id)
     |> join(:left, [r], c in assoc(r, :contact))
     |> preload(:contact)
     |> Repo.one!()
+    |> Status.put()
   end
 
   def create_recipient(attrs \\ %{}) do
@@ -25,6 +29,7 @@ defmodule Kaibosh.Recipients do
     |> Repo.preload(:contact)
     |> Recipient.changeset(attrs)
     |> Repo.insert()
+    |> Status.put()
   end
 
   def update_recipient(%Recipient{} = recipient, attrs) do
@@ -32,6 +37,7 @@ defmodule Kaibosh.Recipients do
     |> Repo.preload(:contact)
     |> Recipient.changeset(attrs)
     |> Repo.update()
+    |> Status.put()
   end
 
   def delete_recipient(%Recipient{} = recipient) do

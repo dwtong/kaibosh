@@ -1,6 +1,7 @@
 defmodule Kaibosh.Recipients.Recipient do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
   alias Kaibosh.Recipients.Recipient
@@ -30,6 +31,10 @@ defmodule Kaibosh.Recipients.Recipient do
     field :signed_terms_at, :utc_datetime
     field :met_kaibosh_at, :utc_datetime
 
+    field :status, :string, virtual: true
+    field :session_count, :integer, virtual: true
+    field :hold_count, :integer, virtual: true
+
     timestamps()
   end
 
@@ -39,17 +44,5 @@ defmodule Kaibosh.Recipients.Recipient do
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
     |> cast_assoc(:contact)
-  end
-
-  def status(%Recipient{archived_at: archived_at}) when not is_nil(archived_at), do: :archived
-  def status(%Recipient{started_at: nil}), do: :pending
-  def status(%Recipient{signed_terms_at: nil}), do: :pending
-  def status(%Recipient{met_kaibosh_at: nil}), do: :pending
-
-  def status(%Recipient{started_at: started_at}) do
-    cond do
-      DateTime.compare(started_at, DateTime.utc_now()) == :gt -> :pending
-      true -> :active
-    end
   end
 end

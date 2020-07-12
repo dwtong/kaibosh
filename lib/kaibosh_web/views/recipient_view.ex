@@ -14,7 +14,7 @@ defmodule KaiboshWeb.RecipientView do
     %{
       id: recipient.id,
       name: recipient.name,
-      status: "pending",
+      status: recipient.status,
       base_id: recipient.base_id
     }
   end
@@ -22,7 +22,7 @@ defmodule KaiboshWeb.RecipientView do
   def render("recipient_details.json", %{recipient: recipient}) do
     %{
       id: recipient.id,
-      status: "pending",
+      status: recipient.status,
       description: recipient.description,
       has_met_kaibosh: !is_nil(recipient.met_kaibosh_at),
       has_signed_terms: !is_nil(recipient.signed_terms_at),
