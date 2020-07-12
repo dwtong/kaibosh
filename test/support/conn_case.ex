@@ -41,6 +41,22 @@ defmodule KaiboshWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(Kaibosh.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Plug.Conn.put_req_header("accept", "application/json")
+      |> put_auth_token_header()
+      |> put_session_cookie()
+
+    {:ok, conn: conn}
+  end
+
+  defp put_auth_token_header(conn) do
+    token = KaiboshWeb.Authentication.generate_token(1, 5000)
+    Plug.Conn.put_req_header(conn, "authorization", "Bearer #{token}")
+  end
+
+  defp put_session_cookie(conn) do
+    token = KaiboshWeb.Authentication.generate_token(1, 500)
+    Plug.Test.put_req_cookie(conn, "_kaibosh_token", token)
   end
 end

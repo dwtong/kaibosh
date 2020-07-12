@@ -3,9 +3,9 @@ defmodule KaiboshWeb.UserSessionControllerTest do
   alias Kaibosh.Accounts
   alias Kaibosh.Accounts.UserSession
 
-  setup %{conn: conn} do
+  setup do
     {:ok, user} = Accounts.create_user(%{email: "test@test.com", password: "pa55word"})
-    {:ok, user: user, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, user: user}
   end
 
   describe "sign in user" do
