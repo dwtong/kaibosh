@@ -1,13 +1,13 @@
-defmodule Kaibosh.Organisations.AllocationCategory do
+defmodule Kaibosh.Organisations.Category do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.Organisation
+  alias Kaibosh.Organisations.Base
 
-  @allowed_attrs [:name, :unit, :organisation_id]
-  @required_attrs [:name, :unit, :organisation_id]
+  @allowed_attrs [:name, :unit, :base_id]
+  @required_attrs [:name, :unit, :base_id]
 
-  schema "allocation_categories" do
-    belongs_to :organisation, Organisation
+  schema "categories" do
+    belongs_to :base, Base
     field :name, :string
     field :unit, :string
 

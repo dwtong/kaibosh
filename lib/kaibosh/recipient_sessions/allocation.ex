@@ -1,14 +1,14 @@
 defmodule Kaibosh.RecipientSessions.Allocation do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.AllocationCategory
+  alias Kaibosh.Organisations.Category
   alias Kaibosh.RecipientSessions.RecipientSession
 
-  @allowed_attrs [:quantity, :allocation_category_id, :recipient_session_id]
-  @required_attrs [:allocation_category_id, :recipient_session_id]
+  @allowed_attrs [:quantity, :category_id, :recipient_session_id]
+  @required_attrs [:category_id, :recipient_session_id]
 
   schema "allocations" do
-    belongs_to :allocation_category, AllocationCategory
+    belongs_to :category, Category
     belongs_to :recipient_session, RecipientSession
 
     field :quantity, :decimal

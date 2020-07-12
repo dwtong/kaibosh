@@ -9,7 +9,7 @@ defmodule KaiboshWeb.Admin.AllocationControllerTest do
   @update_attrs %{
     quantity: "456.7"
   }
-  @invalid_attrs %{allocation_category_id: nil}
+  @invalid_attrs %{category_id: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -25,14 +25,14 @@ defmodule KaiboshWeb.Admin.AllocationControllerTest do
   describe "create allocation" do
     test "renders allocation when data is valid", %{conn: conn} do
       recipient_session = insert(:recipient_session)
-      allocation_category = insert(:allocation_category)
+      category = insert(:category)
 
       attrs =
         Map.merge(
           @create_attrs,
           %{
             recipient_session_id: recipient_session.id,
-            allocation_category_id: allocation_category.id
+            category_id: category.id
           }
         )
 

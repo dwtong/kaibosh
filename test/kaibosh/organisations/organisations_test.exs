@@ -71,73 +71,69 @@ defmodule Kaibosh.OrganisationsTest do
     end
   end
 
-  describe "allocation_categories" do
-    alias Kaibosh.Organisations.AllocationCategory
+  describe "categories" do
+    alias Kaibosh.Organisations.Category
 
     @valid_attrs %{name: "some name", unit: "some unit"}
     @update_attrs %{name: "some updated name", unit: "some updated unit"}
     @invalid_attrs %{name: nil, unit: nil}
 
-    test "list_allocation_categories/0 returns all allocation_categories" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
-      assert Organisations.list_allocation_categories() == [allocation_category]
+    test "list_categories_for_base/1 returns all categories for base" do
+      category = insert(:category) |> Repo.forget(:base)
+      assert Organisations.list_categories_for_base(category.base_id) == [category]
     end
 
-    test "get_allocation_category!/1 returns the allocation_category with given id" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
-      assert Organisations.get_allocation_category!(allocation_category.id) == allocation_category
+    test "get_category!/1 returns the category with given id" do
+      category = insert(:category) |> Repo.forget(:base)
+      assert Organisations.get_category!(category.id) == category
     end
 
-    test "create_allocation_category/1 with valid data creates a allocation_category" do
-      organisation = insert(:organisation)
-      attrs = Map.put(@valid_attrs, :organisation_id, organisation.id)
+    test "create_category/1 with valid data creates a category" do
+      base = insert(:base)
+      attrs = Map.put(@valid_attrs, :base_id, base.id)
 
-      assert {:ok, %AllocationCategory{} = allocation_category} =
-               Organisations.create_allocation_category(attrs)
+      assert {:ok, %Category{} = category} = Organisations.create_category(attrs)
 
-      assert allocation_category.name == "some name"
-      assert allocation_category.unit == "some unit"
-      assert allocation_category.organisation_id == organisation.id
+      assert category.name == "some name"
+      assert category.unit == "some unit"
+      assert category.base_id == base.id
     end
 
-    test "create_allocation_category/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} =
-               Organisations.create_allocation_category(@invalid_attrs)
+    test "create_category/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Organisations.create_category(@invalid_attrs)
     end
 
-    test "update_allocation_category/2 with valid data updates the allocation_category" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
+    test "update_category/2 with valid data updates the category" do
+      category = insert(:category) |> Repo.forget(:base)
 
-      assert {:ok, %AllocationCategory{} = allocation_category} =
-               Organisations.update_allocation_category(allocation_category, @update_attrs)
+      assert {:ok, %Category{} = category} =
+               Organisations.update_category(category, @update_attrs)
 
-      assert allocation_category.name == "some updated name"
-      assert allocation_category.unit == "some updated unit"
+      assert category.name == "some updated name"
+      assert category.unit == "some updated unit"
     end
 
-    test "update_allocation_category/2 with invalid data returns error changeset" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
+    test "update_category/2 with invalid data returns error changeset" do
+      category = insert(:category) |> Repo.forget(:base)
 
-      assert {:error, %Ecto.Changeset{}} =
-               Organisations.update_allocation_category(allocation_category, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Organisations.update_category(category, @invalid_attrs)
 
-      assert allocation_category == Organisations.get_allocation_category!(allocation_category.id)
+      assert category == Organisations.get_category!(category.id)
     end
 
-    test "delete_allocation_category/1 deletes the allocation_category" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
+    test "delete_category/1 deletes the category" do
+      category = insert(:category) |> Repo.forget(:base)
 
-      assert {:ok, %AllocationCategory{}} =
-               Organisations.delete_allocation_category(allocation_category)
+      assert {:ok, %Category{}} = Organisations.delete_category(category)
 
       assert_raise Ecto.NoResultsError, fn ->
-        Organisations.get_allocation_category!(allocation_category.id)
+        Organisations.get_category!(category.id)
       end
     end
 
-    test "change_allocation_category/1 returns a allocation_category changeset" do
-      allocation_category = insert(:allocation_category) |> Repo.forget(:organisation)
-      assert %Ecto.Changeset{} = Organisations.change_allocation_category(allocation_category)
+    test "change_category/1 returns a category changeset" do
+      category = insert(:category) |> Repo.forget(:base)
+      assert %Ecto.Changeset{} = Organisations.change_category(category)
     end
   end
 

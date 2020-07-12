@@ -9,15 +9,15 @@ defmodule Kaibosh.Factory do
   def allocation_factory do
     %RecipientSessions.Allocation{
       recipient_session: build(:recipient_session),
-      allocation_category: build(:allocation_category)
+      category: build(:category)
     }
   end
 
-  def allocation_category_factory do
-    %Organisations.AllocationCategory{
+  def category_factory do
+    %Organisations.Category{
       name: "apples",
       unit: "boxes",
-      organisation: build(:organisation)
+      base: build(:base)
     }
   end
 
