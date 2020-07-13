@@ -5,11 +5,13 @@ defmodule KaiboshWeb.Admin.CategoryControllerTest do
 
   @create_attrs %{
     name: "some name",
-    unit: "some unit"
+    unit: "some unit",
+    image_name: "image"
   }
   @update_attrs %{
     name: "some updated name",
-    unit: "some updated unit"
+    unit: "some updated unit",
+    image_name: "image updated"
   }
   @invalid_attrs %{name: nil, unit: nil}
 
@@ -19,8 +21,8 @@ defmodule KaiboshWeb.Admin.CategoryControllerTest do
 
   describe "create category" do
     test "renders category when data is valid", %{conn: conn} do
-      organisation = insert(:organisation)
-      attrs = Map.put(@create_attrs, :organisation_id, organisation.id)
+      base = insert(:base)
+      attrs = Map.put(@create_attrs, :base_id, base.id)
 
       conn = post(conn, Routes.category_path(conn, :create), category: attrs)
 

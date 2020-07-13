@@ -42,9 +42,9 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchFoodCategories() {
+  async fetchFoodCategories(baseId: string) {
     if (this.foodCategories.length === 0) {
-      const categories = await FoodCategoryService.get();
+      const categories = await FoodCategoryService.get(baseId);
       this.context.commit("setFoodCategories", categories);
     }
   }

@@ -163,9 +163,7 @@ export default class ShowRecipient extends Vue {
     ]);
 
     if (ActiveRecipientModule.details?.baseId) {
-      await Bases.fetchSessionSlots({
-        baseId: ActiveRecipientModule.details.baseId
-      });
+      await Bases.fetchFoodCategories(ActiveRecipientModule.details.baseId);
     }
 
     this.isLoading = false;

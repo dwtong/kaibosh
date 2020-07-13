@@ -17,7 +17,8 @@ defmodule Kaibosh.Factory do
     %Organisations.Category{
       name: "apples",
       unit: "boxes",
-      base: build(:base)
+      base: build(:base),
+      image_name: "apples"
     }
   end
 

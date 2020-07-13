@@ -3,13 +3,14 @@ defmodule Kaibosh.Organisations.Category do
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
 
-  @allowed_attrs [:name, :unit, :base_id]
-  @required_attrs [:name, :unit, :base_id]
+  @allowed_attrs [:name, :unit, :image_name, :base_id]
+  @required_attrs [:name, :unit, :image_name, :base_id]
 
   schema "categories" do
     belongs_to :base, Base
     field :name, :string
     field :unit, :string
+    field :image_name, :string
 
     timestamps()
   end

@@ -38,10 +38,11 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/bases", BaseController, only: [:index]
-    resources "/recipients", RecipientController, except: [:new, :edit]
+    resources "/bases", BaseController, only: [:index] do
+      resources "/categories", CategoryController, only: [:index]
   end
 
+  end
   scope "/api/admin", KaiboshWeb.Admin do
     pipe_through [:api, :api_auth, :admin]
 
