@@ -4,12 +4,12 @@ defmodule KaiboshWeb.Admin.HoldControllerTest do
   alias Kaibosh.RecipientSessions.Hold
 
   @create_attrs %{
-    ends_at: ~U[2010-04-17 14:00:00Z],
-    starts_at: ~U[2010-04-17 14:00:00Z]
+    ends_at: ~U[2010-04-17 14:00:00.000000Z],
+    starts_at: ~U[2010-04-17 14:00:00.000000Z]
   }
   @update_attrs %{
-    ends_at: ~U[2011-05-18 15:01:01Z],
-    starts_at: ~U[2011-05-18 15:01:01Z]
+    ends_at: ~U[2011-05-18 15:01:01.000000Z],
+    starts_at: ~U[2011-05-18 15:01:01.000000Z]
   }
   @invalid_attrs %{ends_at: nil, starts_at: nil}
 
@@ -35,8 +35,8 @@ defmodule KaiboshWeb.Admin.HoldControllerTest do
 
       assert %{
                "id" => id,
-               "ends_at" => "2010-04-17T14:00:00Z",
-               "starts_at" => "2010-04-17T14:00:00Z"
+               "ends_at" => "2010-04-17T14:00:00.000000Z",
+               "starts_at" => "2010-04-17T14:00:00.000000Z"
              } = json_response(conn, 200)["data"]
     end
 
@@ -57,8 +57,8 @@ defmodule KaiboshWeb.Admin.HoldControllerTest do
 
       assert %{
                "id" => id,
-               "ends_at" => "2011-05-18T15:01:01Z",
-               "starts_at" => "2011-05-18T15:01:01Z"
+               "ends_at" => "2011-05-18T15:01:01.000000Z",
+               "starts_at" => "2011-05-18T15:01:01.000000Z"
              } = json_response(conn, 200)["data"]
     end
 

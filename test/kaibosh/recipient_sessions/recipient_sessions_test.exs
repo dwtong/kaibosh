@@ -75,8 +75,14 @@ defmodule Kaibosh.RecipientSessionsTest do
   describe "holds" do
     alias Kaibosh.RecipientSessions.Hold
 
-    @valid_attrs %{ends_at: ~U[2010-04-17 14:00:00Z], starts_at: ~U[2010-04-17 14:00:00Z]}
-    @update_attrs %{ends_at: ~U[2011-05-18 15:01:01Z], starts_at: ~U[2011-05-18 15:01:01Z]}
+    @valid_attrs %{
+      ends_at: ~U[2010-04-17 14:00:00.000000Z],
+      starts_at: ~U[2010-04-17 14:00:00.000000Z]
+    }
+    @update_attrs %{
+      ends_at: ~U[2011-05-18 15:01:01.000000Z],
+      starts_at: ~U[2011-05-18 15:01:01.000000Z]
+    }
     @invalid_attrs %{ends_at: nil, starts_at: nil}
 
     test "list_holds/0 returns all holds" do
@@ -93,8 +99,8 @@ defmodule Kaibosh.RecipientSessionsTest do
       recipient_session = insert(:recipient_session)
       attrs = Map.put(@valid_attrs, :recipient_session_id, recipient_session.id)
       assert {:ok, %Hold{} = hold} = RecipientSessions.create_hold(attrs)
-      assert hold.ends_at == ~U[2010-04-17 14:00:00Z]
-      assert hold.starts_at == ~U[2010-04-17 14:00:00Z]
+      assert hold.ends_at == ~U[2010-04-17 14:00:00.000000Z]
+      assert hold.starts_at == ~U[2010-04-17 14:00:00.000000Z]
     end
 
     test "create_hold/1 with invalid data returns error changeset" do
@@ -104,8 +110,8 @@ defmodule Kaibosh.RecipientSessionsTest do
     test "update_hold/2 with valid data updates the hold" do
       hold = insert(:hold) |> Repo.forget(:recipient_session)
       assert {:ok, %Hold{} = hold} = RecipientSessions.update_hold(hold, @update_attrs)
-      assert hold.ends_at == ~U[2011-05-18 15:01:01Z]
-      assert hold.starts_at == ~U[2011-05-18 15:01:01Z]
+      assert hold.ends_at == ~U[2011-05-18 15:01:01.000000Z]
+      assert hold.starts_at == ~U[2011-05-18 15:01:01.000000Z]
     end
 
     test "update_hold/2 with invalid data returns error changeset" do

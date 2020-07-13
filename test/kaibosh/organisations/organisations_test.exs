@@ -74,8 +74,8 @@ defmodule Kaibosh.OrganisationsTest do
   describe "categories" do
     alias Kaibosh.Organisations.Category
 
-    @valid_attrs %{name: "some name", unit: "some unit"}
-    @update_attrs %{name: "some updated name", unit: "some updated unit"}
+    @valid_attrs %{name: "bananas", unit: "box", image_name: "bananas"}
+    @update_attrs %{name: "apples", unit: "crate", image_name: "apples"}
     @invalid_attrs %{name: nil, unit: nil}
 
     test "list_categories_for_base/1 returns all categories for base" do
@@ -94,8 +94,8 @@ defmodule Kaibosh.OrganisationsTest do
 
       assert {:ok, %Category{} = category} = Organisations.create_category(attrs)
 
-      assert category.name == "some name"
-      assert category.unit == "some unit"
+      assert category.name == @valid_attrs.name
+      assert category.unit == @valid_attrs.unit
       assert category.base_id == base.id
     end
 
@@ -109,8 +109,8 @@ defmodule Kaibosh.OrganisationsTest do
       assert {:ok, %Category{} = category} =
                Organisations.update_category(category, @update_attrs)
 
-      assert category.name == "some updated name"
-      assert category.unit == "some updated unit"
+      assert category.name == @update_attrs.name
+      assert category.unit == @update_attrs.unit
     end
 
     test "update_category/2 with invalid data returns error changeset" do
