@@ -1,5 +1,5 @@
 defmodule Kaibosh.Recipients.Contact do
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient
 

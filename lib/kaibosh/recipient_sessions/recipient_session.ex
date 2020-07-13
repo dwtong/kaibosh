@@ -1,5 +1,5 @@
 defmodule Kaibosh.RecipientSessions.RecipientSession do
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient
   alias Kaibosh.Sessions.Session

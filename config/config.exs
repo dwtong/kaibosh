@@ -10,6 +10,8 @@ use Mix.Config
 config :kaibosh,
   ecto_repos: [Kaibosh.Repo]
 
+config :kaibosh, Kaibosh.Repo, migration_timestamps: [type: :utc_datetime_usec]
+
 # Configures the endpoint
 config :kaibosh, KaiboshWeb.Endpoint,
   url: [host: "localhost"],

@@ -8,10 +8,10 @@ defmodule Kaibosh.Repo.Migrations.CreateRecipients do
       add :name, :string, null: false
       add :physical_address, :text
       add :description, :text
-      add :started_at, :utc_datetime
-      add :archived_at, :utc_datetime
-      add :signed_terms_at, :utc_datetime
-      add :met_kaibosh_at, :utc_datetime
+      add :started_at, :utc_datetime_usec
+      add :archived_at, :utc_datetime_usec
+      add :signed_terms_at, :utc_datetime_usec
+      add :met_kaibosh_at, :utc_datetime_usec
 
       timestamps()
     end
