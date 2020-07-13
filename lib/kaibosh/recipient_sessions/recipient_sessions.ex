@@ -8,97 +8,29 @@ defmodule Kaibosh.RecipientSessions do
 
   alias Kaibosh.RecipientSessions.RecipientSession
 
-  @doc """
-  Returns the list of recipient_sessions.
-
-  ## Examples
-
-      iex> list_recipient_sessions()
-      [%RecipientSession{}, ...]
-
-  """
-  def list_recipient_sessions do
+  def list_sessions do
     Repo.all(RecipientSession)
   end
 
-  @doc """
-  Gets a single recipient_session.
+  def get_session!(id), do: Repo.get!(RecipientSession, id)
 
-  Raises `Ecto.NoResultsError` if the Recipient session does not exist.
-
-  ## Examples
-
-      iex> get_recipient_session!(123)
-      %RecipientSession{}
-
-      iex> get_recipient_session!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_recipient_session!(id), do: Repo.get!(RecipientSession, id)
-
-  @doc """
-  Creates a recipient_session.
-
-  ## Examples
-
-      iex> create_recipient_session(%{field: value})
-      {:ok, %RecipientSession{}}
-
-      iex> create_recipient_session(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_recipient_session(attrs \\ %{}) do
+  def create_session(attrs \\ %{}) do
     %RecipientSession{}
     |> RecipientSession.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a recipient_session.
-
-  ## Examples
-
-      iex> update_recipient_session(recipient_session, %{field: new_value})
-      {:ok, %RecipientSession{}}
-
-      iex> update_recipient_session(recipient_session, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_recipient_session(%RecipientSession{} = recipient_session, attrs) do
+  def update_session(%RecipientSession{} = recipient_session, attrs) do
     recipient_session
     |> RecipientSession.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a recipient_session.
-
-  ## Examples
-
-      iex> delete_recipient_session(recipient_session)
-      {:ok, %RecipientSession{}}
-
-      iex> delete_recipient_session(recipient_session)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_recipient_session(%RecipientSession{} = recipient_session) do
+  def delete_session(%RecipientSession{} = recipient_session) do
     Repo.delete(recipient_session)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking recipient_session changes.
-
-  ## Examples
-
-      iex> change_recipient_session(recipient_session)
-      %Ecto.Changeset{data: %RecipientSession{}}
-
-  """
-  def change_recipient_session(%RecipientSession{} = recipient_session, attrs \\ %{}) do
+  def change_session(%RecipientSession{} = recipient_session, attrs \\ %{}) do
     RecipientSession.changeset(recipient_session, attrs)
   end
 

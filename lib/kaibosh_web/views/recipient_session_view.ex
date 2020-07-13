@@ -1,13 +1,13 @@
-defmodule KaiboshWeb.Admin.RecipientSessionView do
+defmodule KaiboshWeb.RecipientSessionView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.Admin.RecipientSessionView
+  alias KaiboshWeb.RecipientSessionView
 
   def render("index.json", %{recipient_sessions: recipient_sessions}) do
-    %{data: render_many(recipient_sessions, RecipientSessionView, "recipient_session.json")}
+    render_many(recipient_sessions, RecipientSessionView, "recipient_session.json")
   end
 
   def render("show.json", %{recipient_session: recipient_session}) do
-    %{data: render_one(recipient_session, RecipientSessionView, "recipient_session.json")}
+    render_one(recipient_session, RecipientSessionView, "recipient_session.json")
   end
 
   def render("recipient_session.json", %{recipient_session: recipient_session}) do

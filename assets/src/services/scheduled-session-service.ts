@@ -1,12 +1,10 @@
 import { get, post, put, destroy } from "./api-service";
 
-const resource = "sessions/scheduled";
-
 export default {
-  all: () => get(resource),
-  getForRecipient: (id: string) => get(`${resource}`, { recipientId: id }),
-  getForSession: (id: string) => get(`${resource}`, { sessionSlotId: id }),
-  create: (params: object) => post(resource, params),
-  update: (id: string, params: object) => put(`${resource}/${id}`, params),
-  destroy: (id: string) => destroy(`${resource}/${id}`)
+  // all: () => get(resource),
+  // getForSession: (id: string) => get(`${resource}`, { sessionSlotId: id }),
+  getForRecipient: (recipientId: string) => get(`recipients/${recipientId}/sessions`),
+  create: (recipientId: string, params: object) => post(`recipients/${recipientId}/sessions`, params),
+  update: (recipientId: string, id: string, params: object) => put(`recipients/${recipientId}/sessions/${id}`, params),
+  destroy: (recipientId: string, id: string, params: object) => destroy(`recipients/${recipientId}/sessions/${id}`)
 };
