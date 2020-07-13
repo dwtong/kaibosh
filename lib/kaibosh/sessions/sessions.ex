@@ -8,8 +8,10 @@ defmodule Kaibosh.Sessions do
 
   alias Kaibosh.Sessions.Session
 
-  def list_sessions do
-    Repo.all(Session)
+  def list_sessions_for_base(base_id) do
+    Session
+    |> where(base_id: ^base_id)
+    |> Repo.all()
   end
 
   def get_session!(id), do: Repo.get!(Session, id)

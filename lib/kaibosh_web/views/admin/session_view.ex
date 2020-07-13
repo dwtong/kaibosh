@@ -11,6 +11,6 @@ defmodule KaiboshWeb.Admin.SessionView do
   end
 
   def render("session.json", %{session: session}) do
-    %{id: session.id, day: session.day, time_in_seconds: session.time_in_seconds}
+    %{id: session.id, day: session.day, time: session.time}
   end
 end

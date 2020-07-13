@@ -3,14 +3,14 @@ defmodule Kaibosh.Sessions.Session do
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
 
-  @allowed_attrs [:day, :time_in_seconds, :base_id]
-  @required_attrs [:day, :time_in_seconds, :base_id]
+  @allowed_attrs [:day, :time, :base_id]
+  @required_attrs [:day, :time, :base_id]
 
   schema "sessions" do
     belongs_to :base, Base
 
     field :day, :string
-    field :time_in_seconds, :integer
+    field :time, :time
 
     timestamps()
   end

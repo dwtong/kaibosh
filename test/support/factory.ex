@@ -68,7 +68,7 @@ defmodule Kaibosh.Factory do
 
   def session_factory do
     %Sessions.Session{
-      time_in_seconds: 10_000,
+      time: ~T[10:00:00],
       day: "monday",
       base: build(:base)
     }
