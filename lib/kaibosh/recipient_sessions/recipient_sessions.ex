@@ -11,14 +11,14 @@ defmodule Kaibosh.RecipientSessions do
 
   def list_sessions do
     RecipientSession
-    |> preload([:holds, :allocations])
+    |> preload([:allocations, :holds, :session])
     |> Repo.all()
   end
 
   def get_session!(id) do
     RecipientSession
     |> where(id: ^id)
-    |> preload([:holds, :allocations])
+    |> preload([:allocations, :holds, :session])
     |> Repo.one!()
   end
 
@@ -27,14 +27,14 @@ defmodule Kaibosh.RecipientSessions do
     |> RecipientSession.changeset(attrs)
     |> Repo.insert()
     |> case do
-      {:ok, session} -> {:ok, Repo.preload(session, [:allocations, :holds])}
+      {:ok, session} -> {:ok, Repo.preload(session, [:allocations, :holds, :session])}
       error -> error
     end
   end
 
   def update_session(%RecipientSession{} = recipient_session, attrs) do
     recipient_session
-    |> Repo.preload([:allocations, :holds])
+    |> Repo.preload([:allocations, :holds, :session])
     |> RecipientSession.changeset(attrs)
     |> Repo.update()
   end

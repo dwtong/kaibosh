@@ -121,13 +121,14 @@ defmodule Kaibosh.RecipientSessionsTest do
     test "update_session/2 with invalid data returns error changeset" do
       recipient_session =
         insert(:recipient_session)
-        |> Repo.forget([:recipient, :session])
+        |> Repo.forget([:recipient])
         |> Repo.preload([:allocations, :holds])
 
       assert {:error, %Ecto.Changeset{}} =
                RecipientSessions.update_session(recipient_session, @invalid_attrs)
 
-      assert recipient_session == RecipientSessions.get_session!(recipient_session.id)
+      assert recipient_session.session_id ==
+               RecipientSessions.get_session!(recipient_session.id).session_id
     end
 
     test "delete_session/1 deletes the recipient_session and associations" do
