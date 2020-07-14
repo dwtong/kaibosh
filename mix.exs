@@ -5,12 +5,22 @@ defmodule Kaibosh.MixProject do
     [
       app: :kaibosh,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.10",
+      elixirc_options: [warnings_as_errors: true],
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: dialyzer()
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_core_path: "priv/plts",
+      plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+      plt_add_apps: [:ex_unit]
     ]
   end
 
@@ -48,6 +58,9 @@ defmodule Kaibosh.MixProject do
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.10.3", only: [:dev, :test], runtime: false},
 
       # Dev
       {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},

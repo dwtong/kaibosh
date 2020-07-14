@@ -1,4 +1,5 @@
 defmodule Kaibosh.Recipients.Contact do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient

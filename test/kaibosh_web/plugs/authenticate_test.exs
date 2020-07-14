@@ -1,7 +1,7 @@
 defmodule KaiboshWeb.Plugs.AuthenticateTest do
   use KaiboshWeb.ConnCase
-  alias KaiboshWeb.Plugs.Authenticate
   alias KaiboshWeb.Authentication
+  alias KaiboshWeb.Plugs.Authenticate
 
   setup do
     session = insert(:user_session)

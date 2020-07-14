@@ -17,6 +17,8 @@ defmodule KaiboshWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -26,8 +28,8 @@ defmodule KaiboshWeb.ConnCase do
       import Kaibosh.Factory
       import KaiboshWeb.ConnCase
 
-      alias KaiboshWeb.Router.Helpers, as: Routes
       alias Kaibosh.Repo
+      alias KaiboshWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint KaiboshWeb.Endpoint
@@ -35,10 +37,10 @@ defmodule KaiboshWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Kaibosh.Repo)
+    :ok = Sandbox.checkout(Kaibosh.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Kaibosh.Repo, {:shared, self()})
+      Sandbox.mode(Kaibosh.Repo, {:shared, self()})
     end
 
     conn =

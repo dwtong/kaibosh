@@ -1,4 +1,8 @@
 defmodule Kaibosh.DateHelper do
+  @moduledoc """
+  Assorted date helpers to use in unit tests.
+  """
+
   @one_day 60 * 60 * 24
   @now DateTime.utc_now()
 

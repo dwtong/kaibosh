@@ -1,4 +1,5 @@
 defmodule Kaibosh.RecipientSessions.Allocation do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.AllocationCategory

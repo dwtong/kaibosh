@@ -1,4 +1,5 @@
 defmodule Kaibosh.Organisations.AllocationCategory do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Organisation

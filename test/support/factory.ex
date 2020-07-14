@@ -1,4 +1,9 @@
 defmodule Kaibosh.Factory do
+  @moduledoc """
+  The ex_machina factory.
+  Defines factories for test fixture generation.
+  """
+
   use ExMachina.Ecto, repo: Kaibosh.Repo
   alias Kaibosh.Accounts
   alias Kaibosh.Organisations
