@@ -6,8 +6,8 @@ defmodule Kaibosh.Organisations do
   import Ecto.Query, warn: false
   alias Kaibosh.Repo
 
-  alias Kaibosh.Organisations.Category
   alias Kaibosh.Organisations.Base
+  alias Kaibosh.Organisations.Category
   alias Kaibosh.Organisations.Organisation
   alias Kaibosh.Organisations.Staff
 
