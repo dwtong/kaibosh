@@ -7,7 +7,7 @@ defmodule KaiboshWeb.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"}
   end
 
   pipeline :api do
@@ -16,10 +16,6 @@ defmodule KaiboshWeb.Router do
 
   pipeline :api_auth do
     plug Authenticate
-  end
-
-  pipeline :admin do
-    # TODO: check user is admin
   end
 
   # scope "/", KaiboshWeb do
@@ -50,7 +46,7 @@ defmodule KaiboshWeb.Router do
   end
 
   scope "/api/admin", KaiboshWeb.Admin do
-    pipe_through [:api, :api_auth, :admin]
+    pipe_through [:api, :api_auth]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]
     resources "/categories", CategoryController, except: [:new, :edit]

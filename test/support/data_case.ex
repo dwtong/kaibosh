@@ -16,6 +16,8 @@ defmodule Kaibosh.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       alias Kaibosh.Repo
@@ -30,10 +32,10 @@ defmodule Kaibosh.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Kaibosh.Repo)
+    :ok = Sandbox.checkout(Kaibosh.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Kaibosh.Repo, {:shared, self()})
+      Sandbox.mode(Kaibosh.Repo, {:shared, self()})
     end
 
     :ok

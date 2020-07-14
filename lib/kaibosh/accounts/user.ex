@@ -1,8 +1,9 @@
 defmodule Kaibosh.Accounts.User do
+  @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
-  alias Kaibosh.Accounts.UserSession
   alias Kaibosh.Accounts.User
+  alias Kaibosh.Accounts.UserSession
 
   @allowed_attrs [:email, :password]
   @required_attrs [:email, :password]

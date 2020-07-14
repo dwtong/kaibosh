@@ -14,6 +14,7 @@ defmodule KaiboshWeb.ChannelCase do
   by setting `use KaiboshWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
+  alias Ecto.Adapters.SQL.Sandbox
 
   use ExUnit.CaseTemplate
 
@@ -29,10 +30,10 @@ defmodule KaiboshWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Kaibosh.Repo)
+    :ok = Sandbox.checkout(Kaibosh.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Kaibosh.Repo, {:shared, self()})
+      Sandbox.mode(Kaibosh.Repo, {:shared, self()})
     end
 
     :ok

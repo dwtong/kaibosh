@@ -1,7 +1,9 @@
 defmodule Kaibosh.Sessions.Session do
+  @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
+  alias Kaibosh.Sessions.Session
 
   @allowed_attrs [:day, :time, :base_id]
   @required_attrs [:day, :time, :base_id]
@@ -16,8 +18,8 @@ defmodule Kaibosh.Sessions.Session do
   end
 
   @doc false
-  def changeset(%__MODULE_{} = record, attrs) do
-    record
+  def changeset(%Session{} = session, attrs) do
+    session
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
   end

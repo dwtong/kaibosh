@@ -1,4 +1,13 @@
 defmodule KaiboshWeb.Plugs.Authenticate do
+  @moduledoc """
+  Plug for checking and refreshing user session.
+
+  Used in association with the authentication module.
+
+  The plug handles the logic around expiring tokens
+  and refreshing tokens, whereas the authentication
+  module is used for setting and generating tokens.
+  """
   import Plug.Conn
   require Logger
   alias Kaibosh.Accounts
