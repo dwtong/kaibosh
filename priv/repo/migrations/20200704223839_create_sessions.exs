@@ -4,7 +4,7 @@ defmodule Kaibosh.Repo.Migrations.CreateSessions do
   def change do
     create table(:sessions) do
       add :day, :string, null: false
-      add :time_in_seconds, :integer, null: false
+      add :time, :time, null: false
       add :base_id, references(:bases, on_delete: :nothing), null: false
 
       timestamps()

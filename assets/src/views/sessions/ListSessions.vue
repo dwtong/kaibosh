@@ -87,10 +87,7 @@ export default class ListSessions extends Vue {
 
   async fetchSessions() {
     if (this.baseId) {
-      await Bases.fetchSessionSlots({
-        baseId: this.baseId,
-        date: date.getISODate(this.weekOfDate)
-      });
+      await Bases.fetchSessionSlots(this.baseId);
     }
   }
 

@@ -1,6 +1,6 @@
 defmodule Kaibosh.Recipients.Recipient do
   @moduledoc false
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
@@ -26,10 +26,10 @@ defmodule Kaibosh.Recipients.Recipient do
     field :name, :string, null: false
     field :physical_address, :string
     field :description, :string
-    field :started_at, :utc_datetime
-    field :archived_at, :utc_datetime
-    field :signed_terms_at, :utc_datetime
-    field :met_kaibosh_at, :utc_datetime
+    field :started_at, :utc_datetime_usec
+    field :archived_at, :utc_datetime_usec
+    field :signed_terms_at, :utc_datetime_usec
+    field :met_kaibosh_at, :utc_datetime_usec
 
     field :status, :string, virtual: true
     field :session_count, :integer, virtual: true

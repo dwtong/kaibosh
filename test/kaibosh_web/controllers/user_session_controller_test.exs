@@ -5,7 +5,8 @@ defmodule KaiboshWeb.UserSessionControllerTest do
 
   setup do
     {:ok, user} = Accounts.create_user(%{email: "test@test.com", password: "pa55word"})
-    {:ok, user: user}
+    conn = build_conn()
+    {:ok, user: user, conn: conn}
   end
 
   describe "sign in user" do

@@ -34,21 +34,25 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/bases", BaseController, only: [:index]
-    resources "/recipients", RecipientController, except: [:new, :edit]
+    resources "/bases", BaseController, only: [:index] do
+      resources "/categories", CategoryController, only: [:index]
+      resources "/sessions", SessionController, only: [:index]
+    end
+
+    resources "/recipients", RecipientController, except: [:new, :edit] do
+      resources "/sessions", RecipientSessionController, except: [:new, :edit]
+      resources "/holds", HoldController, only: [:create, :delete]
+    end
   end
 
   scope "/api/admin", KaiboshWeb.Admin do
     pipe_through [:api, :api_auth]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]
-    resources "/allocation_categories", AllocationCategoryController, except: [:new, :edit]
+    resources "/categories", CategoryController, except: [:new, :edit]
     resources "/bases", BaseController, except: [:new, :edit]
     resources "/staff", StaffController, except: [:new, :edit]
-    resources "/sessions", SessionController, except: [:new, :edit]
-    resources "/allocations", AllocationController, except: [:new, :edit]
-    resources "/recipient_sessions", RecipientSessionController, except: [:new, :edit]
-    resources "/holds", HoldController, except: [:new, :edit]
+    resources "/sessions", SessionController, except: [:new, :edit, :index]
   end
 
   # Enables LiveDashboard only for development

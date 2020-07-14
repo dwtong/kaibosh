@@ -42,9 +42,9 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchFoodCategories() {
+  async fetchFoodCategories(baseId: string) {
     if (this.foodCategories.length === 0) {
-      const categories = await FoodCategoryService.get();
+      const categories = await FoodCategoryService.get(baseId);
       this.context.commit("setFoodCategories", categories);
     }
   }
@@ -68,8 +68,8 @@ class Bases extends VuexModule {
   }
 
   @Action
-  async fetchSessionSlots({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
-    const bases = await SessionSlotService.getForBase(baseId, date);
+  async fetchSessionSlots(baseId: string) {
+    const bases = await SessionSlotService.getForBase(baseId);
     this.context.commit("setSessionSlots", bases);
   }
 }

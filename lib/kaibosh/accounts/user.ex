@@ -1,6 +1,6 @@
 defmodule Kaibosh.Accounts.User do
   @moduledoc false
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Accounts.User
   alias Kaibosh.Accounts.UserSession

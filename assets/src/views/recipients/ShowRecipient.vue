@@ -158,14 +158,12 @@ export default class ShowRecipient extends Vue {
     await Promise.all([
       ActiveRecipientModule.fetchRecipient(this.id),
       RecipientSessions.fetchSessions(this.id),
-      Bases.fetchBases(),
-      Bases.fetchFoodCategories()
+      Bases.fetchBases()
     ]);
 
     if (ActiveRecipientModule.details?.baseId) {
-      await Bases.fetchSessionSlots({
-        baseId: ActiveRecipientModule.details.baseId
-      });
+      await Bases.fetchFoodCategories(ActiveRecipientModule.details.baseId);
+      await Bases.fetchSessionSlots(ActiveRecipientModule.details.baseId);
     }
 
     this.isLoading = false;

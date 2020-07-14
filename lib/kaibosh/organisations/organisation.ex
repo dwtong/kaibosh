@@ -1,6 +1,6 @@
 defmodule Kaibosh.Organisations.Organisation do
   @moduledoc false
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
 
   @allowed_attrs [:name]

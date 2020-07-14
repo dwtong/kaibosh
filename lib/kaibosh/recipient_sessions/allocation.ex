@@ -1,15 +1,16 @@
 defmodule Kaibosh.RecipientSessions.Allocation do
   @moduledoc false
-  use Ecto.Schema
+  use Kaibosh.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.AllocationCategory
+  alias Kaibosh.Organisations.Category
+  alias Kaibosh.RecipientSessions.Allocation
   alias Kaibosh.RecipientSessions.RecipientSession
 
-  @allowed_attrs [:quantity, :allocation_category_id, :recipient_session_id]
-  @required_attrs [:allocation_category_id, :recipient_session_id]
+  @allowed_attrs [:id, :quantity, :category_id]
+  @required_attrs [:category_id]
 
   schema "allocations" do
-    belongs_to :allocation_category, AllocationCategory
+    belongs_to :category, Category
     belongs_to :recipient_session, RecipientSession
 
     field :quantity, :decimal
@@ -18,8 +19,8 @@ defmodule Kaibosh.RecipientSessions.Allocation do
   end
 
   @doc false
-  def changeset(%__MODULE__{} = record, attrs) do
-    record
+  def changeset(%Allocation{} = allocation, attrs) do
+    allocation
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
   end

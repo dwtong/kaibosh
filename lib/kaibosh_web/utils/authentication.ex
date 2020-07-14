@@ -40,9 +40,11 @@ defmodule KaiboshWeb.Authentication do
   end
 
   def set_session_cookie(conn, decoded_token, max_age \\ @one_week) do
+    cookie_opts = [http_only: true, max_age: max_age, extra: "SameSite=Strict"]
+
     decoded_token
     |> generate_token(max_age)
-    |> (&put_resp_cookie(conn, "_kaibosh_token", &1, http_only: true, max_age: max_age)).()
+    |> (&put_resp_cookie(conn, "_kaibosh_token", &1, cookie_opts)).()
   end
 
   def fetch_session_cookie_token(conn) do

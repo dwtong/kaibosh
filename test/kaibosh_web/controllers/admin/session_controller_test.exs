@@ -5,23 +5,16 @@ defmodule KaiboshWeb.Admin.SessionControllerTest do
 
   @create_attrs %{
     day: "some day",
-    time_in_seconds: 42
+    time: ~T[10:00:00]
   }
   @update_attrs %{
     day: "some updated day",
-    time_in_seconds: 43
+    time: ~T[16:00:00]
   }
-  @invalid_attrs %{day: nil, time_in_seconds: nil}
+  @invalid_attrs %{day: nil, time: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  describe "index" do
-    test "lists all sessions", %{conn: conn} do
-      conn = get(conn, Routes.session_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
-    end
   end
 
   describe "create session" do
@@ -35,8 +28,7 @@ defmodule KaiboshWeb.Admin.SessionControllerTest do
 
       assert %{
                "id" => id,
-               "day" => "some day",
-               "time_in_seconds" => 42
+               "day" => "some day"
              } = json_response(conn, 200)["data"]
     end
 
@@ -57,8 +49,7 @@ defmodule KaiboshWeb.Admin.SessionControllerTest do
 
       assert %{
                "id" => id,
-               "day" => "some updated day",
-               "time_in_seconds" => 43
+               "day" => "some updated day"
              } = json_response(conn, 200)["data"]
     end
 

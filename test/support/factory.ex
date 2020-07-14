@@ -14,15 +14,16 @@ defmodule Kaibosh.Factory do
   def allocation_factory do
     %RecipientSessions.Allocation{
       recipient_session: build(:recipient_session),
-      allocation_category: build(:allocation_category)
+      category: build(:category)
     }
   end
 
-  def allocation_category_factory do
-    %Organisations.AllocationCategory{
+  def category_factory do
+    %Organisations.Category{
       name: "apples",
       unit: "boxes",
-      organisation: build(:organisation)
+      base: build(:base),
+      image_name: "apples"
     }
   end
 
@@ -72,7 +73,7 @@ defmodule Kaibosh.Factory do
 
   def session_factory do
     %Sessions.Session{
-      time_in_seconds: 10_000,
+      time: ~T[10:00:00],
       day: "monday",
       base: build(:base)
     }
