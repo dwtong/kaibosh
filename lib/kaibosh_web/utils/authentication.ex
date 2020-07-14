@@ -1,6 +1,15 @@
 defmodule KaiboshWeb.Authentication do
-  alias KaiboshWeb.Endpoint
+  @moduledoc """
+  A collection of functions for generating and fetching
+  authentication tokens and cookies.
+
+  Tokens live in authorization header and are short-lived,
+  cookies are httponly and allow for refreshing tokens.
+
+  Both token and cookie must be present.
+  """
   alias Kaibosh.Accounts
+  alias KaiboshWeb.Endpoint
   import Plug.Conn
 
   @salt "access token"

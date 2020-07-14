@@ -41,7 +41,8 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert recipient = json_response(conn, 200)
 
       assert Map.keys(recipient) ==
-               ~w(base_id contact description has_met_kaibosh has_signed_terms id name physical_address started_at status)
+               ~w(base_id contact description has_met_kaibosh
+                  has_signed_terms id name physical_address started_at status)
 
       assert Map.keys(recipient["contact"]) == ~w(email name phone_landline phone_mobile)
 

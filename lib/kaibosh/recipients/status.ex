@@ -1,4 +1,10 @@
 defmodule Kaibosh.Recipients.Status do
+  @moduledoc """
+  Generates a status for a recipient.
+
+  The recipient status is based on both the recipient
+  schema and on any associated sessions and holds.
+  """
   alias Kaibosh.Recipients.Recipient
   import Ecto.Query
 
