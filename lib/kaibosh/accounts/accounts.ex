@@ -6,8 +6,8 @@ defmodule Kaibosh.Accounts do
   import Ecto.Query, warn: false
   alias Kaibosh.Repo
 
-  alias Kaibosh.Accounts.UserSession
   alias Kaibosh.Accounts.User
+  alias Kaibosh.Accounts.UserSession
 
   def list_users do
     Repo.all(User)
@@ -42,7 +42,7 @@ defmodule Kaibosh.Accounts do
       |> UserSession.changeset(%{user_id: id})
       |> Repo.insert()
     else
-      nil -> {:error, :invalid_user}
+      _error -> {:error, :invalid_user}
     end
   end
 

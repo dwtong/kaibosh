@@ -1,9 +1,10 @@
 defmodule Kaibosh.Accounts.UserSession do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Ecto.UUID
-  alias Kaibosh.Accounts.UserSession
   alias Kaibosh.Accounts.User
+  alias Kaibosh.Accounts.UserSession
 
   @allowed_attrs [:user_id]
   @required_attrs [:user_id]

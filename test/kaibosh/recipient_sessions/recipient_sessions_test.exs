@@ -2,116 +2,173 @@ defmodule Kaibosh.RecipientSessionsTest do
   use Kaibosh.DataCase
 
   alias Kaibosh.RecipientSessions
+  alias Kaibosh.RecipientSessions.Allocation
+  alias Kaibosh.RecipientSessions.Hold
+  alias Kaibosh.RecipientSessions.RecipientSession
 
-  describe "recipient_sessions" do
-    alias Kaibosh.RecipientSessions.RecipientSession
+  @invalid_attrs %{session_id: nil}
 
-    @invalid_attrs %{session_id: nil}
+  describe "getting and listing recipient sessions" do
+    setup [:create_recipient_session_with_associations]
 
-    test "list_recipient_sessions/0 returns all recipient_sessions" do
-      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
-      assert RecipientSessions.list_recipient_sessions() == [recipient_session]
+    test "list_sessions/0 returns all recipient sessions with associations" do
+      assert [%RecipientSession{} = session] = RecipientSessions.list_sessions()
+      assert length(session.allocations) == 1
+      assert length(session.holds) == 1
     end
 
-    test "get_recipient_session!/1 returns the recipient_session with given id" do
-      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
-      assert RecipientSessions.get_recipient_session!(recipient_session.id) == recipient_session
+    test "get_session!/1 returns the session with given id", %{recipient_session: %{id: id}} do
+      assert %RecipientSession{} = session = RecipientSessions.get_session!(id)
+      assert length(session.allocations) == 1
+      assert length(session.holds) == 1
     end
+  end
 
-    test "create_recipient_session/1 with valid data creates a recipient_session" do
-      session = insert(:session)
-      recipient = insert(:recipient)
+  describe "creating recipient sessions and allocations" do
+    setup [:create_session, :create_recipient]
+
+    test "create_session/1 with valid data creates session", %{
+      session: session,
+      recipient: recipient
+    } do
       attrs = %{session_id: session.id, recipient_id: recipient.id}
 
       assert {:ok, %RecipientSession{} = recipient_session} =
-               RecipientSessions.create_recipient_session(attrs)
+               RecipientSessions.create_session(attrs)
 
       assert recipient_session.session_id == session.id
       assert recipient_session.recipient_id == recipient.id
     end
 
-    test "create_recipient_session/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} =
-               RecipientSessions.create_recipient_session(@invalid_attrs)
+    test "create_session/1 with allocations creates allocations and recipient session" do
+      session = insert(:session)
+      recipient = insert(:recipient)
+      category = insert(:category)
+      a1 = %{category_id: category.id, quantity: 0.5}
+      a2 = %{category_id: category.id, quantity: 2.0}
+      attrs = %{session_id: session.id, recipient_id: recipient.id, allocations: [a1, a2]}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.create_session(attrs)
+
+      assert length(allocations) == 2
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2.quantity)))
     end
 
-    test "update_recipient_session/2 with valid data updates the recipient_session" do
+    test "create_session/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = RecipientSessions.create_session(@invalid_attrs)
+    end
+  end
+
+  describe "modifying recipient sessions and allocations" do
+    test "update_session/2 with valid data updates the recipient_session" do
       recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
       new_session = insert(:session)
       attrs = %{session_id: new_session.id}
 
       assert {:ok, %RecipientSession{} = recipient_session} =
-               RecipientSessions.update_recipient_session(recipient_session, attrs)
+               RecipientSessions.update_session(recipient_session, attrs)
 
       assert recipient_session.session_id == new_session.id
     end
 
-    test "update_recipient_session/2 with invalid data returns error changeset" do
+    test "update_session/2 creates new allocations" do
       recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      category = insert(:category)
+      a1 = %{category_id: category.id, quantity: 0.5}
+      a2 = %{category_id: category.id, quantity: 2.0}
+      attrs = %{allocations: [a1, a2]}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.update_session(recipient_session, attrs)
+
+      assert length(allocations) == 2
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2.quantity)))
+    end
+
+    test "update_session/2 updates existing allocations that have been modified" do
+      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      category = insert(:category)
+      a1 = insert(:allocation, category: category, recipient_session: recipient_session)
+      a1_updated = %{id: a1.id, category_id: category.id, quantity: 5.5}
+      attrs = %{allocations: [a1_updated]}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.update_session(recipient_session, attrs)
+
+      assert length(allocations) == 1
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1_updated.quantity)))
+    end
+
+    test "update_session/2 deletes existing allocations when they are not provided" do
+      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      category = insert(:category)
+      insert(:allocation, category: category, recipient_session: recipient_session)
+      a2 = insert(:allocation, category: category, recipient_session: recipient_session)
+
+      a2_keep = %{id: a2.id, category_id: category.id, quantity: 2.0}
+      attrs = %{allocations: [a2_keep]}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.update_session(recipient_session, attrs)
+
+      assert length(allocations) == 1
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2_keep.quantity)))
+    end
+
+    test "update_session/2 with invalid data returns error changeset" do
+      recipient_session =
+        insert(:recipient_session)
+        |> Repo.forget([:recipient])
+        |> Repo.preload([:allocations, :holds])
 
       assert {:error, %Ecto.Changeset{}} =
-               RecipientSessions.update_recipient_session(recipient_session, @invalid_attrs)
+               RecipientSessions.update_session(recipient_session, @invalid_attrs)
 
-      assert recipient_session == RecipientSessions.get_recipient_session!(recipient_session.id)
+      assert recipient_session.session_id ==
+               RecipientSessions.get_session!(recipient_session.id).session_id
     end
 
-    test "delete_recipient_session/1 deletes the recipient_session" do
+    test "delete_session/1 deletes the recipient_session and associations" do
       recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      allocation = insert(:allocation, recipient_session: recipient_session)
+      hold = insert(:hold, recipient_session: recipient_session)
 
-      assert {:ok, %RecipientSession{}} =
-               RecipientSessions.delete_recipient_session(recipient_session)
+      assert {:ok, %RecipientSession{}} = RecipientSessions.delete_session(recipient_session)
 
       assert_raise Ecto.NoResultsError, fn ->
-        RecipientSessions.get_recipient_session!(recipient_session.id)
+        RecipientSessions.get_session!(recipient_session.id)
       end
+
+      refute Repo.get(Allocation, allocation.id)
+      refute Repo.get(Hold, hold.id)
     end
 
-    test "change_recipient_session/1 returns a recipient_session changeset" do
+    test "change_session/1 returns a recipient_session changeset" do
       recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
-      assert %Ecto.Changeset{} = RecipientSessions.change_recipient_session(recipient_session)
+      assert %Ecto.Changeset{} = RecipientSessions.change_session(recipient_session)
     end
   end
 
-  describe "holds" do
-    alias Kaibosh.RecipientSessions.Hold
-
-    @valid_attrs %{ends_at: ~U[2010-04-17 14:00:00Z], starts_at: ~U[2010-04-17 14:00:00Z]}
-    @update_attrs %{ends_at: ~U[2011-05-18 15:01:01Z], starts_at: ~U[2011-05-18 15:01:01Z]}
+  describe "creating and deleting session holds" do
+    @valid_attrs %{
+      ends_at: ~U[2010-04-17 14:00:00.000000Z],
+      starts_at: ~U[2010-04-17 14:00:00.000000Z]
+    }
     @invalid_attrs %{ends_at: nil, starts_at: nil}
-
-    test "list_holds/0 returns all holds" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
-      assert RecipientSessions.list_holds() == [hold]
-    end
-
-    test "get_hold!/1 returns the hold with given id" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
-      assert RecipientSessions.get_hold!(hold.id) == hold
-    end
 
     test "create_hold/1 with valid data creates a hold" do
       recipient_session = insert(:recipient_session)
       attrs = Map.put(@valid_attrs, :recipient_session_id, recipient_session.id)
       assert {:ok, %Hold{} = hold} = RecipientSessions.create_hold(attrs)
-      assert hold.ends_at == ~U[2010-04-17 14:00:00Z]
-      assert hold.starts_at == ~U[2010-04-17 14:00:00Z]
+      assert hold.ends_at == ~U[2010-04-17 14:00:00.000000Z]
+      assert hold.starts_at == ~U[2010-04-17 14:00:00.000000Z]
     end
 
     test "create_hold/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = RecipientSessions.create_hold(@invalid_attrs)
-    end
-
-    test "update_hold/2 with valid data updates the hold" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
-      assert {:ok, %Hold{} = hold} = RecipientSessions.update_hold(hold, @update_attrs)
-      assert hold.ends_at == ~U[2011-05-18 15:01:01Z]
-      assert hold.starts_at == ~U[2011-05-18 15:01:01Z]
-    end
-
-    test "update_hold/2 with invalid data returns error changeset" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
-      assert {:error, %Ecto.Changeset{}} = RecipientSessions.update_hold(hold, @invalid_attrs)
-      assert hold == RecipientSessions.get_hold!(hold.id)
     end
 
     test "delete_hold/1 deletes the hold" do
@@ -119,77 +176,30 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert {:ok, %Hold{}} = RecipientSessions.delete_hold(hold)
       assert_raise Ecto.NoResultsError, fn -> RecipientSessions.get_hold!(hold.id) end
     end
-
-    test "change_hold/1 returns a hold changeset" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
-      assert %Ecto.Changeset{} = RecipientSessions.change_hold(hold)
-    end
   end
 
-  describe "allocations" do
-    alias Kaibosh.RecipientSessions.Allocation
+  defp create_session(_) do
+    %{session: insert(:session)}
+  end
 
-    @valid_attrs %{quantity: "120.5"}
-    @update_attrs %{quantity: "456.7"}
-    @invalid_attrs %{recipient_session_id: nil}
+  defp create_recipient(_) do
+    %{recipient: insert(:recipient)}
+  end
 
-    test "list_allocations/0 returns all allocations" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-      assert RecipientSessions.list_allocations() == [allocation]
-    end
+  defp create_recipient_session_with_associations(_) do
+    recipient_session =
+      insert(:recipient_session)
+      |> Repo.forget([:recipient, :session])
 
-    test "get_allocation!/1 returns the allocation with given id" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-      assert RecipientSessions.get_allocation!(allocation.id) == allocation
-    end
+    insert(:hold, recipient_session: recipient_session)
+    |> Repo.forget(:recipient_session)
 
-    test "create_allocation/1 with valid data creates a allocation" do
-      allocation_category = insert(:allocation_category, id: 999)
-      recipient_session = insert(:recipient_session, id: 999)
+    insert(:allocation, recipient_session: recipient_session)
+    |> Repo.forget(:recipient_session)
 
-      attrs =
-        Map.merge(@valid_attrs, %{
-          allocation_category_id: allocation_category.id,
-          recipient_session_id: recipient_session.id
-        })
+    expected_session =
+      Repo.get(RecipientSession, recipient_session.id) |> Repo.preload([:allocations, :holds])
 
-      assert {:ok, %Allocation{} = allocation} = RecipientSessions.create_allocation(attrs)
-      assert allocation.quantity == Decimal.new("120.5")
-      assert allocation.allocation_category_id == allocation_category.id
-      assert allocation.recipient_session_id == recipient_session.id
-    end
-
-    test "create_allocation/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = RecipientSessions.create_allocation(@invalid_attrs)
-    end
-
-    test "update_allocation/2 with valid data updates the allocation" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-
-      assert {:ok, %Allocation{} = allocation} =
-               RecipientSessions.update_allocation(allocation, @update_attrs)
-
-      assert allocation.quantity == Decimal.new("456.7")
-    end
-
-    test "update_allocation/2 with invalid data returns error changeset" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-
-      assert {:error, %Ecto.Changeset{}} =
-               RecipientSessions.update_allocation(allocation, @invalid_attrs)
-
-      assert allocation == RecipientSessions.get_allocation!(allocation.id)
-    end
-
-    test "delete_allocation/1 deletes the allocation" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-      assert {:ok, %Allocation{}} = RecipientSessions.delete_allocation(allocation)
-      assert_raise Ecto.NoResultsError, fn -> RecipientSessions.get_allocation!(allocation.id) end
-    end
-
-    test "change_allocation/1 returns a allocation changeset" do
-      allocation = insert(:allocation) |> Repo.forget([:allocation_category, :recipient_session])
-      assert %Ecto.Changeset{} = RecipientSessions.change_allocation(allocation)
-    end
+    %{recipient_session: expected_session}
   end
 end

@@ -6,13 +6,13 @@ defmodule Kaibosh.SessionsTest do
   describe "sessions" do
     alias Kaibosh.Sessions.Session
 
-    @valid_attrs %{day: "some day", time_in_seconds: 42}
-    @update_attrs %{day: "some updated day", time_in_seconds: 43}
-    @invalid_attrs %{day: nil, time_in_seconds: nil}
+    @valid_attrs %{day: "some day", time: ~T[00:00:00]}
+    @update_attrs %{day: "some updated day", time: ~T[12:00:00]}
+    @invalid_attrs %{day: nil, time: nil}
 
     test "list_sessions/0 returns all sessions" do
       session = insert(:session) |> Repo.forget(:base)
-      assert Sessions.list_sessions() == [session]
+      assert Sessions.list_sessions_for_base(session.base_id) == [session]
     end
 
     test "get_session!/1 returns the session with given id" do
@@ -25,7 +25,7 @@ defmodule Kaibosh.SessionsTest do
       attrs = Map.put(@valid_attrs, :base_id, base.id)
       assert {:ok, %Session{} = session} = Sessions.create_session(attrs)
       assert session.day == "some day"
-      assert session.time_in_seconds == 42
+      assert session.time == @valid_attrs.time
     end
 
     test "create_session/1 with invalid data returns error changeset" do
@@ -36,7 +36,7 @@ defmodule Kaibosh.SessionsTest do
       session = insert(:session) |> Repo.forget(:base)
       assert {:ok, %Session{} = session} = Sessions.update_session(session, @update_attrs)
       assert session.day == "some updated day"
-      assert session.time_in_seconds == 43
+      assert session.time == @update_attrs.time
     end
 
     test "update_session/2 with invalid data returns error changeset" do

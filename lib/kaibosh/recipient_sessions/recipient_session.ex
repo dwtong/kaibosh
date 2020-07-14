@@ -1,7 +1,10 @@
 defmodule Kaibosh.RecipientSessions.RecipientSession do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient
+  alias Kaibosh.RecipientSessions.Allocation
+  alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.Sessions.Session
 
   @allowed_attrs [:session_id, :recipient_id]
@@ -10,6 +13,8 @@ defmodule Kaibosh.RecipientSessions.RecipientSession do
   schema "recipient_sessions" do
     belongs_to :recipient, Recipient
     belongs_to :session, Session
+    has_many :holds, Hold
+    has_many :allocations, Allocation, on_replace: :delete
 
     timestamps()
   end
@@ -19,5 +24,6 @@ defmodule Kaibosh.RecipientSessions.RecipientSession do
     record
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
+    |> cast_assoc(:allocations)
   end
 end

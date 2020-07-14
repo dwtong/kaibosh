@@ -6,11 +6,6 @@ defmodule KaiboshWeb.Admin.SessionController do
 
   action_fallback KaiboshWeb.FallbackController
 
-  def index(conn, _params) do
-    sessions = Sessions.list_sessions()
-    render(conn, "index.json", sessions: sessions)
-  end
-
   def create(conn, %{"session" => session_params}) do
     with {:ok, %Session{} = session} <- Sessions.create_session(session_params) do
       conn

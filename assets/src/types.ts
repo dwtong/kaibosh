@@ -51,7 +51,7 @@ export interface IRecipient {
   startedAt: Date | string;
   physicalAddress?: string;
   baseId?: string;
-  primaryContact: IContact;
+  contact: IContact;
   hasMetKaibosh?: boolean;
   hasSignedTerms?: boolean;
 }

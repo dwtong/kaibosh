@@ -1,5 +1,6 @@
 defmodule Kaibosh.Organisations.Base do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Organisation
 

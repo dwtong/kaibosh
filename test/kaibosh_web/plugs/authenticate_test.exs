@@ -1,11 +1,12 @@
 defmodule KaiboshWeb.Plugs.AuthenticateTest do
   use KaiboshWeb.ConnCase
-  alias KaiboshWeb.Plugs.Authenticate
   alias KaiboshWeb.Authentication
+  alias KaiboshWeb.Plugs.Authenticate
 
   setup do
     session = insert(:user_session)
-    %{session: session}
+    conn = build_conn() |> Plug.Conn.put_req_header("accept", "application/json")
+    %{session: session, conn: conn}
   end
 
   describe "unauthorized users" do

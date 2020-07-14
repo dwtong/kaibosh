@@ -1,16 +1,17 @@
 defmodule Kaibosh.Recipients.Contact do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Recipients.Recipient
 
   @allowed_attrs [:name, :email, :phone_landline, :phone_mobile]
-  @required_attrs [:name]
+  @required_attrs []
   @email_regex ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
 
   schema "contacts" do
     belongs_to :recipient, Recipient
 
-    field :name, :string, null: false
+    field :name, :string
     field :email, :string
     field :phone_landline, :string
     field :phone_mobile, :string

@@ -1,5 +1,6 @@
 defmodule Kaibosh.RecipientSessions.Hold do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.RecipientSessions.RecipientSession
 
@@ -9,8 +10,8 @@ defmodule Kaibosh.RecipientSessions.Hold do
   schema "holds" do
     belongs_to :recipient_session, RecipientSession
 
-    field :ends_at, :utc_datetime
-    field :starts_at, :utc_datetime
+    field :ends_at, :utc_datetime_usec
+    field :starts_at, :utc_datetime_usec
 
     timestamps()
   end

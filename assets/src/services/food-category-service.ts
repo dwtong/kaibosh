@@ -1,7 +1,5 @@
 import { get } from "./api-service";
 
-const resource = "food-categories";
-
 export default {
-  get: () => get(resource)
+  get: (baseId: string) => get(`bases/${baseId}/categories`)
 };

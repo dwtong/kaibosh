@@ -4,7 +4,7 @@ interface AuthToken {
 
 export default {
   authTokenIsPresent(): boolean {
-    return !!window.localStorage.getItem("client");
+    return !!window.localStorage.getItem("authorization");
   },
 
   saveAuthTokenFromUrlParams() {

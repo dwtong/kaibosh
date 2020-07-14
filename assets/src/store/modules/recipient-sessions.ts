@@ -70,7 +70,7 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async createSession(session: IScheduledSession) {
-    await ScheduledSessionService.create({ session });
+    await ScheduledSessionService.create(session.recipientId, { session });
 
     if (session?.recipientId) {
       ActiveRecipient.fetchRecipientStatus(session.recipientId);
@@ -81,7 +81,7 @@ class RecipientSessions extends VuexModule {
   @Action
   async updateSession(session: IScheduledSession) {
     if (session.id) {
-      await ScheduledSessionService.update(session.id, { session });
+      await ScheduledSessionService.update(session.recipientId, session.id, { session });
 
       if (session.recipientId) {
         ActiveRecipient.fetchRecipientStatus(session.recipientId);
@@ -92,10 +92,10 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async deleteSession(sessionId: string) {
-    await ScheduledSessionService.destroy(sessionId);
     const session = this.sessionById(sessionId);
 
     if (session?.recipientId) {
+      await ScheduledSessionService.destroy(session.recipientId, sessionId);
       ActiveRecipient.fetchRecipientStatus(session.recipientId);
       this.fetchSessions(session.recipientId);
     }

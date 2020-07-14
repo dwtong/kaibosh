@@ -1,23 +1,25 @@
 defmodule Kaibosh.Sessions.Session do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
+  alias Kaibosh.Sessions.Session
 
-  @allowed_attrs [:day, :time_in_seconds, :base_id]
-  @required_attrs [:day, :time_in_seconds, :base_id]
+  @allowed_attrs [:day, :time, :base_id]
+  @required_attrs [:day, :time, :base_id]
 
   schema "sessions" do
     belongs_to :base, Base
 
     field :day, :string
-    field :time_in_seconds, :integer
+    field :time, :time
 
     timestamps()
   end
 
   @doc false
-  def changeset(%__MODULE_{} = record, attrs) do
-    record
+  def changeset(%Session{} = session, attrs) do
+    session
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
   end

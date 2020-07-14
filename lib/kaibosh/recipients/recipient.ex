@@ -1,8 +1,10 @@
 defmodule Kaibosh.Recipients.Recipient do
-  use Ecto.Schema
+  @moduledoc false
+  use Kaibosh.Schema
   import Ecto.Changeset
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
+  alias Kaibosh.Recipients.Recipient
 
   @allowed_attrs [
     :name,
@@ -18,23 +20,27 @@ defmodule Kaibosh.Recipients.Recipient do
   @required_attrs [:name, :base_id]
 
   schema "recipients" do
-    has_one :contact, Contact
+    has_one :contact, Contact, on_replace: :update
     belongs_to :base, Base
 
     field :name, :string, null: false
     field :physical_address, :string
     field :description, :string
-    field :started_at, :utc_datetime
-    field :archived_at, :utc_datetime
-    field :signed_terms_at, :utc_datetime
-    field :met_kaibosh_at, :utc_datetime
+    field :started_at, :utc_datetime_usec
+    field :archived_at, :utc_datetime_usec
+    field :signed_terms_at, :utc_datetime_usec
+    field :met_kaibosh_at, :utc_datetime_usec
+
+    field :status, :string, virtual: true
+    field :session_count, :integer, virtual: true
+    field :hold_count, :integer, virtual: true
 
     timestamps()
   end
 
   @doc false
-  def changeset(%__MODULE__{} = record, attrs) do
-    record
+  def changeset(%Recipient{} = recipient, attrs) do
+    recipient
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
     |> cast_assoc(:contact)

@@ -7,7 +7,7 @@ defmodule KaiboshWeb.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"}
   end
 
   pipeline :api do
@@ -16,10 +16,6 @@ defmodule KaiboshWeb.Router do
 
   pipeline :api_auth do
     plug Authenticate
-  end
-
-  pipeline :admin do
-    # TODO: check user is admin
   end
 
   # scope "/", KaiboshWeb do
@@ -38,25 +34,25 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/organisations", OrganisationController, only: [:show] do
-      resources "/bases", BaseController, only: [:index]
-      resources "/staff", StaffController, only: [:index]
+    resources "/bases", BaseController, only: [:index] do
+      resources "/categories", CategoryController, only: [:index]
+      resources "/sessions", SessionController, only: [:index]
+    end
+
+    resources "/recipients", RecipientController, except: [:new, :edit] do
+      resources "/sessions", RecipientSessionController, except: [:new, :edit]
+      resources "/holds", HoldController, only: [:create, :delete]
     end
   end
 
   scope "/api/admin", KaiboshWeb.Admin do
-    pipe_through [:api, :api_auth, :admin]
+    pipe_through [:api, :api_auth]
 
     resources "/organisations", OrganisationController, except: [:new, :edit]
-    resources "/allocation_categories", AllocationCategoryController, except: [:new, :edit]
+    resources "/categories", CategoryController, except: [:new, :edit]
     resources "/bases", BaseController, except: [:new, :edit]
     resources "/staff", StaffController, except: [:new, :edit]
-    resources "/sessions", SessionController, except: [:new, :edit]
-
-    resources "/recipients", RecipientController, except: [:new, :edit]
-    resources "/allocations", AllocationController, except: [:new, :edit]
-    resources "/recipient_sessions", RecipientSessionController, except: [:new, :edit]
-    resources "/holds", HoldController, except: [:new, :edit]
+    resources "/sessions", SessionController, except: [:new, :edit, :index]
   end
 
   # Enables LiveDashboard only for development

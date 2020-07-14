@@ -35,14 +35,15 @@ class App extends VuexModule {
   @Action
   async fetchAll() {
     this.context.commit("setLoading", true);
-    await Promise.all([this.fetchBases(), this.fetchFoodCategories()]);
+    // TODO: fetch food categories or do it somewhere else
+    await Promise.all([this.fetchBases()]);
     this.context.commit("setLoading", false);
   }
 
   @Action
-  async fetchFoodCategories() {
+  async fetchFoodCategories(baseId: string) {
     if (this.foodCategories.length === 0) {
-      const categories = await FoodCategoryService.get();
+      const categories = await FoodCategoryService.get(baseId);
       this.context.commit("setFoodCategories", categories);
     }
   }
