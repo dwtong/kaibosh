@@ -8,12 +8,19 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
   describe "index" do
     setup [:create_session]
 
-    test "lists all recipient_sessions", %{conn: conn, recipient_session: expected_session} do
+    test "lists all recipient_sessions with associations", %{
+      conn: conn,
+      recipient_session: expected_session
+    } do
       conn = get(conn, route(conn, :index, expected_session.recipient.id))
 
-      assert [session] = json_response(conn, 200)
-      assert Map.keys(session) == ~w(id)
-      assert session["id"] == expected_session.id
+      assert [%{"id" => id, "allocations" => allocations, "holds" => holds} = session] =
+               json_response(conn, 200)
+
+      assert Map.keys(session) == ~w(allocations holds id)
+      assert id == expected_session.id
+      assert length(allocations) == 1
+      assert length(holds) == 1
     end
   end
 
@@ -21,7 +28,13 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
     test "renders recipient_session when data is valid", %{conn: conn} do
       session = insert(:session)
       %{id: recipient_id} = insert(:recipient)
-      attrs = Map.merge(@create_attrs, %{session_id: session.id, recipient_id: recipient_id})
+
+      attrs =
+        Map.merge(@create_attrs, %{
+          session_id: session.id,
+          recipient_id: recipient_id,
+          allocations: []
+        })
 
       conn = post(conn, route(conn, :create, recipient_id), session: attrs)
       assert %{"id" => id} = json_response(conn, 201)
@@ -78,6 +91,8 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
 
   defp create_session(_) do
     recipient_session = insert(:recipient_session)
+    insert(:allocation, recipient_session: recipient_session)
+    %{recipient_session: recipient_session} = insert(:hold, recipient_session: recipient_session)
     %{recipient_session: recipient_session}
   end
 

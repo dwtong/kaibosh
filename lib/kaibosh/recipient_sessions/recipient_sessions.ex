@@ -10,20 +10,31 @@ defmodule Kaibosh.RecipientSessions do
   alias Kaibosh.RecipientSessions.RecipientSession
 
   def list_sessions do
-    Repo.all(RecipientSession)
+    RecipientSession
+    |> preload([:holds, :allocations])
+    |> Repo.all()
   end
 
-  def get_session!(id), do: Repo.get!(RecipientSession, id)
+  def get_session!(id) do
+    RecipientSession
+    |> where(id: ^id)
+    |> preload([:holds, :allocations])
+    |> Repo.one!()
+  end
 
   def create_session(attrs \\ %{}) do
     %RecipientSession{}
     |> RecipientSession.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, session} -> {:ok, Repo.preload(session, [:allocations, :holds])}
+      error -> error
+    end
   end
 
   def update_session(%RecipientSession{} = recipient_session, attrs) do
     recipient_session
-    |> Repo.preload(:allocations)
+    |> Repo.preload([:allocations, :holds])
     |> RecipientSession.changeset(attrs)
     |> Repo.update()
   end

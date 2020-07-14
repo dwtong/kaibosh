@@ -10,7 +10,28 @@ defmodule KaiboshWeb.RecipientSessionView do
     render_one(recipient_session, RecipientSessionView, "recipient_session.json")
   end
 
-  def render("recipient_session.json", %{recipient_session: recipient_session}) do
-    %{id: recipient_session.id}
+  def render("recipient_session.json", %{recipient_session: session}) do
+    %{
+      id: session.id,
+      allocations:
+        render_many(session.allocations, RecipientSessionView, "allocation.json", as: :allocation),
+      holds: render_many(session.holds, RecipientSessionView, "hold.json", as: :hold)
+    }
+  end
+
+  def render("allocation.json", %{allocation: allocation}) do
+    %{
+      id: allocation.id,
+      category_id: allocation.category_id,
+      quantity: allocation.quantity
+    }
+  end
+
+  def render("hold.json", %{hold: hold}) do
+    %{
+      id: hold.id,
+      starts_at: hold.starts_at,
+      ends_at: hold.ends_at
+    }
   end
 end

@@ -6,22 +6,31 @@ defmodule Kaibosh.RecipientSessionsTest do
   alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.RecipientSessions.RecipientSession
 
+  @invalid_attrs %{session_id: nil}
+
   describe "getting and listing recipient sessions" do
-    @invalid_attrs %{session_id: nil}
+    setup [:create_recipient_session_with_associations]
 
-    test "list_sessions/0 returns all recipient_sessions" do
-      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
-      assert RecipientSessions.list_sessions() == [recipient_session]
+    test "list_sessions/0 returns all recipient sessions with associations" do
+      assert [%RecipientSession{} = session] = RecipientSessions.list_sessions()
+      assert length(session.allocations) == 1
+      assert length(session.holds) == 1
     end
 
-    test "get_session!/1 returns the recipient_session with given id" do
-      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
-      assert RecipientSessions.get_session!(recipient_session.id) == recipient_session
+    test "get_session!/1 returns the session with given id", %{recipient_session: %{id: id}} do
+      assert %RecipientSession{} = session = RecipientSessions.get_session!(id)
+      assert length(session.allocations) == 1
+      assert length(session.holds) == 1
     end
+  end
 
-    test "create_session/1 with valid data creates a recipient_session" do
-      session = insert(:session)
-      recipient = insert(:recipient)
+  describe "creating recipient sessions and allocations" do
+    setup [:create_session, :create_recipient]
+
+    test "create_session/1 with valid data creates session", %{
+      session: session,
+      recipient: recipient
+    } do
       attrs = %{session_id: session.id, recipient_id: recipient.id}
 
       assert {:ok, %RecipientSession{} = recipient_session} =
@@ -30,9 +39,7 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert recipient_session.session_id == session.id
       assert recipient_session.recipient_id == recipient.id
     end
-  end
 
-  describe "creating recipient sessions and allocations" do
     test "create_session/1 with allocations creates allocations and recipient session" do
       session = insert(:session)
       recipient = insert(:recipient)
@@ -112,7 +119,10 @@ defmodule Kaibosh.RecipientSessionsTest do
     end
 
     test "update_session/2 with invalid data returns error changeset" do
-      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      recipient_session =
+        insert(:recipient_session)
+        |> Repo.forget([:recipient, :session])
+        |> Repo.preload([:allocations, :holds])
 
       assert {:error, %Ecto.Changeset{}} =
                RecipientSessions.update_session(recipient_session, @invalid_attrs)
@@ -165,5 +175,30 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert {:ok, %Hold{}} = RecipientSessions.delete_hold(hold)
       assert_raise Ecto.NoResultsError, fn -> RecipientSessions.get_hold!(hold.id) end
     end
+  end
+
+  defp create_session(_) do
+    %{session: insert(:session)}
+  end
+
+  defp create_recipient(_) do
+    %{recipient: insert(:recipient)}
+  end
+
+  defp create_recipient_session_with_associations(_) do
+    recipient_session =
+      insert(:recipient_session)
+      |> Repo.forget([:recipient, :session])
+
+    insert(:hold, recipient_session: recipient_session)
+    |> Repo.forget(:recipient_session)
+
+    insert(:allocation, recipient_session: recipient_session)
+    |> Repo.forget(:recipient_session)
+
+    expected_session =
+      Repo.get(RecipientSession, recipient_session.id) |> Repo.preload([:allocations, :holds])
+
+    %{recipient_session: expected_session}
   end
 end
