@@ -7,7 +7,7 @@ export const defaultRecipientDetails: IRecipient = {
   name: "",
   baseId: "0",
   startedAt: "",
-  primaryContact: {
+  contact: {
     name: "",
     email: "",
     phoneLandline: "",
@@ -76,15 +76,19 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
-  async updateRecipient({ recipient }: any) {
-    const updatedRecipient = await RecipientService.update(recipient.id, recipient);
-    this.context.commit("setRecipientDetails", updatedRecipient);
+  async updateRecipient(recipient: any) {
+    if (recipient.id) {
+      const updatedRecipient = await RecipientService.update(recipient.id, recipient);
+      this.context.commit("setRecipientDetails", updatedRecipient);
+      this.context.commit("setRecipientStatus", updatedRecipient.status);
+    }
   }
 
   @Action
   async archiveRecipient(recipientId: string) {
     const updatedRecipient = await RecipientService.destroy(recipientId);
     this.context.commit("setRecipientDetails", updatedRecipient);
+    this.context.commit("setRecipientStatus", updatedRecipient.status);
   }
 }
 

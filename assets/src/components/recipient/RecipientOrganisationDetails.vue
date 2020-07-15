@@ -16,8 +16,7 @@
       {{ startDate }}
     </InfoField>
     <InfoField label="description">
-      <!-- eslint-disable vue/no-v-html -->
-      <span v-html="descriptionHtml"></span>
+      <span class="is-multi-line">{{ description }}</span>
     </InfoField>
   </div>
 </template>
@@ -31,7 +30,7 @@ import App from "@/store/modules/app";
 import { formatDate } from "@/helpers/date";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { InfoField, RecipientStatusTag }, filters: { formatDate } })
+@Component({ components: { InfoField, RecipientStatusTag } })
 export default class RecipientOrganisationDetails extends Vue {
   get status() {
     return ActiveRecipient?.status;
@@ -39,8 +38,8 @@ export default class RecipientOrganisationDetails extends Vue {
   get name() {
     return ActiveRecipient.details?.name;
   }
-  get descriptionHtml() {
-    return ActiveRecipient.details?.descriptionHtml;
+  get description() {
+    return ActiveRecipient.details?.description;
   }
   get address() {
     return ActiveRecipient.details?.physicalAddress;

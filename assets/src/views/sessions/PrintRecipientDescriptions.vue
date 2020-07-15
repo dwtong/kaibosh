@@ -54,7 +54,7 @@ export default class GenerateDescriptionsButton extends Vue {
   }
 
   async created() {
-    await SessionSlots.fetchSessionSlot(this.id);
+    // await SessionSlots.fetchSessionSlot(this.id);
   }
 
   goBack() {

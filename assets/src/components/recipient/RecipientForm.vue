@@ -13,10 +13,10 @@
     <div class="box">
       <h1 class="title">Primary Contact Details</h1>
 
-      <ValidatedInput v-model="recipientDetails.primaryContact.name" label="contact name" />
-      <ValidatedInput v-model="recipientDetails.primaryContact.email" label="contact email" :rules="{ email: true }" />
-      <ValidatedInput v-model="recipientDetails.primaryContact.phoneLandline" label="contact landline" />
-      <ValidatedInput v-model="recipientDetails.primaryContact.phoneMobile" label="contact mobile" />
+      <ValidatedInput v-model="recipientDetails.contact.name" label="contact name" />
+      <ValidatedInput v-model="recipientDetails.contact.email" label="contact email" :rules="{ email: true }" />
+      <ValidatedInput v-model="recipientDetails.contact.phoneLandline" label="contact landline" />
+      <ValidatedInput v-model="recipientDetails.contact.phoneMobile" label="contact mobile" />
     </div>
     <button type="submit" class="button is-primary is-pulled-right">
       Save Recipient
@@ -33,11 +33,10 @@ import DateField from "@/components/ui/DateField.vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { IRecipient } from "@/types";
-import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 
 @Component({ components: { AddressField, BaseSelect, DateField, ValidatedForm, ValidatedInput } })
 export default class RecipientForm extends Vue {
-  @Prop(Object) readonly recipient!: IRecipient;
+  @Prop({ required: true }) readonly recipient!: IRecipient;
   recipientDetails!: IRecipient;
 
   @Emit()
@@ -46,7 +45,7 @@ export default class RecipientForm extends Vue {
   }
 
   async created() {
-    this.recipientDetails = this.recipient ? { ...this.recipient } : { ...defaultRecipientDetails };
+    this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
   }
 }
 </script>

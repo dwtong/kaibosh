@@ -3,9 +3,9 @@
     <div slot="trigger" aria-controls="contentIdForA11y3" class="level box header">
       <div class="level-left">
         <div class="level-item">
-          <p v-if="session.sessionSlot">
-            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.sessionSlot.day }} </span>
-            <span class="is-size-5">{{ session.sessionSlot.time }}</span>
+          <p>
+            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.day | capitalize }} </span>
+            <span class="is-size-5">{{ session.time | formatTime }}</span>
           </p>
         </div>
       </div>
@@ -55,8 +55,13 @@ import HoldStatusTag from "@/components/ui/HoldStatusTag.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import SessionModal from "@/components/recipient/SessionModal.vue";
 import toast from "@/helpers/toast";
+import { formatTime } from "@/helpers/date";
+import { capitalize } from "lodash";
 
-@Component({ components: { HoldsList, AllocationList, HoldStatusTag, SessionModal } })
+@Component({
+  components: { HoldsList, AllocationList, HoldStatusTag, SessionModal },
+  filters: { capitalize, formatTime }
+})
 export default class SessionCard extends Vue {
   @Prop({ required: true }) readonly session!: IScheduledSession;
   @Prop({ required: true }) readonly sessions!: IScheduledSession[];

@@ -93,6 +93,10 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.is-multi-line {
+  white-space: pre;
+}
+
 .print-only {
   display: none;
 

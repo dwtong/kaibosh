@@ -32,8 +32,8 @@ class SessionSlots extends VuexModule {
   }
 
   @Action
-  async fetchList({ baseId: baseId, date: date }: { baseId: string; date?: string }) {
-    const list = await SessionSlotService.getForBase(baseId, date);
+  async fetchList({ baseId: baseId }: { baseId: string; date?: string }) {
+    const list = await SessionSlotService.getForBase(baseId);
     this.context.commit("setList", list);
   }
 
@@ -41,11 +41,12 @@ class SessionSlots extends VuexModule {
     return sortBy(this.details.recipients, ["name"]);
   }
 
-  @Action
-  async fetchSessionSlot(sessionSlotId: string) {
-    const slot = await SessionSlotService.get(sessionSlotId);
-    this.context.commit("setSessionSlot", slot);
-  }
+  // TODO: fetch session slot
+  // @Action
+  // async fetchSessionSlot(sessionSlotId: string) {
+  // const slot = await SessionSlotService.get(sessionSlotId);
+  // this.context.commit("setSessionSlot", slot);
+  // }
 
   @Action
   async fetchAllocationsForSlot({ sessionSlotId, sessionDate }: { sessionSlotId: string; sessionDate: string }) {

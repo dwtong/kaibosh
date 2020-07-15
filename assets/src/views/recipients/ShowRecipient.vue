@@ -80,7 +80,6 @@ export default class ShowRecipient extends Vue {
     if (ActiveRecipient.details.id) {
       App.enableLoading();
       await ActiveRecipient.archiveRecipient(ActiveRecipient.details.id);
-      await ActiveRecipient.fetchRecipientStatus(this.id);
       App.disableLoading();
     }
   }

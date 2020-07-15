@@ -10,6 +10,11 @@ export const formatDate = (date: Date, datePattern: string): string => {
   return format(new Date(date), datePattern, {});
 };
 
+export const formatTime = (time: string): string => {
+  const date = new Date(`1970-01-01T${time}`);
+  return format(date, "h:mm a", {});
+};
+
 export const dateOnDayOfWeek = (date: Date, day: string): Date => {
   const dayIndex = listOfDays.findIndex(d => d === day);
   return addDays(startOfWeek(date, { weekStartsOn: 1 }), dayIndex);

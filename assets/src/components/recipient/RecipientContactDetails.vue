@@ -28,7 +28,7 @@ import { IContact } from "@/types";
 @Component({ components: { InfoField, RecipientStatusTag } })
 export default class RecipientContactDetails extends Vue {
   get contact(): IContact {
-    return ActiveRecipient.details?.primaryContact;
+    return ActiveRecipient.details?.contact;
   }
 
   get name() {

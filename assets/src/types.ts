@@ -46,7 +46,6 @@ export interface IRecipient {
   name: string;
   id?: string;
   description?: string;
-  descriptionHtml?: string;
   status?: string;
   startedAt: Date | string;
   physicalAddress?: string;
@@ -54,6 +53,7 @@ export interface IRecipient {
   contact: IContact;
   hasMetKaibosh?: boolean;
   hasSignedTerms?: boolean;
+  archivedAt?: Date | string | null;
 }
 
 export interface IRecipientListItem {
@@ -62,7 +62,6 @@ export interface IRecipientListItem {
   id: string;
   status: string;
   description?: string;
-  descriptionHtml?: string;
 }
 
 export interface ISessionSlot {

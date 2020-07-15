@@ -25,7 +25,7 @@ import SessionSlots from "@/store/modules/session-slots";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
-import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
+import { listOfDays, mondayOfWeek, thisWeek } from "@/helpers/date";
 import App from "@/store/modules/app";
 
 @Component({ components: { BaseSelect, SessionListItem, WeekDateControls } })
@@ -55,8 +55,9 @@ export default class ListSessions extends Vue {
     App.enableLoading();
 
     if (this.baseId) {
-      const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
-      await SessionSlots.fetchList({ baseId: this.baseId, date });
+      // TODO: fetch session list
+      // const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
+      await SessionSlots.fetchList({ baseId: this.baseId });
     }
     App.disableLoading();
   }

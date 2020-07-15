@@ -43,7 +43,6 @@ export default class RecipientMessageBox extends Vue {
         archivedAt: null
       });
 
-      await ActiveRecipient.fetchRecipientStatus(ActiveRecipient.details.id);
       App.disableLoading();
     }
   }
