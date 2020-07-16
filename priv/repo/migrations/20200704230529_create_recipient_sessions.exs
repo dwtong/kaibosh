@@ -11,6 +11,6 @@ defmodule Kaibosh.Repo.Migrations.CreateRecipientSessions do
 
     create index(:recipient_sessions, [:session_id])
     create index(:recipient_sessions, [:recipient_id])
-    create index(:recipient_sessions, [:recipient_id, :session_id])
+    create unique_index(:recipient_sessions, [:recipient_id, :session_id])
   end
 end
