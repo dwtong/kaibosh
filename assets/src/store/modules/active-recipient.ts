@@ -59,13 +59,13 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
-  async createRecipient(recipient: any) {
+  async createRecipient(recipient: IRecipient) {
     let errors = null;
     let details = defaultRecipientDetails;
 
     try {
-      const createdRecipient = await RecipientService.create(recipient);
-      details = createdRecipient;
+      const response = await RecipientService.create(recipient);
+      details = response.recipient;
     } catch (e) {
       errors = e;
       details = defaultRecipientDetails;

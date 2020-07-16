@@ -91,14 +91,10 @@ class RecipientSessions extends VuexModule {
   }
 
   @Action
-  async deleteSession(sessionId: string) {
-    const session = this.sessionById(sessionId);
-
-    if (session?.recipientId) {
-      await ScheduledSessionService.destroy(session.recipientId, sessionId);
-      ActiveRecipient.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
-    }
+  async deleteSession({ recipientId, sessionId }: { recipientId: string; sessionId: string }) {
+    await ScheduledSessionService.destroy(recipientId, sessionId);
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(sessionId);
   }
 }
 

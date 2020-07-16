@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
-      <RecipientForm :recipient="newRecipient" @submit="createRecipient" />
+      <RecipientForm @submit="createRecipient" />
     </div>
   </div>
 </template>
@@ -14,12 +14,9 @@ import ActiveRecipient from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
 import { Route } from "vue-router/types/router";
-import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 
 @Component({ components: { RecipientForm } })
 export default class CreateRecipient extends Vue {
-  newRecipient = defaultRecipientDetails;
-
   async createRecipient(params: IRecipient) {
     await ActiveRecipient.createRecipient(params);
 

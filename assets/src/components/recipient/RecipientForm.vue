@@ -33,11 +33,12 @@ import DateField from "@/components/ui/DateField.vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { IRecipient } from "@/types";
+import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 
 @Component({ components: { AddressField, BaseSelect, DateField, ValidatedForm, ValidatedInput } })
 export default class RecipientForm extends Vue {
-  @Prop({ required: true }) readonly recipient!: IRecipient;
-  recipientDetails!: IRecipient;
+  @Prop(Object) readonly recipient!: IRecipient;
+  recipientDetails: IRecipient = { ...defaultRecipientDetails, contact: { ...defaultRecipientDetails.contact } };
 
   @Emit()
   submit(): IRecipient {
@@ -45,7 +46,9 @@ export default class RecipientForm extends Vue {
   }
 
   async created() {
-    this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
+    if (this.recipient) {
+      this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
+    }
   }
 }
 </script>

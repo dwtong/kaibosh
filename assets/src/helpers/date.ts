@@ -15,6 +15,11 @@ export const formatTime = (time: string): string => {
   return format(date, "h:mm a", {});
 };
 
+export const dayIndexFromString = (day: string): number => {
+  const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  return days.indexOf(day);
+};
+
 export const dateOnDayOfWeek = (date: Date, day: string): Date => {
   const dayIndex = listOfDays.findIndex(d => d === day);
   return addDays(startOfWeek(date, { weekStartsOn: 1 }), dayIndex);
