@@ -27,6 +27,10 @@ export default class BaseSelect extends Vue {
 
   allValue = 0;
 
+  async created() {
+    await App.fetchBases();
+  }
+
   get list() {
     return App.bases;
   }
