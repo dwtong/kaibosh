@@ -2,7 +2,6 @@
   <ValidatedSelect
     :rules="{ required: required }"
     :value="value"
-    :disabled="disabled"
     name="Session slot"
     placeholder="Select an option"
     expanded
@@ -26,7 +25,6 @@ import { capitalize } from "lodash";
 @Component({ components: { ValidatedSelect }, filters: { capitalize, formatTime } })
 export default class SessionSelect extends Vue {
   @Prop({ default: false }) readonly required!: boolean;
-  @Prop({ default: false }) readonly disabled!: boolean;
   @Prop({ default: "" }) readonly label!: string;
   @Prop() readonly recipientSessions?: IScheduledSession[];
   @Prop() readonly value!: string;

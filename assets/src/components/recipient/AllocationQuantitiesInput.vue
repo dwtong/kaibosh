@@ -54,7 +54,6 @@ export default class AllocationQuantitiesInput extends Vue {
           id: allocation.id,
           enabled: true,
           quantity: allocation.quantity,
-          quantityLabel: allocation.quantityLabel,
           categoryId: fc.id,
           name: fc.name
         };
@@ -76,20 +75,14 @@ export default class AllocationQuantitiesInput extends Vue {
   @Watch("allocationCategories", { immediate: true, deep: true })
   onAllocationChange() {
     const allocations = this.allocationCategories
+      .filter((allocation: IAllocationCategory) => allocation.enabled)
       .map((allocation: IAllocationCategory) => {
-        if (allocation.enabled) {
-          return {
-            categoryId: allocation.categoryId,
-            quantity: allocation.quantity,
-            id: allocation.id
-          };
-        } else if (!allocation.enabled && allocation.id) {
-          return { id: allocation.id, _destroy: true };
-        } else {
-          return null;
-        }
-      })
-      .filter((a: IAllocationCategory | null) => a !== null);
+        return {
+          categoryId: allocation.categoryId,
+          quantity: allocation.quantity,
+          id: allocation.id
+        };
+      });
     this.$emit("input", allocations);
   }
 

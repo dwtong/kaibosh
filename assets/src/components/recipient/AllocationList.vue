@@ -30,8 +30,14 @@ export default class AllocationList extends Vue {
   }
 
   allocationQuantityLabel(allocation: IAllocation) {
-    if (parseFloat(allocation.quantity)) {
-      return `${allocation.quantityLabel} (max)`;
+    const quantity = parseFloat(allocation.quantity);
+
+    if (quantity === 1.0) {
+      return "1 box (max)";
+    } else if (quantity > 1.0) {
+      return `${parseInt(allocation.quantity)} boxes (max)`;
+    } else if (quantity > 0.0 && quantity < 1.0) {
+      return `1/${parseInt(`${1.0 / quantity}`)} box (max)`;
     } else {
       return "no limit";
     }

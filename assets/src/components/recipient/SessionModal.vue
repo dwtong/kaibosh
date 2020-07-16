@@ -7,12 +7,7 @@
       <div class="columns">
         <div class="column">
           <p class="subtitle">Select session time and day</p>
-          <SessionSelect
-            v-model="selectedSessionId"
-            :sessions="sessions"
-            required="true"
-            :disabled="isExistingSession"
-          />
+          <SessionSelect v-model="selectedSessionId" :sessions="sessions" required="true" />
           <p v-if="sessionExists" class="error-msg">
             Selected session already exists.
           </p>
@@ -57,7 +52,7 @@ export default class SessionModal extends Vue {
 
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
-      this.selectedSessionId = this.session.session?.id ?? "";
+      this.selectedSessionId = this.session.sessionId ?? "";
     }
 
     this.loading = false;
@@ -72,9 +67,7 @@ export default class SessionModal extends Vue {
   }
 
   get sessionExists(): boolean {
-    return !!this.sessions.find(
-      s => s.session?.id === this.selectedSessionId && s.session?.id !== this.session?.session?.id
-    );
+    return !!this.sessions.find(s => s.sessionId === this.selectedSessionId && s.sessionId !== this.session?.sessionId);
   }
 
   openModal() {
@@ -85,13 +78,13 @@ export default class SessionModal extends Vue {
     const params = {
       recipientId: this.recipientId,
       sessionId: this.selectedSessionId,
-      allocationsAttributes: this.allocations
+      allocations: this.allocations
     };
 
     if (this.session) {
       await RecipientSessions.updateSession({
-        ...params,
-        ...this.session
+        ...this.session,
+        ...params
       });
     } else {
       await RecipientSessions.createSession(params);

@@ -55,6 +55,7 @@ import RecipientSessions from "@/store/modules/recipient-sessions";
 import { IScheduledSession } from "@/types";
 import { sortBy } from "lodash";
 import ActiveRecipient from "@/store/modules/active-recipient";
+import { dayIndexFromString } from "@/helpers/date";
 
 @Component({ components: { InfoField, HoldModal, RecipientStatusTag, SessionCard, SessionModal } })
 export default class RecipientSortingSessions extends Vue {
@@ -72,7 +73,7 @@ export default class RecipientSortingSessions extends Vue {
   }
 
   get scheduledSessions() {
-    return sortBy(RecipientSessions.sessions, ["session.date"]);
+    return sortBy(RecipientSessions.sessions, (s: any) => `${dayIndexFromString(s.day)}-${s.time}`);
   }
 }
 </script>

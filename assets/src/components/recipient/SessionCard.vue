@@ -24,7 +24,7 @@
         </div>
 
         <div class="content">
-          <p class="label">Category Allocations</p>
+          <p class="label">Food Allocations</p>
           <AllocationList :allocations="recipientSession.allocations" />
         </div>
 
