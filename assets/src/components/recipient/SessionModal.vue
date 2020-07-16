@@ -7,8 +7,8 @@
       <div class="columns">
         <div class="column">
           <p class="subtitle">Select session time and day</p>
-          <SessionSlotSelect
-            v-model="selectedSessionSlotId"
+          <SessionSelect
+            v-model="selectedSessionId"
             :sessions="sessions"
             required="true"
             :disabled="isExistingSession"
@@ -19,10 +19,10 @@
         </div>
       </div>
 
-      <div v-if="showFoodCategories" class="columns">
+      <div v-if="showCategories" class="columns">
         <div class="column">
-          <p class="subtitle">Choose food categories</p>
-          <AllocationQuantitiesInput v-model="allocations" />
+          <p class="subtitle">Choose category categories</p>
+          <AllocationQuantitiesInput v-model="allocations" :base-id="baseId" />
         </div>
       </div>
     </ModalForm>
@@ -33,30 +33,31 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession, IAllocation } from "@/types";
+import App from "@/store/modules/app";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
-import SessionSlotSelect from "@/components/ui/SessionSlotSelect.vue";
+import SessionSelect from "@/components/ui/SessionSelect.vue";
 import ModalForm from "@/components/ui/ModalForm.vue";
-import SessionSlots from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/session-slots";
 
-@Component({ components: { SessionSlotSelect, AllocationQuantitiesInput, ModalForm } })
+@Component({ components: { SessionSelect, AllocationQuantitiesInput, ModalForm } })
 export default class SessionModal extends Vue {
   @Prop({ required: true }) readonly recipientId!: string;
   @Prop({ required: true }) readonly baseId!: string;
   @Prop({ required: true }) readonly sessions!: IScheduledSession[];
   @Prop() readonly session?: IScheduledSession;
   allocations: IAllocation[] = [];
-  selectedSessionSlotId = "";
+  selectedSessionId = "";
   loading = true;
   isOpen = false;
 
   async created() {
-    await SessionSlots.fetchList({ baseId: this.baseId });
+    await Promise.all([App.fetchCategories(this.baseId), Sessions.fetchList(this.baseId)]);
 
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
-      this.selectedSessionSlotId = this.session.sessionSlot?.id ?? "";
+      this.selectedSessionId = this.session.session?.id ?? "";
     }
 
     this.loading = false;
@@ -66,13 +67,13 @@ export default class SessionModal extends Vue {
     return !!this.session;
   }
 
-  get showFoodCategories(): boolean {
-    return !this.loading && this.selectedSessionSlotId !== "" && !this.sessionExists;
+  get showCategories(): boolean {
+    return !this.loading && this.selectedSessionId !== "" && !this.sessionExists;
   }
 
   get sessionExists(): boolean {
     return !!this.sessions.find(
-      s => s.sessionSlot?.id === this.selectedSessionSlotId && s.sessionSlot?.id !== this.session?.sessionSlot?.id
+      s => s.session?.id === this.selectedSessionId && s.session?.id !== this.session?.session?.id
     );
   }
 
@@ -83,7 +84,7 @@ export default class SessionModal extends Vue {
   async saveSession() {
     const params = {
       recipientId: this.recipientId,
-      sessionSlotId: this.selectedSessionSlotId,
+      sessionId: this.selectedSessionId,
       allocationsAttributes: this.allocations
     };
 

@@ -32,7 +32,12 @@
 
     <div v-if="!loading">
       <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
-        <SessionCard :session="session" :sessions="scheduledSessions" :base-id="baseId" :recipient-id="id" />
+        <SessionCard
+          :recipient-session="session"
+          :recipient-sessions="scheduledSessions"
+          :base-id="baseId"
+          :recipient-id="id"
+        />
       </div>
     </div>
   </div>
@@ -67,7 +72,7 @@ export default class RecipientSortingSessions extends Vue {
   }
 
   get scheduledSessions() {
-    return sortBy(RecipientSessions.sessions, ["sessionSlot.date"]);
+    return sortBy(RecipientSessions.sessions, ["session.date"]);
   }
 }
 </script>

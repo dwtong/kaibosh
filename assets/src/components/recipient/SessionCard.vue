@@ -1,40 +1,40 @@
 <template>
-  <b-collapse aria-id="contentIdForA11y3" :open="isOpen" class="session-card">
+  <b-collapse aria-id="contentIdForA11y3" :open="isOpen" class="recipientSession-card">
     <div slot="trigger" aria-controls="contentIdForA11y3" class="level box header">
       <div class="level-left">
         <div class="level-item">
           <p>
-            <span class="has-text-weight-semibold is-size-5 day-text">{{ session.day | capitalize }} </span>
-            <span class="is-size-5">{{ session.time | formatTime }}</span>
+            <span class="has-text-weight-semibold is-size-5 day-text">{{ recipientSession.day | capitalize }} </span>
+            <span class="is-size-5">{{ recipientSession.time | formatTime }}</span>
           </p>
         </div>
       </div>
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <HoldStatusTag :status="session.holdStatus" />
+          <HoldStatusTag :status="recipientSession.holdStatus" />
         </div>
       </div>
     </div>
     <div class="box">
       <div class="card-content">
-        <div v-if="session.holds && session.holds.length > 0" class="content">
+        <div v-if="recipientSession.holds && recipientSession.holds.length > 0" class="content">
           <p class="label">Session Holds</p>
-          <HoldsList :holds="session.holds" :session-id="session.id" />
+          <HoldsList :holds="recipientSession.holds" :session-id="recipientSession.id" />
         </div>
 
         <div class="content">
-          <p class="label">Food Allocations</p>
-          <AllocationList :allocations="session.allocations" />
+          <p class="label">Category Allocations</p>
+          <AllocationList :allocations="recipientSession.allocations" />
         </div>
 
         <div class="buttons">
           <SessionModal
             v-slot="{ open }"
-            :session="session"
+            :session="recipientSession"
             :base-id="baseId"
             :recipient-id="recipientId"
-            :sessions="sessions"
+            :sessions="recipientSessions"
           >
             <a class="button is-primary" @click="open">Edit</a>
           </SessionModal>
@@ -63,8 +63,8 @@ import { capitalize } from "lodash";
   filters: { capitalize, formatTime }
 })
 export default class SessionCard extends Vue {
-  @Prop({ required: true }) readonly session!: IScheduledSession;
-  @Prop({ required: true }) readonly sessions!: IScheduledSession[];
+  @Prop({ required: true }) readonly recipientSession!: IScheduledSession;
+  @Prop({ required: true }) readonly recipientSessions!: IScheduledSession[];
   @Prop() readonly baseId!: string;
   @Prop() readonly recipientId!: string;
   isOpen = false;
@@ -78,8 +78,8 @@ export default class SessionCard extends Vue {
       message: "Are you sure you wish to remove this session?",
       type: "is-danger",
       onConfirm: async () => {
-        if (this.session.id) {
-          await RecipientSessions.deleteSession(this.session.id);
+        if (this.recipientSession.id) {
+          await RecipientSessions.deleteSession({ recipientId: this.recipientId, sessionId: this.recipientSession.id });
           toast.success("Deleted session.");
         }
       }
@@ -112,7 +112,7 @@ export default class SessionCard extends Vue {
   margin-right: 0.5rem;
 }
 
-.session-card {
+.recipientSession-card {
   margin-bottom: 1rem;
 }
 </style>

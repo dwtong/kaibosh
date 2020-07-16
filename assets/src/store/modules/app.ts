@@ -1,16 +1,16 @@
-import { IBase, IFoodCategory } from "@/types";
+import { IBase, ICategory } from "@/types";
 import Store from "@/store";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { sortBy } from "lodash";
 import BaseService from "@/services/base-service";
-import FoodCategoryService from "@/services/food-category-service";
+import CategoryService from "@/services/category-service";
 
 @Module({ name: "app", store: Store, dynamic: true })
 class App extends VuexModule {
   errors: string[] = [];
   loading = false;
   bases: IBase[] = [];
-  foodCategories: IFoodCategory[] = [];
+  categories: ICategory[] = [];
 
   get baseNameById() {
     return (id: string) => {
@@ -19,32 +19,24 @@ class App extends VuexModule {
     };
   }
 
-  get foodCategoryById() {
-    return (id: string) => this.foodCategories.find(fc => fc.id === id);
+  get categoryById() {
+    return (id: string) => this.categories.find(fc => fc.id === id);
   }
 
-  get orderedFoodCategories() {
-    return sortBy(this.foodCategories, ["name"]);
+  get orderedCategories() {
+    return sortBy(this.categories, ["name"]);
   }
 
   @Mutation
-  setFoodCategories(foodCategories: IFoodCategory[]) {
-    this.foodCategories = foodCategories;
+  setCategories(categories: ICategory[]) {
+    this.categories = categories;
   }
 
   @Action
-  async fetchAll() {
-    this.context.commit("setLoading", true);
-    // TODO: fetch food categories or do it somewhere else
-    await Promise.all([this.fetchBases()]);
-    this.context.commit("setLoading", false);
-  }
-
-  @Action
-  async fetchFoodCategories(baseId: string) {
-    if (this.foodCategories.length === 0) {
-      const categories = await FoodCategoryService.get(baseId);
-      this.context.commit("setFoodCategories", categories);
+  async fetchCategories(baseId: string) {
+    if (this.categories.length === 0) {
+      const categories = await CategoryService.get(baseId);
+      this.context.commit("setCategories", categories);
     }
   }
 

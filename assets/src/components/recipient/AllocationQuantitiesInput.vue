@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-for="food in allocationCategories" :key="food.foodCategoryId">
-      <div class="level box" :class="{ disabled: food.enabled == false }">
+    <div v-for="category in allocationCategories" :key="category.categoryId">
+      <div class="level box" :class="{ disabled: category.enabled == false }">
         <div class="level-left">
           <div class="level-item">
-            <b-checkbox v-model="food.enabled" type="is-info">
-              <p class="food-label">{{ food.name }}</p></b-checkbox
+            <b-checkbox v-model="category.enabled" type="is-info">
+              <p class="category-label">{{ category.name }}</p></b-checkbox
             >
           </div>
         </div>
@@ -14,13 +14,13 @@
             <div class="field allocation-field has-addons">
               <p class="control">
                 <AllocationQuantitesSelect
-                  :value="getFoodQuantity(food)"
-                  :disabled="!food.enabled"
-                  @input="setFoodQuantity(food, $event)"
+                  :value="getCategoryQuantity(category)"
+                  :disabled="!category.enabled"
+                  @input="setCategoryQuantity(category, $event)"
                 />
               </p>
               <p class="control">
-                <button class="button is-static">{{ food.unit }} (max)</button>
+                <button class="button is-static">{{ category.unit }} (max)</button>
               </p>
             </div>
           </div>
@@ -46,8 +46,8 @@ export default class AllocationQuantitiesInput extends Vue {
   created() {
     const allocations = this.value;
 
-    const allocationCategories = App.foodCategories.map(fc => {
-      const allocation = allocations.find(a => a.foodCategoryId === fc.id);
+    const allocationCategories = App.categories.map(fc => {
+      const allocation = allocations.find(a => a.categoryId === fc.id);
 
       if (allocation) {
         return {
@@ -55,7 +55,7 @@ export default class AllocationQuantitiesInput extends Vue {
           enabled: true,
           quantity: allocation.quantity,
           quantityLabel: allocation.quantityLabel,
-          foodCategoryId: fc.id,
+          categoryId: fc.id,
           name: fc.name
         };
       } else {
@@ -64,7 +64,7 @@ export default class AllocationQuantitiesInput extends Vue {
           enabled: false,
           quantity: "0.0",
           quantityLabel: "",
-          foodCategoryId: fc.id,
+          categoryId: fc.id,
           name: fc.name
         };
       }
@@ -79,7 +79,7 @@ export default class AllocationQuantitiesInput extends Vue {
       .map((allocation: IAllocationCategory) => {
         if (allocation.enabled) {
           return {
-            foodCategoryId: allocation.foodCategoryId,
+            categoryId: allocation.categoryId,
             quantity: allocation.quantity,
             id: allocation.id
           };
@@ -93,15 +93,15 @@ export default class AllocationQuantitiesInput extends Vue {
     this.$emit("input", allocations);
   }
 
-  setFoodQuantity(food: IAllocationCategory, quantity: string) {
-    food.quantity = quantity;
+  setCategoryQuantity(category: IAllocationCategory, quantity: string) {
+    category.quantity = quantity;
   }
 
-  getFoodQuantity(food: IAllocationCategory): string {
-    if (food.quantity === "0.0") {
+  getCategoryQuantity(category: IAllocationCategory): string {
+    if (category.quantity === "0.0") {
       return "";
     } else {
-      return food.quantity;
+      return category.quantity;
     }
   }
 }
@@ -122,16 +122,16 @@ export default class AllocationQuantitiesInput extends Vue {
 }
 
 .disabled {
-  .food-label {
+  .category-label {
     color: gray;
   }
 }
 
-.food-label {
+.category-label {
   margin-left: 0.5rem;
 }
 
-.food-quantity {
+.category-quantity {
   width: 5rem;
 }
 </style>

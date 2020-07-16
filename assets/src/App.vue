@@ -33,13 +33,6 @@ export default class App extends Vue {
   get showNav() {
     return this.isAuthenticated;
   }
-
-  @Watch("isAuthenticated", { immediate: true })
-  async onAuthenticate() {
-    if (this.isAuthenticated) {
-      await AppModule.fetchAll();
-    }
-  }
 }
 </script>
 

@@ -1,15 +1,16 @@
 import { sortBy } from "lodash";
-import { ISessionSlot } from "@/types";
+import { ISession } from "@/types";
 import Store from "@/store";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import AllocationService from "@/services/allocation-service";
-import SessionSlotService from "@/services/session-slot-service";
+import SessionService from "@/services/session-slot-service";
+import { dayIndexFromString } from "@/helpers/date";
 
-@Module({ name: "SessionSlots", store: Store, dynamic: true })
-class SessionSlots extends VuexModule {
-  allocationsByFoodCategory: any = [];
-  list: ISessionSlot[] = [];
-  details: ISessionSlot = {
+@Module({ name: "Sessions", store: Store, dynamic: true })
+class Sessions extends VuexModule {
+  allocationsByCategory: any = [];
+  list: ISession[] = [];
+  details: ISession = {
     id: "",
     time: "",
     day: "",
@@ -22,18 +23,22 @@ class SessionSlots extends VuexModule {
     return (day: string) =>
       sortBy(
         this.list.filter(s => s.day === day),
-        "date"
+        "time"
       );
   }
 
+  get sortedList() {
+    return sortBy(this.list, (s: any) => `${dayIndexFromString(s.day)}-${s.time}`);
+  }
+
   @Mutation
-  setList(slots: ISessionSlot[]) {
+  setList(slots: ISession[]) {
     this.list = slots;
   }
 
   @Action
-  async fetchList({ baseId: baseId }: { baseId: string; date?: string }) {
-    const list = await SessionSlotService.getForBase(baseId);
+  async fetchList(baseId: string) {
+    const list = await SessionService.getForBase(baseId);
     this.context.commit("setList", list);
   }
 
@@ -43,26 +48,26 @@ class SessionSlots extends VuexModule {
 
   // TODO: fetch session slot
   // @Action
-  // async fetchSessionSlot(sessionSlotId: string) {
-  // const slot = await SessionSlotService.get(sessionSlotId);
-  // this.context.commit("setSessionSlot", slot);
+  // async fetchSession(sessionId: string) {
+  // const slot = await SessionService.get(sessionId);
+  // this.context.commit("setSession", slot);
   // }
 
   @Action
-  async fetchAllocationsForSlot({ sessionSlotId, sessionDate }: { sessionSlotId: string; sessionDate: string }) {
-    const { foodAllocations, date } = await AllocationService.getForSessionSlot(sessionSlotId, sessionDate);
+  async fetchAllocationsForSlot({ sessionId, sessionDate }: { sessionId: string; sessionDate: string }) {
+    const { categoryAllocations, date } = await AllocationService.getForSession(sessionId, sessionDate);
     this.context.commit("setDate", date);
-    this.context.commit("setAllocations", foodAllocations);
+    this.context.commit("setAllocations", categoryAllocations);
   }
 
   @Mutation
-  setSessionSlot(sessionSlot: ISessionSlot) {
-    this.details = sessionSlot;
+  setSession(session: ISession) {
+    this.details = session;
   }
 
   @Mutation
   setAllocations(allocations: any) {
-    this.allocationsByFoodCategory = allocations;
+    this.allocationsByCategory = allocations;
   }
 
   @Mutation
@@ -71,4 +76,4 @@ class SessionSlots extends VuexModule {
   }
 }
 
-export default getModule(SessionSlots);
+export default getModule(Sessions);

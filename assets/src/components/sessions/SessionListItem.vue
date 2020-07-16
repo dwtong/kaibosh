@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import SessionSlots from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/session-slots";
 import { Component, Prop } from "vue-property-decorator";
 import { dateOnDayOfWeek, formatDate } from "@/helpers/date";
 import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue";
@@ -31,7 +31,7 @@ export default class ListSessions extends Vue {
   }
 
   get sessions() {
-    return SessionSlots.sessionsForDay(this.day);
+    return Sessions.sessionsForDay(this.day);
   }
 }
 </script>

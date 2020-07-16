@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import SessionSlots from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/session-slots";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
@@ -30,7 +30,7 @@ import App from "@/store/modules/app";
 
 @Component({ components: { BaseSelect, SessionListItem, WeekDateControls } })
 export default class ListSessions extends Vue {
-  sessionSlotId = "0";
+  sessionId = "0";
   showSessionOptions = true;
   baseId = localStorage.getItem("baseId");
 
@@ -55,15 +55,13 @@ export default class ListSessions extends Vue {
     App.enableLoading();
 
     if (this.baseId) {
-      // TODO: fetch session list
-      // const date = formatDate(this.weekOfDate, "yyyy-MM-dd");
-      await SessionSlots.fetchList({ baseId: this.baseId });
+      await Sessions.fetchList(this.baseId);
     }
     App.disableLoading();
   }
 
   get showSubmitButton() {
-    return this.baseId !== "0" && this.sessionSlotId !== "0";
+    return this.baseId !== "0" && this.sessionId !== "0";
   }
 
   get days() {

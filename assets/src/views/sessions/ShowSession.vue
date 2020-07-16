@@ -22,18 +22,18 @@
     </div>
 
     <div class="columns is-multiline is-centered">
-      <div v-for="category in foodCategories" :key="category.id" class="column card-column">
+      <div v-for="category in categories" :key="category.id" class="column card-column">
         <div class="card">
           <div class="card-image">
             <figure class="image is-5by1">
-              <img class="food-image" :src="imagePath(category.foodCategory.imageName)" alt />
+              <img class="category-image" :src="imagePath(category.category.imageName)" alt />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title food-title is-4">
-                  {{ capitalize(category.foodCategory.name) }}
+                <p class="title category-title is-4">
+                  {{ capitalize(category.category.name) }}
                 </p>
               </div>
             </div>
@@ -55,7 +55,7 @@ import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import App from "@/store/modules/app";
-import SessionSlots from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/session-slots";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
@@ -74,8 +74,8 @@ export default class ShowSession extends Vue {
       date = "";
     }
 
-    await SessionSlots.fetchAllocationsForSlot({
-      sessionSlotId: to.params.id,
+    await Sessions.fetchAllocationsForSlot({
+      sessionId: to.params.id,
       sessionDate: date
     });
 
@@ -105,13 +105,13 @@ export default class ShowSession extends Vue {
     }
   }
 
-  get foodCategories() {
-    return SessionSlots.allocationsByFoodCategory;
+  get categories() {
+    return Sessions.allocationsByCategory;
   }
 
   get sessionDate() {
-    const date = SessionSlots.date;
-    return date && date !== "" ? SessionSlots.date : null;
+    const date = Sessions.date;
+    return date && date !== "" ? Sessions.date : null;
   }
 }
 </script>
@@ -159,13 +159,13 @@ export default class ShowSession extends Vue {
   }
 }
 
-.food-image {
+.category-image {
   @media print {
     display: none;
   }
 }
 
-.food-title {
+.category-title {
   @media print {
     font-size: 16px !important;
     background-color: rgb(200, 200, 200);

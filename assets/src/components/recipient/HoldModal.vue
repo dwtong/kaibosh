@@ -31,7 +31,7 @@
 
       <div v-for="session in sessions" :key="session.id">
         <b-checkbox v-model="session.enabled" type="is-info" class="end-date-checkbox" :disabled="allSessions">
-          {{ sessionSlotLabel(session) }}
+          {{ sessionLabel(session) }}
         </b-checkbox>
       </div>
     </ModalForm>
@@ -43,12 +43,11 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
-import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import ModalForm from "@/components/ui/ModalForm.vue";
 import DateField from "@/components/ui/DateField.vue";
 import toast from "@/helpers/toast";
 
-@Component({ components: { AllocationQuantitiesInput, DateField, ModalForm } })
+@Component({ components: { DateField, ModalForm } })
 export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
@@ -97,9 +96,9 @@ export default class HoldModal extends Vue {
     this.sessions.forEach(s => (s.enabled = this.allSessions));
   }
 
-  sessionSlotLabel(session: IScheduledSession) {
-    if (session.sessionSlot) {
-      return `${session.sessionSlot.day} ${session.sessionSlot.time}`;
+  sessionLabel(session: IScheduledSession) {
+    if (session.session) {
+      return `${session.session.day} ${session.session.time}`;
     } else {
       return "";
     }

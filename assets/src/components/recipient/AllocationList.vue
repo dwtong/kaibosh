@@ -1,7 +1,7 @@
 <template>
   <table>
     <tr v-for="allocation in sortedAllocations" :key="allocation.id" :allocation="allocation">
-      <td>{{ allocation.foodCategory }}</td>
+      <td>{{ allocation.category }}</td>
       <td>{{ allocation.quantityLabel }}</td>
     </tr>
   </table>
@@ -22,11 +22,11 @@ export default class AllocationList extends Vue {
     const allocations = this.allocations.map(allocation => {
       return {
         quantityLabel: this.allocationQuantityLabel(allocation),
-        foodCategory: this.foodCategoryName(allocation),
+        category: this.categoryName(allocation),
         id: allocation.id
       };
     });
-    return sortBy(allocations, ["foodCategory"]);
+    return sortBy(allocations, ["category"]);
   }
 
   allocationQuantityLabel(allocation: IAllocation) {
@@ -37,8 +37,8 @@ export default class AllocationList extends Vue {
     }
   }
 
-  foodCategoryName(allocation: IAllocation) {
-    const fc = App.foodCategoryById(allocation.foodCategoryId);
+  categoryName(allocation: IAllocation) {
+    const fc = App.categoryById(allocation.categoryId);
 
     if (fc) {
       return fc.name;

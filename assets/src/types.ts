@@ -1,12 +1,12 @@
 export interface IAllocation {
-  foodCategoryId: string;
+  categoryId: string;
   id: string;
   quantity: string;
   quantityLabel: string;
 }
 
 export interface IAllocationCategory {
-  foodCategoryId: string;
+  categoryId: string;
   enabled?: boolean;
   id: string;
   quantity: string;
@@ -25,7 +25,7 @@ export interface IContact {
   phoneMobile: string;
 }
 
-export interface IFoodCategory {
+export interface ICategory {
   id: string;
   name: string;
 }
@@ -64,7 +64,7 @@ export interface IRecipientListItem {
   description?: string;
 }
 
-export interface ISessionSlot {
+export interface ISession {
   id: string;
   day: string;
   time: string;
@@ -78,8 +78,8 @@ export interface IScheduledSession {
   holds?: IHold[];
   id?: string;
   recipientId: string;
-  sessionSlot?: ISessionSlot;
-  sessionSlotId?: string;
+  session?: ISession;
+  sessionId?: string;
   holdStatus?: string;
 }
 
