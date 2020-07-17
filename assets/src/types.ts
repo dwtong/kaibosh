@@ -72,7 +72,7 @@ export interface ISession {
   recipients: IRecipientListItem[];
 }
 
-export interface IScheduledSession {
+export interface IRecipientSession {
   allocations?: IAllocation[];
   enabled?: boolean;
   holds?: IHold[];

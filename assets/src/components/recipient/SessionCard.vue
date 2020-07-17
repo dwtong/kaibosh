@@ -48,7 +48,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession } from "@/types";
+import { IRecipientSession } from "@/types";
 import HoldsList from "@/components/recipient/HoldsList.vue";
 import AllocationList from "@/components/recipient/AllocationList.vue";
 import HoldStatusTag from "@/components/ui/HoldStatusTag.vue";
@@ -63,8 +63,8 @@ import { capitalize } from "lodash";
   filters: { capitalize, formatTime }
 })
 export default class SessionCard extends Vue {
-  @Prop({ required: true }) readonly recipientSession!: IScheduledSession;
-  @Prop({ required: true }) readonly recipientSessions!: IScheduledSession[];
+  @Prop({ required: true }) readonly recipientSession!: IRecipientSession;
+  @Prop({ required: true }) readonly recipientSessions!: IRecipientSession[];
   @Prop() readonly baseId!: string;
   @Prop() readonly recipientId!: string;
   isOpen = false;

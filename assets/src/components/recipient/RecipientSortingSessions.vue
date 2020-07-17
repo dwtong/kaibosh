@@ -5,7 +5,7 @@
 
       <div v-if="status !== 'archived'" class="field buttons">
         <p class="control">
-          <SessionModal v-slot="{ open }" :base-id="baseId" :recipient-id="id" :sessions="scheduledSessions">
+          <SessionModal v-slot="{ open }" :base-id="baseId" :recipient-id="id" :sessions="recipientSessions">
             <a class="button is-info" :disabled="loading" :class="{ 'is-loading': loading }" @click="open">
               Add Sorting Session
             </a>
@@ -14,7 +14,7 @@
 
         <p class="control">
           <b-tooltip
-            v-if="loading || scheduledSessions.length === 0"
+            v-if="loading || recipientSessions.length === 0"
             label="Hold date cannot be added without session"
             position="is-bottom"
             type="is-warning"
@@ -23,7 +23,7 @@
               Add Hold Date
             </a>
           </b-tooltip>
-          <HoldModal v-else v-slot="{ open }" :scheduled-sessions="scheduledSessions">
+          <HoldModal v-else v-slot="{ open }" :recipient-sessions="recipientSessions">
             <a class="button is-warning" @click="open">Add Hold Date</a>
           </HoldModal>
         </p>
@@ -31,10 +31,10 @@
     </div>
 
     <div v-if="!loading">
-      <div v-for="session in scheduledSessions" :key="session.id" class="sessions-box">
+      <div v-for="session in recipientSessions" :key="session.id" class="sessions-box">
         <SessionCard
           :recipient-session="session"
-          :recipient-sessions="scheduledSessions"
+          :recipient-sessions="recipientSessions"
           :base-id="baseId"
           :recipient-id="id"
         />
@@ -52,14 +52,14 @@ import HoldModal from "@/components/recipient/HoldModal.vue";
 import SessionCard from "@/components/recipient/SessionCard.vue";
 import SessionModal from "@/components/recipient/SessionModal.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
-import { IScheduledSession } from "@/types";
+import { IRecipientSession } from "@/types";
 import { sortBy } from "lodash";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import { dayIndexFromString } from "@/helpers/date";
 
 @Component({ components: { InfoField, HoldModal, RecipientStatusTag, SessionCard, SessionModal } })
 export default class RecipientSortingSessions extends Vue {
-  selectedSession: IScheduledSession | null = null;
+  selectedSession: IRecipientSession | null = null;
   id = ActiveRecipient.details?.id ?? null;
   baseId = ActiveRecipient.details?.baseId;
   status = ActiveRecipient.status;
@@ -72,7 +72,7 @@ export default class RecipientSortingSessions extends Vue {
     this.loading = false;
   }
 
-  get scheduledSessions() {
+  get recipientSessions() {
     return sortBy(RecipientSessions.sessions, (s: any) => `${dayIndexFromString(s.day)}-${s.time}`);
   }
 }

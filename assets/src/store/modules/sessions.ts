@@ -3,7 +3,7 @@ import { ISession } from "@/types";
 import Store from "@/store";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import AllocationService from "@/services/allocation-service";
-import SessionService from "@/services/session-slot-service";
+import SessionService from "@/services/session-service";
 import { dayIndexFromString } from "@/helpers/date";
 
 @Module({ name: "Sessions", store: Store, dynamic: true })
@@ -32,8 +32,8 @@ class Sessions extends VuexModule {
   }
 
   @Mutation
-  setList(slots: ISession[]) {
-    this.list = slots;
+  setList(sessions: ISession[]) {
+    this.list = sessions;
   }
 
   @Action
@@ -46,15 +46,15 @@ class Sessions extends VuexModule {
     return sortBy(this.details.recipients, ["name"]);
   }
 
-  // TODO: fetch session slot
+  // TODO: fetch session
   // @Action
   // async fetchSession(sessionId: string) {
-  // const slot = await SessionService.get(sessionId);
-  // this.context.commit("setSession", slot);
+  // const session = await SessionService.get(sessionId);
+  // this.context.commit("setSession", session);
   // }
 
   @Action
-  async fetchAllocationsForSlot({ sessionId, sessionDate }: { sessionId: string; sessionDate: string }) {
+  async fetchAllocationsForSession({ sessionId, sessionDate }: { sessionId: string; sessionDate: string }) {
     const { categoryAllocations, date } = await AllocationService.getForSession(sessionId, sessionDate);
     this.context.commit("setDate", date);
     this.context.commit("setAllocations", categoryAllocations);

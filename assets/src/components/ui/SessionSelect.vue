@@ -2,13 +2,13 @@
   <ValidatedSelect
     :rules="{ required: required }"
     :value="value"
-    name="Session slot"
+    name="Session"
     placeholder="Select an option"
     expanded
     @input="$emit('input', $event)"
   >
-    <option v-for="slot in sessions" :key="slot.id" :value="slot.id">
-      {{ slot.day | capitalize }} - {{ slot.time | formatTime }}
+    <option v-for="session in sessions" :key="session.id" :value="session.id">
+      {{ session.day | capitalize }} - {{ session.time | formatTime }}
     </option>
   </ValidatedSelect>
 </template>
@@ -16,9 +16,9 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
-import { IScheduledSession } from "@/types";
+import { IRecipientSession } from "@/types";
 import { formatTime } from "@/helpers/date";
 import { capitalize } from "lodash";
 
@@ -26,7 +26,7 @@ import { capitalize } from "lodash";
 export default class SessionSelect extends Vue {
   @Prop({ default: false }) readonly required!: boolean;
   @Prop({ default: "" }) readonly label!: string;
-  @Prop() readonly recipientSessions?: IScheduledSession[];
+  @Prop() readonly recipientSessions?: IRecipientSession[];
   @Prop() readonly value!: string;
   sessions = Sessions.sortedList;
 }

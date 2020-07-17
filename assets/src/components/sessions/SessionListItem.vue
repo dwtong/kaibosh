@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 import { Component, Prop } from "vue-property-decorator";
 import { dateOnDayOfWeek, formatDate } from "@/helpers/date";
 import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue";

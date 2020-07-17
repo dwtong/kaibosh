@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Store from "@/store";
-import { IHold, IScheduledSession } from "@/types";
+import { IHold, IRecipientSession } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import HoldService from "@/services/session-hold-service";
-import ScheduledSessionService from "@/services/scheduled-session-service";
+import RecipientSessionService from "@/services/recipient-session-service";
 
 @Module({ name: "recipientSessions", store: Store, dynamic: true })
 class RecipientSessions extends VuexModule {
-  sessions: IScheduledSession[] = [];
+  sessions: IRecipientSession[] = [];
   errors = null;
 
   get sessionById() {
@@ -20,7 +20,7 @@ class RecipientSessions extends VuexModule {
   @Action
   async fetchSessions(recipientId: string) {
     try {
-      const sessions = await ScheduledSessionService.getForRecipient(recipientId);
+      const sessions = await RecipientSessionService.getForRecipient(recipientId);
       this.context.commit("setSessions", sessions);
     } catch (e) {
       this.context.commit("setErrors", e);
@@ -33,13 +33,13 @@ class RecipientSessions extends VuexModule {
   }
 
   @Mutation
-  addSession(session: IScheduledSession) {
+  addSession(session: IRecipientSession) {
     this.sessions.push(session);
   }
 
   @Mutation
-  modifySession(updatedSession: IScheduledSession, sessionId: string) {
-    const sessionIndex = this.sessions.findIndex((s: IScheduledSession) => s.id === sessionId);
+  modifySession(updatedSession: IRecipientSession, sessionId: string) {
+    const sessionIndex = this.sessions.findIndex((s: IRecipientSession) => s.id === sessionId);
     Vue.set(this.sessions, sessionIndex, updatedSession);
   }
 
@@ -69,8 +69,8 @@ class RecipientSessions extends VuexModule {
   }
 
   @Action
-  async createSession(session: IScheduledSession) {
-    await ScheduledSessionService.create(session.recipientId, { session });
+  async createSession(session: IRecipientSession) {
+    await RecipientSessionService.create(session.recipientId, { session });
 
     if (session?.recipientId) {
       ActiveRecipient.fetchRecipientStatus(session.recipientId);
@@ -79,9 +79,9 @@ class RecipientSessions extends VuexModule {
   }
 
   @Action
-  async updateSession(session: IScheduledSession) {
+  async updateSession(session: IRecipientSession) {
     if (session.id) {
-      await ScheduledSessionService.update(session.recipientId, session.id, { session });
+      await RecipientSessionService.update(session.recipientId, session.id, { session });
 
       if (session.recipientId) {
         ActiveRecipient.fetchRecipientStatus(session.recipientId);
@@ -92,7 +92,7 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async deleteSession({ recipientId, sessionId }: { recipientId: string; sessionId: string }) {
-    await ScheduledSessionService.destroy(recipientId, sessionId);
+    await RecipientSessionService.destroy(recipientId, sessionId);
     ActiveRecipient.fetchRecipientStatus(recipientId);
     this.fetchSessions(sessionId);
   }

@@ -46,7 +46,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession } from "@/types";
+import { IRecipientSession } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import ModalForm from "@/components/ui/ModalForm.vue";
 import ValidatedDate from "@/components/ui/ValidatedDate.vue";
@@ -54,16 +54,16 @@ import toast from "@/helpers/toast";
 
 @Component({ components: { ValidatedDate, ModalForm } })
 export default class HoldModal extends Vue {
-  @Prop() scheduledSessions!: IScheduledSession[];
+  @Prop() recipientSessions!: IRecipientSession[];
   startDate: Date = new Date();
   endDate: Date | null = null;
   disableEndDate = false;
   allSessions = false;
-  sessions: IScheduledSession[] = [];
+  sessions: IRecipientSession[] = [];
   isOpen = false;
 
   openModal() {
-    this.sessions = this.scheduledSessions.map(s => {
+    this.sessions = this.recipientSessions.map(s => {
       return { enabled: false, ...s };
     });
     this.isOpen = true;
@@ -101,11 +101,11 @@ export default class HoldModal extends Vue {
     this.sessions.forEach(s => (s.enabled = this.allSessions));
   }
 
-  sessionLabel(session: IScheduledSession) {
+  sessionLabel(session: IRecipientSession) {
     if (session.session) {
       return `${session.session.day} ${session.session.time}`;
     } else {
-      return "";
+      return "xx";
     }
   }
 }

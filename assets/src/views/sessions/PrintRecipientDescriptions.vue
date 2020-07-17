@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
 import Router from "@/router";
@@ -54,7 +54,7 @@ export default class GenerateDescriptionsButton extends Vue {
   }
 
   async created() {
-    // TODO: fetch session slot
+    // TODO: fetch session
     // await Sessions.fetchSession(this.id);
   }
 

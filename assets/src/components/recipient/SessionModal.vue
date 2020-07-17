@@ -27,21 +27,21 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { IScheduledSession, IAllocation } from "@/types";
+import { IRecipientSession, IAllocation } from "@/types";
 import App from "@/store/modules/app";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
 import SessionSelect from "@/components/ui/SessionSelect.vue";
 import ModalForm from "@/components/ui/ModalForm.vue";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 
 @Component({ components: { SessionSelect, AllocationQuantitiesInput, ModalForm } })
 export default class SessionModal extends Vue {
   @Prop({ required: true }) readonly recipientId!: string;
   @Prop({ required: true }) readonly baseId!: string;
-  @Prop({ required: true }) readonly sessions!: IScheduledSession[];
-  @Prop() readonly session?: IScheduledSession;
+  @Prop({ required: true }) readonly sessions!: IRecipientSession[];
+  @Prop() readonly session?: IRecipientSession;
   allocations: IAllocation[] = [];
   selectedSessionId = "";
   loading = true;
@@ -91,7 +91,7 @@ export default class SessionModal extends Vue {
     }
 
     this.$emit("close");
-    toast.success("Scheduled session created.");
+    toast.success(`Session ${this.isExistingSession ? "updated" : "created"}.`);
   }
 }
 </script>

@@ -55,7 +55,7 @@ import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import App from "@/store/modules/app";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
@@ -74,7 +74,7 @@ export default class ShowSession extends Vue {
       date = "";
     }
 
-    await Sessions.fetchAllocationsForSlot({
+    await Sessions.fetchAllocationsForSession({
       sessionId: to.params.id,
       sessionDate: date
     });

@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Sessions from "@/store/modules/session-slots";
+import Sessions from "@/store/modules/sessions";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
