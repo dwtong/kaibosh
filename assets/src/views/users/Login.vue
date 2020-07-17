@@ -93,9 +93,9 @@ export default class Login extends Vue {
     if (UserModule.isAuthenticated) {
       Router.push("/");
     } else {
-      App.disableLoading();
       this.showError = true;
     }
+    App.disableLoading();
   }
 
   async resetPassword() {
