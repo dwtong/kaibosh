@@ -6,7 +6,7 @@
       <ValidatedInput v-model="recipientDetails.name" label="name" :rules="{ required: true }" />
       <BaseSelect v-model="recipientDetails.baseId" label="Kaibosh base" required="true" />
       <AddressField v-model="recipientDetails.physicalAddress" label="Physical address" />
-      <DateField v-model="recipientDetails.startedAt" name="start date" />
+      <ValidatedDate v-model="recipientDetails.startedAt" name="start date" />
       <ValidatedInput v-model="recipientDetails.description" label="description" type="textarea" />
     </div>
 
@@ -29,13 +29,13 @@ import Vue from "vue";
 import { Component, Emit, Prop } from "vue-property-decorator";
 import AddressField from "@/components/ui/AddressField.vue";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
-import DateField from "@/components/ui/DateField.vue";
+import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { IRecipient } from "@/types";
 import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 
-@Component({ components: { AddressField, BaseSelect, DateField, ValidatedForm, ValidatedInput } })
+@Component({ components: { AddressField, BaseSelect, ValidatedDate, ValidatedForm, ValidatedInput } })
 export default class RecipientForm extends Vue {
   @Prop(Object) readonly recipient!: IRecipient;
   recipientDetails: IRecipient = { ...defaultRecipientDetails, contact: { ...defaultRecipientDetails.contact } };

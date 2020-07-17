@@ -4,7 +4,7 @@
       label="Password"
       :value="value"
       type="password"
-      :validation="{ min: 8, required: true }"
+      :rules="{ min: 8, required: true }"
       @input="input"
     />
     <ValidatedInput
@@ -12,7 +12,7 @@
       v-model="confirmationValue"
       label="Password confirmation"
       type="password"
-      :validation="{ is: value, required: true }"
+      :rules="{ is: value, required: true }"
     />
   </div>
 </template>

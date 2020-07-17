@@ -4,35 +4,40 @@
     <ModalForm v-model="isOpen" @submit="saveHold">
       <template v-slot:title>Set hold date</template>
 
-      <div class="columns">
+      <div class="columns modal-card-body">
         <div class="column">
-          <DateField ref="startDate" v-model="startDate" name="start date" required="true" data-vv-as="start date" />
-          <DateField
+          <ValidatedDate
+            ref="startDate"
+            v-model="startDate"
+            name="start date"
+            :rules="{ required: true }"
+            data-vv-as="start date"
+          />
+          <ValidatedDate
             v-model="endDate"
-            v-validate="'date_format:dd/MM/yyyy|after:startDate'"
-            :required="!disableEndDate"
+            :rules="{ required: !disableEndDate }"
             name="End date"
             :disabled="disableEndDate"
             data-vv-as="end date"
           />
 
           <b-checkbox type="is-info" class="end-date-checkbox" @input="toggleEndDate">No end date</b-checkbox>
-        </div>
-      </div>
-      <p class="subtitle">Sessions</p>
-      <b-checkbox
-        type="is-info"
-        :value="allSessions"
-        :required="sessionHolds.length === 0"
-        class="end-date-checkbox"
-        @input="toggleAllSessions"
-        >All sessions</b-checkbox
-      >
+          <p class="subtitle">Sessions</p>
+          <b-checkbox
+            type="is-info"
+            :value="allSessions"
+            :required="sessionHolds.length === 0"
+            class="end-date-checkbox"
+            @input="toggleAllSessions"
+            >All sessions</b-checkbox
+          >
 
-      <div v-for="session in sessions" :key="session.id">
-        <b-checkbox v-model="session.enabled" type="is-info" class="end-date-checkbox" :disabled="allSessions">
-          {{ sessionLabel(session) }}
-        </b-checkbox>
+          <div v-for="session in sessions" :key="session.id">
+            <b-checkbox v-model="session.enabled" type="is-info" class="end-date-checkbox" :disabled="allSessions">
+              {{ sessionLabel(session) }}
+            </b-checkbox>
+          </div>
+        </div>
       </div>
     </ModalForm>
   </div>
@@ -44,10 +49,10 @@ import { Component, Prop } from "vue-property-decorator";
 import { IScheduledSession } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import ModalForm from "@/components/ui/ModalForm.vue";
-import DateField from "@/components/ui/DateField.vue";
+import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import toast from "@/helpers/toast";
 
-@Component({ components: { DateField, ModalForm } })
+@Component({ components: { ValidatedDate, ModalForm } })
 export default class HoldModal extends Vue {
   @Prop() scheduledSessions!: IScheduledSession[];
   startDate: Date = new Date();
