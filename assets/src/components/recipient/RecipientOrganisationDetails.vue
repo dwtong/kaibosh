@@ -51,7 +51,7 @@ export default class RecipientOrganisationDetails extends Vue {
 
   get startDate() {
     const date = ActiveRecipient.details?.startedAt;
-    return date ? formatDate(new Date(date), "dd/MM/yyyy") : null;
+    return date ? formatDate(new Date(date)) : null;
   }
 }
 </script>

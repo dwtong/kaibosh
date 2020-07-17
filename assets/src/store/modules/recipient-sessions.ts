@@ -44,28 +44,20 @@ class RecipientSessions extends VuexModule {
   }
 
   @Action
-  async createHolds(holds: IHold[]) {
+  async createHolds({ recipientId, holds }: { recipientId: string; holds: IHold[] }) {
     for (const hold of holds) {
-      await HoldService.create(hold);
+      await HoldService.create(recipientId, hold);
     }
 
-    const session = this.sessionById(holds[0].sessionId);
-
-    if (session && session.recipientId) {
-      ActiveRecipient.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
-    }
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(recipientId);
   }
 
   @Action
-  async deleteHold(holdId: string, sessionId: string) {
-    await HoldService.destroy(holdId);
-    const session = this.sessionById(sessionId);
-
-    if (session?.recipientId) {
-      ActiveRecipient.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
-    }
+  async deleteHold({ recipientId, holdId }: { recipientId: string; holdId: string }) {
+    await HoldService.destroy(recipientId, holdId);
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(recipientId);
   }
 
   @Action

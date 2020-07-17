@@ -1,8 +1,6 @@
 import { post, destroy } from "./api-service";
 
-const resource = "sessions/holds";
-
 export default {
-  destroy: (id: string) => destroy(`${resource}/${id}`),
-  create: (params: object) => post(resource, { sessionHold: params })
+  create: (recipientId: string, hold: object) => post(`recipients/${recipientId}/holds/`, { hold }),
+  destroy: (recipientId: string, holdId: string) => destroy(`recipients/${recipientId}/holds/${holdId}`)
 };

@@ -2,7 +2,8 @@
   <table>
     <tbody>
       <tr v-for="hold in sortedHolds" :key="hold.id" :hold="hold">
-        <td>{{ label(hold) }}</td>
+        <td v-if="hold.endsAt">{{ hold.startsAt | formatDate }} - {{ hold.endsAt | formatDate }}</td>
+        <td v-else>{{ hold.startsAt | formatDate }} - (no end date)</td>
         <td>
           <a class="delete is-medium" @click="removeHold(hold.id)"></a>
         </td>
@@ -16,27 +17,20 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import RecipientSessions from "@/store/modules/recipient-sessions";
+import { formatDate } from "@/helpers/date";
 import { sortBy } from "lodash";
 
-@Component
+@Component({ filters: { formatDate } })
 export default class HoldTr extends Vue {
   @Prop() readonly holds!: any[];
-  @Prop() readonly sessionId!: string;
+  @Prop() readonly recipientId!: string;
 
   get sortedHolds() {
     return sortBy(this.holds, ["startsAt"]);
   }
 
   removeHold(holdId: string) {
-    RecipientSessions.deleteHold(this.sessionId, holdId);
-  }
-
-  label(hold: any) {
-    if (hold.endsAt) {
-      return `${hold.startsAt} - ${hold.endsAt}`;
-    } else {
-      return `${hold.startsAt} - (no end date)`;
-    }
+    RecipientSessions.deleteHold({ recipientId: this.recipientId, holdId });
   }
 }
 </script>

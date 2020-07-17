@@ -34,7 +34,7 @@
 
           <div v-for="session in sessions" :key="session.id">
             <b-checkbox v-model="session.enabled" type="is-info" class="end-date-checkbox" :disabled="allSessions">
-              {{ sessionLabel(session) }}
+              <SessionLabel :session="session" />
             </b-checkbox>
           </div>
         </div>
@@ -49,12 +49,14 @@ import { Component, Prop } from "vue-property-decorator";
 import { IRecipientSession } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import ModalForm from "@/components/ui/ModalForm.vue";
+import SessionLabel from "@/components/ui/SessionLabel.vue";
 import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import toast from "@/helpers/toast";
 
-@Component({ components: { ValidatedDate, ModalForm } })
+@Component({ components: { SessionLabel, ValidatedDate, ModalForm } })
 export default class HoldModal extends Vue {
   @Prop() recipientSessions!: IRecipientSession[];
+  @Prop() recipientId!: string;
   startDate: Date = new Date();
   endDate: Date | null = null;
   disableEndDate = false;
@@ -71,7 +73,7 @@ export default class HoldModal extends Vue {
 
   async saveHold() {
     if (this.sessionHolds.length > 0) {
-      await RecipientSessions.createHolds(this.sessionHolds);
+      await RecipientSessions.createHolds({ recipientId: this.recipientId, holds: this.sessionHolds });
       this.$emit("close");
       toast.success("Session hold created.");
     }
@@ -84,9 +86,9 @@ export default class HoldModal extends Vue {
       .filter(s => s.enabled)
       .map(s => {
         return {
-          sessionId: s.id ?? "",
-          startsAt: this.startDate.toString(),
-          endsAt: endDate ? endDate.toString() : ""
+          recipientSessionId: s.id,
+          startsAt: this.startDate.toISOString(),
+          endsAt: endDate ? endDate.toISOString() : ""
         };
       })
       .filter(h => h !== null);
@@ -99,14 +101,6 @@ export default class HoldModal extends Vue {
   toggleAllSessions() {
     this.allSessions = !this.allSessions;
     this.sessions.forEach(s => (s.enabled = this.allSessions));
-  }
-
-  sessionLabel(session: IRecipientSession) {
-    if (session.session) {
-      return `${session.session.day} ${session.session.time}`;
-    } else {
-      return "xx";
-    }
   }
 }
 </script>

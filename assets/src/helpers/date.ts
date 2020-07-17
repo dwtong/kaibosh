@@ -6,7 +6,7 @@ export const thisWeek = startOfWeek(today, { weekStartsOn: 1 });
 
 export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
-export const formatDate = (date: Date, datePattern: string): string => {
+export const formatDate = (date: Date, datePattern = "dd/MM/yyyy"): string => {
   return format(new Date(date), datePattern, {});
 };
 

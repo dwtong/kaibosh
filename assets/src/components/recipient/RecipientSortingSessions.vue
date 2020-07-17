@@ -23,7 +23,7 @@
               Add Hold Date
             </a>
           </b-tooltip>
-          <HoldModal v-else v-slot="{ open }" :recipient-sessions="recipientSessions">
+          <HoldModal v-else v-slot="{ open }" :recipient-sessions="recipientSessions" :recipient-id="id">
             <a class="button is-warning" @click="open">Add Hold Date</a>
           </HoldModal>
         </p>

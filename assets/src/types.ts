@@ -32,7 +32,7 @@ export interface ICategory {
 
 export interface IHold {
   id?: string;
-  sessionId: string;
+  recipientSessionId: string;
   startsAt: string;
   endsAt: string;
 }

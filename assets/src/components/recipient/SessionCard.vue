@@ -20,7 +20,7 @@
       <div class="card-content">
         <div v-if="recipientSession.holds && recipientSession.holds.length > 0" class="content">
           <p class="label">Session Holds</p>
-          <HoldsList :holds="recipientSession.holds" :session-id="recipientSession.id" />
+          <HoldsList :holds="recipientSession.holds" :recipient-id="recipientId" />
         </div>
 
         <div class="content">
