@@ -48,7 +48,12 @@ defmodule Kaibosh.RecipientSessions do
     RecipientSession.changeset(recipient_session, attrs)
   end
 
-  def get_hold!(id), do: Repo.get!(Hold, id)
+  def get_hold_for_recipient!(hold_id, recipient_id) do
+    Hold
+    |> join(:inner, [h], rs in assoc(h, :recipient_session))
+    |> where([h, rs], rs.recipient_id == ^recipient_id and h.id == ^hold_id)
+    |> Repo.one!()
+  end
 
   def create_hold(attrs \\ %{}) do
     %Hold{}

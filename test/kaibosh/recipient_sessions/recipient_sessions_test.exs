@@ -186,6 +186,11 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert {:ok, %Hold{} = hold} = RecipientSessions.create_hold(attrs)
       assert hold.ends_at == ~U[2010-04-17 14:00:00.000000Z]
       assert hold.starts_at == ~U[2010-04-17 14:00:00.000000Z]
+
+      assert RecipientSessions.get_hold_for_recipient!(
+               hold.id,
+               recipient_session.recipient_id
+             ) == hold
     end
 
     test "create_hold/1 with invalid data returns error changeset" do
@@ -193,9 +198,12 @@ defmodule Kaibosh.RecipientSessionsTest do
     end
 
     test "delete_hold/1 deletes the hold" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
+      hold = insert(:hold)
       assert {:ok, %Hold{}} = RecipientSessions.delete_hold(hold)
-      assert_raise Ecto.NoResultsError, fn -> RecipientSessions.get_hold!(hold.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        RecipientSessions.get_hold_for_recipient!(hold.id, hold.recipient_session.recipient_id)
+      end
     end
   end
 

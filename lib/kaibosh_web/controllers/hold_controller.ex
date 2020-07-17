@@ -18,8 +18,8 @@ defmodule KaiboshWeb.HoldController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    hold = RecipientSessions.get_hold!(id)
+  def delete(conn, %{"id" => hold_id, "recipient_id" => recipient_id}) do
+    hold = RecipientSessions.get_hold_for_recipient!(hold_id, recipient_id)
 
     with {:ok, %Hold{}} <- RecipientSessions.delete_hold(hold) do
       send_resp(conn, :no_content, "")
