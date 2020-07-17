@@ -9,8 +9,9 @@ defmodule Kaibosh.RecipientSessions do
   alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.RecipientSessions.RecipientSession
 
-  def list_sessions do
+  def list_sessions_for_recipient(recipient_id) do
     RecipientSession
+    |> where(recipient_id: ^recipient_id)
     |> preload([:allocations, :holds, :session])
     |> Repo.all()
   end

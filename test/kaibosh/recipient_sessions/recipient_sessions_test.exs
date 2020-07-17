@@ -11,10 +11,18 @@ defmodule Kaibosh.RecipientSessionsTest do
   describe "getting and listing recipient sessions" do
     setup [:create_recipient_session_with_associations]
 
-    test "list_sessions/0 returns all recipient sessions with associations" do
-      assert [%RecipientSession{} = session] = RecipientSessions.list_sessions()
+    test "listing sessions returns all recipient's sessions", %{recipient_id: recipient_id} do
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{} = session] = sessions
       assert length(session.allocations) == 1
       assert length(session.holds) == 1
+    end
+
+    test "listing sessions does not return other sessions", %{recipient_id: recipient_id} do
+      %{id: other_session_id} = insert(:recipient_session)
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert length(sessions) == 1
+      refute Enum.any?(sessions, &(&1.id == other_session_id))
     end
 
     test "get_session!/1 returns the session with given id", %{recipient_session: %{id: id}} do
@@ -200,6 +208,6 @@ defmodule Kaibosh.RecipientSessionsTest do
     expected_session =
       Repo.get(RecipientSession, recipient_session.id) |> Repo.preload([:allocations, :holds])
 
-    %{recipient_session: expected_session}
+    %{recipient_session: expected_session, recipient_id: recipient_session.recipient_id}
   end
 end
