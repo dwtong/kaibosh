@@ -1,10 +1,6 @@
-defmodule KaiboshWeb.Admin.HoldView do
+defmodule KaiboshWeb.HoldView do
   use KaiboshWeb, :view
-  alias KaiboshWeb.Admin.HoldView
-
-  def render("index.json", %{holds: holds}) do
-    %{data: render_many(holds, HoldView, "hold.json")}
-  end
+  alias KaiboshWeb.HoldView
 
   def render("show.json", %{hold: hold}) do
     %{data: render_one(hold, HoldView, "hold.json")}

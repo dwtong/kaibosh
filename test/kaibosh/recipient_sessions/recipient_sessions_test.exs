@@ -126,6 +126,19 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2_keep.quantity)))
     end
 
+    test "update_session/2 does not delete existing allocations when field is not set" do
+      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      category = insert(:category)
+      insert(:allocation, category: category, recipient_session: recipient_session)
+      insert(:allocation, category: category, recipient_session: recipient_session)
+      attrs = %{holds: []}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.update_session(recipient_session, attrs)
+
+      assert length(allocations) == 2
+    end
+
     test "update_session/2 with invalid data returns error changeset" do
       recipient_session =
         insert(:recipient_session)
