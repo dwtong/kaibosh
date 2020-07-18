@@ -3,7 +3,6 @@ import Store from "@/store";
 import { IHold, IRecipientSession } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import ActiveRecipient from "@/store/modules/active-recipient";
-import HoldService from "@/services/session-hold-service";
 import RecipientSessionService from "@/services/recipient-session-service";
 
 @Module({ name: "recipientSessions", store: Store, dynamic: true })
@@ -46,7 +45,7 @@ class RecipientSessions extends VuexModule {
   @Action
   async createHolds({ recipientId, holds }: { recipientId: string; holds: IHold[] }) {
     for (const hold of holds) {
-      await HoldService.create(recipientId, hold);
+      await RecipientSessionService.createHold(recipientId, hold);
     }
 
     ActiveRecipient.fetchRecipientStatus(recipientId);
@@ -55,7 +54,7 @@ class RecipientSessions extends VuexModule {
 
   @Action
   async deleteHold({ recipientId, holdId }: { recipientId: string; holdId: string }) {
-    await HoldService.destroy(recipientId, holdId);
+    await RecipientSessionService.destroyHold(recipientId, holdId);
     ActiveRecipient.fetchRecipientStatus(recipientId);
     this.fetchSessions(recipientId);
   }
