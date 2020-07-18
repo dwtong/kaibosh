@@ -12,7 +12,7 @@
       <div class="level-item"></div>
       <div class="level-right">
         <div class="level-item">
-          <HoldStatusTag :status="recipientSession.holdStatus" />
+          <HoldStatusTag :status="recipientSession.status" />
         </div>
       </div>
     </div>

@@ -17,8 +17,9 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
       assert [%{"id" => id, "allocations" => allocations, "holds" => holds} = session] =
                json_response(conn, 200)
 
-      assert Map.keys(session) == ~w(allocations day holds id session_id time)
+      assert Map.keys(session) == ~w(allocations day holds id session_id status time)
       assert id == expected_session.id
+      assert session["status"] == "on_hold"
       assert length(allocations) == 1
       assert length(holds) == 1
     end

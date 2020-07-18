@@ -80,7 +80,7 @@ export interface IRecipientSession {
   recipientId: string;
   session?: ISession;
   sessionId?: string;
-  holdStatus?: string;
+  status?: string;
 }
 
 export interface IStatus {
