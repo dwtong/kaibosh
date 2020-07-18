@@ -6,7 +6,7 @@
       <ValidatedInput v-model="recipientDetails.name" label="name" :rules="{ required: true }" />
       <BaseSelect v-model="recipientDetails.baseId" label="Kaibosh base" required="true" />
       <AddressField v-model="recipientDetails.physicalAddress" label="Physical address" />
-      <ValidatedDate v-model="recipientDetails.startedAt" name="start date" />
+      <ValidatedDate v-model="recipientDetails.startedAt" label="start date" />
       <ValidatedInput v-model="recipientDetails.description" label="description" type="textarea" />
     </div>
 
