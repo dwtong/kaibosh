@@ -49,6 +49,7 @@ import RecipientContactDetails from "@/components/recipient/RecipientContactDeta
 import RecipientSortingSessions from "@/components/recipient/RecipientSortingSessions.vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import App from "@/store/modules/app";
+import Sessions from "@/store/modules/sessions";
 import LoadRecipient from "@/mixins/load-recipient";
 
 @Component({
@@ -74,6 +75,10 @@ export default class ShowRecipient extends Vue {
 
   get name() {
     return ActiveRecipient.details?.name;
+  }
+
+  async created() {
+    await Promise.all([App.fetchCategories(this.baseId), Sessions.fetchList(this.baseId)]);
   }
 
   async archiveRecipient() {

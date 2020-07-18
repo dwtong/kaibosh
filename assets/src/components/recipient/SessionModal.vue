@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot :open="openModal"></slot>
-    <ModalForm v-model="isOpen" :loading="loading" @submit="saveSession">
+    <ModalForm v-model="isOpen" @submit="saveSession">
       <template v-slot:title>{{ isExistingSession ? "Edit " : "Add" }} Sorting Session</template>
 
       <div class="columns">
@@ -44,18 +44,13 @@ export default class SessionModal extends Vue {
   @Prop() readonly session?: IRecipientSession;
   allocations: IAllocation[] = [];
   selectedSessionId = "";
-  loading = true;
   isOpen = false;
 
   async created() {
-    await Promise.all([App.fetchCategories(this.baseId), Sessions.fetchList(this.baseId)]);
-
     if (this.session) {
       this.allocations = this.session.allocations ? [...this.session.allocations] : [];
       this.selectedSessionId = this.session.sessionId ?? "";
     }
-
-    this.loading = false;
   }
 
   get isExistingSession(): boolean {
@@ -63,7 +58,7 @@ export default class SessionModal extends Vue {
   }
 
   get showCategories(): boolean {
-    return !this.loading && this.selectedSessionId !== "" && !this.sessionExists;
+    return this.selectedSessionId !== "" && !this.sessionExists;
   }
 
   get sessionExists(): boolean {
