@@ -32,6 +32,34 @@ defmodule Kaibosh.RecipientSessionsTest do
     end
   end
 
+  describe "recipient session status" do
+    setup [:create_recipient_session_with_associations]
+
+    test "listing sessions includes session status", %{recipient_id: recipient_id} do
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{id: id, status: status, holds: [hold]}] = sessions
+      assert status == :on_hold
+
+      RecipientSessions.delete_hold(hold)
+
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{status: status}] = sessions
+      assert status == :active
+    end
+
+    test "getting session includes session status", %{recipient_session: %{id: id}} do
+      assert %RecipientSession{id: id, status: status, holds: [hold]} =
+               RecipientSessions.get_session!(id)
+
+      assert status == :on_hold
+
+      RecipientSessions.delete_hold(hold)
+
+      assert %RecipientSession{id: id, status: status} = RecipientSessions.get_session!(id)
+      assert status == :active
+    end
+  end
+
   describe "creating recipient sessions and allocations" do
     setup [:create_session, :create_recipient]
 

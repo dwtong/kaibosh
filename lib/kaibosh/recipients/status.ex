@@ -7,6 +7,7 @@ defmodule Kaibosh.Recipients.Status do
   """
   alias Kaibosh.Recipients.Recipient
   import Ecto.Query
+  import Kaibosh.Utils.Date
 
   def put({:ok, recipient}), do: {:ok, put(recipient)}
   def put(%Recipient{} = recipient), do: %{recipient | status: status(recipient)}
@@ -28,9 +29,7 @@ defmodule Kaibosh.Recipients.Status do
     end
   end
 
-  defp starts_in_future?(%Recipient{started_at: started_at}) do
-    DateTime.compare(started_at, DateTime.utc_now()) == :gt
-  end
+  defp starts_in_future?(%Recipient{started_at: started_at}), do: future_date?(started_at)
 
   defp all_sessions_on_hold?(%Recipient{session_count: sessions, hold_count: holds}) do
     holds && holds > 0 && holds == sessions

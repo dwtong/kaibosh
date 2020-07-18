@@ -8,12 +8,14 @@ defmodule Kaibosh.RecipientSessions do
 
   alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.RecipientSessions.RecipientSession
+  alias Kaibosh.RecipientSessions.Status
 
   def list_sessions_for_recipient(recipient_id) do
     RecipientSession
     |> where(recipient_id: ^recipient_id)
     |> preload([:allocations, :holds, :session])
     |> Repo.all()
+    |> Enum.map(&Status.put/1)
   end
 
   def get_session!(id) do
@@ -21,6 +23,7 @@ defmodule Kaibosh.RecipientSessions do
     |> where(id: ^id)
     |> preload([:allocations, :holds, :session])
     |> Repo.one!()
+    |> Status.put()
   end
 
   def create_session(attrs \\ %{}) do

@@ -16,6 +16,8 @@ defmodule Kaibosh.RecipientSessions.RecipientSession do
     has_many :holds, Hold
     has_many :allocations, Allocation, on_replace: :delete
 
+    field :status, :string, virtual: true
+
     timestamps()
   end
 
