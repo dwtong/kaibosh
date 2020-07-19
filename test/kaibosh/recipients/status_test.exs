@@ -1,5 +1,6 @@
 defmodule Kaibosh.Recipients.StatusTest do
   use Kaibosh.DataCase
+  import Kaibosh.Recipients.Query
   alias Kaibosh.Recipients.Status
 
   describe "status for recipient with no sessions" do
@@ -85,9 +86,9 @@ defmodule Kaibosh.Recipients.StatusTest do
     end
   end
 
-  defp fetch_status(id) do
-    Status.recipient_with_status_query()
-    |> where(id: ^id)
+  defp fetch_status(recipient_id) do
+    recipient_id
+    |> get_recipient_by_id()
     |> Repo.one!()
     |> Status.get()
   end
