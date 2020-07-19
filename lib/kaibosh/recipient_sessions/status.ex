@@ -2,7 +2,7 @@ defmodule Kaibosh.RecipientSessions.Status do
   @moduledoc """
   Generates a status for a recipient session.
   """
-  import Kaibosh.Utils.Date
+  import Kaibosh.Date
   alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.RecipientSessions.RecipientSession
 

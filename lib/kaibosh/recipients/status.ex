@@ -7,7 +7,7 @@ defmodule Kaibosh.Recipients.Status do
   """
   alias Kaibosh.Recipients.Recipient
   import Ecto.Query
-  import Kaibosh.Utils.Date
+  import Kaibosh.Date
 
   def put({:ok, recipient}), do: {:ok, put(recipient)}
   def put(%Recipient{} = recipient), do: %{recipient | status: status(recipient)}

@@ -1,4 +1,4 @@
-defmodule Kaibosh.Utils.Date do
+defmodule Kaibosh.Date do
   @moduledoc """
   Various helper functions for handling dates.
   """
