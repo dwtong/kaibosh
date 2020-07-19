@@ -2,14 +2,12 @@ defmodule Kaibosh.Organisations do
   @moduledoc """
   The Organisations context.
   """
-
-  import Ecto.Query, warn: false
-  alias Kaibosh.Repo
-
+  import Kaibosh.Organisations.Query
   alias Kaibosh.Organisations.Base
   alias Kaibosh.Organisations.Category
   alias Kaibosh.Organisations.Organisation
   alias Kaibosh.Organisations.Staff
+  alias Kaibosh.Repo
 
   def list_organisations do
     Repo.all(Organisation)
@@ -42,8 +40,8 @@ defmodule Kaibosh.Organisations do
   end
 
   def list_bases_for_org(org_id) do
-    Base
-    |> where(organisation_id: ^org_id)
+    org_id
+    |> get_base_by_org_id()
     |> Repo.all()
   end
 
@@ -74,9 +72,8 @@ defmodule Kaibosh.Organisations do
   end
 
   def list_staff_for_org(org_id) do
-    Staff
-    |> join(:inner, [s], b in assoc(s, :base))
-    |> where([s, b], b.organisation_id == ^org_id)
+    org_id
+    |> get_staff_by_org_id()
     |> Repo.all()
   end
 
@@ -103,8 +100,8 @@ defmodule Kaibosh.Organisations do
   end
 
   def list_categories_for_base(base_id) do
-    Category
-    |> where(base_id: ^base_id)
+    base_id
+    |> get_category_by_base_id()
     |> Repo.all()
   end
 

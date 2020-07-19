@@ -6,7 +6,6 @@ defmodule Kaibosh.Recipients.Status do
   schema and on any associated sessions and holds.
   """
   alias Kaibosh.Recipients.Recipient
-  import Ecto.Query
   import Kaibosh.Date
 
   def put({:ok, recipient}), do: {:ok, put(recipient)}
@@ -33,27 +32,5 @@ defmodule Kaibosh.Recipients.Status do
 
   defp all_sessions_on_hold?(%Recipient{session_count: sessions, hold_count: holds}) do
     holds && holds > 0 && holds == sessions
-  end
-
-  def recipient_with_status_query do
-    Recipient
-    |> join(:left, [r], s in subquery(sessions_query()), on: r.id == s.recipient_id)
-    |> join(:left, [r, s], h in subquery(holds_query()), on: r.id == h.recipient_id)
-    |> select_merge([r, s, h], %{r | session_count: s.count, hold_count: h.count})
-  end
-
-  defp sessions_query do
-    "recipient_sessions"
-    |> group_by([s], s.recipient_id)
-    |> select([s], %{count: count(s.id), recipient_id: s.recipient_id})
-  end
-
-  defp holds_query do
-    "holds"
-    |> join(:inner, [h], s in "recipient_sessions", on: s.id == h.recipient_session_id)
-    |> where([h], h.starts_at < ^DateTime.utc_now())
-    |> where([h], is_nil(h.ends_at) or h.ends_at > ^DateTime.utc_now())
-    |> group_by([h, s], s.recipient_id)
-    |> select([h, s], %{count: count(h.id), recipient_id: s.recipient_id})
   end
 end

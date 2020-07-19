@@ -2,24 +2,21 @@ defmodule Kaibosh.Recipients do
   @moduledoc """
   The Recipients context.
   """
-
-  import Ecto.Query, warn: false
-  alias Kaibosh.Repo
+  import Kaibosh.Recipients.Query
 
   alias Kaibosh.Recipients.Recipient
   alias Kaibosh.Recipients.Status
+  alias Kaibosh.Repo
 
   def list_recipients do
-    Status.recipient_with_status_query()
+    get_recipients()
     |> Repo.all()
     |> Enum.map(&Status.put/1)
   end
 
-  def get_recipient!(id) do
-    Status.recipient_with_status_query()
-    |> where(id: ^id)
-    |> join(:left, [r], c in assoc(r, :contact))
-    |> preload(:contact)
+  def get_recipient!(recipient_id) do
+    recipient_id
+    |> get_recipient_by_id()
     |> Repo.one!()
     |> Status.put()
   end

@@ -2,12 +2,11 @@ defmodule Kaibosh.Accounts do
   @moduledoc """
   The Accounts context.
   """
-
-  import Ecto.Query, warn: false
-  alias Kaibosh.Repo
+  import Kaibosh.Accounts.Query
 
   alias Kaibosh.Accounts.User
   alias Kaibosh.Accounts.UserSession
+  alias Kaibosh.Repo
 
   def list_users do
     Repo.all(User)
@@ -46,15 +45,15 @@ defmodule Kaibosh.Accounts do
     end
   end
 
-  def sign_out(token) do
-    UserSession
-    |> where(token: ^token)
+  def sign_out(session_token) do
+    session_token
+    |> get_session_by_token()
     |> Repo.delete_all()
   end
 
   def get_user_session(session_token) do
-    UserSession
-    |> where(token: ^session_token)
+    session_token
+    |> get_session_by_token()
     |> Repo.one()
   end
 end

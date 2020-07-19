@@ -2,15 +2,13 @@ defmodule Kaibosh.Sessions do
   @moduledoc """
   The Sessions context.
   """
-
-  import Ecto.Query, warn: false
+  import Kaibosh.Sessions.Query
   alias Kaibosh.Repo
-
   alias Kaibosh.Sessions.Session
 
   def list_sessions_for_base(base_id) do
-    Session
-    |> where(base_id: ^base_id)
+    base_id
+    |> get_sessions_by_base_id()
     |> Repo.all()
   end
 
