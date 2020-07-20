@@ -2,14 +2,13 @@ defmodule Kaibosh.Sessions.Session do
   @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.Base
   alias Kaibosh.Sessions.Session
 
   @allowed_attrs [:day, :time, :base_id]
   @required_attrs [:day, :time, :base_id]
 
   schema "sessions" do
-    belongs_to :base, Base
+    belongs_to :base, Kaibosh.Organisations.Base
 
     field :day, :string
     field :time, :time

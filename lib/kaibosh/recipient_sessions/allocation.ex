@@ -2,7 +2,6 @@ defmodule Kaibosh.RecipientSessions.Allocation do
   @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.Category
   alias Kaibosh.RecipientSessions.Allocation
   alias Kaibosh.RecipientSessions.RecipientSession
 
@@ -10,7 +9,7 @@ defmodule Kaibosh.RecipientSessions.Allocation do
   @required_attrs [:category_id]
 
   schema "allocations" do
-    belongs_to :category, Category
+    belongs_to :category, Kaibosh.Organisations.Category
     belongs_to :recipient_session, RecipientSession
 
     field :quantity, :decimal
