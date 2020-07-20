@@ -1,9 +1,11 @@
-import { startOfDay, startOfWeek, format, addDays } from "date-fns";
+import { endOfDay, startOfDay, startOfWeek, format, addDays, addMinutes } from "date-fns";
 
 export const listOfDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 export const today = startOfDay(new Date());
 export const thisWeek = startOfWeek(today, { weekStartsOn: 1 });
 
+export const startOfDayString = (date: Date) => startOfDay(date).toISOString();
+export const endOfDayString = (date: Date) => endOfDay(date).toISOString();
 export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
 export const formatDate = (date: Date, datePattern = "dd/MM/yyyy"): string => {

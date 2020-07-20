@@ -52,6 +52,7 @@ import ModalForm from "@/components/ui/ModalForm.vue";
 import SessionLabel from "@/components/ui/SessionLabel.vue";
 import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import toast from "@/helpers/toast";
+import { startOfDayString, endOfDayString } from "@/helpers/date";
 
 @Component({ components: { SessionLabel, ValidatedDate, ModalForm } })
 export default class HoldModal extends Vue {
@@ -87,8 +88,8 @@ export default class HoldModal extends Vue {
       .map(s => {
         return {
           recipientSessionId: s.id,
-          startsAt: this.startDate.toISOString(),
-          endsAt: endDate ? endDate.toISOString() : ""
+          startsAt: startOfDayString(this.startDate),
+          endsAt: endDate ? endOfDayString(endDate) : ""
         };
       })
       .filter(h => h !== null);
