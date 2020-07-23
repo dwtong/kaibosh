@@ -1,3 +1,4 @@
+import_if_available(Ecto.Query)
 alias Kaibosh.Accounts
 alias Kaibosh.Accounts.User
 alias Kaibosh.Organisations

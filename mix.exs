@@ -6,7 +6,6 @@ defmodule Kaibosh.MixProject do
       app: :kaibosh,
       version: "0.1.0",
       elixir: "~> 1.10",
-      elixirc_options: [warnings_as_errors: true],
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -55,6 +54,8 @@ defmodule Kaibosh.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:argon2_elixir, "~> 2.3"},
+      {:timex, "~> 3.6"},
+      {:excoveralls, "~> 0.13.0"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},

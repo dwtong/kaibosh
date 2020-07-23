@@ -37,6 +37,7 @@ defmodule KaiboshWeb.Router do
     resources "/bases", BaseController, only: [:index] do
       resources "/categories", CategoryController, only: [:index]
       resources "/sessions", SessionController, only: [:index]
+      resources "/plans", SessionPlanController, only: [:index, :show]
     end
 
     resources "/recipients", RecipientController, except: [:new, :edit] do
