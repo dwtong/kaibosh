@@ -34,7 +34,8 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
 
     test "shows plan for a given session on given date", %{
       conn: conn,
-      recipient_session: recipient_session
+      recipient_session: recipient_session,
+      allocation: allocation
     } do
       conn =
         get(
@@ -48,7 +49,7 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
           )
         )
 
-      assert %{"session" => session, "recipients" => [recipient], "allocations" => allocations} =
+      assert %{"session" => session, "recipients" => [recipient], "allocations" => [a1, a2]} =
                json_response(conn, 200)
 
       assert session["id"] == recipient_session.session_id
@@ -57,7 +58,9 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
       assert recipient["id"] == recipient_session.recipient_id
       assert recipient["status"] == "active"
 
-      assert length(allocations) == 2
+      assert a1["quantity"] == Decimal.to_string(allocation.quantity)
+      assert a1["category_id"] == allocation.category_id
+      assert a1["recipient_id"] == allocation.recipient_session.recipient_id
     end
   end
 
@@ -66,11 +69,11 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
     session = insert(:session, base: base)
     recipient = insert(:recipient, base: base)
     recipient_session = insert(:recipient_session, recipient: recipient, session: session)
-    insert(:allocation, recipient_session: recipient_session, quantity: 5)
+    allocation = insert(:allocation, recipient_session: recipient_session, quantity: 5)
 
     %{recipient_session: recipient_session} =
       insert(:allocation, recipient_session: recipient_session)
 
-    %{recipient_session: recipient_session}
+    %{recipient_session: recipient_session, allocation: allocation}
   end
 end

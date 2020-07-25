@@ -43,7 +43,8 @@ defmodule KaiboshWeb.SessionPlanView do
   def render("allocation.json", %{allocation: allocation}) do
     %{
       quantity: allocation.quantity,
-      category_id: allocation.category_id
+      category_id: allocation.category_id,
+      recipient_id: allocation.recipient_id
     }
   end
 end

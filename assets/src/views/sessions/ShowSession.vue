@@ -39,8 +39,8 @@
             </div>
 
             <div class="content">
-              <div v-for="allocation in sortCategories(category.allocations)" :key="allocation.id">
-                <SessionRecipient :allocation="allocation" :recipient="allocation.recipient" />
+              <div v-for="allocation in allocationsForCategory(category.id)" :key="allocation.recipientId">
+                <SessionRecipient :quantity="allocation.quantity" :recipient="recipientById(allocation)"/>
               </div>
             </div>
           </div>
@@ -65,6 +65,14 @@ import { Route } from "vue-router/types/router";
 @Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
+
+  recipientById(recipientId: string) {
+    return SessionPlans.recipientById(recipientId);
+  }
+
+  allocationsForCategory(categoryId: string) {
+    return SessionPlans.allocationsForCategory(categoryId)
+  }
 
   async created() {
     App.enableLoading();

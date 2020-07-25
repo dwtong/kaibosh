@@ -1,8 +1,7 @@
 export interface IAllocation {
   categoryId: string;
-  id: string;
+  id?: string;
   quantity: string;
-  quantityLabel: string;
 }
 
 export interface IAllocationCategory {
@@ -75,7 +74,18 @@ export interface ISessionPlan {
     date: Date | string;
     day: string;
     time: string;
+    baseId: string;
   };
+  recipients: IRecipientListItem[];
+}
+
+export interface ISessionPlanDetails {
+  session: {
+    date: Date | string;
+    day: string;
+    time: string;
+  };
+  allocations: IAllocation[];
   recipients: IRecipientListItem[];
 }
 

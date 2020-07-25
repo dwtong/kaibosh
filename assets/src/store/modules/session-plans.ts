@@ -1,5 +1,5 @@
 import { sortBy } from "lodash";
-import { ISessionPlan } from "@/types";
+import { ISessionPlan, ISessionPlanDetails } from "@/types";
 import Store from "@/store";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import SessionPlanService from "@/services/session-plan-service";
@@ -8,7 +8,23 @@ import { capitalize } from "lodash";
 @Module({ name: "sessionPlans", store: Store, dynamic: true })
 class SessionPlans extends VuexModule {
   planList: ISessionPlan[] = [];
-  planDetails: ISessionPlan | null = null;
+  planDetails: ISessionPlanDetails = {
+    session: {
+      date: "",
+      day: "",
+      time: ""
+    },
+    allocations: [],
+    recipients: []
+  };
+
+  get recipientById() {
+    return (id: string) => this.planDetails.recipients.find(r => r.id === id);
+  }
+
+  get allocationsForCategory() {
+    return (categoryId: string) => this.planDetails.allocations.find(a => a.categoryId === categoryId);
+  }
 
   get plansForDay() {
     return (day: string) =>
@@ -30,7 +46,7 @@ class SessionPlans extends VuexModule {
   }
 
   @Mutation
-  setPlanDetails(plan: ISessionPlan) {
+  setPlanDetails(plan: ISessionPlanDetails) {
     this.planDetails = plan;
   }
 
@@ -46,11 +62,6 @@ class SessionPlans extends VuexModule {
   }) {
     const plan = await SessionPlanService.getForSession(baseId, sessionId, date);
     this.context.commit("setPlanDetails", plan);
-  }
-
-  @Mutation
-  setSession(plan: ISessionPlan) {
-    this.planDetails = plan;
   }
 }
 

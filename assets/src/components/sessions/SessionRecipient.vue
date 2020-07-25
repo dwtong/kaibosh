@@ -2,14 +2,14 @@
   <div>
     <div class="print-only" :class="{ inactive: recipientOnHold(recipient) }">
       {{ recipient.name }}
-      <span v-if="allocation && !recipientOnHold(recipient)">
-        <strong>({{ quantityLabel(allocation) }})</strong>
+      <span v-if="quantity && !recipientOnHold(recipient)">
+        <strong>({{ quantityLabel(quantity) }})</strong>
       </span>
     </div>
     <div class="is-hidden-print">
       <div class="allocation-recipient" @click="viewRecipient">
-        <span v-if="allocation && !recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
-          {{ quantityLabel(allocation) }}
+        <span v-if="quantity && !recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
+          {{ quantityLabel(quantity) }}
         </span>
         <span :class="{ inactive: recipientOnHold(recipient) }" class="button is-text">
           {{ recipient.name }}
@@ -25,7 +25,7 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class SessionRecipient extends Vue {
-  @Prop(Object) readonly allocation!: any;
+  @Prop(Object) readonly quantity!: any;
   @Prop(Object) readonly recipient!: any;
 
   recipientOnHold(recipient: any) {
@@ -36,8 +36,9 @@ export default class SessionRecipient extends Vue {
     this.$router.push(`/recipients/${this.recipient.id}`);
   }
 
-  quantityLabel(allocation: any) {
-    return allocation.quantity > 0 ? allocation.quantityLabel : "no max";
+  quantityLabel(quantity: any) {
+    // return allocation.quantity > 0 ? allocation.quantityLabel : "no max";
+    return quantity;
   }
 }
 </script>

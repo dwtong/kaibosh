@@ -48,13 +48,16 @@ defmodule Kaibosh.PlansTest do
       assert %{session: session, allocations: [a1, a2], recipients: [r1]} =
                Plans.get_plan_for_session(base_id, session_id, ~D[2020-01-01])
 
-      assert a1.category_id == apples.id
-      assert a2.category_id == bananas.id
       assert r1.id == recipient_session.recipient.id
       assert r1.name == recipient_session.recipient.name
       assert r1.status == :active
+
+      assert a1.category_id == apples.id
+      assert a2.category_id == bananas.id
       assert a1.quantity == Decimal.cast(5)
       assert a2.quantity == Decimal.cast(2)
+      assert a1.recipient_id == r1.id
+      assert a2.recipient_id == r1.id
     end
   end
 
