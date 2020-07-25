@@ -43,7 +43,8 @@ export default class SessionRecipientList extends Vue {
   }
 
   get date() {
-    return formatDate(this.plan.session.date, "yyyy-MM-dd");
+    const sessionDate = new Date(this.plan.session.date)
+    return formatDate(sessionDate, "yyyy-MM-dd");
   }
 }
 </script>

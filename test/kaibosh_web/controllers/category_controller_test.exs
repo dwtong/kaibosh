@@ -6,11 +6,13 @@ defmodule KaiboshWeb.CategoryControllerTest do
 
     test "lists all categories", %{conn: conn, category: expected_category} do
       conn = get(conn, Routes.base_category_path(conn, :index, expected_category.base_id))
+
       assert [category] = json_response(conn, 200)
-      assert Map.keys(category) == ~w(id name unit)
+      assert Map.keys(category) == ~w(id image_name name unit)
       assert category["id"] == expected_category.id
       assert category["name"] == expected_category.name
       assert category["unit"] == expected_category.unit
+      assert category["image_name"] == expected_category.image_name
     end
   end
 

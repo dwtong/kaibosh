@@ -16,7 +16,7 @@
       <h1 v-if="sessionDate" class="title">
         {{ sessionDate | formatDate("EEEE h:mma") }}
       </h1>
-      <h2 class="subtitle is-4">
+      <h2 v-if="sessionDate" class="subtitle is-4">
         {{ sessionDate | formatDate("MMMM do, Y") }}
       </h2>
     </div>
@@ -26,7 +26,7 @@
         <div class="card">
           <div v-if="category.imageName" class="card-image">
             <figure class="image is-5by1">
-              <img class="category-image" :src="imagePath(category.imageName)" alt />
+              <img v-if="category.imageName" class="category-image" :src="imagePath(category.imageName)" alt />
             </figure>
           </div>
           <div class="card-content">
@@ -40,7 +40,7 @@
 
             <div class="content">
               <div v-for="allocation in allocationsForCategory(category.id)" :key="allocation.recipientId">
-                <SessionRecipient :quantity="allocation.quantity" :recipient="recipientById(allocation)"/>
+                <SessionRecipient v-if="allocation" :allocation="allocation" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>
@@ -66,12 +66,16 @@ import { Route } from "vue-router/types/router";
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
 
-  recipientById(recipientId: string) {
-    return SessionPlans.recipientById(recipientId);
+  allocationsForCategory(categoryId: string) {
+    const allocations = SessionPlans.allocationsForCategory(categoryId).map((a: any) => {
+      return {...a, recipient: SessionPlans.recipientById(a.recipientId)}
+    });
+
+    return sortBy(allocations, a => a.recipient.status)
   }
 
-  allocationsForCategory(categoryId: string) {
-    return SessionPlans.allocationsForCategory(categoryId)
+  recipientById(recipientId: string) {
+    return SessionPlans.recipientById(recipientId);
   }
 
   async created() {
@@ -90,29 +94,17 @@ export default class ShowSession extends Vue {
     return capitalize(str);
   }
 
-  sortCategories(list: IRecipient) {
-    return sortBy(list, ["recipient.status", "recipient.name"]);
-  }
-
   imagePath(imageName: string) {
     const images = require.context("@/assets/images/foods", false, /\.png$/);
     return images("./" + imageName + "-min.png");
   }
 
-  quantity(allocation: IAllocation) {
-    if (parseInt(allocation.quantity, 10) > 0) {
-      return `(${allocation.quantityLabel})`;
-    } else {
-      return "";
-    }
-  }
-
   get categories() {
-    return App.categories;
+    return sortBy(App.categories, "name")
   }
 
   get sessionDate() {
-    if (SessionPlans.planDetails) {
+    if (SessionPlans.planDetails?.session.date)  {
       return new Date(SessionPlans.planDetails.session.date);
     } else {
       return null;

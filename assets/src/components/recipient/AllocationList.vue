@@ -13,6 +13,7 @@ import { Component, Prop } from "vue-property-decorator";
 import { IAllocation } from "@/types";
 import App from "@/store/modules/app";
 import { sortBy } from "lodash";
+import AllocationHelper from "@/helpers/allocations"
 
 @Component
 export default class AllocationList extends Vue {
@@ -21,26 +22,12 @@ export default class AllocationList extends Vue {
   get sortedAllocations() {
     const allocations = this.allocations.map(allocation => {
       return {
-        quantityLabel: this.allocationQuantityLabel(allocation),
+        quantityLabel: AllocationHelper.quantityLabel(allocation.quantity),
         category: this.categoryName(allocation),
         id: allocation.id
       };
     });
     return sortBy(allocations, ["category"]);
-  }
-
-  allocationQuantityLabel(allocation: IAllocation) {
-    const quantity = parseFloat(allocation.quantity);
-
-    if (quantity === 1.0) {
-      return "1 box (max)";
-    } else if (quantity > 1.0) {
-      return `${parseInt(allocation.quantity)} boxes (max)`;
-    } else if (quantity > 0.0 && quantity < 1.0) {
-      return `1/${parseInt(`${1.0 / quantity}`)} box (max)`;
-    } else {
-      return "no limit";
-    }
   }
 
   categoryName(allocation: IAllocation) {

@@ -23,7 +23,9 @@ class SessionPlans extends VuexModule {
   }
 
   get allocationsForCategory() {
-    return (categoryId: string) => this.planDetails.allocations.find(a => a.categoryId === categoryId);
+    return (categoryId: string) => {
+      return this.planDetails.allocations.filter(a => a.categoryId === categoryId);
+    };
   }
 
   get plansForDay() {

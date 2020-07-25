@@ -1,5 +1,6 @@
 export interface IAllocation {
   categoryId: string;
+  recipientId: string;
   id?: string;
   quantity: string;
 }

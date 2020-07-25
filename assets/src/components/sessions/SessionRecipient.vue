@@ -22,6 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import AllocationHelper from "@/helpers/allocations"
 
 @Component
 export default class SessionRecipient extends Vue {
@@ -37,8 +38,7 @@ export default class SessionRecipient extends Vue {
   }
 
   quantityLabel(quantity: any) {
-    // return allocation.quantity > 0 ? allocation.quantityLabel : "no max";
-    return quantity;
+    return AllocationHelper.quantityLabel(this.quantity);
   }
 }
 </script>
