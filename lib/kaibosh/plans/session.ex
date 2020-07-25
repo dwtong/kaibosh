@@ -9,5 +9,4 @@ defmodule Kaibosh.Plans.Session do
 
     put_in(session, [:session, :date], session_date)
   end
-
 end
