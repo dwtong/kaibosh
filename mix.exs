@@ -11,6 +11,7 @@ defmodule Kaibosh.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      test_coverage: [tool: ExCoveralls],
       dialyzer: dialyzer()
     ]
   end
