@@ -19,6 +19,7 @@ defmodule Kaibosh.Date do
   def weekday_offset(day) do
     day = String.capitalize(day)
     day_num = Enum.find(1..7, &(Elixir.Timex.day_name(&1) == day))
+    day_num - 1
   end
 
   def utc_datetime_from_local_date_and_time(

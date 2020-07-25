@@ -68,7 +68,14 @@ export interface ISession {
   id: string;
   day: string;
   time: string;
-  date: string;
+}
+
+export interface ISessionPlan {
+  session: {
+    date: Date | string;
+    day: string;
+    time: string;
+  };
   recipients: IRecipientListItem[];
 }
 

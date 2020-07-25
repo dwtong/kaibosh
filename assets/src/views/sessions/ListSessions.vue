@@ -21,11 +21,12 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Sessions from "@/store/modules/sessions";
+import Sessions from "@/store/modules/sessions"
+import SessionPlans from "@/store/modules/session-plans"
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
-import { listOfDays, mondayOfWeek, thisWeek } from "@/helpers/date";
+import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
 import App from "@/store/modules/app";
 
 @Component({ components: { BaseSelect, SessionListItem, WeekDateControls } })
@@ -36,7 +37,7 @@ export default class ListSessions extends Vue {
 
   async created() {
     if (this.baseId && this.baseId !== "0") {
-      this.fetchSessions();
+      this.fetchPlans();
 
       this.showSessionOptions = true;
     } else {
@@ -47,15 +48,17 @@ export default class ListSessions extends Vue {
   async setBase(baseId: string) {
     localStorage.setItem("baseId", baseId);
     this.baseId = baseId;
-    await this.fetchSessions();
+    await this.fetchPlans();
     this.showSessionOptions = true;
   }
 
-  async fetchSessions() {
+  async fetchPlans() {
     App.enableLoading();
 
     if (this.baseId) {
+      const weekOfDate = formatDate(this.weekOfDate, "yyyy-MM-dd")
       await Sessions.fetchList(this.baseId);
+      await SessionPlans.fetchPlanList({ baseId: this.baseId, weekOfDate });
     }
     App.disableLoading();
   }

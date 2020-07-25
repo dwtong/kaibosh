@@ -57,6 +57,10 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.box {
+  border-radius: 6px;
+}
+
 .buttons {
   &.is-pulled-right {
     .button {

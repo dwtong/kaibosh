@@ -1,4 +1,4 @@
-import { endOfDay, startOfDay, startOfWeek, format, addDays, addMinutes } from "date-fns";
+import { endOfDay, startOfDay, startOfWeek, format, addDays } from "date-fns";
 
 export const listOfDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 export const today = startOfDay(new Date());

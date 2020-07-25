@@ -16,7 +16,7 @@ defmodule KaiboshWeb.SessionPlanView do
   def render("session.json", %{session: session}) do
     %{
       day: session.day,
-      time: session.time,
+      time: Time.truncate(session.time, :second),
       date: session.date,
       id: session.id
     }
