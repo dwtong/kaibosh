@@ -16,7 +16,7 @@ config :kaibosh, Kaibosh.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :kaibosh, KaiboshWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT")],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
