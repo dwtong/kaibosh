@@ -27,11 +27,11 @@ export default class ListSessions extends Vue {
   @Prop({ required: true }) readonly day!: string;
 
   get sessionDate() {
-    return dateOnDayOfWeek(this.weekOfDate, this.day)
+    return dateOnDayOfWeek(this.weekOfDate, this.day);
   }
 
   get plans() {
-    return SessionPlans.plansForDay(this.day); 
+    return SessionPlans.plansForDay(this.day);
   }
 }
 </script>

@@ -17,7 +17,9 @@
       </div>
     </div>
     <footer class="card-footer is-hidden-print">
-      <router-link :to="`/sessions/${plan.session.id}?date=${plan.session.date.split(' ')[0]}`" class="card-footer-item"
+      <router-link
+        :to="`/sessions/${plan.session.id}?baseId=${plan.session.baseId}&date=${date}`"
+        class="card-footer-item"
         >View Session</router-link
       >
     </footer>
@@ -29,8 +31,8 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import { sortBy } from "lodash";
-import { formatTime } from "@/helpers/date";
-import { ISessionPlan } from "@/types"
+import { formatDate, formatTime } from "@/helpers/date";
+import { ISessionPlan } from "@/types";
 
 @Component({ components: { SessionRecipient }, filters: { formatTime } })
 export default class SessionRecipientList extends Vue {
@@ -38,6 +40,10 @@ export default class SessionRecipientList extends Vue {
 
   sortRecipients(list: any) {
     return sortBy(list, ["name"]);
+  }
+
+  get date() {
+    return formatDate(this.plan.session.date, "yyyy-MM-dd");
   }
 }
 </script>
@@ -51,7 +57,11 @@ export default class SessionRecipientList extends Vue {
 }
 
 .card-header {
-  background-color: #d9f5d9;
+  background-color: #f3fff3; 
+}
+
+.card-footer {
+  background-color: #f8f8f8; 
 }
 
 .card-header-title {

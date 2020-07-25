@@ -16,8 +16,8 @@ defmodule Kaibosh.Plans do
 
   def get_plan_for_session(base_id, session_id, date) do
     allocations =
-      base_id
-      |> get_allocations_for_session(session_id, date)
+      session_id
+      |> get_allocations_for_session()
       |> Repo.all()
 
     base_id

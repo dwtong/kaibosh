@@ -19,19 +19,23 @@ defmodule Kaibosh.Plans.Query do
     |> where([s], s.base_id == ^base_id)
     |> group_by([s, rs, r, h], [s.id, s.day, s.time, r.name, r.id, h.starts_at, h.ends_at])
     |> select([s, rs, r, h], %{
-      session: %{id: s.id, day: s.day, time: s.time},
+      session: %{id: s.id, day: s.day, time: s.time, base_id: s.base_id},
       recipient: %{name: r.name, id: r.id},
       hold: %{starts_at: h.starts_at, ends_at: h.ends_at}
     })
   end
 
   def get_recipients_for_session(base_id, session_id, session_date) do
+    {:ok, session_id} = Ecto.Type.cast(:integer, session_id)
+
     base_id
     |> get_recipients_and_sessions_by_base(session_date)
     |> where([s], s.id == ^session_id)
   end
 
-  def get_allocations_for_session(base_id, session_id, date) do
+  def get_allocations_for_session(session_id) do
+    {:ok, session_id} = Ecto.Type.cast(:integer, session_id)
+
     "recipient_sessions"
     |> join(:inner, [rs], a in "allocations", on: a.recipient_session_id == rs.id)
     |> where([rs], rs.session_id == ^session_id)

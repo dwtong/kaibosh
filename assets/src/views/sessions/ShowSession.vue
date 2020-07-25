@@ -24,16 +24,16 @@
     <div class="columns is-multiline is-centered">
       <div v-for="category in categories" :key="category.id" class="column card-column">
         <div class="card">
-          <div class="card-image">
+          <div v-if="category.imageName" class="card-image">
             <figure class="image is-5by1">
-              <img class="category-image" :src="imagePath(category.category.imageName)" alt />
+              <img class="category-image" :src="imagePath(category.imageName)" alt />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
                 <p class="title category-title is-4">
-                  {{ capitalize(category.category.name) }}
+                  {{ capitalize(category.name) }}
                 </p>
               </div>
             </div>
@@ -55,7 +55,7 @@ import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import App from "@/store/modules/app";
-import Sessions from "@/store/modules/sessions";
+import SessionPlans from "@/store/modules/session-plans";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { IAllocation, IRecipient } from "@/types";
@@ -66,22 +66,16 @@ import { Route } from "vue-router/types/router";
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
 
-  async beforeRouteEnter(to: Route, from: Route, next: any) {
+  async created() {
     App.enableLoading();
-    let date = to.query.date;
+    const baseId = this.$route.query.baseId?.toString();
+    const sessionId = this.$route.params.id?.toString()
+    const date = this.$route.query.date?.toString()
 
-    if (typeof date !== "string") {
-      date = "";
-    }
-
-    await Sessions.fetchAllocationsForSession({
-      sessionId: to.params.id,
-      sessionDate: date
-    });
+    await App.fetchCategories(baseId);
+    await SessionPlans.fetchPlanDetails({baseId, sessionId, date})
 
     App.disableLoading();
-
-    next();
   }
 
   capitalize(str: string) {
@@ -106,12 +100,15 @@ export default class ShowSession extends Vue {
   }
 
   get categories() {
-    return Sessions.allocationsByCategory;
+    return App.categories;
   }
 
   get sessionDate() {
-    const date = Sessions.date;
-    return date && date !== "" ? Sessions.date : null;
+    if (SessionPlans.planDetails) {
+      return new Date(SessionPlans.planDetails.session.date);
+    } else {
+      return null;
+    }
   }
 }
 </script>

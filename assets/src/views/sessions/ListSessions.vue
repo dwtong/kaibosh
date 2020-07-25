@@ -21,8 +21,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Sessions from "@/store/modules/sessions"
-import SessionPlans from "@/store/modules/session-plans"
+import Sessions from "@/store/modules/sessions";
+import SessionPlans from "@/store/modules/session-plans";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
@@ -56,7 +56,7 @@ export default class ListSessions extends Vue {
     App.enableLoading();
 
     if (this.baseId) {
-      const weekOfDate = formatDate(this.weekOfDate, "yyyy-MM-dd")
+      const weekOfDate = formatDate(this.weekOfDate, "yyyy-MM-dd");
       await Sessions.fetchList(this.baseId);
       await SessionPlans.fetchPlanList({ baseId: this.baseId, weekOfDate });
     }

@@ -59,6 +59,10 @@ $colors: map-merge($colors, $addColors);
 
 .box {
   border-radius: 6px;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }
 
 .buttons {
@@ -79,6 +83,10 @@ $colors: map-merge($colors, $addColors);
   @media print {
     display: none;
   }
+}
+
+.card {
+  border-radius: 6px;
 }
 
 .field {
