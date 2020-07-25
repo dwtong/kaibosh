@@ -30,8 +30,12 @@ defmodule Kaibosh.Date do
     Timex.to_datetime({{y, mo, d}, {h, mi, s}}, timezone)
   end
 
-  def date_for_day_of_week(datetime, day) do
-    offset = weekday_offset(day)
+  def date_for_day_of_week(datetime, "monday") do
+    offset = weekday_offset("monday")
     Timex.shift(datetime, days: offset)
+  end
+
+  def date_for_day_of_week(datetime, _day) do
+    datetime
   end
 end

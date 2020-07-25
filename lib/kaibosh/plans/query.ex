@@ -7,8 +7,7 @@ defmodule Kaibosh.Plans.Query do
   """
   import Ecto.Query
 
-  # (base_id, week_of_date) do
-  def get_plans_by_base(base_id, starts_at) do
+  def get_recipients_and_sessions_by_base(base_id, starts_at) do
     {:ok, base_id} = Ecto.Type.cast(:integer, base_id)
 
     "sessions"
@@ -26,34 +25,22 @@ defmodule Kaibosh.Plans.Query do
     })
   end
 
-  # def get_plans_by_base(base_id, _starts_at) do
-  #   "sessions"
-  #   |> join(:inner, [s], rs in "recipient_sessions", on: s.id == rs.session_id)
-  #   |> join(:inner, [s, rs], r in "recipients", on: r.id == rs.recipient_id)
-  #   # |> join(:inner, [s, rs], r in subquery(active_recipients(base_id, starts_at)),
-  #   #   on: r.id == rs.recipient_id
-  #   # )
-  #   |> join(:inner, [s, rs], h in "holds", on: rs.id == h.recipient_session_id)
-  #   |> where([s], s.base_id == ^base_id)
-  #   |> select([s, rs, r], %{session_id: s.id, recipient: %{name: r.name, id: r.id}})
-  # end
+  def get_recipients_for_session(base_id, session_id, session_date) do
+    base_id
+    |> get_recipients_and_sessions_by_base(session_date)
+    |> where([s], s.id == ^session_id)
+  end
 
-  # def get_plans_by_base_and_week_date(base_id, _week_of_date) do
-  #   |> group_by([s, rs, r], [s.id, s.day, s.time, r.name, r.id])
-  #   |> select([s, rs, r], %{s.id, s.day, s.time, recipient: %{name: r.name, id: r.id}})
-  # end
-
-  # def get_plan_for_session_by_date(session_id, date) do
-  #   date
-  #   |> sessions_with_recipients()
-  #   |> where(id: ^session_id)
-  # end
-
-  # defp sessions_with_recipients(date) do
-  #   "sessions"
-  #   |> join(:inner, [s], rs in "recipient_sessions", as: :rs, on: rs.session_id == s.id)
-  #   |> join(:inner, [rs: rs], r in active_recipients(date), as: :r, on: r.id == rs.recipient_id)
-  # end
+  def get_allocations_for_session(base_id, session_id, date) do
+    "recipient_sessions"
+    |> join(:inner, [rs], a in "allocations", on: a.recipient_session_id == rs.id)
+    |> where([rs], rs.session_id == ^session_id)
+    |> select([rs, a], %{
+      recipient_id: rs.recipient_id,
+      category_id: a.category_id,
+      quantity: a.quantity
+    })
+  end
 
   defp active_recipients(base_id, starts_on) do
     starts_at = Timex.to_datetime(starts_on)
@@ -66,17 +53,4 @@ defmodule Kaibosh.Plans.Query do
     |> where([r], not is_nil(r.met_kaibosh_at))
     |> select([r], %{id: r.id, name: r.name})
   end
-
-  # defp with_details(recipient_session_id) do
-  #   "allocations"
-  #   |> where([a], a.recipient_session_id == ^recipient_session_id)
-  #   |> join(:inner, [a], c in "categories", on: a.category_id == c.id)
-  #   |> select([a, c], %{category: c, quantity: a.quantity})
-  # end
-
-  # defp d do
-  #   "recipient_sessions"
-  #   |> join(:inner, [rs], "recipients")
-  #   |> select([])
-  # end
 end

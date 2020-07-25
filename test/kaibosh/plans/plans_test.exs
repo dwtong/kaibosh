@@ -32,11 +32,37 @@ defmodule Kaibosh.PlansTest do
     end
   end
 
+  describe "session plans" do
+    setup [:create_session_with_recipient]
+
+    test "lists categories with recipients allocations", %{recipient_session: recipient_session} do
+      apples = insert(:category, name: "apples")
+      bananas = insert(:category, name: "bananas")
+
+      insert(:allocation, recipient_session: recipient_session, category: apples, quantity: 5)
+      insert(:allocation, recipient_session: recipient_session, category: bananas, quantity: 2)
+
+      base_id = recipient_session.recipient.base_id
+      session_id = recipient_session.session_id
+
+      assert %{session: session, allocations: [a1, a2], recipients: [r1]} =
+               Plans.get_plan_for_session(base_id, session_id, ~D[2020-01-01])
+
+      assert a1.category_id == apples.id
+      assert a2.category_id == bananas.id
+      assert r1.id == recipient_session.recipient.id
+      assert r1.name == recipient_session.recipient.name
+      assert r1.status == :active
+      assert a1.quantity == Decimal.cast(5)
+      assert a2.quantity == Decimal.cast(2)
+    end
+  end
+
   defp create_session_with_recipient(_) do
     base = insert(:base)
     session = insert(:session, base: base)
     recipient = insert(:recipient, base: base)
-    insert(:recipient_session, recipient: recipient, session: session)
-    %{base: base, recipient: recipient, session: session}
+    recipient_session = insert(:recipient_session, recipient: recipient, session: session)
+    %{base: base, recipient: recipient, session: session, recipient_session: recipient_session}
   end
 end
