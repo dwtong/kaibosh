@@ -1,4 +1,7 @@
 defmodule Kaibosh.Plans.Session do
+  @moduledoc """
+  Helpers for arranging session plan data into consumable format.
+  """
   alias Kaibosh.Date
   alias Kaibosh.Plans.Status
 
