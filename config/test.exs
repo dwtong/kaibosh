@@ -12,6 +12,8 @@ config :kaibosh, Kaibosh.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.TestAdapter
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :kaibosh, KaiboshWeb.Endpoint,
