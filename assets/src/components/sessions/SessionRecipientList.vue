@@ -43,7 +43,7 @@ export default class SessionRecipientList extends Vue {
   }
 
   get date() {
-    const sessionDate = new Date(this.plan.session.date)
+    const sessionDate = new Date(this.plan.session.date);
     return formatDate(sessionDate, "yyyy-MM-dd");
   }
 }
@@ -58,11 +58,11 @@ export default class SessionRecipientList extends Vue {
 }
 
 .card-header {
-  background-color: #f3fff3; 
+  background-color: #f3fff3;
 }
 
 .card-footer {
-  background-color: #f8f8f8; 
+  background-color: #f8f8f8;
 }
 
 .card-header-title {

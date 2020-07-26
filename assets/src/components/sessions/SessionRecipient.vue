@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import AllocationHelper from "@/helpers/allocations"
+import AllocationHelper from "@/helpers/allocations";
 
 @Component
 export default class SessionRecipient extends Vue {
@@ -37,7 +37,7 @@ export default class SessionRecipient extends Vue {
     this.$router.push(`/recipients/${this.recipient.id}`);
   }
 
-  quantityLabel(quantity: any) {
+  get quantityLabel() {
     return AllocationHelper.quantityLabel(this.quantity);
   }
 }

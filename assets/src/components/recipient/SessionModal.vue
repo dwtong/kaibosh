@@ -28,13 +28,11 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import { IRecipientSession, IAllocation } from "@/types";
-import App from "@/store/modules/app";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
 import toast from "@/helpers/toast";
 import SessionSelect from "@/components/ui/SessionSelect.vue";
 import ModalForm from "@/components/ui/ModalForm.vue";
-import Sessions from "@/store/modules/sessions";
 
 @Component({ components: { SessionSelect, AllocationQuantitiesInput, ModalForm } })
 export default class SessionModal extends Vue {

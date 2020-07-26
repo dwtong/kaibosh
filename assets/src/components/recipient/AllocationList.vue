@@ -13,7 +13,7 @@ import { Component, Prop } from "vue-property-decorator";
 import { IAllocation } from "@/types";
 import App from "@/store/modules/app";
 import { sortBy } from "lodash";
-import AllocationHelper from "@/helpers/allocations"
+import AllocationHelper from "@/helpers/allocations";
 
 @Component
 export default class AllocationList extends Vue {

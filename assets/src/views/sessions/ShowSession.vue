@@ -58,9 +58,7 @@ import App from "@/store/modules/app";
 import SessionPlans from "@/store/modules/session-plans";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
-import { IAllocation, IRecipient } from "@/types";
 import { formatDate } from "@/helpers/date";
-import { Route } from "vue-router/types/router";
 
 @Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
 export default class ShowSession extends Vue {
@@ -68,10 +66,10 @@ export default class ShowSession extends Vue {
 
   allocationsForCategory(categoryId: string) {
     const allocations = SessionPlans.allocationsForCategory(categoryId).map((a: any) => {
-      return {...a, recipient: SessionPlans.recipientById(a.recipientId)}
+      return { ...a, recipient: SessionPlans.recipientById(a.recipientId) };
     });
 
-    return sortBy(allocations, a => a.recipient.status)
+    return sortBy(allocations, a => a.recipient.status);
   }
 
   recipientById(recipientId: string) {
@@ -81,11 +79,11 @@ export default class ShowSession extends Vue {
   async created() {
     App.enableLoading();
     const baseId = this.$route.query.baseId?.toString();
-    const sessionId = this.$route.params.id?.toString()
-    const date = this.$route.query.date?.toString()
+    const sessionId = this.$route.params.id?.toString();
+    const date = this.$route.query.date?.toString();
 
     await App.fetchCategories(baseId);
-    await SessionPlans.fetchPlanDetails({baseId, sessionId, date})
+    await SessionPlans.fetchPlanDetails({ baseId, sessionId, date });
 
     App.disableLoading();
   }
@@ -100,11 +98,11 @@ export default class ShowSession extends Vue {
   }
 
   get categories() {
-    return sortBy(App.categories, "name")
+    return sortBy(App.categories, "name");
   }
 
   get sessionDate() {
-    if (SessionPlans.planDetails?.session.date)  {
+    if (SessionPlans.planDetails?.session.date) {
       return new Date(SessionPlans.planDetails.session.date);
     } else {
       return null;
