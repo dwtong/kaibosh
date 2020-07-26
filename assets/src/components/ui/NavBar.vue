@@ -16,7 +16,7 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <router-link v-on:click.native="resetRecipientNameFilter" to="/recipients" active-class="is-active" exact>
+        <router-link to="/recipients" active-class="is-active" exact @click.native="resetRecipientNameFilter">
           View Recipients
         </router-link>
       </li>
@@ -44,13 +44,13 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { AllRecipientsModule } from "@/store/modules/all-recipients";
+import AllRecipients from "@/store/modules/all-recipients";
 import { UserModule } from "@/store/modules/user";
 
 @Component
 export default class NavBar extends Vue {
   resetRecipientNameFilter() {
-    AllRecipientsModule.updateNameFilter("");
+    AllRecipients.updateNameFilter("");
   }
 
   async logout() {
@@ -82,7 +82,7 @@ export default class NavBar extends Vue {
     &:hover {
       border-radius: 1rem 0 0 1rem;
       background-color: $primary;
-      color: $text;
+      color: white;
     }
 
     &.is-active {
@@ -92,7 +92,7 @@ export default class NavBar extends Vue {
       &:hover {
         border-radius: 1rem 0 0 1rem;
         background-color: $primary;
-        color: $text;
+        color: white;
       }
     }
     color: white;

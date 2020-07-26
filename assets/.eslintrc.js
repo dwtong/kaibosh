@@ -4,7 +4,7 @@ module.exports = {
     node: true
   },
   extends: [
-    "plugin:vue/essential",
+    "plugin:vue/recommended",
     "eslint:recommended",
     "plugin:compat/recommended",
     "@vue/typescript/recommended",
@@ -15,8 +15,7 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    'no-console': 'warn',
     // TODO: Remove explicit anys
     "@typescript-eslint/no-explicit-any": "off",
     // TODO: Better type interfaces

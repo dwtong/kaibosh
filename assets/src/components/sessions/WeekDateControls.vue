@@ -2,7 +2,7 @@
   <div class="is-pulled-right field has-addons">
     <p class="control">
       <b-tooltip label="Previous Week">
-        <button @click="goToDate(previousWeek)" class="button">
+        <button class="button" @click="goToDate(previousWeek)">
           <span class="icon is-small">
             <i class="fas fa-arrow-left"></i>
           </span>
@@ -11,12 +11,12 @@
     </p>
 
     <p class="control">
-      <WeekDatePicker @input="goToSelectedDate($event)" :value="date" />
+      <WeekDatePicker :value="date" @input="goToDate($event)" />
     </p>
 
     <p class="control">
       <b-tooltip label="Next Week">
-        <button @click="goToDate(nextWeek)" class="button">
+        <button class="button" @click="goToDate(nextWeek)">
           <span class="icon is-small">
             <i class="fas fa-arrow-right"></i>
           </span>
@@ -30,31 +30,24 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import Router from "@/router";
-import dateHelper from "@/helpers/date";
-import moment from "moment";
+import { formatDate, subWeeks, addWeeks } from "@/helpers/date";
 import WeekDatePicker from "@/components/ui/WeekDatePicker.vue";
 
 @Component({ components: { WeekDatePicker } })
 export default class WeekDateControls extends Vue {
   @Prop(Date) readonly date!: Date;
 
-  get nextWeek() {
-    const today = moment(this.date);
-    return dateHelper.getISODate(today.add(7, "day").toDate());
+  goToDate(datetime: Date) {
+    const date = formatDate(datetime, "yyyy-MM-dd");
+    Router.push({ path: "/sessions/week", query: { date } });
   }
 
   get previousWeek() {
-    const today = moment(this.date);
-    return dateHelper.getISODate(today.add(-7, "day").toDate());
+    return subWeeks(this.date, 1);
   }
 
-  goToSelectedDate(date: Date) {
-    const dateString = dateHelper.getISODate(date);
-    this.goToDate(dateString);
-  }
-
-  goToDate(date?: string) {
-    Router.push({ path: "/sessions/week", query: { date } });
+  get nextWeek() {
+    return addWeeks(this.date, 1);
   }
 }
 </script>

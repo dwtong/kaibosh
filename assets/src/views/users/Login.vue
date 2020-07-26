@@ -25,7 +25,7 @@
               <button class="button is-primary">
                 Reset Password
               </button>
-              <a @click="toggleForgotten" class="button is-text forgotten-button">
+              <a class="button is-text forgotten-button" @click="toggleForgotten">
                 Login
               </a>
             </p>
@@ -61,7 +61,7 @@
               <button class="button is-primary">
                 Login
               </button>
-              <a @click="toggleForgotten" class="button is-text forgotten-button">
+              <a class="button is-text forgotten-button" @click="toggleForgotten">
                 Forgotten Password?
               </a>
             </p>
@@ -78,6 +78,7 @@ import { Component } from "vue-property-decorator";
 import Router from "@/router";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
+import App from "@/store/modules/app";
 
 @Component
 export default class Login extends Vue {
@@ -87,12 +88,14 @@ export default class Login extends Vue {
   forgotten = false;
 
   async login() {
+    App.enableLoading();
     await UserModule.login({ email: this.email, password: this.password });
     if (UserModule.isAuthenticated) {
       Router.push("/");
     } else {
       this.showError = true;
     }
+    App.disableLoading();
   }
 
   async resetPassword() {

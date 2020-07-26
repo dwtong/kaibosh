@@ -1,12 +1,12 @@
 export interface IAllocation {
-  foodCategoryId: string;
-  id: string;
+  categoryId: string;
+  recipientId: string;
+  id?: string;
   quantity: string;
-  quantityLabel: string;
 }
 
 export interface IAllocationCategory {
-  foodCategoryId: string;
+  categoryId: string;
   enabled?: boolean;
   id: string;
   quantity: string;
@@ -25,14 +25,14 @@ export interface IContact {
   phoneMobile: string;
 }
 
-export interface IFoodCategory {
+export interface ICategory {
   id: string;
   name: string;
 }
 
 export interface IHold {
   id?: string;
-  sessionId: string;
+  recipientSessionId?: string;
   startsAt: string;
   endsAt: string;
 }
@@ -47,12 +47,13 @@ export interface IRecipient {
   id?: string;
   description?: string;
   status?: string;
-  startedAt?: Date;
+  startedAt: Date | string;
   physicalAddress?: string;
   baseId?: string;
-  contact?: IContact;
+  contact: IContact;
   hasMetKaibosh?: boolean;
   hasSignedTerms?: boolean;
+  archivedAt?: Date | string | null;
 }
 
 export interface IRecipientListItem {
@@ -63,23 +64,41 @@ export interface IRecipientListItem {
   description?: string;
 }
 
-export interface ISessionSlot {
+export interface ISession {
   id: string;
   day: string;
   time: string;
-  date: string;
+}
+
+export interface ISessionPlan {
+  session: {
+    date: Date | string;
+    day: string;
+    time: string;
+    baseId: string;
+  };
   recipients: IRecipientListItem[];
 }
 
-export interface IScheduledSession {
+export interface ISessionPlanDetails {
+  session: {
+    date: Date | string;
+    day: string;
+    time: string;
+  };
+  allocations: IAllocation[];
+  recipients: IRecipientListItem[];
+}
+
+export interface IRecipientSession {
   allocations?: IAllocation[];
   enabled?: boolean;
   holds?: IHold[];
   id?: string;
   recipientId: string;
-  sessionSlot?: ISessionSlot;
-  sessionSlotId?: string;
-  holdStatus?: string;
+  session?: ISession;
+  sessionId?: string;
+  status?: string;
 }
 
 export interface IStatus {

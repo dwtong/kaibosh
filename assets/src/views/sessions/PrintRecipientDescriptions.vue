@@ -2,7 +2,7 @@
   <div class="page">
     <div class="field buttons is-pulled-right with-margins is-hidden-print">
       <p class="control">
-        <b-checkbox class="with-margins" type="is-info" v-model="includeOnHold"
+        <b-checkbox v-model="includeOnHold" class="with-margins" type="is-info"
           >Include recipients that are on hold</b-checkbox
         >
       </p>
@@ -16,13 +16,13 @@
       </p>
     </div>
 
-    <h1 class="title with-margins" v-if="sessionDate">
-      {{ sessionDate | moment("dddd h:mma") }}
+    <h1 v-if="sessionDate" class="title with-margins">
+      {{ sessionDate | formatDate("EEEE h:mma") }}
     </h1>
 
-    <div class="recipient with-margins" v-for="recipient in recipients" :key="recipient.id">
+    <div v-for="recipient in recipients" :key="recipient.id" class="recipient with-margins">
       <h2 class="subtitle">{{ recipient.name }}</h2>
-      <div v-html="recipient.description"></div>
+      <div class="is-multi-line">{{ recipient.description }}</div>
     </div>
   </div>
 </template>
@@ -30,29 +30,26 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { SessionSlotsModule } from "@/store/modules/session-slots";
+import SessionPlans from "@/store/modules/session-plans";
 import PrintButton from "@/components/ui/PrintButton.vue";
+import { formatDate } from "@/helpers/date";
 import Router from "@/router";
 
-@Component({ components: { PrintButton } })
+@Component({ components: { PrintButton }, filters: { formatDate } })
 export default class GenerateDescriptionsButton extends Vue {
   @Prop(String) readonly id!: string;
   includeOnHold = false;
 
   get recipients() {
     if (this.includeOnHold) {
-      return SessionSlotsModule.orderedRecipients;
+      return SessionPlans.orderedRecipients;
     } else {
-      return SessionSlotsModule.orderedRecipients.filter(r => r.status !== "on_hold");
+      return SessionPlans.orderedRecipients.filter(r => r.status !== "on_hold");
     }
   }
 
   get sessionDate() {
-    return SessionSlotsModule.details.date;
-  }
-
-  async created() {
-    await SessionSlotsModule.fetchSessionSlot(this.id);
+    return SessionPlans.planDetails?.session.date;
   }
 
   goBack() {

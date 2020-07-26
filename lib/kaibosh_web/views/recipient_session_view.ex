@@ -16,6 +16,7 @@ defmodule KaiboshWeb.RecipientSessionView do
       day: session.session.day,
       time: session.session.time,
       session_id: session.session_id,
+      status: session.status,
       allocations:
         render_many(session.allocations, RecipientSessionView, "allocation.json", as: :allocation),
       holds: render_many(session.holds, RecipientSessionView, "hold.json", as: :hold)

@@ -1,6 +1,5 @@
 <template>
   <div class="print">
-    <b-loading :active.sync="isLoading"></b-loading>
     <div class="title-box">
       <div class="field buttons is-pulled-right">
         <p class="control">
@@ -15,33 +14,33 @@
       </div>
 
       <h1 v-if="sessionDate" class="title">
-        {{ sessionDate | moment("dddd h:mma") }}
+        {{ sessionDate | formatDate("EEEE h:mma") }}
       </h1>
-      <h2 class="subtitle is-4">
-        {{ sessionDate | moment("MMMM Do, Y") }}
+      <h2 v-if="sessionDate" class="subtitle is-4">
+        {{ sessionDate | formatDate("MMMM do, Y") }}
       </h2>
     </div>
 
     <div class="columns is-multiline is-centered">
-      <div v-for="category in foodCategories" :key="category.id" class="column card-column">
+      <div v-for="category in categories" :key="category.id" class="column card-column">
         <div class="card">
-          <div class="card-image">
+          <div v-if="category.imageName" class="card-image">
             <figure class="image is-5by1">
-              <img class="food-image" :src="imagePath(category.foodCategory.imageName)" alt />
+              <img v-if="category.imageName" class="category-image" :src="imagePath(category.imageName)" alt />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title food-title is-4">
-                  {{ capitalize(category.foodCategory.name) }}
+                <p class="title category-title is-4">
+                  {{ capitalize(category.name) }}
                 </p>
               </div>
             </div>
 
             <div class="content">
-              <div v-for="allocation in sortCategories(category.allocations)" :key="allocation.id">
-                <SessionRecipient v-if="!isLoading" :allocation="allocation" :recipient="allocation.recipient" />
+              <div v-for="allocation in allocationsForCategory(category.id)" :key="allocation.recipientId">
+                <SessionRecipient v-if="allocation" :allocation="allocation" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>
@@ -55,37 +54,42 @@
 import { capitalize, sortBy } from "lodash";
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import { SessionSlotsModule } from "@/store/modules/session-slots";
+import App from "@/store/modules/app";
+import SessionPlans from "@/store/modules/session-plans";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
-import { IAllocation, IRecipient } from "@/types";
+import { formatDate } from "@/helpers/date";
 
-@Component({ components: { SessionRecipient, PrintButton } })
+@Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
 export default class ShowSession extends Vue {
   @Prop(String) readonly id!: string;
-  isLoading = true;
 
-  async created() {
-    let date = this.$route.query.date;
-
-    if (typeof date !== "string") {
-      date = "";
-    }
-
-    await SessionSlotsModule.fetchAllocationsForSlot({
-      sessionSlotId: this.id,
-      sessionDate: date
+  allocationsForCategory(categoryId: string) {
+    const allocations = SessionPlans.allocationsForCategory(categoryId).map((a: any) => {
+      return { ...a, recipient: SessionPlans.recipientById(a.recipientId) };
     });
 
-    this.isLoading = false;
+    return sortBy(allocations, a => a.recipient.status);
+  }
+
+  recipientById(recipientId: string) {
+    return SessionPlans.recipientById(recipientId);
+  }
+
+  async created() {
+    App.enableLoading();
+    const baseId = this.$route.query.baseId?.toString();
+    const sessionId = this.$route.params.id?.toString();
+    const date = this.$route.query.date?.toString();
+
+    await App.fetchCategories(baseId);
+    await SessionPlans.fetchPlanDetails({ baseId, sessionId, date });
+
+    App.disableLoading();
   }
 
   capitalize(str: string) {
     return capitalize(str);
-  }
-
-  sortCategories(list: IRecipient) {
-    return sortBy(list, ["recipient.status", "recipient.name"]);
   }
 
   imagePath(imageName: string) {
@@ -93,20 +97,16 @@ export default class ShowSession extends Vue {
     return images("./" + imageName + "-min.png");
   }
 
-  quantity(allocation: IAllocation) {
-    if (parseInt(allocation.quantity, 10) > 0) {
-      return `(${allocation.quantityLabel})`;
-    } else {
-      return "";
-    }
-  }
-
-  get foodCategories() {
-    return SessionSlotsModule.allocationsByFoodCategory;
+  get categories() {
+    return sortBy(App.categories, "name");
   }
 
   get sessionDate() {
-    return SessionSlotsModule.date;
+    if (SessionPlans.planDetails?.session.date) {
+      return new Date(SessionPlans.planDetails.session.date);
+    } else {
+      return null;
+    }
   }
 }
 </script>
@@ -154,13 +154,13 @@ export default class ShowSession extends Vue {
   }
 }
 
-.food-image {
+.category-image {
   @media print {
     display: none;
   }
 }
 
-.food-title {
+.category-title {
   @media print {
     font-size: 16px !important;
     background-color: rgb(200, 200, 200);

@@ -20,30 +20,21 @@ export default class RecipientStatusTag extends Vue {
   @Prop({ default: "" }) readonly status!: string;
   @Prop({ default: "is-small" }) readonly size!: string;
   @Prop({ default: false }) readonly withLabel!: boolean;
-  @Prop({ default: false }) readonly isLoading!: boolean;
 
   get label() {
-    if (!this.isLoading) {
-      return this.status.replace("_", " ");
-    } else {
-      return "";
-    }
+    return this.status?.replace("_", " ");
   }
 
   get type(): string {
     const types: IStatusLabelGroup = {
-      active: "is-primary",
       // eslint-disable-next-line @typescript-eslint/camelcase
       on_hold: "is-warning",
+      active: "is-primary",
       archived: "is-gray-darker",
       pending: "is-info"
     };
 
-    if (!this.isLoading) {
-      return types[this.status];
-    } else {
-      return "is-gray-darker";
-    }
+    return this.status ? types[this.status] : "is-gray-darker";
   }
 }
 </script>

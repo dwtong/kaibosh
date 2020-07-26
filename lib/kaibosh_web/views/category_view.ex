@@ -7,6 +7,6 @@ defmodule KaiboshWeb.CategoryView do
   end
 
   def render("category.json", %{category: category}) do
-    %{id: category.id, name: category.name, unit: category.unit}
+    %{id: category.id, name: category.name, unit: category.unit, image_name: category.image_name}
   end
 end

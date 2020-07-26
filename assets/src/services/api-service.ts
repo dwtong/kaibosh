@@ -53,6 +53,8 @@ service.interceptors.response.use(
   error => {
     if (error.response?.status === 401) {
       UserModule.logout();
+    } else if (error.response?.headers.client) {
+      auth.saveAuthToken(error.response.headers);
     }
     return error;
   }

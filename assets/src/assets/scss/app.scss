@@ -18,16 +18,16 @@ $github-invert: findColorInvert($github);
 $addColors: (
   "twitter": (
     $twitter,
-    $twitter-invert,
+    $twitter-invert
   ),
   "linkedin": (
     $linkedin,
-    $linkedin-invert,
+    $linkedin-invert
   ),
   "github": (
     $github,
-    $github-invert,
-  ),
+    $github-invert
+  )
 );
 $colors: map-merge($colors, $addColors);
 
@@ -57,6 +57,14 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.box {
+  border-radius: 6px;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
 .buttons {
   &.is-pulled-right {
     .button {
@@ -77,10 +85,28 @@ $colors: map-merge($colors, $addColors);
   }
 }
 
+.card {
+  border-radius: 6px;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.datepicker {
+  .field {
+    margin-bottom: 0;
+  }
+}
+
 .is-hidden-print {
   @media print {
     display: none;
   }
+}
+
+.is-multi-line {
+  white-space: pre;
 }
 
 .print-only {

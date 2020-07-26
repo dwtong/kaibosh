@@ -6,7 +6,7 @@
 $kaibosh-green: hsl(120, 100%, 37%);
 $kaibosh-dark-green: hsl(120, 100%, 27%);
 $kaibosh-charcoal: hsl(229, 12%, 19%);
-$kaibosh-slate: hsl(120, 2%, 88%);
+$kaibosh-slate: #ebedf0;
 
 $black: hsl(0, 0%, 4%) !default;
 $black-bis: hsl(0, 0%, 7%) !default;
@@ -33,9 +33,8 @@ $red: hsl(348, 100%, 61%) !default;
 
 // Typography
 
-$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto",
-  "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-  "Helvetica", "Arial", sans-serif !default;
+$family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+  "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
 $family-monospace: monospace !default;
 $render-mode: optimizeLegibility !default;
 

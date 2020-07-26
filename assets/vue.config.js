@@ -13,11 +13,15 @@ module.exports = {
   },
   configureWebpack: {
     devServer: {
+      overlay: {
+        warnings: false,
+        errors: true
+      },
       disableHostCheck: true,
       hot: true,
       proxy: {
         "^/api": {
-          target: "http://localhost:4000",
+          target: "http://localhost:4001",
           changeOrigin: true
         }
       }

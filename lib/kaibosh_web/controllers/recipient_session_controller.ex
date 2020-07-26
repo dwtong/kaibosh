@@ -6,8 +6,8 @@ defmodule KaiboshWeb.RecipientSessionController do
 
   action_fallback KaiboshWeb.FallbackController
 
-  def index(conn, _params) do
-    recipient_sessions = RecipientSessions.list_sessions()
+  def index(conn, %{"recipient_id" => recipient_id}) do
+    recipient_sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
     render(conn, "index.json", recipient_sessions: recipient_sessions)
   end
 

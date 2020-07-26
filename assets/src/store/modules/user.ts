@@ -12,6 +12,10 @@ class User extends VuexModule {
   passwordUpdated = false;
   users: IUser[] = [];
 
+  get usersEmails() {
+    return this.users.map(u => u.email);
+  }
+
   @Action
   async login(params: ILoginCreds) {
     const response = await AuthService.signIn(params);

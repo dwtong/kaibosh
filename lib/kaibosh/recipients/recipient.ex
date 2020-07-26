@@ -2,7 +2,6 @@ defmodule Kaibosh.Recipients.Recipient do
   @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
-  alias Kaibosh.Organisations.Base
   alias Kaibosh.Recipients.Contact
   alias Kaibosh.Recipients.Recipient
 
@@ -21,7 +20,7 @@ defmodule Kaibosh.Recipients.Recipient do
 
   schema "recipients" do
     has_one :contact, Contact, on_replace: :update
-    belongs_to :base, Base
+    belongs_to :base, Kaibosh.Organisations.Base
 
     field :name, :string, null: false
     field :physical_address, :string

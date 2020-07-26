@@ -14,12 +14,7 @@
 
       <div class="box">
         <h1 class="title">Add New User</h1>
-        <form @submit.prevent="addUser">
-          <InputField name="email" v-model="newUserEmail" type="email" :validation="{ email: true }" />
-          <button type="submit" class="button is-primary is-pulled-right">
-            Create User
-          </button>
-        </form>
+        <CreateUserForm />
       </div>
     </div>
   </div>
@@ -28,36 +23,18 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import CreateUserForm from "@/components/users/CreateUserForm.vue";
 import PasswordResetForm from "@/components/users/PasswordResetForm.vue";
-import InputField from "@/components/ui/InputField.vue";
 import { UserModule } from "@/store/modules/user";
-import toast from "@/helpers/toast";
 
-@Component({
-  components: { PasswordResetForm, InputField },
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  $_veeValidate: { validator: "new" }
-})
+@Component({ components: { CreateUserForm, PasswordResetForm } })
 export default class Settings extends Vue {
-  newUserEmail = "";
-
   created() {
     UserModule.fetchUsers();
   }
 
   get users() {
     return UserModule.users;
-  }
-
-  async addUser() {
-    await UserModule.createUser(this.newUserEmail);
-    await UserModule.resetPassword(this.newUserEmail);
-
-    if (UserModule.passwordUpdated) {
-      toast.success("User created.");
-    } else {
-      toast.error("Failed to create user.");
-    }
   }
 }
 </script>

@@ -1,26 +1,26 @@
 <template>
   <div>
-    <div v-for="food in allocationCategories" :key="food.foodCategoryId">
-      <div class="level box" :class="{ disabled: food.enabled == false }">
+    <div v-for="category in allocationCategories" :key="category.categoryId">
+      <div class="level box" :class="{ disabled: category.enabled == false }">
         <div class="level-left">
           <div class="level-item">
-            <b-checkbox v-model="food.enabled" type="is-info">
-              <p class="food-label">{{ food.name }}</p></b-checkbox
+            <b-checkbox v-model="category.enabled" type="is-info">
+              <p class="category-label">{{ category.name }}</p></b-checkbox
             >
           </div>
         </div>
         <div class="level-right">
           <div class="level-item">
-            <div class="field has-addons">
+            <div class="field allocation-field has-addons">
               <p class="control">
                 <AllocationQuantitesSelect
-                  :value="getFoodQuantity(food)"
-                  @input="setFoodQuantity(food, $event)"
-                  :disabled="!food.enabled"
+                  :value="getCategoryQuantity(category)"
+                  :disabled="!category.enabled"
+                  @input="setCategoryQuantity(category, $event)"
                 />
               </p>
               <p class="control">
-                <button class="button is-static">{{ food.unit }} (max)</button>
+                <button class="button is-static">{{ category.unit }} (max)</button>
               </p>
             </div>
           </div>
@@ -34,7 +34,7 @@
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { IAllocation, IAllocationCategory } from "@/types";
-import Bases from "@/store/modules/bases";
+import App from "@/store/modules/app";
 import { sortBy } from "lodash";
 import AllocationQuantitesSelect from "@/components/ui/AllocationQuantitesSelect.vue";
 
@@ -46,16 +46,15 @@ export default class AllocationQuantitiesInput extends Vue {
   created() {
     const allocations = this.value;
 
-    const allocationCategories = Bases.foodCategories.map(fc => {
-      const allocation = allocations.find(a => a.foodCategoryId === fc.id);
+    const allocationCategories = App.categories.map(fc => {
+      const allocation = allocations.find(a => a.categoryId === fc.id);
 
       if (allocation) {
         return {
           id: allocation.id,
           enabled: true,
           quantity: allocation.quantity,
-          quantityLabel: allocation.quantityLabel,
-          foodCategoryId: fc.id,
+          categoryId: fc.id,
           name: fc.name
         };
       } else {
@@ -64,7 +63,7 @@ export default class AllocationQuantitiesInput extends Vue {
           enabled: false,
           quantity: "0.0",
           quantityLabel: "",
-          foodCategoryId: fc.id,
+          categoryId: fc.id,
           name: fc.name
         };
       }
@@ -76,53 +75,56 @@ export default class AllocationQuantitiesInput extends Vue {
   @Watch("allocationCategories", { immediate: true, deep: true })
   onAllocationChange() {
     const allocations = this.allocationCategories
+      .filter((allocation: IAllocationCategory) => allocation.enabled)
       .map((allocation: IAllocationCategory) => {
-        if (allocation.enabled) {
-          return {
-            foodCategoryId: allocation.foodCategoryId,
-            quantity: allocation.quantity,
-            id: allocation.id
-          };
-        } else if (!allocation.enabled && allocation.id) {
-          return { id: allocation.id, _destroy: true };
-        } else {
-          return null;
-        }
-      })
-      .filter((a: IAllocationCategory | null) => a !== null);
+        return {
+          categoryId: allocation.categoryId,
+          quantity: allocation.quantity,
+          id: allocation.id
+        };
+      });
     this.$emit("input", allocations);
   }
 
-  setFoodQuantity(food: IAllocationCategory, quantity: string) {
-    food.quantity = quantity;
+  setCategoryQuantity(category: IAllocationCategory, quantity: string) {
+    category.quantity = quantity;
   }
 
-  getFoodQuantity(food: IAllocationCategory): string {
-    if (food.quantity === "0.0") {
+  getCategoryQuantity(category: IAllocationCategory): string {
+    if (category.quantity === "0.0") {
       return "";
     } else {
-      return food.quantity;
+      return category.quantity;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.allocation-field {
+  padding-top: 0.4rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
 .box {
-  padding: 0.5rem;
+  padding: 0 0 0 0.5rem;
+}
+
+.field {
+  margin-bottom: 0;
 }
 
 .disabled {
-  .food-label {
+  .category-label {
     color: gray;
   }
 }
 
-.food-label {
+.category-label {
   margin-left: 0.5rem;
 }
 
-.food-quantity {
+.category-quantity {
   width: 5rem;
 }
 </style>

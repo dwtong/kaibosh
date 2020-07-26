@@ -8,7 +8,7 @@
 import { Component, Prop } from "vue-property-decorator";
 import Checkbox from "@/components/ui/Checkbox.vue";
 import Vue from "vue";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
+import ActiveRecipient from "@/store/modules/active-recipient";
 
 @Component({ components: { Checkbox } })
 export default class OnboardingCheckbox extends Vue {
@@ -18,14 +18,10 @@ export default class OnboardingCheckbox extends Vue {
   @Prop({ default: "" }) readonly label!: string;
 
   async toggleValue() {
-    await ActiveRecipientModule.updateRecipient({
-      recipient: {
-        id: this.id,
-        [this.name]: !this.value
-      }
+    await ActiveRecipient.updateRecipient({
+      id: this.id,
+      [this.name]: !this.value
     });
-
-    await ActiveRecipientModule.fetchRecipientStatus(this.id);
   }
 }
 </script>

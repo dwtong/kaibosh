@@ -3,10 +3,11 @@ import { IRecipient } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import RecipientService from "@/services/recipient-service";
 
-const defaultRecipientDetails = {
+export const defaultRecipientDetails: IRecipient = {
   name: "",
   baseId: "0",
-  primaryContact: {
+  startedAt: "",
+  contact: {
     name: "",
     email: "",
     phoneLandline: "",
@@ -58,13 +59,13 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
-  async createRecipient(recipient: any) {
+  async createRecipient(recipient: IRecipient) {
     let errors = null;
     let details = defaultRecipientDetails;
 
     try {
-      const createdRecipient = await RecipientService.create(recipient);
-      details = createdRecipient;
+      const response = await RecipientService.create(recipient);
+      details = response.recipient;
     } catch (e) {
       errors = e;
       details = defaultRecipientDetails;
@@ -75,16 +76,20 @@ class ActiveRecipient extends VuexModule {
   }
 
   @Action
-  async updateRecipient({ recipient }: any) {
-    const updatedRecipient = await RecipientService.update(recipient.id, recipient);
-    this.context.commit("setRecipientDetails", updatedRecipient);
+  async updateRecipient(recipient: any) {
+    if (recipient.id) {
+      const updatedRecipient = await RecipientService.update(recipient.id, recipient);
+      this.context.commit("setRecipientDetails", updatedRecipient);
+      this.context.commit("setRecipientStatus", updatedRecipient.status);
+    }
   }
 
   @Action
   async archiveRecipient(recipientId: string) {
     const updatedRecipient = await RecipientService.destroy(recipientId);
     this.context.commit("setRecipientDetails", updatedRecipient);
+    this.context.commit("setRecipientStatus", updatedRecipient.status);
   }
 }
 
-export const ActiveRecipientModule = getModule(ActiveRecipient);
+export default getModule(ActiveRecipient);

@@ -101,4 +101,4 @@ class AllRecipients extends VuexModule {
   }
 }
 
-export const AllRecipientsModule = getModule(AllRecipients);
+export default getModule(AllRecipients);

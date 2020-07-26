@@ -11,16 +11,52 @@ defmodule Kaibosh.RecipientSessionsTest do
   describe "getting and listing recipient sessions" do
     setup [:create_recipient_session_with_associations]
 
-    test "list_sessions/0 returns all recipient sessions with associations" do
-      assert [%RecipientSession{} = session] = RecipientSessions.list_sessions()
+    test "listing sessions returns all recipient's sessions", %{recipient_id: recipient_id} do
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{} = session] = sessions
       assert length(session.allocations) == 1
       assert length(session.holds) == 1
+    end
+
+    test "listing sessions does not return other sessions", %{recipient_id: recipient_id} do
+      %{id: other_session_id} = insert(:recipient_session)
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert length(sessions) == 1
+      refute Enum.any?(sessions, &(&1.id == other_session_id))
     end
 
     test "get_session!/1 returns the session with given id", %{recipient_session: %{id: id}} do
       assert %RecipientSession{} = session = RecipientSessions.get_session!(id)
       assert length(session.allocations) == 1
       assert length(session.holds) == 1
+    end
+  end
+
+  describe "recipient session status" do
+    setup [:create_recipient_session_with_associations]
+
+    test "listing sessions includes session status", %{recipient_id: recipient_id} do
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{id: id, status: status, holds: [hold]}] = sessions
+      assert status == :on_hold
+
+      RecipientSessions.delete_hold(hold)
+
+      sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
+      assert [%RecipientSession{status: status}] = sessions
+      assert status == :active
+    end
+
+    test "getting session includes session status", %{recipient_session: %{id: id}} do
+      assert %RecipientSession{id: id, status: status, holds: [hold]} =
+               RecipientSessions.get_session!(id)
+
+      assert status == :on_hold
+
+      RecipientSessions.delete_hold(hold)
+
+      assert %RecipientSession{id: id, status: status} = RecipientSessions.get_session!(id)
+      assert status == :active
     end
   end
 
@@ -118,6 +154,19 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2_keep.quantity)))
     end
 
+    test "update_session/2 does not delete existing allocations when field is not set" do
+      recipient_session = insert(:recipient_session) |> Repo.forget([:recipient, :session])
+      category = insert(:category)
+      insert(:allocation, category: category, recipient_session: recipient_session)
+      insert(:allocation, category: category, recipient_session: recipient_session)
+      attrs = %{holds: []}
+
+      assert {:ok, %RecipientSession{allocations: allocations}} =
+               RecipientSessions.update_session(recipient_session, attrs)
+
+      assert length(allocations) == 2
+    end
+
     test "update_session/2 with invalid data returns error changeset" do
       recipient_session =
         insert(:recipient_session)
@@ -165,6 +214,11 @@ defmodule Kaibosh.RecipientSessionsTest do
       assert {:ok, %Hold{} = hold} = RecipientSessions.create_hold(attrs)
       assert hold.ends_at == ~U[2010-04-17 14:00:00.000000Z]
       assert hold.starts_at == ~U[2010-04-17 14:00:00.000000Z]
+
+      assert RecipientSessions.get_hold_for_recipient!(
+               hold.id,
+               recipient_session.recipient_id
+             ) == hold
     end
 
     test "create_hold/1 with invalid data returns error changeset" do
@@ -172,9 +226,12 @@ defmodule Kaibosh.RecipientSessionsTest do
     end
 
     test "delete_hold/1 deletes the hold" do
-      hold = insert(:hold) |> Repo.forget(:recipient_session)
+      hold = insert(:hold)
       assert {:ok, %Hold{}} = RecipientSessions.delete_hold(hold)
-      assert_raise Ecto.NoResultsError, fn -> RecipientSessions.get_hold!(hold.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        RecipientSessions.get_hold_for_recipient!(hold.id, hold.recipient_session.recipient_id)
+      end
     end
   end
 
@@ -200,6 +257,6 @@ defmodule Kaibosh.RecipientSessionsTest do
     expected_session =
       Repo.get(RecipientSession, recipient_session.id) |> Repo.preload([:allocations, :holds])
 
-    %{recipient_session: expected_session}
+    %{recipient_session: expected_session, recipient_id: recipient_session.recipient_id}
   end
 end

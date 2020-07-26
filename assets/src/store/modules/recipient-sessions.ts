@@ -1,14 +1,13 @@
 import Vue from "vue";
 import Store from "@/store";
-import { IHold, IScheduledSession } from "@/types";
+import { IHold, IRecipientSession } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { ActiveRecipientModule } from "@/store/modules/active-recipient";
-import HoldService from "@/services/session-hold-service";
-import ScheduledSessionService from "@/services/scheduled-session-service";
+import ActiveRecipient from "@/store/modules/active-recipient";
+import RecipientSessionService from "@/services/recipient-session-service";
 
 @Module({ name: "recipientSessions", store: Store, dynamic: true })
 class RecipientSessions extends VuexModule {
-  sessions: IScheduledSession[] = [];
+  sessions: IRecipientSession[] = [];
   errors = null;
 
   get sessionById() {
@@ -20,7 +19,7 @@ class RecipientSessions extends VuexModule {
   @Action
   async fetchSessions(recipientId: string) {
     try {
-      const sessions = await ScheduledSessionService.getForRecipient(recipientId);
+      const sessions = await RecipientSessionService.getForRecipient(recipientId);
       this.context.commit("setSessions", sessions);
     } catch (e) {
       this.context.commit("setErrors", e);
@@ -33,74 +32,60 @@ class RecipientSessions extends VuexModule {
   }
 
   @Mutation
-  addSession(session: IScheduledSession) {
+  addSession(session: IRecipientSession) {
     this.sessions.push(session);
   }
 
   @Mutation
-  modifySession(updatedSession: IScheduledSession, sessionId: string) {
-    const sessionIndex = this.sessions.findIndex((s: IScheduledSession) => s.id === sessionId);
+  modifySession(updatedSession: IRecipientSession, sessionId: string) {
+    const sessionIndex = this.sessions.findIndex((s: IRecipientSession) => s.id === sessionId);
     Vue.set(this.sessions, sessionIndex, updatedSession);
   }
 
   @Action
-  async createHolds(holds: IHold[]) {
+  async createHolds({ recipientId, holds }: { recipientId: string; holds: IHold[] }) {
     for (const hold of holds) {
-      await HoldService.create(hold);
+      await RecipientSessionService.createHold(recipientId, hold);
     }
 
-    const session = this.sessionById(holds[0].sessionId);
-
-    if (session && session.recipientId) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
-    }
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(recipientId);
   }
 
   @Action
-  async deleteHold(hold: IHold) {
-    if (hold.id) {
-      await HoldService.destroy(hold.id);
-      const session = this.sessionById(hold.sessionId);
-
-      if (session?.recipientId) {
-        ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-        this.fetchSessions(session.recipientId);
-      }
-    }
+  async deleteHold({ recipientId, holdId }: { recipientId: string; holdId: string }) {
+    await RecipientSessionService.destroyHold(recipientId, holdId);
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(recipientId);
   }
 
   @Action
-  async createSession(session: IScheduledSession) {
-    await ScheduledSessionService.create(session.recipientId, { session });
+  async createSession(session: IRecipientSession) {
+    await RecipientSessionService.create(session.recipientId, { session });
 
     if (session?.recipientId) {
-      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+      ActiveRecipient.fetchRecipientStatus(session.recipientId);
       this.fetchSessions(session.recipientId);
     }
   }
 
   @Action
-  async updateSession(session: IScheduledSession) {
+  async updateSession(session: IRecipientSession) {
     if (session.id) {
-      await ScheduledSessionService.update(session.recipientId, session.id, { session });
+      await RecipientSessionService.update(session.recipientId, session.id, { session });
 
       if (session.recipientId) {
-        ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
+        ActiveRecipient.fetchRecipientStatus(session.recipientId);
         this.fetchSessions(session.recipientId);
       }
     }
   }
 
   @Action
-  async deleteSession(sessionId: string) {
-    const session = this.sessionById(sessionId);
-
-    if (session?.recipientId) {
-      await ScheduledSessionService.destroy(session.recipientId, sessionId);
-      ActiveRecipientModule.fetchRecipientStatus(session.recipientId);
-      this.fetchSessions(session.recipientId);
-    }
+  async deleteSession({ recipientId, sessionId }: { recipientId: string; sessionId: string }) {
+    await RecipientSessionService.destroy(recipientId, sessionId);
+    ActiveRecipient.fetchRecipientStatus(recipientId);
+    this.fetchSessions(sessionId);
   }
 }
 
