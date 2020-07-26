@@ -22,8 +22,7 @@
 
     <div v-for="recipient in recipients" :key="recipient.id" class="recipient with-margins">
       <h2 class="subtitle">{{ recipient.name }}</h2>
-      <!-- eslint-disable vue/no-v-html -->
-      <div v-html="recipient.description"></div>
+      <div class="is-multi-line">{{ recipient.description }}</div>
     </div>
   </div>
 </template>
@@ -31,7 +30,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-import Sessions from "@/store/modules/sessions";
+import SessionPlans from "@/store/modules/session-plans";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
 import Router from "@/router";
@@ -43,19 +42,14 @@ export default class GenerateDescriptionsButton extends Vue {
 
   get recipients() {
     if (this.includeOnHold) {
-      return Sessions.orderedRecipients;
+      return SessionPlans.orderedRecipients;
     } else {
-      return Sessions.orderedRecipients.filter(r => r.status !== "on_hold");
+      return SessionPlans.orderedRecipients.filter(r => r.status !== "on_hold");
     }
   }
 
   get sessionDate() {
-    return Sessions.details.date;
-  }
-
-  async created() {
-    // TODO: fetch session
-    // await Sessions.fetchSession(this.id);
+    return SessionPlans.planDetails?.session.date;
   }
 
   goBack() {

@@ -36,7 +36,8 @@ defmodule KaiboshWeb.SessionPlanView do
     %{
       id: recipient.id,
       name: recipient.name,
-      status: recipient.status
+      status: recipient.status,
+      description: recipient.description
     }
   end
 

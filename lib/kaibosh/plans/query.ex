@@ -17,10 +17,19 @@ defmodule Kaibosh.Plans.Query do
     )
     |> join(:left, [s, rs], h in "holds", on: rs.id == h.recipient_session_id)
     |> where([s], s.base_id == ^base_id)
-    |> group_by([s, rs, r, h], [s.id, s.day, s.time, r.name, r.id, h.starts_at, h.ends_at])
+    |> group_by([s, rs, r, h], [
+      s.id,
+      s.day,
+      s.time,
+      r.name,
+      r.id,
+      r.description,
+      h.starts_at,
+      h.ends_at
+    ])
     |> select([s, rs, r, h], %{
       session: %{id: s.id, day: s.day, time: s.time, base_id: s.base_id},
-      recipient: %{name: r.name, id: r.id},
+      recipient: %{name: r.name, id: r.id, description: r.description},
       hold: %{starts_at: h.starts_at, ends_at: h.ends_at}
     })
   end
@@ -55,6 +64,6 @@ defmodule Kaibosh.Plans.Query do
     |> where([r], r.started_at <= ^starts_at)
     |> where([r], not is_nil(r.signed_terms_at))
     |> where([r], not is_nil(r.met_kaibosh_at))
-    |> select([r], %{id: r.id, name: r.name})
+    |> select([r], %{id: r.id, name: r.name, description: r.description})
   end
 end

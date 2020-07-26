@@ -57,6 +57,7 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
 
       assert recipient["id"] == recipient_session.recipient_id
       assert recipient["status"] == "active"
+      assert recipient["description"] == recipient_session.recipient.description
 
       assert a1["quantity"] == Decimal.to_string(allocation.quantity)
       assert a1["category_id"] == allocation.category_id
@@ -67,7 +68,7 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
   defp create_session(_) do
     base = insert(:base)
     session = insert(:session, base: base)
-    recipient = insert(:recipient, base: base)
+    recipient = insert(:recipient, base: base, description: "recipient desc")
     recipient_session = insert(:recipient_session, recipient: recipient, session: session)
     allocation = insert(:allocation, recipient_session: recipient_session, quantity: 5)
 

@@ -1,9 +1,8 @@
-import { sortBy } from "lodash";
 import { ISessionPlan, ISessionPlanDetails } from "@/types";
 import Store from "@/store";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import SessionPlanService from "@/services/session-plan-service";
-import { capitalize } from "lodash";
+import { capitalize, sortBy } from "lodash";
 
 @Module({ name: "sessionPlans", store: Store, dynamic: true })
 class SessionPlans extends VuexModule {
@@ -20,6 +19,10 @@ class SessionPlans extends VuexModule {
 
   get recipientById() {
     return (id: string) => this.planDetails.recipients.find(r => r.id === id);
+  }
+
+  get orderedRecipients() {
+    return sortBy(this.planDetails.recipients, "name");
   }
 
   get allocationsForCategory() {
