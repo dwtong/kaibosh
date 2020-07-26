@@ -26,7 +26,7 @@ class User extends VuexModule {
 
   @Action
   async createUser(email: string) {
-    await AuthService.createUser(email);
+    await UserService.createUser(email);
   }
 
   @Action

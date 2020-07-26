@@ -34,6 +34,8 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
+    resources "/users", UserController, only: [:index, :create]
+
     resources "/bases", BaseController, only: [:index] do
       resources "/categories", CategoryController, only: [:index]
       resources "/sessions", SessionController, only: [:index]
