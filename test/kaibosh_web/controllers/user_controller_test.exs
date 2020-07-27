@@ -1,5 +1,6 @@
 defmodule KaiboshWeb.UserControllerTest do
   use KaiboshWeb.ConnCase
+  use Bamboo.Test
 
   alias Kaibosh.Accounts.User
 
@@ -26,8 +27,19 @@ defmodule KaiboshWeb.UserControllerTest do
 
       assert %{"email" => email} = json_response(conn, 201)
       assert %User{} = user = Repo.get_by(User, email: email)
+
       assert user.email == @create_attrs.email
       assert !is_nil(user.password_hash)
+    end
+
+    test "sends new user password reset email", %{conn: conn} do
+      conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
+
+      assert %{"email" => email} = json_response(conn, 201)
+      assert %User{} = user = Repo.get_by(User, email: email)
+
+      assert user.password_reset_token
+      assert_email_delivered_with(%{to: [nil: user.email]})
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

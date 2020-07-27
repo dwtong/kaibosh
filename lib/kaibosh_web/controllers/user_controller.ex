@@ -3,6 +3,8 @@ defmodule KaiboshWeb.UserController do
 
   alias Kaibosh.Accounts
   alias Kaibosh.Accounts.User
+  alias KaiboshWeb.Email
+  alias KaiboshWeb.Password
 
   action_fallback KaiboshWeb.FallbackController
 
@@ -14,7 +16,10 @@ defmodule KaiboshWeb.UserController do
   def create(conn, %{"user" => %{"email" => email}}) do
     user_params = %{email: email, password: :crypto.strong_rand_bytes(16)}
 
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+    with {:ok, %User{email: email}} <- Accounts.create_user(user_params),
+         {:ok, %User{} = user} <- Password.generate_token(email) do
+      Email.reset_password_email(user)
+
       conn
       |> put_status(:created)
       |> render("show.json", user: user)
