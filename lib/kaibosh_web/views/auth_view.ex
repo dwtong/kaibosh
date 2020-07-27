@@ -12,8 +12,4 @@ defmodule KaiboshWeb.AuthView do
   def render("password_sent.json", _) do
     %{message: "Password email sent."}
   end
-
-  def render("not_found.json", _) do
-    %{message: "User not found."}
-  end
 end

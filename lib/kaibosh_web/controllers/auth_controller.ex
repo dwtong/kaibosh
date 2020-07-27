@@ -19,24 +19,21 @@ defmodule KaiboshWeb.AuthController do
         |> render("created.json")
 
       _ ->
-        conn
-        |> put_status(:not_found)
-        |> render("not_found.json")
+        {:error, :not_found}
     end
   end
 
   def password_reset(conn, %{"email" => email}) do
-    with {:ok, %User{} = user} <- Password.generate_token(email) do
-      Email.reset_password_email(user)
+    case Password.generate_token(email) do
+      {:ok, %User{} = user} ->
+        Email.reset_password_email(user)
 
-      conn
-      |> put_status(:created)
-      |> render("password_sent.json")
-    else
-      _err ->
         conn
-        |> put_status(:not_found)
-        |> render("not_found.json")
+        |> put_status(:created)
+        |> render("password_sent.json")
+
+      _err ->
+        {:error, :not_found}
     end
   end
 

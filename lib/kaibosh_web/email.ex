@@ -1,4 +1,8 @@
 defmodule KaiboshWeb.Email do
+  @moduledoc """
+  Manages building emails from within the KaiboshWeb application.
+  Uses templates in emails subdirectory.
+  """
   use Bamboo.Phoenix, view: KaiboshWeb.EmailView
   alias Kaibosh.Mailer
 
