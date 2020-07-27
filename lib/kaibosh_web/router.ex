@@ -27,10 +27,10 @@ defmodule KaiboshWeb.Router do
   scope "/api/auth", KaiboshWeb do
     pipe_through :api
 
-    post "/sign_in", UserSessionController, :create
-    delete "/sign_out", UserSessionController, :delete
-    post "/reset_password", UserController, :password_reset
-    put "/update_password", UserController, :update_password
+    post "/sign_in", AuthController, :create
+    delete "/sign_out", AuthController, :delete
+    post "/reset_password", AuthController, :password_reset
+    put "/update_password", AuthController, :update_password
   end
 
   scope "/api", KaiboshWeb do

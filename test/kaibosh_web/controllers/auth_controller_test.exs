@@ -1,8 +1,12 @@
-defmodule KaiboshWeb.UserSessionControllerTest do
+defmodule KaiboshWeb.AuthControllerTest do
   import Ecto.Query
   use KaiboshWeb.ConnCase
+  use Bamboo.Test
+
   alias Kaibosh.Accounts
+  alias Kaibosh.Accounts.User
   alias Kaibosh.Accounts.UserSession
+  alias KaiboshWeb.Password
 
   setup do
     {:ok, user} = Accounts.create_user(%{email: "test@test.com", password: "pa55word"})
@@ -14,10 +18,57 @@ defmodule KaiboshWeb.UserSessionControllerTest do
     {:ok, user: user, conn: conn}
   end
 
+  describe "reset password" do
+    setup [:create_user]
+
+    test "sends password reset email to user", %{conn: conn, user: user} do
+      conn = post(conn, Routes.auth_path(conn, :password_reset), email: user.email)
+
+      assert json_response(conn, 201)
+
+      assert_email_delivered_with(%{to: [nil: user.email]})
+    end
+
+    test "sends 204 response regardless of whether user exists", %{conn: conn} do
+      conn = post(conn, Routes.auth_path(conn, :password_reset), email: "invalid@foo.bar")
+      assert json_response(conn, 404)
+    end
+  end
+
+  describe "update password" do
+    test "updates password if token is valid for user", %{conn: conn, user: user} do
+      {:ok, %{password_reset_token: token}} = Password.generate_token(user.email)
+
+      conn =
+        put(conn, Routes.auth_path(conn, :update_password),
+          password: "pa55word",
+          password_confirmation: "pa55word",
+          token: token
+        )
+
+      updated_user = Repo.get(User, user.id)
+
+      assert json_response(conn, 200)
+      assert updated_user.password != user.password
+      refute updated_user.password_reset_token
+    end
+
+    test "does not update password for invalid token", %{conn: conn} do
+      conn =
+        put(conn, Routes.auth_path(conn, :update_password),
+          password: "pa55word",
+          password_confirmation: "pa55word",
+          token: "XXX"
+        )
+
+      assert response(conn, 422)
+    end
+  end
+
   describe "sign in user" do
     test "creates user session and sets headers/cookies", %{user: user, conn: conn} do
       conn =
-        post(conn, Routes.user_session_path(conn, :create), %{
+        post(conn, Routes.auth_path(conn, :create), %{
           "email" => user.email,
           "password" => user.password
         })
@@ -32,7 +83,7 @@ defmodule KaiboshWeb.UserSessionControllerTest do
 
     test "returns not found for missing user", %{conn: conn} do
       conn =
-        post(conn, Routes.user_session_path(conn, :create), %{
+        post(conn, Routes.auth_path(conn, :create), %{
           "email" => "foo@bar.com",
           "password" => "password"
         })
@@ -51,7 +102,7 @@ defmodule KaiboshWeb.UserSessionControllerTest do
       assert user_id_set?(conn)
       assert session_exists?(user.id)
 
-      conn = delete(conn, Routes.user_session_path(conn, :delete))
+      conn = delete(conn, Routes.auth_path(conn, :delete))
 
       assert response(conn, 204)
       refute contains_cookie?(conn)
@@ -87,5 +138,9 @@ defmodule KaiboshWeb.UserSessionControllerTest do
       ["Bearer " <> _] -> true
       _ -> false
     end
+  end
+
+  defp create_user(_) do
+    %{user: insert(:user)}
   end
 end

@@ -1,6 +1,5 @@
 defmodule KaiboshWeb.UserControllerTest do
   use KaiboshWeb.ConnCase
-  use Bamboo.Test
 
   alias Kaibosh.Accounts.User
 
@@ -34,26 +33,6 @@ defmodule KaiboshWeb.UserControllerTest do
       conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
-  end
-
-  describe "reset password" do
-    setup [:create_user]
-
-    test "sends password reset email to user", %{conn: conn, user: user} do
-      conn = post(conn, Routes.user_path(conn, :password_reset), email: user.email)
-
-      assert json_response(conn, 201)
-
-      assert_email_delivered_with(%{to: [nil: user.email]})
-    end
-
-    test "sends 204 response regardless of whether user exists", %{conn: conn} do
-      conn = post(conn, Routes.user_path(conn, :password_reset), email: "invalid@foo.bar")
-      assert json_response(conn, 404)
-    end
-  end
-
-  describe "update password" do
   end
 
   defp create_user(_) do
