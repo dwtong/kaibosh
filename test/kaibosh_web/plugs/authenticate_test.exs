@@ -5,7 +5,12 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
 
   setup do
     session = insert(:user_session)
-    conn = build_conn() |> Plug.Conn.put_req_header("accept", "application/json")
+
+    conn =
+      build_conn()
+      |> Plug.Conn.put_req_header("accept", "application/json")
+      |> init_test_session(%{})
+
     %{session: session, conn: conn}
   end
 
@@ -22,11 +27,6 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
 
     test "return 401 when session cookie is not set", %{conn: conn, session: session} do
       conn = conn |> put_valid_token(session) |> authenticate()
-      assert not_authorized?(conn)
-    end
-
-    test "return 401 when session cookie has expired", %{conn: conn, session: session} do
-      conn = conn |> put_expired_token(session) |> put_expired_cookie(session) |> authenticate()
       assert not_authorized?(conn)
     end
 
@@ -47,7 +47,7 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
       assert req_auth_token(conn) == resp_auth_token(conn)
     end
 
-    test "session token and cookie are regenerated if bearer has expired and session is valid", %{
+    test "session token is regenerated if bearer has expired and session is valid", %{
       conn: conn,
       session: session
     } do
@@ -56,8 +56,6 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
       assert authorized?(conn)
       assert !is_nil(resp_auth_token(conn))
       assert req_auth_token(conn) != resp_auth_token(conn)
-      assert !is_nil(resp_session_cookie(conn))
-      assert req_session_cookie(conn) != resp_session_cookie(conn)
     end
   end
 
@@ -71,17 +69,14 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
     conn |> put_req_header("authorization", "Bearer #{token}")
   end
 
-  defp put_valid_cookie(conn, %{token: token}, max_age \\ 5000) do
-    token = Authentication.generate_token(token, max_age)
-    put_req_cookie(conn, "_kaibosh_token", token)
+  defp put_valid_cookie(conn, %{user_id: user_id, token: token}) do
+    conn
+    |> put_session(:user_id, user_id)
+    |> put_session(:token, token)
   end
 
   defp put_expired_token(conn, session) do
     conn |> put_valid_token(session, 0)
-  end
-
-  defp put_expired_cookie(conn, session) do
-    conn |> put_valid_cookie(session, 0)
   end
 
   defp req_auth_token(conn) do
@@ -91,16 +86,6 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
 
   defp resp_auth_token(conn) do
     ["Bearer " <> token] = get_resp_header(conn, "authorization")
-    token
-  end
-
-  defp req_session_cookie(conn) do
-    %{req_cookies: %{"_kaibosh_token" => token}} = fetch_cookies(conn)
-    token
-  end
-
-  defp resp_session_cookie(conn) do
-    %{resp_cookies: %{"_kaibosh_token" => %{value: token}}} = conn
     token
   end
 

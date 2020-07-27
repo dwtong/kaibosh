@@ -8,10 +8,9 @@ defmodule KaiboshWeb.UserSessionController do
 
   def create(conn, %{"email" => email, "password" => password}) do
     case Accounts.sign_in(email, password) do
-      {:ok, %{id: id, token: token}} ->
+      {:ok, token} ->
         conn
-        |> Authentication.set_session_cookie(token)
-        |> Authentication.set_auth_header(id)
+        |> Authentication.create_session(token)
         |> put_status(:created)
         |> render("created.json")
 

@@ -3,18 +3,16 @@ defmodule KaiboshWeb.Authentication do
   A collection of functions for generating and fetching
   authentication tokens and cookies.
 
-  Tokens live in authorization header and are short-lived,
-  cookies are httponly and allow for refreshing tokens.
-
-  Both token and cookie must be present.
+  Authorization tokens live in authorization header and are short-lived,
+  session tokens are stored in session and DB.
   """
-  alias Kaibosh.Accounts
-  alias KaiboshWeb.Endpoint
   import Plug.Conn
+  alias Kaibosh.Accounts
+  alias Kaibosh.Accounts.UserSession
+  alias KaiboshWeb.Endpoint
 
   @salt "access token"
   @five_minutes 300
-  @one_week 604_800
 
   def generate_token(session, max_age) do
     Phoenix.Token.sign(Endpoint, @salt, session, max_age: max_age)
@@ -24,6 +22,28 @@ defmodule KaiboshWeb.Authentication do
 
   def verify_token(token) do
     Phoenix.Token.verify(Endpoint, @salt, token)
+  end
+
+  def create_session(conn, %UserSession{user_id: user_id, token: token}) do
+    conn
+    |> fetch_session()
+    |> put_session(:token, token)
+    |> put_session(:user_id, user_id)
+    |> set_auth_header(user_id)
+  end
+
+  def destroy_session(conn) do
+    conn = fetch_session(conn)
+
+    conn
+    |> fetch_session()
+    |> get_session(:token)
+    |> case do
+      nil -> nil
+      token -> Accounts.sign_out(token)
+    end
+
+    clear_session(conn)
   end
 
   def set_auth_header(conn, user_id, max_age \\ @five_minutes) do
@@ -37,37 +57,5 @@ defmodule KaiboshWeb.Authentication do
       ["Bearer " <> token] -> token
       _ -> nil
     end
-  end
-
-  def set_session_cookie(conn, decoded_token, max_age \\ @one_week) do
-    cookie_opts = [http_only: true, max_age: max_age, extra: "SameSite=Strict"]
-
-    decoded_token
-    |> generate_token(max_age)
-    |> (&put_resp_cookie(conn, "_kaibosh_token", &1, cookie_opts)).()
-  end
-
-  def fetch_session_cookie_token(conn) do
-    case fetch_cookies(conn) do
-      %{cookies: %{"_kaibosh_token" => encoded_token}} -> encoded_token
-      _ -> nil
-    end
-  end
-
-  def destroy_session(conn) do
-    conn
-    |> fetch_cookies()
-    |> decode_session_token()
-    |> sign_out_user()
-    |> delete_resp_cookie("_kaibosh_token")
-  end
-
-  defp decode_session_token(%{cookies: %{"_kaibosh_token" => encoded_token}} = conn) do
-    {conn, verify_token(encoded_token)}
-  end
-
-  defp sign_out_user({conn, {:ok, token}}) when is_binary(token) do
-    Accounts.sign_out(token)
-    conn
   end
 end

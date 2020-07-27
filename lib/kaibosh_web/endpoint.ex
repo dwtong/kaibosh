@@ -7,7 +7,9 @@ defmodule KaiboshWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_kaibosh_key",
-    signing_salt: "3H1zjXAA"
+    signing_salt: "3H1zjXAA",
+    extra: "SameSite=Strict",
+    http_only: true
   ]
 
   # socket "/socket", KaiboshWeb.UserSocket,
