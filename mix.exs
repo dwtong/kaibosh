@@ -57,6 +57,7 @@ defmodule Kaibosh.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:timex, "~> 3.6"},
       {:excoveralls, "~> 0.13.0"},
+      {:bamboo, "~> 1.5"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},

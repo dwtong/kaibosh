@@ -5,14 +5,16 @@ defmodule Kaibosh.Accounts.User do
   alias Kaibosh.Accounts.User
   alias Kaibosh.Accounts.UserSession
 
-  @allowed_attrs [:email, :password]
-  @required_attrs [:email, :password]
+  @allowed_attrs [:email, :password, :password_reset_token]
+  @required_attrs [:email]
 
   schema "users" do
     has_many :user_sessions, UserSession
 
     field :email, :string
     field :password_hash, :string
+    field :password_reset_token, :string
+
     field :password, :string, virtual: true
 
     timestamps()

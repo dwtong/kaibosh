@@ -27,12 +27,16 @@ defmodule KaiboshWeb.Router do
   scope "/api/auth", KaiboshWeb do
     pipe_through :api
 
-    post "/sign_in", UserSessionController, :create
-    delete "/sign_out", UserSessionController, :delete
+    post "/sign_in", AuthController, :create
+    delete "/sign_out", AuthController, :delete
+    post "/reset_password", AuthController, :password_reset
+    put "/update_password", AuthController, :update_password
   end
 
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
+
+    resources "/users", UserController, only: [:index, :create, :update]
 
     resources "/bases", BaseController, only: [:index] do
       resources "/categories", CategoryController, only: [:index]
@@ -70,5 +74,9 @@ defmodule KaiboshWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: KaiboshWeb.Telemetry
     end
+  end
+
+  if Mix.env() == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 end

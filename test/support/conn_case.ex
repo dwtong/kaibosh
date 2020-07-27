@@ -47,7 +47,7 @@ defmodule KaiboshWeb.ConnCase do
       Phoenix.ConnTest.build_conn()
       |> Plug.Conn.put_req_header("accept", "application/json")
       |> put_auth_token_header()
-      |> put_session_cookie()
+      |> Plug.Test.init_test_session(%{user_id: 1})
 
     {:ok, conn: conn}
   end
@@ -55,10 +55,5 @@ defmodule KaiboshWeb.ConnCase do
   defp put_auth_token_header(conn) do
     token = KaiboshWeb.Authentication.generate_token(1, 5000)
     Plug.Conn.put_req_header(conn, "authorization", "Bearer #{token}")
-  end
-
-  defp put_session_cookie(conn) do
-    token = KaiboshWeb.Authentication.generate_token(1, 500)
-    Plug.Test.put_req_cookie(conn, "_kaibosh_token", token)
   end
 end
