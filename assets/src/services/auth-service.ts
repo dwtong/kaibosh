@@ -14,10 +14,9 @@ export default {
       redirectUrl: `${window.location.origin}/reset_password`
     });
   },
-  changePassword: (password: string, confirmation: string, token: string) => {
+  changePassword: (password: string, token: string) => {
     return put(`${resource}/update_password`, {
       password,
-      passwordConfirmation: confirmation,
       token: token
     });
   }

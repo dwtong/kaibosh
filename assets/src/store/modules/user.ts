@@ -47,7 +47,14 @@ class User extends VuexModule {
   @Action
   async updatePassword({ password, token }: { password: string; token: string }) {
     this.context.commit("setPasswordUpdated", false);
-    const response = await AuthService.changePassword(password, password, token);
+    let response;
+
+    if (this.isAuthenticated) {
+      response = await UserService.updateUser({ password });
+    } else {
+      response = await AuthService.changePassword(password, token);
+    }
+
     if (response) {
       this.context.commit("setPasswordUpdated", true);
     }

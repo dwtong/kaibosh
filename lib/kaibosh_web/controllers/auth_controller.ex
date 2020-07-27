@@ -40,13 +40,8 @@ defmodule KaiboshWeb.AuthController do
     end
   end
 
-  def update_password(conn, %{
-        "password" => password,
-        "password_confirmation" => confirmation,
-        "token" => token
-      }) do
+  def update_password(conn, %{"password" => password, "token" => token}) do
     with {:ok, user} <- Password.validate_token(token),
-         true <- Password.check_match(password, confirmation),
          {:ok, %User{}} <- Accounts.update_user(user, %{password: password}) do
       conn
       |> put_status(:ok)

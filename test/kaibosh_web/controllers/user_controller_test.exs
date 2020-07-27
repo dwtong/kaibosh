@@ -5,6 +5,7 @@ defmodule KaiboshWeb.UserControllerTest do
 
   @create_attrs %{email: "test@test.com"}
   @invalid_attrs %{email: nil}
+  @update_attrs %{password: "pa55word"}
 
   describe "list users" do
     setup [:create_user]
@@ -35,7 +36,21 @@ defmodule KaiboshWeb.UserControllerTest do
     end
   end
 
-  defp create_user(_) do
-    %{user: insert(:user)}
+  describe "update user" do
+    setup [:create_user]
+
+    test "updates user when id matches current user", %{conn: conn, user: user} do
+      conn = put(conn, Routes.user_path(conn, :update, user.id), user: @update_attrs)
+
+      assert %{"email" => email} = json_response(conn, 200)
+      assert %User{} = updated_user = Repo.get_by(User, email: email)
+      assert updated_user.password_hash != user.password_hash
+      assert !is_nil(user.password_hash)
+    end
+  end
+
+  defp create_user(%{conn: conn}) do
+    user_id = conn.private.plug_session["user_id"]
+    %{user: insert(:user, id: user_id)}
   end
 end

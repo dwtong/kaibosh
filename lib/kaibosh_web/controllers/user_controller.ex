@@ -21,7 +21,15 @@ defmodule KaiboshWeb.UserController do
     end
   end
 
-  def update(conn, %{}) do
-    conn
+  def update(conn, %{"id" => _user_id, "user" => user_params}) do
+    # Currently only allow user to update themselves
+    user_id = conn |> fetch_session() |> get_session(:user_id)
+
+    with %User{} = user <- Accounts.get_user!(user_id),
+         {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
+      render(conn, "show.json", user: user)
+    else
+      _err -> {:error, :not_found}
+    end
   end
 end

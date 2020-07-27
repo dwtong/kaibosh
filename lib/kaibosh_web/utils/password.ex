@@ -31,8 +31,4 @@ defmodule KaiboshWeb.Password do
         {:error, :invalid_token}
     end
   end
-
-  def check_match(password, password_confirmation) do
-    Plug.Crypto.secure_compare(password, password_confirmation)
-  end
 end

@@ -40,11 +40,7 @@ defmodule KaiboshWeb.AuthControllerTest do
       {:ok, %{password_reset_token: token}} = Password.generate_token(user.email)
 
       conn =
-        put(conn, Routes.auth_path(conn, :update_password),
-          password: "pa55word",
-          password_confirmation: "pa55word",
-          token: token
-        )
+        put(conn, Routes.auth_path(conn, :update_password), password: "pa55word", token: token)
 
       updated_user = Repo.get(User, user.id)
 
@@ -55,11 +51,7 @@ defmodule KaiboshWeb.AuthControllerTest do
 
     test "does not update password for invalid token", %{conn: conn} do
       conn =
-        put(conn, Routes.auth_path(conn, :update_password),
-          password: "pa55word",
-          password_confirmation: "pa55word",
-          token: "XXX"
-        )
+        put(conn, Routes.auth_path(conn, :update_password), password: "pa55word", token: "XXX")
 
       assert response(conn, 422)
     end
