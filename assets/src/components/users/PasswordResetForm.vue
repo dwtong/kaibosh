@@ -23,8 +23,8 @@ export default class PasswordResetForm extends Vue {
   async updatePassword() {
     this.updatingPassword = true;
 
-    const token = this.$route.query?.password_reset_token?.toString() ?? ""
-    await UserModule.updatePassword({password: this.password, token});
+    const token = this.$route.query?.password_reset_token?.toString() ?? "";
+    await UserModule.updatePassword({ password: this.password, token });
 
     if (UserModule.passwordUpdated) {
       toast.success("Password updated.");
