@@ -82,7 +82,7 @@ export default class ShowSession extends Vue {
     const sessionId = this.$route.params.id?.toString();
     const date = this.$route.query.date?.toString();
 
-    await App.fetchCategories(baseId);
+    await App.fetchCategories();
     await SessionPlans.fetchPlanDetails({ baseId, sessionId, date });
 
     App.disableLoading();

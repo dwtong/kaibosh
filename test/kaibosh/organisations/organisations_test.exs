@@ -78,13 +78,13 @@ defmodule Kaibosh.OrganisationsTest do
     @update_attrs %{name: "apples", unit: "crate", image_name: "apples"}
     @invalid_attrs %{name: nil, unit: nil}
 
-    test "list_categories_for_base/1 returns all categories for base" do
-      category = insert(:category) |> Repo.forget(:base)
-      assert Organisations.list_categories_for_base(category.base_id) == [category]
+    test "list_categories/0 returns all categories" do
+      category = insert(:category)
+      assert Organisations.list_categories() == [category]
     end
 
     test "get_category!/1 returns the category with given id" do
-      category = insert(:category) |> Repo.forget(:base)
+      category = insert(:category)
       assert Organisations.get_category!(category.id) == category
     end
 
@@ -96,7 +96,6 @@ defmodule Kaibosh.OrganisationsTest do
 
       assert category.name == @valid_attrs.name
       assert category.unit == @valid_attrs.unit
-      assert category.base_id == base.id
     end
 
     test "create_category/1 with invalid data returns error changeset" do
@@ -104,7 +103,7 @@ defmodule Kaibosh.OrganisationsTest do
     end
 
     test "update_category/2 with valid data updates the category" do
-      category = insert(:category) |> Repo.forget(:base)
+      category = insert(:category)
 
       assert {:ok, %Category{} = category} =
                Organisations.update_category(category, @update_attrs)
@@ -114,7 +113,7 @@ defmodule Kaibosh.OrganisationsTest do
     end
 
     test "update_category/2 with invalid data returns error changeset" do
-      category = insert(:category) |> Repo.forget(:base)
+      category = insert(:category)
 
       assert {:error, %Ecto.Changeset{}} = Organisations.update_category(category, @invalid_attrs)
 
@@ -122,7 +121,7 @@ defmodule Kaibosh.OrganisationsTest do
     end
 
     test "delete_category/1 deletes the category" do
-      category = insert(:category) |> Repo.forget(:base)
+      category = insert(:category)
 
       assert {:ok, %Category{}} = Organisations.delete_category(category)
 
@@ -132,7 +131,7 @@ defmodule Kaibosh.OrganisationsTest do
     end
 
     test "change_category/1 returns a category changeset" do
-      category = insert(:category) |> Repo.forget(:base)
+      category = insert(:category)
       assert %Ecto.Changeset{} = Organisations.change_category(category)
     end
   end

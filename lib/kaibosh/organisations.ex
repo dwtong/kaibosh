@@ -99,9 +99,8 @@ defmodule Kaibosh.Organisations do
     Staff.changeset(staff, attrs)
   end
 
-  def list_categories_for_base(base_id) do
-    base_id
-    |> get_category_by_base_id()
+  def list_categories do
+    Category
     |> Repo.all()
   end
 
