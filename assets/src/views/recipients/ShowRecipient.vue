@@ -78,7 +78,7 @@ export default class ShowRecipient extends Vue {
   }
 
   async created() {
-    await Promise.all([App.fetchCategories(this.baseId), Sessions.fetchList(this.baseId)]);
+    await Promise.all([App.fetchCategories(), Sessions.fetchList(this.baseId)]);
   }
 
   async archiveRecipient() {

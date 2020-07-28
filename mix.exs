@@ -43,6 +43,7 @@ defmodule Kaibosh.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Default Phoenix dependencies
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
@@ -54,9 +55,10 @@ defmodule Kaibosh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+
+      # Prod
       {:argon2_elixir, "~> 2.3"},
       {:timex, "~> 3.6"},
-      {:excoveralls, "~> 0.13.0"},
       {:bamboo, "~> 1.5"},
 
       # Test
@@ -64,6 +66,7 @@ defmodule Kaibosh.MixProject do
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.10.3", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.13", only: [:dev, :test], runtime: false},
 
       # Dev
       {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},

@@ -33,9 +33,9 @@ class App extends VuexModule {
   }
 
   @Action
-  async fetchCategories(baseId: string) {
+  async fetchCategories() {
     if (this.categories.length === 0) {
-      const categories = await CategoryService.get(baseId);
+      const categories = await CategoryService.get();
       this.context.commit("setCategories", categories);
     }
   }
