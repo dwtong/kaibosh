@@ -106,7 +106,7 @@ $colors: map-merge($colors, $addColors);
 }
 
 .is-multi-line {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .print-only {
