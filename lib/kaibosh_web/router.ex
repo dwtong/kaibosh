@@ -2,12 +2,14 @@ defmodule KaiboshWeb.Router do
   use KaiboshWeb, :router
   alias KaiboshWeb.Plugs.Authenticate
 
+  @csp "default-src 'self'; script-src 'self' plausible.io api.usersnap.com cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"}
+    plug :put_secure_browser_headers, %{"content-security-policy" => @csp}
   end
 
   pipeline :api do
@@ -17,12 +19,6 @@ defmodule KaiboshWeb.Router do
   pipeline :api_auth do
     plug Authenticate
   end
-
-  # scope "/", KaiboshWeb do
-  #   pipe_through :browser
-
-  #   get "/", PageController, :index
-  # end
 
   scope "/api/auth", KaiboshWeb do
     pipe_through :api
@@ -78,5 +74,11 @@ defmodule KaiboshWeb.Router do
 
   if Mix.env() == :dev do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
+
+  scope "/", KaiboshWeb do
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 end

@@ -1,6 +1,8 @@
 const CompressionPlugin = require("compression-webpack-plugin");
+const path = require("path");
 
 module.exports = {
+  outputDir: path.resolve(__dirname, "../priv/static"),
   css: {
     loaderOptions: {
       sass: {
@@ -18,13 +20,10 @@ module.exports = {
         errors: true
       },
       disableHostCheck: true,
-      hot: true,
-      proxy: {
-        "^/api": {
-          target: "http://localhost:4001",
-          changeOrigin: true
-        }
-      }
+      hot: true
+    },
+    output: {
+      path: path.resolve(__dirname, "../priv/static")
     },
     plugins: [new CompressionPlugin()]
   }
