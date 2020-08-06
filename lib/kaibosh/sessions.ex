@@ -4,12 +4,24 @@ defmodule Kaibosh.Sessions do
   """
   import Kaibosh.Sessions.Query
   alias Kaibosh.Repo
+  alias Kaibosh.Sessions.Plan
   alias Kaibosh.Sessions.Session
 
-  def list_sessions_for_base(base_id) do
+  def list_session_times_for_base(base_id) do
     base_id
     |> get_sessions_by_base_id()
     |> Repo.all()
+  end
+
+  def list_plans_for_base_and_week(base_id, week_of_date) do
+    base_id
+    |> get_sessions_with_recipients()
+    |> Repo.all()
+    |> Enum.map(fn session ->
+      session
+      |> Session.put_date(week_of_date)
+      |> Plan.new()
+    end)
   end
 
   def get_session!(id), do: Repo.get!(Session, id)

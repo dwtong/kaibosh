@@ -14,12 +14,15 @@ defmodule Kaibosh.Date do
   def past_date?(date), do: !future_date?(date)
   def today?(datetime), do: DateTime.to_date(datetime) == DateTime.to_date(now())
   def after?(date, start_at), do: Timex.after?(date, start_at)
+  def before?(date, end_at), do: Timex.before?(date, end_at)
   def between?(date, start_at, end_at), do: Timex.between?(date, start_at, end_at)
 
-  def weekday_offset(day) do
-    day = String.capitalize(day)
-    day_num = Enum.find(1..7, &(Elixir.Timex.day_name(&1) == day))
-    day_num - 1
+  def weekday_from_name(day_name) do
+    Enum.find(1..7, &(Elixir.Timex.day_name(&1) == String.capitalize(day_name)))
+  end
+
+  def day_offset(datetime, day_name) do
+    weekday_from_name(day_name) - Timex.weekday(datetime)
   end
 
   def utc_datetime_from_local_date_and_time(
@@ -30,12 +33,11 @@ defmodule Kaibosh.Date do
     Timex.to_datetime({{y, mo, d}, {h, mi, s}}, timezone)
   end
 
-  def date_for_day_of_week(datetime, "monday") do
-    offset = weekday_offset("monday")
-    Timex.shift(datetime, days: offset)
-  end
+  def date_for_day_of_week(datetime, day) do
+    offset = day_offset(datetime, day)
 
-  def date_for_day_of_week(datetime, _day) do
     datetime
+    |> Timex.shift(days: offset)
+    |> DateTime.to_date()
   end
 end

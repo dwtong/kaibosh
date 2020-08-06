@@ -12,4 +12,10 @@ defmodule Kaibosh.Sessions.Query do
     Session
     |> where(base_id: ^base_id)
   end
+
+  def get_sessions_with_recipients(base_id) do
+    Session
+    |> where([s], s.base_id == ^base_id)
+    |> preload(recipient_sessions: [:recipient, :holds])
+  end
 end
