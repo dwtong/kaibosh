@@ -3,7 +3,6 @@ defmodule Kaibosh.RecipientSessions.Status do
   Generates a status for a recipient session.
   """
   alias Kaibosh.Date
-  alias Kaibosh.RecipientSessions.Hold
   alias Kaibosh.RecipientSessions.RecipientSession
 
   def put({:ok, recipient_session}), do: {:ok, put(recipient_session)}

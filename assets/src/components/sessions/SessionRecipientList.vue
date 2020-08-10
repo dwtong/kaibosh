@@ -18,7 +18,7 @@
     </div>
     <footer class="card-footer is-hidden-print">
       <router-link
-        :to="`/sessions/${plan.session.id}?baseId=${plan.session.baseId}&date=${date}`"
+        :to="`/sessions/${plan.session.id}?date=${date}`"
         class="card-footer-item"
         >View Session</router-link
       >
