@@ -9,7 +9,7 @@ defmodule Kaibosh.RecipientSessions.Status do
   def put(%RecipientSession{} = session), do: %{session | status: status(session)}
   def put(error), do: error
 
-  def get(%RecipientSession{} = session), do: status(session)
+  def get_for_date(%RecipientSession{} = session, date), do: status(session, date)
 
   defp status(recipient_session, date \\ Date.now())
 
