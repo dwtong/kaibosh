@@ -103,7 +103,7 @@ export default class ShowSession extends Vue {
 
   get sessionDate() {
     if (SessionPlans.planDetails?.session.date) {
-      return new Date(SessionPlans.planDetails.session.date);
+      return new Date(`${SessionPlans.planDetails.session.date}T${SessionPlans.planDetails.session.time}`);
     } else {
       return null;
     }
