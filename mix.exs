@@ -12,7 +12,12 @@ defmodule Kaibosh.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      dialyzer: dialyzer()
+      dialyzer: dialyzer(),
+      releases: [
+        kaibosh: [
+          steps: [:assemble, :tar]
+        ]
+      ]
     ]
   end
 

@@ -15,7 +15,6 @@ config :kaibosh, Kaibosh.Repo, migration_timestamps: [type: :utc_datetime_usec]
 # Configures the endpoint
 config :kaibosh, KaiboshWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "FWitQedZ/iDC4wZgZSqn6j6MUYuEOZa8hlHYxD2PjZXB6la7b+N9lLZUQSkgYczO",
   render_errors: [view: KaiboshWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Kaibosh.PubSub,
   live_view: [signing_salt: "Zy2jnxp8"]

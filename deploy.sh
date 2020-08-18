@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 SSH_USER=kaibosh
+RELEASE_VERSION=0.1.0
 
 if [ ! -n "${DEPLOY_TO+set}" ]; then
   echo "Error: No server destination specified."
@@ -12,8 +13,11 @@ if ! cat ~/.ssh/known_hosts | grep -q $DEPLOY_TO; then
   ssh-keyscan $DEPLOY_TO >> ~/.ssh/known_hosts
 fi
 
-echo "Building assets."
-npm run build
+echo "Building release."
+./build.sh
 
 echo "Syncing files with host."
-rsync -avz ./dist/ kaibosh@$DEPLOY_TO:~/public/
+scp kaibosh-$RELEASE_VERSION.tar.gz kaibosh@$DEPLOY_TO:/src/kaibosh
+
+echo "Running release script on production machine."
+ssh kaibosh@$DEPLOY_TO "RELEASE_VERSION=$RELEASE_VERSION bash -s" < release.sh
