@@ -21,17 +21,15 @@ config :kaibosh, KaiboshWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    # node: [
-    # "node_modules/webpack/bin/webpack.js",
-    # "--mode",
-    # "development",
-    # "--watch-stdin",
-    # ],
-    # npm: [
-    #   "run",
-    #   "serve",
-    #   cd: Path.expand("../assets", __DIR__)
-    # ]
+    node: [
+      "node_modules/webpack/bin/webpack.js",
+      "--mode",
+      "development",
+      "--watch-stdin",
+      "--config",
+      "node_modules/@vue/cli-service/webpack.config.js",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.LocalAdapter
@@ -64,7 +62,7 @@ config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.LocalAdapter
 config :kaibosh, KaiboshWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/.*(index.html|js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/kaibosh_web/(live|views)/.*(ex)$",
       ~r"lib/kaibosh_web/templates/.*(eex)$"

@@ -61,6 +61,7 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.7",
     "vue-cli-plugin-buefy": "^0.3.7",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-cli": "^3.3.12"
   }
 }
