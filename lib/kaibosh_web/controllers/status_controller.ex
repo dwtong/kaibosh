@@ -4,6 +4,6 @@ defmodule KaiboshWeb.StatusController do
   def show(conn, _params) do
     conn
     |> put_status(:ok)
-    |> json(%{version: Application.get_env(:app, :version)})
+    |> json(%{version: Application.get_env(:kaibosh, :version)})
   end
 end

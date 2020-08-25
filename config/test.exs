@@ -18,7 +18,8 @@ config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.TestAdapter
 # you can enable the server option below.
 config :kaibosh, KaiboshWeb.Endpoint,
   http: [port: 4002],
-  server: false
+  server: false,
+  secret_key_base: "yQ4sAkFGy4hKCfvtsNUdWxFTeG9rEJftyy2Au2fpPysHqCNgmJk5Nf79gr0PY0BG"
 
 config :argon2_elixir,
   t_cost: 1,

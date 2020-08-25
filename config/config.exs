@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :kaibosh,
-  ecto_repos: [Kaibosh.Repo]
+  ecto_repos: [Kaibosh.Repo],
+  version: System.cmd("git", ["rev-parse", "--short", "HEAD"]) |> elem(0) |> String.trim()
 
 config :kaibosh, Kaibosh.Repo, migration_timestamps: [type: :utc_datetime_usec]
 

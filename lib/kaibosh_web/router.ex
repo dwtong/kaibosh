@@ -30,6 +30,12 @@ defmodule KaiboshWeb.Router do
   end
 
   scope "/api", KaiboshWeb do
+    pipe_through [:api]
+
+    get "/status", StatusController, :show
+  end
+
+  scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
     resources "/users", UserController, only: [:index, :create, :update]
