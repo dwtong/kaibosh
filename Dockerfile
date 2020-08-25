@@ -14,6 +14,9 @@ RUN mix local.hex --force && \
 # set build ENV
 ENV MIX_ENV=prod
 
+# set version name
+COPY .git .git
+
 # install mix dependencies
 COPY mix.exs mix.lock ./
 COPY config config
@@ -36,6 +39,6 @@ RUN mix release
 FROM scratch AS app
 
 WORKDIR /app
-COPY --from=build /app/_build/prod/kaibosh-*.tar.gz ./
+COPY --from=build /app/_build/prod/kaibosh-0.1.0.tar.gz ./kaibosh.tar.gz
 
 CMD ["/bin/bash"]

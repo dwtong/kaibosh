@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 SSH_USER=kaibosh
-RELEASE_VERSION=0.1.0
+VERSION_NAME="kaibosh-$(git rev-parse --short HEAD)"
 
 if [ ! -n "${DEPLOY_TO+set}" ]; then
   echo "Error: No server destination specified."
@@ -14,10 +14,10 @@ if ! cat ~/.ssh/known_hosts | grep -q $DEPLOY_TO; then
 fi
 
 echo "Building release."
-./build.sh
+APP_NAME=$VERSION_NAME ./build.sh
 
 echo "Syncing files with host."
-scp kaibosh-$RELEASE_VERSION.tar.gz kaibosh@$DEPLOY_TO:/src/kaibosh
+scp $VERSION_NAME.tar.gz kaibosh@$DEPLOY_TO:/src/kaibosh
 
 echo "Running release script on production machine."
-ssh kaibosh@$DEPLOY_TO "RELEASE_VERSION=$RELEASE_VERSION bash -s" < release.sh
+ssh kaibosh@$DEPLOY_TO "VERSION_NAME=$VERSION_NAME bash -s" < release.sh
