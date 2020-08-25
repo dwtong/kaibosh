@@ -10,3 +10,7 @@ config :kaibosh, Kaibosh.Repo,
   database: System.fetch_env!("DB_NAME"),
   hostname: System.fetch_env!("DB_HOST"),
   port: System.fetch_env!("DB_PORT")
+
+config :sentry,
+  dsn: System.fetch_env!("SENTRY_DSN"),
+  environment_name: System.fetch_env!("APP_ENV")

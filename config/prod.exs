@@ -11,7 +11,11 @@ use Mix.Config
 # before starting your production server.
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger,
+  level: :info,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:http_method, :http_path, :request_id],
+  backends: [:console, Sentry.LoggerBackend]
 
 # ## SSL Support
 #
@@ -30,6 +34,11 @@ config :kaibosh, KaiboshWeb.Endpoint,
   # ],
   http: [port: 4000],
   server: true
+
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  included_environments: ["staging", "prod"]
 
 #
 # The `cipher_suite` is set to `:strong` to support only the
