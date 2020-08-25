@@ -2,6 +2,7 @@
 
 SSH_USER=kaibosh
 VERSION_NAME="kaibosh-$(git rev-parse --short HEAD)"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 if [ ! -n "${DEPLOY_TO+set}" ]; then
   echo "Error: No server destination specified."
@@ -14,10 +15,13 @@ if ! cat ~/.ssh/known_hosts | grep -q $DEPLOY_TO; then
 fi
 
 echo "Building release."
-APP_NAME=$VERSION_NAME ./build.sh
+APP_NAME=$VERSION_NAME $SCRIPT_DIR/build.sh
 
 echo "Syncing files with host."
-scp $VERSION_NAME.tar.gz kaibosh@$DEPLOY_TO:/src/kaibosh
+scp tmp/$VERSION_NAME.tar.gz kaibosh@$DEPLOY_TO:/src/kaibosh
 
 echo "Running release script on production machine."
-ssh kaibosh@$DEPLOY_TO "VERSION_NAME=$VERSION_NAME bash -s" < release.sh
+ssh kaibosh@$DEPLOY_TO "VERSION_NAME=$VERSION_NAME bash -s" < $SCRIPT_DIR/release.sh
+
+echo "Running migrations on production machine."
+ssh kaibosh@$DEPLOY_TO "sudo /src/kaibosh/latest/lib/kaibosh-0.1.0/priv/scripts/migrate.sh"

@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/bash -e
 
-set -e
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+cd $DIR/../../
 
 if [ -n "$(git status --porcelain)" ]; then
   echo "ERROR: uncommitted changes." && exit 1
@@ -12,5 +14,8 @@ docker build -t ${APP_NAME}_server .
 # Extract tar
 id=$(docker create ${APP_NAME}_server)
 echo "$id"
-docker cp $id:/app/kaibosh.tar.gz ./$APP_NAME.tar.gz
+mkdir -p tmp
+docker cp $id:/app/kaibosh.tar.gz ./tmp/$APP_NAME.tar.gz
 docker rm $id
+
+cd -

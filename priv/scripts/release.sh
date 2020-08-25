@@ -8,11 +8,15 @@ ASSETS_SYMLINK=/src/kaibosh/public
 
 PREVIOUS_RELEASE_DIR=$(readlink /src/kaibosh/latest)
 
+export $(sudo cat /src/kaibosh/.env | xargs)
+export RELEASE_DIR=/src/kaibosh/$VERSION_NAME
+
 echo "Extracting release on host."
 mkdir -p $RELEASE_DIR/tmp/
 tar -xf /src/kaibosh/$VERSION_NAME.tar.gz -C $RELEASE_DIR
 rm /src/kaibosh/$VERSION_NAME.tar.gz
 
+echo "Updating permissions for deploy user."
 sudo chown -R deploy:deploy $RELEASE_DIR
 sudo chmod a=rx $RELEASE_DIR
 
