@@ -30,7 +30,8 @@ config :kaibosh, KaiboshWeb.Endpoint,
       "node_modules/@vue/cli-service/webpack.config.js",
       cd: Path.expand("../assets", __DIR__)
     ]
-  ]
+  ],
+  secret_key_base: "xgscsEJOOIdPnwM9mgsaZD98pdV9S1c5Am9GDyUEedXRu02Vk7JiZ1XFthWEu5GQ"
 
 config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.LocalAdapter
 
