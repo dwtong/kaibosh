@@ -11,6 +11,7 @@ defmodule KaiboshWeb.Email do
 
     base_email()
     |> to(email)
+    |> subject("Password reset link")
     |> assign(:email, email)
     |> assign(:url, url)
     |> render(:password_reset)
@@ -20,6 +21,6 @@ defmodule KaiboshWeb.Email do
   def base_email do
     new_email()
     |> from("Kaibosh Platform<noreply@kaibosh.org.nz>")
-    |> put_header("Reply-to", "dev@kaibosh.org.nz")
+    |> put_header("reply-to", "dev@kaibosh.org.nz")
   end
 end
