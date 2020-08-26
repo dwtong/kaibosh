@@ -12,7 +12,12 @@ defmodule Kaibosh.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      dialyzer: dialyzer()
+      dialyzer: dialyzer(),
+      releases: [
+        kaibosh: [
+          steps: [:assemble, :tar]
+        ]
+      ]
     ]
   end
 
@@ -53,13 +58,14 @@ defmodule Kaibosh.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:jason, "~> 1.1"},
+      {:plug_cowboy, "~> 2.3"},
 
       # Prod
       {:argon2_elixir, "~> 2.3"},
       {:timex, "~> 3.6"},
       {:bamboo, "~> 1.5"},
+      {:sentry, "~> 8.0"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},

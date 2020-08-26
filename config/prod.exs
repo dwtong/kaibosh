@@ -11,7 +11,11 @@ use Mix.Config
 # before starting your production server.
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger,
+  level: :info,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:http_method, :http_path, :request_id],
+  backends: [:console, Sentry.LoggerBackend]
 
 # ## SSL Support
 #
@@ -19,16 +23,22 @@ config :logger, level: :info
 # to the previous section and set your `:url` port to 443:
 #
 config :kaibosh, KaiboshWeb.Endpoint,
-  url: [host: "app.kaibosh.org.nz", port: 443],
-  force_ssl: [hsts: true],
+  # force_ssl: [hsts: true],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  https: [
-    port: 443,
-    cipher_suite: :strong,
-    keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
-    certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
-    transport_options: [socket_opts: [:inet6]]
-  ]
+  # https: [
+  #   port: 443,
+  #   cipher_suite: :strong,
+  #   keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
+  #   certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
+  #   transport_options: [socket_opts: [:inet6]]
+  # ],
+  http: [port: 4000],
+  server: true
+
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  included_environments: ["staging", "prod"]
 
 #
 # The `cipher_suite` is set to `:strong` to support only the
@@ -51,4 +61,3 @@ config :kaibosh, KaiboshWeb.Endpoint,
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
-import_config "prod.secret.exs"

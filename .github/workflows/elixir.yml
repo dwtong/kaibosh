@@ -60,7 +60,7 @@ jobs:
         run: mix coveralls.json
 
       - name: Upload Coverage Report
-        env: 
+        env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: bash <(curl -s https://codecov.io/bash)
 
@@ -68,7 +68,7 @@ jobs:
         run: mix credo --strict
 
       - name: Run Sobelow
-        run: mix sobelow --exit
+        run: mix sobelow --config
 
       - name: Retrieve PLT Cache
         uses: actions/cache@v1
