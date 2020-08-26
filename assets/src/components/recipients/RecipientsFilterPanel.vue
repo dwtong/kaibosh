@@ -15,7 +15,8 @@
       <RecipientsStatusFilter />
     </div>
 
-    <a id="reset-filter-link" @click="resetFilters">Reset Filters</a>
+    <a class="filter-link" @click="resetFilters">Reset Filters</a>
+    <a class="filter-link" @click="downloadCsv">Download CSV</a>
   </div>
 </template>
 
@@ -26,11 +27,17 @@ import AllRecipients from "@/store/modules/all-recipients";
 import RecipientsBaseFilter from "@/components/recipients/RecipientsBaseFilter.vue";
 import RecipientsNameFilter from "@/components/recipients/RecipientsNameFilter.vue";
 import RecipientsStatusFilter from "@/components/recipients/RecipientsStatusFilter.vue";
+import { downloadCsv, generateCsv } from "@/helpers/recipient-csv";
 
 @Component({ components: { RecipientsBaseFilter, RecipientsNameFilter, RecipientsStatusFilter } })
 export default class RecipientsFilterPanel extends Vue {
   resetFilters() {
     AllRecipients.resetFilters();
+  }
+
+  async downloadCsv() {
+    const csvData = await generateCsv(AllRecipients.filteredList);
+    downloadCsv("recipients.csv", csvData);
   }
 }
 </script>
@@ -44,8 +51,10 @@ export default class RecipientsFilterPanel extends Vue {
   }
 }
 
-#reset-filter-link {
+.filter-link {
+  display: block;
   font-size: 0.85rem;
   margin-left: 0.1rem;
+  margin-bottom: 1.2rem;
 }
 </style>
