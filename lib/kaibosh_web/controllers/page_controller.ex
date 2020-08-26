@@ -1,6 +1,7 @@
 defmodule KaiboshWeb.PageController do
   use KaiboshWeb, :controller
 
+  # sobelow_skip ["Traversal.SendFile"]
   def index(conn, _params) do
     file = Application.app_dir(:kaibosh, ["priv", "static", "index.html"])
 
