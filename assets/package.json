@@ -17,6 +17,7 @@
     "camelcase-keys": "^6.2.2",
     "core-js": "^3.6.5",
     "date-fns": "^2.15.0",
+    "fast-csv": "^4.3.1",
     "jsonapi-serializer": "^3.6.6",
     "lodash": "^4.17.19",
     "logrocket": "^1.0.10",
