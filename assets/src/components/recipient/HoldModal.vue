@@ -77,6 +77,11 @@ export default class HoldModal extends Vue {
       await RecipientSessions.createHolds({ recipientId: this.recipientId, holds: this.sessionHolds });
       this.$emit("close");
       toast.success("Session hold created.");
+      this.startDate = new Date();
+      this.endDate = null;
+      this.disableEndDate = false;
+      this.allSessions = false;
+      this.sessions = [];
     }
   }
 

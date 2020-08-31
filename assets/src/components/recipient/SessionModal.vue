@@ -84,6 +84,8 @@ export default class SessionModal extends Vue {
     }
 
     this.$emit("close");
+    this.allocations = [];
+    this.selectedSessionId = "";
     toast.success(`Session ${this.isExistingSession ? "updated" : "created"}.`);
   }
 }
