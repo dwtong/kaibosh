@@ -1,5 +1,5 @@
 <template>
-  <b-field :label="label">
+  <b-field :label="label" :message="help">
     <b-input id="address" :value="value" />
   </b-field>
 </template>
@@ -12,6 +12,11 @@ export default {
       type: String
     },
     value: {
+      required: false,
+      default: "",
+      type: String
+    },
+    help: {
       required: false,
       default: "",
       type: String

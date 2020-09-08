@@ -6,6 +6,7 @@
     :label="label"
     placeholder="Select a base..."
     @input="input"
+    :help="help"
   >
     <option v-if="all" :value="allValue">All</option>
     <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>
@@ -23,6 +24,7 @@ export default class BaseSelect extends Vue {
   @Prop({ default: false }) readonly all!: boolean;
   @Prop({ default: false }) readonly required!: boolean;
   @Prop({ default: "" }) readonly label!: string;
+  @Prop({ default: "" }) readonly help!: string;
   @Prop() readonly value!: string;
 
   allValue = 0;

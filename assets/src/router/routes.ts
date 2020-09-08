@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import CreateRecipient from "@/views/recipients/CreateRecipient.vue";
+import Signup from "@/views/recipients/Signup.vue";
 import UpdateRecipient from "@/views/recipients/UpdateRecipient.vue";
 import ListRecipients from "@/views/recipients/ListRecipients.vue";
 import ShowRecipient from "@/views/recipients/ShowRecipient.vue";
@@ -45,6 +46,10 @@ export default [
     path: "/login",
     component: Login,
     beforeEnter: ifNotAuthenticated
+  },
+  {
+    path: "/signup",
+    component: Signup
   },
   {
     path: "/",

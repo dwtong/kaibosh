@@ -29,6 +29,12 @@ defmodule KaiboshWeb.Router do
     put "/update_password", AuthController, :update_password
   end
 
+  scope "/api/signup", KaiboshWeb do
+    pipe_through [:api]
+
+    get "/bases", SignupController, :bases
+  end
+
   scope "/api", KaiboshWeb do
     pipe_through [:api]
 
