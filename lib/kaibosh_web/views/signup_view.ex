@@ -9,4 +9,12 @@ defmodule KaiboshWeb.SignupView do
   def render("base.json", %{base: base}) do
     %{id: base.id, name: base.name}
   end
+
+  def render("show.json", %{recipient: recipient}) do
+    render_one(recipient, SignupView, "recipient.json", as: :recipient)
+  end
+
+  def render("recipient.json", %{recipient: recipient}) do
+    %{name: recipient.name}
+  end
 end

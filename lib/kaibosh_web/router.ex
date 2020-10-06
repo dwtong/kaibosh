@@ -33,6 +33,7 @@ defmodule KaiboshWeb.Router do
     pipe_through [:api]
 
     get "/bases", SignupController, :bases
+    post "/", SignupController, :create
   end
 
   scope "/api", KaiboshWeb do

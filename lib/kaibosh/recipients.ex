@@ -29,6 +29,12 @@ defmodule Kaibosh.Recipients do
     |> Status.put()
   end
 
+  def create_recipient_signup(attrs) do
+    attrs
+    |> Recipient.signup_changeset()
+    |> Repo.insert()
+  end
+
   def update_recipient(%Recipient{} = recipient, attrs) do
     recipient
     |> Repo.preload(:contact)
