@@ -56,10 +56,12 @@ defmodule Kaibosh.Recipients.Recipient do
 
   @doc false
   def signup_changeset(attrs) do
+    # FIXME won't autoincrement because of this (rails migration issues?)https://stackoverflow.com/questions/9108833/postgres-autoincrement-not-updated-on-explicit-id-inserts/9108929#9108929
     %Recipient{}
     |> cast(attrs, @signup_attrs)
     |> validate_required(@required_attrs)
     |> cast_assoc(:contact)
     |> put_change(:signed_up_at, now())
+    |> IO.inspect()
   end
 end

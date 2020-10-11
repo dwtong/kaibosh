@@ -5,7 +5,7 @@ import RecipientService from "@/services/recipient-service";
 
 export const defaultRecipientDetails: IRecipient = {
   name: "",
-  baseId: "0",
+  baseId: undefined,
   startedAt: "",
   contact: {
     name: "",

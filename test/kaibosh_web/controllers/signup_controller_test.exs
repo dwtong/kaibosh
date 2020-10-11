@@ -31,7 +31,7 @@ defmodule KaiboshWeb.SignupControllerTest do
 
     test "renders recipient when data is valid", %{conn: conn, base: base} do
       attrs = Map.put(@create_attrs, :base_id, base.id)
-      conn = post(conn, Routes.signup_path(conn, :create), attrs)
+      conn = post(conn, Routes.signup_path(conn, :create), %{recipient: attrs})
 
       assert %{"name" => name} = json_response(conn, 201)
 
@@ -43,7 +43,7 @@ defmodule KaiboshWeb.SignupControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.recipient_path(conn, :create), recipient: @invalid_attrs)
+      conn = post(conn, Routes.recipient_path(conn, :create), %{recipient: @invalid_attrs})
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
