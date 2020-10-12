@@ -2,7 +2,12 @@ defmodule KaiboshWeb.Router do
   use KaiboshWeb, :router
   alias KaiboshWeb.Plugs.Authenticate
 
-  @csp "default-src 'self'; script-src 'self' plausible.io api.usersnap.com cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+  @csp """
+  default-src 'self' api.usersnap.com api.addressfinder.io;\
+  script-src 'self' blob: plausible.io api.usersnap.com api.addressfinder.io cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval';\
+  style-src 'self' 'unsafe-inline' 'unsafe-eval' api.addressfinder.io;\
+  img-src 'self' cdn.usersnap.com data:\
+  """
 
   pipeline :browser do
     plug :accepts, ["html"]
