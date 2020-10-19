@@ -1,5 +1,7 @@
 defmodule KaiboshWeb.SignupControllerTest do
   use KaiboshWeb.ConnCase
+  use Bamboo.Test
+  alias Kaibosh.Accounts
   alias Kaibosh.Recipients.Recipient
 
   def fixture(:base) do
@@ -24,7 +26,7 @@ defmodule KaiboshWeb.SignupControllerTest do
   end
 
   describe "create recipient" do
-    setup [:create_base]
+    setup [:create_base, :create_user_to_notify]
 
     @create_attrs %{name: "Test recipient", contact: %{name: "Jenna James"}}
     @invalid_attrs %{name: nil}
@@ -46,10 +48,24 @@ defmodule KaiboshWeb.SignupControllerTest do
       conn = post(conn, Routes.recipient_path(conn, :create), %{recipient: @invalid_attrs})
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "notifies base staff members", %{conn: conn, base: base, user: user} do
+      attrs = Map.put(@create_attrs, :base_id, base.id)
+      post(conn, Routes.signup_path(conn, :create), %{recipient: attrs})
+
+      assert_email_delivered_with(%{subject: "New recipient sign up", to: [nil: user.email]})
+    end
   end
 
   defp create_base(_) do
     base = insert(:base)
     %{base: base}
+  end
+
+  defp create_user_to_notify(%{base: %{id: base_id}}) do
+    user = insert(:user)
+    Accounts.subscribe_user_to_base_notifications(user, base_id)
+
+    %{user: user}
   end
 end

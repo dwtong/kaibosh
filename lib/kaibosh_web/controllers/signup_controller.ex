@@ -12,9 +12,9 @@ defmodule KaiboshWeb.SignupController do
   end
 
   def create(conn, %{"recipient" => recipient}) do
-    IO.inspect(recipient)
-
     with {:ok, recipient} <- Recipients.create_recipient_signup(recipient) do
+      Organisations.new_signup_notification(recipient)
+
       conn
       |> put_status(:created)
       |> render("show.json", recipient: recipient)

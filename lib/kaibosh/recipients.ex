@@ -33,6 +33,10 @@ defmodule Kaibosh.Recipients do
     attrs
     |> Recipient.signup_changeset()
     |> Repo.insert()
+    |> case do
+      {:ok, recipient} -> {:ok, Repo.preload(recipient, :base)}
+      err -> err
+    end
   end
 
   def update_recipient(%Recipient{} = recipient, attrs) do

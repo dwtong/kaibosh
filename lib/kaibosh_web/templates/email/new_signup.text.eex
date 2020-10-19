@@ -1,0 +1,8 @@
+# NEW SIGNUP #
+
+<%= @recipient %> has signed up for <%= @base %>.
+
+Check out their profile here:
+<%= @url %>
+
+

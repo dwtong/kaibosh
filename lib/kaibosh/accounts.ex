@@ -36,6 +36,11 @@ defmodule Kaibosh.Accounts do
     User.changeset(user, attrs)
   end
 
+  def subscribe_user_to_base_notifications(%User{id: user_id}, base_id) do
+    "user_base_notifications"
+    |> Repo.insert_all([%{user_id: user_id, base_id: base_id}])
+  end
+
   def sign_in(email, pass) do
     with %User{} = user <- Repo.get_by(User, email: email),
          {:ok, %User{id: id}} <- User.check_password(user, pass) do
