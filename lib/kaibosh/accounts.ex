@@ -39,6 +39,25 @@ defmodule Kaibosh.Accounts do
   def subscribe_user_to_base_notifications(%User{id: user_id}, base_id) do
     "user_base_notifications"
     |> Repo.insert_all([%{user_id: user_id, base_id: base_id}])
+    |> case do
+      {1, nil} -> :ok
+      _ -> :error
+    end
+  end
+
+  def unsubscribe_user_from_base_notifications(%User{id: user_id}, base_id) do
+    get_notification_by_user_base_ids(user_id, base_id)
+    |> Repo.delete_all()
+    |> case do
+      {1, nil} -> :ok
+      _ -> :error
+    end
+  end
+
+  def get_base_notifications_for_user(%User{id: user_id}) do
+    user_id
+    |> base_notifications_for_user()
+    |> Repo.all()
   end
 
   def sign_in(email, pass) do

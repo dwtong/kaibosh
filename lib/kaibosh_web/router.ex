@@ -50,7 +50,10 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/users", UserController, only: [:index, :create, :update]
+    resources "/users", UserController, only: [:index, :create, :update] do
+      resources("/notifications", UserNotificationController, only: [:index, :create, :delete])
+    end
+
     resources "/categories", CategoryController, only: [:index]
 
     resources "/bases", BaseController, only: [:index] do

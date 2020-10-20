@@ -58,11 +58,24 @@ defmodule Kaibosh.Accounts.AccountsTest do
   end
 
   describe "notifications subscriptions" do
-    test "subscribe user to base notifications" do
-      base = insert(:base)
-      user = insert(:user)
+    setup [:create_user, :create_base]
+
+    test "subscribe user to base notifications", %{user: user, base: base} do
       Accounts.subscribe_user_to_base_notifications(user, base.id)
       assert user_subscribed_to_base?(user.id, base.id)
+    end
+
+    test "unsubscribe user from base notifications", %{user: user, base: base} do
+      Accounts.subscribe_user_to_base_notifications(user, base.id)
+      assert user_subscribed_to_base?(user.id, base.id)
+
+      Accounts.unsubscribe_user_from_base_notifications(user, base.id)
+      refute user_subscribed_to_base?(user.id, base.id)
+    end
+
+    test "list base subscriptions for user", %{user: user, base: base} do
+      Accounts.subscribe_user_to_base_notifications(user, base.id)
+      assert Accounts.get_base_notifications_for_user(user) == [base.id]
     end
   end
 
@@ -105,5 +118,13 @@ defmodule Kaibosh.Accounts.AccountsTest do
     "user_base_notifications"
     |> where([ubn], ubn.base_id == ^base_id and ubn.user_id == ^user_id)
     |> Repo.exists?()
+  end
+
+  defp create_user(_) do
+    %{user: insert(:user)}
+  end
+
+  defp create_base(_) do
+    %{base: insert(:base)}
   end
 end

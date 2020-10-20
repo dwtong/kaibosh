@@ -35,7 +35,7 @@ defmodule KaiboshWeb.SignupControllerTest do
       attrs = Map.put(@create_attrs, :base_id, base.id)
       conn = post(conn, Routes.signup_path(conn, :create), %{recipient: attrs})
 
-      assert %{"name" => name} = json_response(conn, 201)
+      assert %{"name" => _name} = json_response(conn, 201)
 
       recipient = Repo.one(Recipient) |> Repo.preload(:contact)
 
