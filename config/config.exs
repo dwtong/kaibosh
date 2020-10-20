@@ -32,6 +32,12 @@ config :kaibosh, Kaibosh.Mailer,
   adapter: Bamboo.SendGridAdapter,
   hackney_opts: [recv_timeout: :timer.minutes(1)]
 
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  included_environments: ["staging", "prod"]
+
+#
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

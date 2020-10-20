@@ -127,7 +127,7 @@ defmodule Kaibosh.SessionsTest do
     } do
       session_id = recipient_session.session_id
 
-      assert %{session: session, allocations: [a1, a2], recipients: [r1, r2]} =
+      assert %{session: _session, allocations: [a1, a2], recipients: [r1, r2]} =
                Sessions.get_plan_for_session(session_id, ~D[2020-01-01])
 
       assert r1.id == recipient_session.recipient.id
@@ -137,8 +137,8 @@ defmodule Kaibosh.SessionsTest do
 
       assert a1.category_id == expected_a1.category_id
       assert a2.category_id == expected_a2.category_id
-      assert a1.quantity == Decimal.cast(5)
-      assert a2.quantity == Decimal.cast(2)
+      assert Decimal.to_integer(a1.quantity) == 5
+      assert Decimal.to_integer(a2.quantity) == 2
       assert a1.recipient_id == r1.id
       assert a2.recipient_id == r2.id
     end

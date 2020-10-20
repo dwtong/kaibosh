@@ -41,7 +41,7 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
       assert %{"id" => id} = json_response(conn, 201)
 
       conn = get(conn, route(conn, :show, recipient_id, id))
-      assert %{"id" => id} = json_response(conn, 200)
+      assert %{"id" => ^id} = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -62,7 +62,7 @@ defmodule KaiboshWeb.RecipientSessionControllerTest do
       assert %{"id" => ^id} = json_response(conn, 200)
 
       conn = get(conn, route(conn, :show, recipient_id, id))
-      assert %{"id" => id} = json_response(conn, 200)
+      assert %{"id" => ^id} = json_response(conn, 200)
     end
 
     test "renders errors when data is invalid", %{

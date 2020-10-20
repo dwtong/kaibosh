@@ -38,7 +38,7 @@ defmodule KaiboshWeb.Admin.StaffControllerTest do
       conn = get(conn, Routes.staff_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "first_name" => "some first_name",
                "last_name" => "some last_name"
              } = json_response(conn, 200)["data"]
@@ -60,7 +60,7 @@ defmodule KaiboshWeb.Admin.StaffControllerTest do
       conn = get(conn, Routes.staff_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "first_name" => "some updated first_name",
                "last_name" => "some updated last_name"
              } = json_response(conn, 200)["data"]

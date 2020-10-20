@@ -49,7 +49,7 @@ defmodule KaiboshWeb.SessionPlanControllerTest do
           )
         )
 
-      assert %{"session" => session, "recipients" => [recipient], "allocations" => [a1, a2]} =
+      assert %{"session" => session, "recipients" => [recipient], "allocations" => [a1, _a2]} =
                json_response(conn, 200)
 
       assert session["id"] == recipient_session.session_id

@@ -36,7 +36,7 @@ defmodule KaiboshWeb.Admin.OrganisationControllerTest do
       conn = get(conn, Routes.organisation_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some name"
              } = json_response(conn, 200)["data"]
     end
@@ -64,7 +64,7 @@ defmodule KaiboshWeb.Admin.OrganisationControllerTest do
       conn = get(conn, Routes.organisation_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some updated name"
              } = json_response(conn, 200)["data"]
     end

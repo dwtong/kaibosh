@@ -39,7 +39,7 @@ defmodule KaiboshWeb.Admin.BaseControllerTest do
       conn = get(conn, Routes.base_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some name"
              } = json_response(conn, 200)["data"]
     end
@@ -60,7 +60,7 @@ defmodule KaiboshWeb.Admin.BaseControllerTest do
       conn = get(conn, Routes.base_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some updated name"
              } = json_response(conn, 200)["data"]
     end

@@ -31,7 +31,7 @@ defmodule KaiboshWeb.Admin.CategoryControllerTest do
       conn = get(conn, Routes.category_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some name",
                "unit" => "some unit"
              } = json_response(conn, 200)["data"]
@@ -58,7 +58,7 @@ defmodule KaiboshWeb.Admin.CategoryControllerTest do
       conn = get(conn, Routes.category_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "name" => "some updated name",
                "unit" => "some updated unit"
              } = json_response(conn, 200)["data"]
