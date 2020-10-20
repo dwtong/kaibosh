@@ -27,7 +27,7 @@ defmodule KaiboshWeb.Admin.SessionControllerTest do
       conn = get(conn, Routes.session_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "day" => "some day"
              } = json_response(conn, 200)["data"]
     end
@@ -48,7 +48,7 @@ defmodule KaiboshWeb.Admin.SessionControllerTest do
       conn = get(conn, Routes.session_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "day" => "some updated day"
              } = json_response(conn, 200)["data"]
     end

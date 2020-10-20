@@ -37,7 +37,7 @@ defmodule Kaibosh.RecipientSessionsTest do
 
     test "listing sessions includes session status", %{recipient_id: recipient_id} do
       sessions = RecipientSessions.list_sessions_for_recipient(recipient_id)
-      assert [%RecipientSession{id: id, status: status, holds: [hold]}] = sessions
+      assert [%RecipientSession{id: _id, status: status, holds: [hold]}] = sessions
       assert status == :on_hold
 
       RecipientSessions.delete_hold(hold)
@@ -55,8 +55,7 @@ defmodule Kaibosh.RecipientSessionsTest do
 
       RecipientSessions.delete_hold(hold)
 
-      assert %RecipientSession{id: id, status: status} = RecipientSessions.get_session!(id)
-      assert status == :active
+      assert %RecipientSession{status: :active} = RecipientSessions.get_session!(id)
     end
   end
 
@@ -88,8 +87,8 @@ defmodule Kaibosh.RecipientSessionsTest do
                RecipientSessions.create_session(attrs)
 
       assert length(allocations) == 2
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1.quantity)))
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a1.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a2.quantity)))
     end
 
     test "create_session/1 with invalid data returns error changeset" do
@@ -120,8 +119,8 @@ defmodule Kaibosh.RecipientSessionsTest do
                RecipientSessions.update_session(recipient_session, attrs)
 
       assert length(allocations) == 2
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1.quantity)))
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a1.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a2.quantity)))
     end
 
     test "update_session/2 updates existing allocations that have been modified" do
@@ -135,7 +134,7 @@ defmodule Kaibosh.RecipientSessionsTest do
                RecipientSessions.update_session(recipient_session, attrs)
 
       assert length(allocations) == 1
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a1_updated.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a1_updated.quantity)))
     end
 
     test "update_session/2 deletes existing allocations when they are not provided" do
@@ -151,7 +150,7 @@ defmodule Kaibosh.RecipientSessionsTest do
                RecipientSessions.update_session(recipient_session, attrs)
 
       assert length(allocations) == 1
-      assert Enum.any?(allocations, &(&1.quantity == Decimal.cast(a2_keep.quantity)))
+      assert Enum.any?(allocations, &(&1.quantity == Decimal.from_float(a2_keep.quantity)))
     end
 
     test "update_session/2 does not delete existing allocations when field is not set" do
