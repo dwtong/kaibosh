@@ -35,12 +35,6 @@ config :kaibosh, KaiboshWeb.Endpoint,
   http: [port: 4000],
   server: true
 
-config :sentry,
-  enable_source_code_context: true,
-  root_source_code_path: File.cwd!(),
-  included_environments: ["staging", "prod"]
-
-#
 # The `cipher_suite` is set to `:strong` to support only the
 # latest and more secure SSL ciphers. This means old browsers
 # and clients may not be supported. You can set it to
