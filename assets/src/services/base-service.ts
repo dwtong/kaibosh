@@ -1,6 +1,6 @@
 import { get } from "./api-service";
 
-const resource = "bases";
+const resource = "/signup/bases";
 
 export default {
   get: () => {

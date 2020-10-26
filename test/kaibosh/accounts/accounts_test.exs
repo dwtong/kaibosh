@@ -57,6 +57,28 @@ defmodule Kaibosh.Accounts.AccountsTest do
     end
   end
 
+  describe "notifications subscriptions" do
+    setup [:create_user, :create_base]
+
+    test "subscribe user to base notifications", %{user: user, base: base} do
+      Accounts.subscribe_user_to_base_notifications(user, base.id)
+      assert user_subscribed_to_base?(user.id, base.id)
+    end
+
+    test "unsubscribe user from base notifications", %{user: user, base: base} do
+      Accounts.subscribe_user_to_base_notifications(user, base.id)
+      assert user_subscribed_to_base?(user.id, base.id)
+
+      Accounts.unsubscribe_user_from_base_notifications(user, base.id)
+      refute user_subscribed_to_base?(user.id, base.id)
+    end
+
+    test "list base subscriptions for user", %{user: user, base: base} do
+      Accounts.subscribe_user_to_base_notifications(user, base.id)
+      assert Accounts.get_base_notifications_for_user(user) == [base.id]
+    end
+  end
+
   describe "sign in and sign out" do
     test "signs in creates session token for valid user" do
       email = "foo@bar.com"
@@ -90,5 +112,19 @@ defmodule Kaibosh.Accounts.AccountsTest do
       fake_token = "808b16f6-aa25-4a13-8003-4214ca2335e5"
       refute Accounts.get_user_session(fake_token)
     end
+  end
+
+  defp user_subscribed_to_base?(user_id, base_id) do
+    "user_base_notifications"
+    |> where([ubn], ubn.base_id == ^base_id and ubn.user_id == ^user_id)
+    |> Repo.exists?()
+  end
+
+  defp create_user(_) do
+    %{user: insert(:user)}
+  end
+
+  defp create_base(_) do
+    %{base: insert(:base)}
   end
 end

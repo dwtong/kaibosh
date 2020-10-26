@@ -12,4 +12,15 @@ defmodule Kaibosh.Accounts.Query do
     UserSession
     |> where(token: ^token)
   end
+
+  def get_notification_by_user_base_ids(user_id, base_id) do
+    "user_base_notifications"
+    |> where(user_id: ^user_id, base_id: ^base_id)
+  end
+
+  def base_notifications_for_user(user_id) do
+    "user_base_notifications"
+    |> where(user_id: ^user_id)
+    |> select([ubn], ubn.base_id)
+  end
 end

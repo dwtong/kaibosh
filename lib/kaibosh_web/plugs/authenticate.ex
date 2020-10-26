@@ -51,6 +51,10 @@ defmodule KaiboshWeb.Plugs.Authenticate do
     |> maybe_refresh_session(conn)
   end
 
+  defp verify_user_session(nil, conn) do
+    unauthorized_response(conn)
+  end
+
   defp maybe_refresh_session(nil, conn) do
     unauthorized_response(conn)
   end

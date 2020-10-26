@@ -2,7 +2,12 @@ defmodule KaiboshWeb.Router do
   use KaiboshWeb, :router
   alias KaiboshWeb.Plugs.Authenticate
 
-  @csp "default-src 'self'; script-src 'self' plausible.io api.usersnap.com cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+  @csp """
+  default-src 'self' api.usersnap.com api.addressfinder.io;\
+  script-src 'self' blob: plausible.io api.usersnap.com api.addressfinder.io cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval';\
+  style-src 'self' 'unsafe-inline' 'unsafe-eval' api.addressfinder.io;\
+  img-src 'self' cdn.usersnap.com data:\
+  """
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -29,6 +34,13 @@ defmodule KaiboshWeb.Router do
     put "/update_password", AuthController, :update_password
   end
 
+  scope "/api/signup", KaiboshWeb do
+    pipe_through [:api]
+
+    get "/bases", SignupController, :bases
+    post "/", SignupController, :create
+  end
+
   scope "/api", KaiboshWeb do
     pipe_through [:api]
 
@@ -38,7 +50,10 @@ defmodule KaiboshWeb.Router do
   scope "/api", KaiboshWeb do
     pipe_through [:api, :api_auth]
 
-    resources "/users", UserController, only: [:index, :create, :update]
+    resources "/users", UserController, only: [:index, :create, :update] do
+      resources("/notifications", UserNotificationController, only: [:index, :create, :delete])
+    end
+
     resources "/categories", CategoryController, only: [:index]
 
     resources "/bases", BaseController, only: [:index] do

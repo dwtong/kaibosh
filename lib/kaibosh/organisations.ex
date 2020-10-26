@@ -8,6 +8,7 @@ defmodule Kaibosh.Organisations do
   alias Kaibosh.Organisations.Organisation
   alias Kaibosh.Organisations.Staff
   alias Kaibosh.Repo
+  alias KaiboshWeb.Email
 
   def list_organisations do
     Repo.all(Organisation)
@@ -65,6 +66,13 @@ defmodule Kaibosh.Organisations do
 
   def change_base(%Base{} = base, attrs \\ %{}) do
     Base.changeset(base, attrs)
+  end
+
+  def new_signup_notification(%{base_id: base_id} = recipient) do
+    base_id
+    |> get_base_notification_emails()
+    |> Repo.all()
+    |> Email.new_signup_email(recipient)
   end
 
   def list_staff do

@@ -2,6 +2,11 @@
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
       <div class="box">
+        <h1 class="title">Signup Emails</h1>
+        <NotificationSettings />
+      </div>
+
+      <div class="box">
         <PasswordResetForm />
       </div>
 
@@ -24,10 +29,11 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import CreateUserForm from "@/components/users/CreateUserForm.vue";
+import NotificationSettings from "@/components/users/NotificationSettings.vue";
 import PasswordResetForm from "@/components/users/PasswordResetForm.vue";
 import { UserModule } from "@/store/modules/user";
 
-@Component({ components: { CreateUserForm, PasswordResetForm } })
+@Component({ components: { CreateUserForm, NotificationSettings, PasswordResetForm } })
 export default class Settings extends Vue {
   created() {
     UserModule.fetchUsers();

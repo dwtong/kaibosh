@@ -37,6 +37,26 @@ defmodule Kaibosh.RecipientsTest do
       assert {:error, %Ecto.Changeset{}} = Recipients.create_recipient(@invalid_attrs)
     end
 
+    test "create_recipient_signup/1 creates a recipient with signup date" do
+      base = insert(:base)
+      attrs = Map.put(@valid_attrs, :base_id, base.id)
+
+      assert {:ok, %Recipient{signed_up_at: signup_date}} =
+               Recipients.create_recipient_signup(attrs)
+
+      assert !is_nil(signup_date)
+    end
+
+    test "create_recipient_signup/1 only allows signup attributes" do
+      attrs = %{
+        name: "Test recip",
+        base_id: insert(:base).id,
+        signed_terms_at: ~U[2020-01-01T00:00:00Z]
+      }
+
+      assert {:ok, %Recipient{signed_terms_at: nil}} = Recipients.create_recipient_signup(attrs)
+    end
+
     test "update_recipient/2 with valid data updates the recipient with a contact" do
       recipient = insert(:recipient) |> Repo.forget(:base)
 

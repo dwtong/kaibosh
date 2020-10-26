@@ -1,0 +1,8 @@
+<h1>New Signup</h1>
+
+<p>
+<%= @recipient %> has signed up for <%= @base %>.
+</p>
+
+<p>Check out their profile here:</p>
+<p><a href="<%= @url %>">View profile</a></p>

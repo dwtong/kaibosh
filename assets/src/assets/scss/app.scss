@@ -91,6 +91,10 @@ $colors: map-merge($colors, $addColors);
 
 .field {
   margin-bottom: 1rem;
+
+  .help {
+    margin-left: 0.1rem;
+  }
 }
 
 .datepicker {

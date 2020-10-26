@@ -2,6 +2,7 @@ defmodule Kaibosh.Recipients.Recipient do
   @moduledoc false
   use Kaibosh.Schema
   import Ecto.Changeset
+  import Kaibosh.Date, only: [now: 0]
   alias Kaibosh.Recipients.Contact
   alias Kaibosh.Recipients.Recipient
 
@@ -13,6 +14,13 @@ defmodule Kaibosh.Recipients.Recipient do
     :archived_at,
     :signed_terms_at,
     :met_kaibosh_at,
+    :base_id
+  ]
+
+  @signup_attrs [
+    :name,
+    :physical_address,
+    :description,
     :base_id
   ]
 
@@ -29,6 +37,7 @@ defmodule Kaibosh.Recipients.Recipient do
     field :archived_at, :utc_datetime_usec
     field :signed_terms_at, :utc_datetime_usec
     field :met_kaibosh_at, :utc_datetime_usec
+    field :signed_up_at, :utc_datetime_usec
 
     field :status, :string, virtual: true
     field :session_count, :integer, virtual: true
@@ -43,5 +52,14 @@ defmodule Kaibosh.Recipients.Recipient do
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
     |> cast_assoc(:contact)
+  end
+
+  @doc false
+  def signup_changeset(attrs) do
+    %Recipient{}
+    |> cast(attrs, @signup_attrs)
+    |> validate_required(@required_attrs)
+    |> cast_assoc(:contact)
+    |> put_change(:signed_up_at, now())
   end
 end

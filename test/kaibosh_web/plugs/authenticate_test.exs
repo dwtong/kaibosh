@@ -36,6 +36,15 @@ defmodule KaiboshWeb.Plugs.AuthenticateTest do
 
       assert not_authorized?(conn)
     end
+
+    test "return 401 when token is not set and session has expired", %{
+      conn: conn,
+      session: session
+    } do
+      conn = conn |> put_expired_token(session) |> authenticate()
+
+      assert not_authorized?(conn)
+    end
   end
 
   describe "authorized users" do
