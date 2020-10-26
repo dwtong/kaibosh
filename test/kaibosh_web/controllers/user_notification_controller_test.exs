@@ -22,9 +22,12 @@ defmodule KaiboshWeb.UserNotificationControllerTest do
   describe "list subscriptions for user" do
     setup [:create_user, :create_base, :subscribe_user_to_notifications]
 
-    test "lists user's subscriptions", %{conn: conn, user: user, base: %{id: base_id}} do
+    test "lists user's subscriptions", %{conn: conn, user: user, base: base} do
       conn = get(conn, Routes.user_user_notification_path(conn, :index, user.id))
-      assert [^base_id] = json_response(conn, 200)
+      assert [base_notification] = json_response(conn, 200)
+      assert base_notification["id"] == base.id
+      assert base_notification["name"] == base.name
+      assert base_notification["enabled"] == true
     end
   end
 

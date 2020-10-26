@@ -11,6 +11,10 @@ defmodule KaiboshWeb.UserNotificationView do
   end
 
   def render("notification.json", %{user_notification: notification}) do
-    notification
+    %{
+      id: notification.id,
+      name: notification.name,
+      enabled: notification.enabled
+    }
   end
 end

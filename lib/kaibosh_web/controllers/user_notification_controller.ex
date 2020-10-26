@@ -3,16 +3,21 @@ defmodule KaiboshWeb.UserNotificationController do
 
   alias Kaibosh.Accounts
   alias Kaibosh.Accounts.User
+  alias Kaibosh.Organisations
 
   action_fallback KaiboshWeb.FallbackController
 
   def index(conn, _params) do
-    notifications =
+    user_notifications =
       conn
       |> fetch_session()
       |> get_session(:user_id)
       |> Accounts.get_user!()
       |> Accounts.get_base_notifications_for_user()
+
+    notifications =
+      Organisations.list_bases()
+      |> Enum.map(&Map.put(&1, :enabled, Enum.member?(user_notifications, &1.id)))
 
     render(conn, "index.json", user_notifications: notifications)
   end
@@ -24,7 +29,7 @@ defmodule KaiboshWeb.UserNotificationController do
          :ok <- Accounts.subscribe_user_to_base_notifications(user, base_id) do
       conn
       |> put_status(:created)
-      |> render("show.json", user_notification: base_id)
+      |> render("show.json", user_notification: %{name: nil, id: base_id, enabled: true})
     end
   end
 
