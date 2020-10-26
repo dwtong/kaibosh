@@ -22,7 +22,7 @@ import Vue from "vue";
 export default class ValidatedDate extends Vue {
   @Prop({ default: "" }) readonly value!: Date | string;
   @Prop({ default: false }) readonly disabled!: boolean;
-  @Prop(Object) readonly rules!: object;
+  @Prop(Object) readonly rules!: any;
 
   get dateValue() {
     if (!this.value || this.value === "") {
