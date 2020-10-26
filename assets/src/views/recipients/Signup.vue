@@ -82,14 +82,13 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { IRecipient } from "@/types";
-import { Route } from "vue-router/types/router";
 import AddressField from "@/components/ui/AddressField.vue";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { defaultRecipientDetails } from "@/store/modules/active-recipient";
-import SignupService from "@/services/signup-service"
+import SignupService from "@/services/signup-service";
 
 @Component({ components: { AddressField, BaseSelect, ValidatedDate, ValidatedForm, ValidatedInput } })
 export default class CreateRecipient extends Vue {
@@ -100,14 +99,11 @@ export default class CreateRecipient extends Vue {
   };
 
   async createRecipient() {
-    let errors = null;
-    let details = defaultRecipientDetails;
-
     try {
       await SignupService.create(this.recipientDetails);
       this.success = true;
     } catch (e) {
-      console.log(e)
+      this.success = false;
     }
   }
 }

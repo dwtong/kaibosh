@@ -17,11 +17,7 @@
       </div>
     </div>
     <footer class="card-footer is-hidden-print">
-      <router-link
-        :to="`/sessions/${plan.session.id}?date=${date}`"
-        class="card-footer-item"
-        >View Session</router-link
-      >
+      <router-link :to="`/sessions/${plan.session.id}?date=${date}`" class="card-footer-item">View Session</router-link>
     </footer>
   </div>
 </template>
