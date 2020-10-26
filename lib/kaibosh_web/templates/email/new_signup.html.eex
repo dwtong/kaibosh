@@ -5,4 +5,4 @@
 </p>
 
 <p>Check out their profile here:</p>
-<p><a href="<%= @url %>">Change my password</a></p>
+<p><a href="<%= @url %>">View profile</a></p>
