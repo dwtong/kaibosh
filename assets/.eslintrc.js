@@ -15,11 +15,12 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': 'warn',
+    "no-console": "warn",
     // TODO: Remove explicit anys
     "@typescript-eslint/no-explicit-any": "off",
     // TODO: Better type interfaces
-    "@typescript-eslint/interface-name-prefix": "off"
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
   overrides: [
     {
