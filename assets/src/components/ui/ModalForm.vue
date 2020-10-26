@@ -1,5 +1,5 @@
 <template>
-  <b-modal :active.sync="isOpen" has-modal-card>
+  <b-modal v-model="isOpen" has-modal-card>
     <ValidatedForm v-slot="{ invalid }" @submit="handleSubmit">
       <div class="modal-card">
         <header class="modal-card-head">
@@ -15,12 +15,8 @@
         <footer class="modal-card-foot">
           <slot name="footer">
             <div class="buttons">
-              <button class="button is-light" type="button" @click="close">
-                Cancel
-              </button>
-              <SubmitButton :disabled="loading || invalid" type="is-info">
-                Save
-              </SubmitButton>
+              <button class="button is-light" type="button" @click="close">Cancel</button>
+              <SubmitButton :disabled="loading || invalid" type="is-info"> Save </SubmitButton>
             </div>
           </slot>
         </footer>

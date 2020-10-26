@@ -7,9 +7,7 @@
     </header>
 
     <div class="card-content">
-      <div v-if="plan.recipients.length === 0" class="is-hidden-print">
-        No recipients.
-      </div>
+      <div v-if="plan.recipients.length === 0" class="is-hidden-print">No recipients.</div>
       <div v-else class="content">
         <div v-for="recipient in sortRecipients(plan.recipients)" :key="recipient.id">
           <SessionRecipient :recipient="recipient" />

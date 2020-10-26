@@ -27,7 +27,6 @@ if (process.env.NODE_ENV === "production") {
     payload: {
       client: {
         javascript: {
-          // eslint-disable-next-line @typescript-eslint/camelcase
           code_version: "version-1"
         }
       }

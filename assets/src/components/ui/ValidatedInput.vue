@@ -16,7 +16,7 @@ export default class ValidatedInput extends Vue {
   @Prop() readonly value!: string;
   @Prop({ default: "text" }) readonly type!: string;
   @Prop({ default: "" }) readonly help!: string;
-  @Prop(Object) readonly rules!: object;
+  @Prop(Object) readonly rules!: any;
 
   get label() {
     return this.name.replace(/-/g, " ");

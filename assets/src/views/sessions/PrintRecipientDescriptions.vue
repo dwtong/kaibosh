@@ -7,9 +7,7 @@
         >
       </p>
       <p class="control">
-        <button class="button is-primary" @click="goBack">
-          Back to session
-        </button>
+        <button class="button is-primary" @click="goBack">Back to session</button>
       </p>
       <p class="control">
         <PrintButton label="Print Descriptions" />

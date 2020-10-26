@@ -6,25 +6,25 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `
+        additionalData: `
           @import "~bulma/sass/utilities/functions";
           @import "@/assets/scss/_variables.scss";
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   configureWebpack: {
     devServer: {
       overlay: {
         warnings: false,
-        errors: true
+        errors: true,
       },
       disableHostCheck: true,
-      hot: true
+      hot: true,
     },
     output: {
-      path: path.resolve(__dirname, "../priv/static")
+      path: path.resolve(__dirname, "../priv/static"),
     },
-    plugins: [new CompressionPlugin()]
-  }
+    plugins: [new CompressionPlugin()],
+  },
 };

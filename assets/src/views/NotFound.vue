@@ -2,9 +2,7 @@
   <div class="columns is-mobile is-centered">
     <div class="column is-half">
       <h1 class="title has-text-centered">404</h1>
-      <p class="subtitle has-text-centered">
-        The page you are looking for cannot be found.
-      </p>
+      <p class="subtitle has-text-centered">The page you are looking for cannot be found.</p>
     </div>
   </div>
 </template>

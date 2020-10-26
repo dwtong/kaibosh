@@ -9,22 +9,12 @@
     default-sort="name"
     @click="viewRecipient"
   >
-    <template v-slot:empty>
-      <div v-if="loading" class="pending"></div>
-      <div v-else class="has-text-grey has-text-centered">
-        <p><b-icon class="has-text-grey-lighter sad-icon" icon="frown" size="is-large"> </b-icon></p>
-        <p>Nothing here.</p>
-      </div>
-    </template>
-
-    <template v-slot="props">
-      <b-table-column field="name" label="Name" sortable>
-        {{ props.row.name }}
-      </b-table-column>
-      <b-table-column field="status" label="Status" centered sortable width="80">
-        <RecipientStatusTag :status="props.row.status" />
-      </b-table-column>
-    </template>
+    <b-table-column v-slot="props" field="name" label="Name" sortable>
+      {{ props.row.name }}
+    </b-table-column>
+    <b-table-column v-slot="props" field="status" label="Status" centered sortable width="80">
+      <RecipientStatusTag :status="props.row.status" />
+    </b-table-column>
   </b-table>
 </template>
 

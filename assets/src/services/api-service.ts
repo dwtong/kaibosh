@@ -60,7 +60,7 @@ service.interceptors.response.use(
   }
 );
 
-export const get = async (resource: string, params?: object) => {
+export const get = async (resource: string, params?: any) => {
   try {
     const response = await service.get(resource, { params });
     return Promise.resolve(response.data);
@@ -70,7 +70,7 @@ export const get = async (resource: string, params?: object) => {
   }
 };
 
-export const post = async (resource: string, params: object) => {
+export const post = async (resource: string, params: any) => {
   try {
     const response = await service.post(resource, params);
     return Promise.resolve(response.data);
@@ -80,7 +80,7 @@ export const post = async (resource: string, params: object) => {
   }
 };
 
-export const put = async (resource: string, params: object) => {
+export const put = async (resource: string, params: any) => {
   try {
     const response = await service.put(resource, params);
     return Promise.resolve(response.data);

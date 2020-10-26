@@ -1,5 +1,5 @@
 <template>
-  <b-loading :active.sync="loading"></b-loading>
+  <b-loading v-model="loading"></b-loading>
 </template>
 
 <script lang="ts">

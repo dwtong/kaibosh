@@ -2,7 +2,7 @@
   <div>
     <slot :open="openModal"></slot>
     <ModalForm v-model="isOpen" @submit="saveHold">
-      <template v-slot:title>Set hold date</template>
+      <template #title>Set hold date</template>
 
       <div class="columns modal-card-body">
         <div class="column">

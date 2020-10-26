@@ -16,18 +16,12 @@
             </p>
           </div>
           <div v-if="showError" class="field">
-            <p class="error-msg">
-              Reset password failed. Please try again.
-            </p>
+            <p class="error-msg">Reset password failed. Please try again.</p>
           </div>
           <div class="field">
             <p class="control">
-              <button class="button is-primary">
-                Reset Password
-              </button>
-              <a class="button is-text forgotten-button" @click="toggleForgotten">
-                Login
-              </a>
+              <button class="button is-primary">Reset Password</button>
+              <a class="button is-text forgotten-button" @click="toggleForgotten"> Login </a>
             </p>
           </div>
         </form>
@@ -52,18 +46,12 @@
             </p>
           </div>
           <div v-if="showError" class="field">
-            <p class="error-msg">
-              Login failed. Please try again.
-            </p>
+            <p class="error-msg">Login failed. Please try again.</p>
           </div>
           <div class="field">
             <p class="control">
-              <button class="button is-primary">
-                Login
-              </button>
-              <a class="button is-text forgotten-button" @click="toggleForgotten">
-                Forgotten Password?
-              </a>
+              <button class="button is-primary">Login</button>
+              <a class="button is-text forgotten-button" @click="toggleForgotten"> Forgotten Password? </a>
             </p>
           </div>
         </form>

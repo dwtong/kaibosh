@@ -3,9 +3,7 @@
     <h2 v-if="sessionDate" class="title is-4">
       {{ sessionDate | formatDate("EEEE do MMMM yyyy") }}
     </h2>
-    <div v-if="plans.length === 0" class="is-hidden-print">
-      No sessions.
-    </div>
+    <div v-if="plans.length === 0" class="is-hidden-print">No sessions.</div>
     <div v-else class="columns">
       <div v-for="plan in plans" :key="plan.session.id" class="column is-half">
         <SessionRecipientList :plan="plan" />
