@@ -2,15 +2,13 @@
   <div>
     <slot :open="openModal"></slot>
     <ModalForm v-model="isOpen" @submit="saveSession">
-      <template v-slot:title>{{ isExistingSession ? "Edit " : "Add" }} Sorting Session</template>
+      <template #title>{{ isExistingSession ? "Edit " : "Add" }} Sorting Session</template>
 
       <div class="columns">
         <div class="column">
           <p class="subtitle">Select session time and day</p>
           <SessionSelect v-model="selectedSessionId" :sessions="sessions" required="true" />
-          <p v-if="sessionExists" class="error-msg">
-            Selected session already exists.
-          </p>
+          <p v-if="sessionExists" class="error-msg">Selected session already exists.</p>
         </div>
       </div>
 

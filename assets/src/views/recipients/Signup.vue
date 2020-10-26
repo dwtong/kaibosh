@@ -64,15 +64,11 @@
             help="Contact mobile for your primary point of contact."
           />
         </div>
-        <button type="submit" class="button is-primary is-pulled-right">
-          Sign up
-        </button>
+        <button type="submit" class="button is-primary is-pulled-right">Sign up</button>
       </ValidatedForm>
       <div v-if="success" class="box">
         <h1 class="title">Success</h1>
-        <p>
-          Thanks for signing up! Kaibosh will be in touch with next steps.
-        </p>
+        <p>Thanks for signing up! Kaibosh will be in touch with next steps.</p>
       </div>
     </div>
   </div>

@@ -15,9 +15,7 @@
         </button>
       </b-datepicker>
     </b-field>
-    <button class="button" @click="toggleDatePicker">
-      Choose date
-    </button>
+    <button class="button" @click="toggleDatePicker">Choose date</button>
   </div>
 </template>
 

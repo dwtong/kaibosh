@@ -18,9 +18,7 @@
       <ValidatedInput v-model="recipientDetails.contact.phoneLandline" label="contact landline" />
       <ValidatedInput v-model="recipientDetails.contact.phoneMobile" label="contact mobile" />
     </div>
-    <button type="submit" class="button is-primary is-pulled-right">
-      Save Recipient
-    </button>
+    <button type="submit" class="button is-primary is-pulled-right">Save Recipient</button>
   </ValidatedForm>
 </template>
 

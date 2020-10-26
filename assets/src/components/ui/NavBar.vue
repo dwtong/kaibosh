@@ -7,9 +7,7 @@
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/sessions/week" active-class="is-active" exact>
-          Sessions By Week
-        </router-link>
+        <router-link to="/sessions/week" active-class="is-active" exact> Sessions By Week </router-link>
       </li>
     </ul>
 
@@ -21,18 +19,14 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/recipients/new" active-class="is-active" exact>
-          Add New Recipient
-        </router-link>
+        <router-link to="/recipients/new" active-class="is-active" exact> Add New Recipient </router-link>
       </li>
     </ul>
 
     <p class="menu-label">Settings</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/settings" active-class="is-active">
-          User Settings
-        </router-link>
+        <router-link to="/settings" active-class="is-active"> User Settings </router-link>
       </li>
       <li>
         <a @click="logout">Logout</a>

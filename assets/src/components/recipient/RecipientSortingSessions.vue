@@ -19,9 +19,7 @@
             position="is-bottom"
             type="is-warning"
           >
-            <a disabled="true" class="button is-warning">
-              Add Hold Date
-            </a>
+            <a disabled="true" class="button is-warning"> Add Hold Date </a>
           </b-tooltip>
           <HoldModal v-else v-slot="{ open }" :recipient-sessions="recipientSessions" :recipient-id="id">
             <a class="button is-warning" @click="open">Add Hold Date</a>

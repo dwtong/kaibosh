@@ -9,10 +9,10 @@
     default-sort="name"
     @click="viewRecipient"
   >
-    <b-table-column field="name" label="Name" v-slot="props" sortable>
+    <b-table-column v-slot="props" field="name" label="Name" sortable>
       {{ props.row.name }}
     </b-table-column>
-    <b-table-column field="status" label="Status" v-slot="props" centered sortable width="80">
+    <b-table-column v-slot="props" field="status" label="Status" centered sortable width="80">
       <RecipientStatusTag :status="props.row.status" />
     </b-table-column>
   </b-table>

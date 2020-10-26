@@ -15,12 +15,8 @@
         <footer class="modal-card-foot">
           <slot name="footer">
             <div class="buttons">
-              <button class="button is-light" type="button" @click="close">
-                Cancel
-              </button>
-              <SubmitButton :disabled="loading || invalid" type="is-info">
-                Save
-              </SubmitButton>
+              <button class="button is-light" type="button" @click="close">Cancel</button>
+              <SubmitButton :disabled="loading || invalid" type="is-info"> Save </SubmitButton>
             </div>
           </slot>
         </footer>

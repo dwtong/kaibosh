@@ -7,14 +7,10 @@
 
       <div v-if="status !== 'archived'" class="field buttons is-pulled-right">
         <p class="control">
-          <router-link :to="`/recipients/update/${id}`" class="button is-info">
-            Edit Recipient
-          </router-link>
+          <router-link :to="`/recipients/update/${id}`" class="button is-info"> Edit Recipient </router-link>
         </p>
         <p class="control">
-          <a class="button is-danger" @click="archiveRecipient">
-            Archive Recipient
-          </a>
+          <a class="button is-danger" @click="archiveRecipient"> Archive Recipient </a>
         </p>
       </div>
     </div>
