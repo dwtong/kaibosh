@@ -1,5 +1,5 @@
 <template>
-  <b-modal :active.sync="isOpen" has-modal-card>
+  <b-modal v-model="isOpen" has-modal-card>
     <ValidatedForm v-slot="{ invalid }" @submit="handleSubmit">
       <div class="modal-card">
         <header class="modal-card-head">
