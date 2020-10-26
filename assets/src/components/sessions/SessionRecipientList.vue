@@ -7,7 +7,7 @@
     </header>
 
     <div class="card-content">
-      <div v-if="plan.recipients.length === 0" class="is-hidden-print">No recipients.</div>
+      <div v-if="plan.recipients.length === 0" class="is-italic is-hidden-print">No recipients.</div>
       <div v-else class="content">
         <div v-for="recipient in sortRecipients(plan.recipients)" :key="recipient.id">
           <SessionRecipient :recipient="recipient" />
@@ -53,6 +53,7 @@ export default class SessionRecipientList extends Vue {
 
 .card-header {
   background-color: #f3fff3;
+  box-shadow: 0 .025em .25em rgba(1,1,1,.1);
 }
 
 .card-footer {

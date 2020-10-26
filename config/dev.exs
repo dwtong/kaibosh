@@ -25,7 +25,7 @@ config :kaibosh, KaiboshWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
-      "--watch-stdin",
+      "--watch",
       "--config",
       "node_modules/@vue/cli-service/webpack.config.js",
       cd: Path.expand("../assets", __DIR__)
