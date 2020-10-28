@@ -3,13 +3,13 @@
     <div class="print-only" :class="{ inactive: recipientOnHold(recipient) }">
       {{ recipient.name }}
       <span v-if="quantity && !recipientOnHold(recipient)">
-        <strong>({{ quantityLabel(quantity) }})</strong>
+        <strong>({{ quantityLabel }})</strong>
       </span>
     </div>
     <div class="is-hidden-print">
       <div class="allocation-recipient" @click="viewRecipient">
-        <span v-if="quantity && !recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
-          {{ quantityLabel(quantity) }}
+        <span v-if="!recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
+          {{ quantityLabel }}
         </span>
         <span :class="{ inactive: recipientOnHold(recipient) }" class="button is-text">
           {{ recipient.name }}
@@ -26,7 +26,7 @@ import AllocationHelper from "@/helpers/allocations";
 
 @Component
 export default class SessionRecipient extends Vue {
-  @Prop(Object) readonly quantity!: any;
+  @Prop(String) readonly quantity!: string;
   @Prop(Object) readonly recipient!: any;
 
   recipientOnHold(recipient: any) {
