@@ -30,7 +30,8 @@ export default class App extends Vue {
   }
 
   get showNav() {
-    return this.isAuthenticated;
+    const isPublicRoute = this.$route.matched.every(r => r.meta.public)
+    return !isPublicRoute && this.isAuthenticated;
   }
 }
 </script>

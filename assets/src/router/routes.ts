@@ -49,7 +49,8 @@ export default [
   },
   {
     path: "/signup",
-    component: Signup
+    component: Signup,
+    meta: { public: true }
   },
   {
     path: "/",
