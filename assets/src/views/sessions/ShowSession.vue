@@ -40,7 +40,7 @@
 
             <div class="content">
               <div v-for="allocation in allocationsForCategory(category.id)" :key="allocation.recipientId">
-                <SessionRecipient v-if="allocation" :allocation="allocation" :recipient="allocation.recipient" />
+                <SessionRecipient v-if="allocation" :quantity="allocation.quantity" :recipient="allocation.recipient" />
               </div>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default class ShowSession extends Vue {
       return { ...a, recipient: SessionPlans.recipientById(a.recipientId) };
     });
 
-    return sortBy(allocations, a => a.recipient.status);
+    return sortBy(allocations, a => [a.recipient.status, a.recipient.name]);
   }
 
   recipientById(recipientId: string) {
