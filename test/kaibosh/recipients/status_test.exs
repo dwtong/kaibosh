@@ -69,6 +69,34 @@ defmodule Kaibosh.Recipients.StatusTest do
       assert fetch_status(recipient_id) == :on_hold
     end
 
+    test "is on hold if session has multiple holds" do
+      %{recipient_session: %{recipient_id: recipient_id} = recipient_session} =
+        insert(:hold, %{starts_at: yesterday(), ends_at: nil})
+
+      insert(:hold, %{
+        starts_at: yesterday(),
+        ends_at: tomorrow(),
+        recipient_session: recipient_session
+      })
+
+      assert fetch_status(recipient_id) == :on_hold
+    end
+
+    test "is active if session has multiple holds and active session exists" do
+      %{recipient_session: %{recipient_id: recipient_id} = recipient_session} =
+        insert(:hold, %{starts_at: yesterday(), ends_at: nil})
+
+      insert(:hold, %{
+        starts_at: yesterday(),
+        ends_at: tomorrow(),
+        recipient_session: recipient_session
+      })
+
+      insert(:recipient_session, recipient_id: recipient_id, recipient: nil)
+
+      assert fetch_status(recipient_id) == :active
+    end
+
     test "is active if session hold has finished" do
       %{recipient_session: %{recipient_id: recipient_id}} =
         insert(:hold, %{starts_at: sub_days(7), ends_at: sub_days(1)})
