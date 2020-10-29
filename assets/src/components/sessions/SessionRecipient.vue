@@ -8,7 +8,7 @@
     </div>
     <div class="is-hidden-print">
       <div class="allocation-recipient" @click="viewRecipient">
-        <span v-if="!recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
+        <span v-if="quantity && !recipientOnHold(recipient)" class="tag is-pulled-right is-rounded">
           {{ quantityLabel }}
         </span>
         <span :class="{ inactive: recipientOnHold(recipient) }" class="button is-text">
