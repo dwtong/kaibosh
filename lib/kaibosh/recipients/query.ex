@@ -24,16 +24,17 @@ defmodule Kaibosh.Recipients.Query do
 
   defp active_sessions do
     "recipient_sessions"
-    |> group_by([s], s.recipient_id)
-    |> select([s], %{count: count(s.id), recipient_id: s.recipient_id})
+    |> join(:left, [rs], h in "holds", on: rs.id == h.recipient_session_id)
+    |> group_by([rs], rs.recipient_id)
+    |> select([rs], %{count: count(), recipient_id: rs.recipient_id})
   end
 
   defp active_holds do
     "holds"
-    |> join(:inner, [h], s in "recipient_sessions", on: s.id == h.recipient_session_id)
+    |> join(:inner, [h], rs in "recipient_sessions", on: rs.id == h.recipient_session_id)
     |> where([h], h.starts_at < ^DateTime.utc_now())
     |> where([h], is_nil(h.ends_at) or h.ends_at > ^DateTime.utc_now())
-    |> group_by([h, s], s.recipient_id)
-    |> select([h, s], %{count: count(h.id), recipient_id: s.recipient_id})
+    |> group_by([h, rs], rs.recipient_id)
+    |> select([h, rs], %{count: count(h.id), recipient_id: rs.recipient_id})
   end
 end
