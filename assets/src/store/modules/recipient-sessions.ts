@@ -37,6 +37,14 @@ class RecipientSessions extends VuexModule {
   }
 
   @Mutation
+  removeSession(sessionId: string) {
+    const i = this.sessions.findIndex(s => s.id === sessionId);
+    const updatedSessions = [...this.sessions];
+    updatedSessions.splice(i, 1);
+    this.sessions = updatedSessions;
+  }
+
+  @Mutation
   modifySession(updatedSession: IRecipientSession, sessionId: string) {
     const sessionIndex = this.sessions.findIndex((s: IRecipientSession) => s.id === sessionId);
     Vue.set(this.sessions, sessionIndex, updatedSession);
@@ -85,7 +93,7 @@ class RecipientSessions extends VuexModule {
   async deleteSession({ recipientId, sessionId }: { recipientId: string; sessionId: string }) {
     await RecipientSessionService.destroy(recipientId, sessionId);
     ActiveRecipient.fetchRecipientStatus(recipientId);
-    this.fetchSessions(sessionId);
+    this.removeSession(sessionId);
   }
 }
 
