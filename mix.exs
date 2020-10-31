@@ -35,7 +35,7 @@ defmodule Kaibosh.MixProject do
   def application do
     [
       mod: {Kaibosh.Application, []},
-      extra_applications: env_extra_apps() ++ [:logger, :runtime_tools]
+      extra_applications: env_extra_apps() ++ [:ssl, :logger, :runtime_tools]
     ]
   end
 
