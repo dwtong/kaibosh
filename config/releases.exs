@@ -18,4 +18,6 @@ config :sentry,
   dsn: System.fetch_env!("SENTRY_DSN"),
   environment_name: System.fetch_env!("APP_ENV")
 
-config :kaibosh, Kaibosh.Mailer, api_key: System.fetch_env!("SENDGRID_API_KEY")
+config :kaibosh, Kaibosh.Mailer,
+  domain: "mg.#{System.fetch_env!("DOMAIN")}",
+  api_key: System.fetch_env!("MAILGUN_API_KEY")

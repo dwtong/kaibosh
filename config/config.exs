@@ -29,7 +29,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :kaibosh, Kaibosh.Mailer,
-  adapter: Bamboo.SendGridAdapter,
+  adapter: Bamboo.MailgunAdapter,
   hackney_opts: [recv_timeout: :timer.minutes(1)]
 
 config :sentry,
