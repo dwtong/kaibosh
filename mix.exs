@@ -71,7 +71,7 @@ defmodule Kaibosh.MixProject do
       {:ex_machina, "~> 2.4", only: :test},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:sobelow, "~> 0.10.3", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.11", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.13", only: [:dev, :test], runtime: false},
 
       # Dev
