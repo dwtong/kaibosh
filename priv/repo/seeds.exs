@@ -43,25 +43,18 @@ insert.(Base, [
 
 bases = Repo.all(Base)
 
-Enum.each(bases, fn %{id: base_id} ->
-  insert.(Category, [
-    %{base_id: base_id, name: "bread", unit: "box", image_name: "bread"},
-    %{base_id: base_id, name: "bakery", unit: "box", image_name: "bakery"},
-    %{
-      base_id: base_id,
-      name: "produce (fruit only)",
-      unit: "box",
-      image_name: "produce_fruit_only"
-    },
-    %{base_id: base_id, name: "produce (all)", unit: "box", image_name: "produce_all"},
-    %{base_id: base_id, name: "beverages", unit: "box", image_name: "beverages"},
-    %{base_id: base_id, name: "ready meals / sandwiches", unit: "box", image_name: "ready_meals"},
-    %{base_id: base_id, name: "dairy (all)", unit: "box", image_name: "dairy_all"},
-    %{base_id: base_id, name: "dairy (milk only)", unit: "bottle", image_name: "dairy_milk_only"},
-    %{base_id: base_id, name: "meat", unit: "box", image_name: "meat"},
-    %{base_id: base_id, name: "other", unit: "box", image_name: "other"}
-  ])
-end)
+insert.(Category, [
+  %{name: "bread", unit: "box", image_name: "bread"},
+  %{name: "bakery", unit: "box", image_name: "bakery"},
+  %{name: "produce (fruit only)", unit: "box", image_name: "produce_fruit_only"},
+  %{name: "produce (all)", unit: "box", image_name: "produce_all"},
+  %{name: "beverages", unit: "box", image_name: "beverages"},
+  %{name: "ready meals / sandwiches", unit: "box", image_name: "ready_meals"},
+  %{name: "dairy (all)", unit: "box", image_name: "dairy_all"},
+  %{name: "dairy (milk only)", unit: "bottle", image_name: "dairy_milk_only"},
+  %{name: "meat", unit: "box", image_name: "meat"},
+  %{name: "other", unit: "box", image_name: "other"}
+])
 
 Enum.each(bases, fn %{id: base_id} ->
   ["monday", "tuesday", "wednesday", "thursday", "friday"]
