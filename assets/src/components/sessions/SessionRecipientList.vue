@@ -53,7 +53,7 @@ export default class SessionRecipientList extends Vue {
 
 .card-header {
   background-color: #f3fff3;
-  box-shadow: 0 .025em .25em rgba(1,1,1,.1);
+  box-shadow: 0 0.025em 0.25em rgba(1, 1, 1, 0.1);
 }
 
 .card-footer {
