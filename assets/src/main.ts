@@ -5,7 +5,7 @@ import Router from "@/router";
 import Store from "@/store";
 
 import Buefy from "buefy";
-import Vue from "vue";
+import Vue, { createApp } from "vue";
 import Rollbar from "vue-rollbar";
 import LogRocket from "logrocket";
 import "./vee-validate";
@@ -45,10 +45,4 @@ Vue.use(Buefy, {
   }
 });
 
-Vue.config.productionTip = false;
-
-new Vue({
-  render: h => h(App),
-  router: Router,
-  store: Store
-}).$mount("#app");
+createApp(App).use(Router).use(Store).mount("#app");

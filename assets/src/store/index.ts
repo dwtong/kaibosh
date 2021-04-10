@@ -10,9 +10,7 @@ if (process.env.NODE_ENV === "production") {
   plugins.push(createPlugin(LogRocket));
 }
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default Vuex.createStore({
   strict: process.env.NODE_ENV !== "production",
   plugins
 });
