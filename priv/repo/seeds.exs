@@ -49,9 +49,7 @@ insert.(Category, [
   %{name: "produce (fruit only)", unit: "box", image_name: "produce_fruit_only"},
   %{name: "produce (all)", unit: "box", image_name: "produce_all"},
   %{name: "beverages", unit: "box", image_name: "beverages"},
-  %{name: "ready meals / sandwiches", unit: "box", image_name: "ready_meals"},
-  %{name: "dairy (all)", unit: "box", image_name: "dairy_all"},
-  %{name: "dairy (milk only)", unit: "bottle", image_name: "dairy_milk_only"},
+  %{name: "dairy", unit: "box", image_name: "dairy_all"},
   %{name: "meat", unit: "box", image_name: "meat"},
   %{name: "other", unit: "box", image_name: "other"}
 ])
