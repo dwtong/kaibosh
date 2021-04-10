@@ -8,7 +8,7 @@ export const startOfDayString = (date: Date) => startOfDay(date).toISOString();
 export const endOfDayString = (date: Date) => endOfDay(date).toISOString();
 export const mondayOfWeek = (date: Date) => startOfWeek(date, { weekStartsOn: 1 });
 
-export const formatDate = (date: Date, datePattern = "d/M/yyyy"): string => {
+export const formatDate = (date: Date | string, datePattern = "d/M/yyyy"): string => {
   return format(new Date(date), datePattern, {});
 };
 

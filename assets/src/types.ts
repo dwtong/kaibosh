@@ -72,7 +72,7 @@ export interface ISession {
 
 export interface ISessionPlan {
   session: {
-    date: Date | string;
+    date: Date;
     day: string;
     time: string;
     baseId: string;
@@ -99,6 +99,8 @@ export interface IRecipientSession {
   session?: ISession;
   sessionId?: string;
   status?: string;
+  day?: string;
+  time?: string;
 }
 
 export interface IStatus {

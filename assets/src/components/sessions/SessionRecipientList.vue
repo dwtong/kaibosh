@@ -1,9 +1,7 @@
 <template>
   <div class="card">
     <header class="card-header">
-      <p v-if="plan.session.time" class="card-header-title">
-        {{ plan.session.time | formatTime }}
-      </p>
+      <p class="card-header-title">{{ sessionTime }}</p>
     </header>
 
     <div class="card-content">
@@ -39,6 +37,10 @@ export default class SessionRecipientList extends Vue {
   get date() {
     const sessionDate = new Date(this.plan.session.date);
     return formatDate(sessionDate, "yyyy-MM-dd");
+  }
+  get sessionTime() {
+    const time = this.plan.session.time;
+    return time ? formatTime(time) : "";
   }
 }
 </script>

@@ -13,11 +13,11 @@
         </p>
       </div>
 
-      <h1 v-if="sessionDate" class="title">
-        {{ sessionDate | formatDate("EEEE h:mma") }}
+      <h1 class="title">
+        {{ sessionDayAndTime }}
       </h1>
-      <h2 v-if="sessionDate" class="subtitle is-4">
-        {{ sessionDate | formatDate("MMMM do, Y") }}
+      <h2 class="subtitle is-4">
+        {{ sessionDateString }}
       </h2>
     </div>
 
@@ -107,6 +107,16 @@ export default class ShowSession extends Vue {
     } else {
       return null;
     }
+  }
+
+  get sessionDateString() {
+    const date = this.sessionDate;
+    return date ? formatDate(date, "MMMM do, Y") : "";
+  }
+
+  get sessionDayAndTime() {
+    const date = this.sessionDate;
+    return date ? formatDate(date, "EEEE h:mma") : "";
   }
 }
 </script>

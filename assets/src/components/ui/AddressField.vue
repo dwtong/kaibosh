@@ -22,6 +22,7 @@ export default {
       type: String
     }
   },
+  emits: ["input"],
   mounted() {
     const script = document.createElement("script");
     script.setAttribute("src", "https://api.addressfinder.io/assets/v3/widget.js");

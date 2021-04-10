@@ -2,8 +2,8 @@
   <table>
     <tbody>
       <tr v-for="hold in sortedHolds" :key="hold.id" :hold="hold">
-        <td v-if="hold.endsAt">{{ hold.startsAt | formatDate }} - {{ hold.endsAt | formatDate }}</td>
-        <td v-else>{{ hold.startsAt | formatDate }} - (no end date)</td>
+        <td v-if="hold.endsAt">{{ formatDate(hold.startsAt) }} - {{ formatDate(hold.endsAt) }}</td>
+        <td v-else>{{ formatDate(hold.startsAt) }} - (no end date)</td>
         <td>
           <a class="delete is-medium" @click="removeHold(hold.id)"></a>
         </td>
@@ -24,6 +24,10 @@ import { sortBy } from "lodash";
 export default class HoldTr extends Vue {
   @Prop() readonly holds!: any[];
   @Prop() readonly recipientId!: string;
+
+  formatDate(date: any) {
+    return formatDate(date);
+  }
 
   get sortedHolds() {
     return sortBy(this.holds, ["startsAt"]);

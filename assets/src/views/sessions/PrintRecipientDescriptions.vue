@@ -15,7 +15,7 @@
     </div>
 
     <h1 v-if="sessionDate" class="title with-margins">
-      {{ sessionDate | formatDate("EEEE h:mma") }}
+      {{ sessionDate }}
     </h1>
 
     <div v-for="recipient in recipients" :key="recipient.id" class="recipient with-margins">
@@ -47,7 +47,8 @@ export default class GenerateDescriptionsButton extends Vue {
   }
 
   get sessionDate() {
-    return SessionPlans.planDetails?.session.date;
+    const date = SessionPlans.planDetails?.session.date;
+    return date ? formatDate(date, "EEEE h:mma") : "";
   }
 
   goBack() {

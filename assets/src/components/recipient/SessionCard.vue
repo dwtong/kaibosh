@@ -1,21 +1,24 @@
 <template>
   <b-collapse aria-id="contentIdForA11y3" :open="isOpen" class="recipientSession-card">
-    <div slot="trigger" aria-controls="contentIdForA11y3" class="level box header">
-      <div class="level-left">
-        <div class="level-item">
-          <p>
-            <span class="has-text-weight-semibold is-size-5 day-text">{{ recipientSession.day | capitalize }} </span>
-            <span class="is-size-5">{{ recipientSession.time | formatTime }}</span>
-          </p>
+    <template #trigger>
+      <div aria-controls="contentIdForA11y3" class="level box header">
+        <div class="level-left">
+          <div class="level-item">
+            <p>
+              <span class="has-text-weight-semibold is-size-5 day-text">{{ sessionDay }} </span>
+              <span class="is-size-5">{{ sessionTime }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="level-item"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <HoldStatusTag :status="recipientSession.status" />
+          </div>
         </div>
       </div>
-      <div class="level-item"></div>
-      <div class="level-right">
-        <div class="level-item">
-          <HoldStatusTag :status="recipientSession.status" />
-        </div>
-      </div>
-    </div>
+    </template>
+
     <div class="box">
       <div class="card-content">
         <div v-if="recipientSession.holds && recipientSession.holds.length > 0" class="content">
@@ -68,6 +71,16 @@ export default class SessionCard extends Vue {
   @Prop() readonly baseId!: string;
   @Prop() readonly recipientId!: string;
   isOpen = false;
+
+  get sessionDay() {
+    const day = this.recipientSession.day;
+    return day ? capitalize(day) : "";
+  }
+
+  get sessionTime() {
+    const time = this.recipientSession.time;
+    return time ? formatTime(time) : "";
+  }
 
   toggleIsOpen() {
     this.isOpen = !this.isOpen;

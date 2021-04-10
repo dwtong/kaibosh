@@ -14,7 +14,7 @@
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <router-link to="/recipients" active-class="is-active" exact @click.native="resetRecipientNameFilter">
+        <router-link to="/recipients" active-class="is-active" exact @click="resetRecipientNameFilter">
           View Recipients
         </router-link>
       </li>
