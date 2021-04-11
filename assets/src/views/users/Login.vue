@@ -61,45 +61,48 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import Router from "@/router";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
 import App from "@/store/modules/app";
 
-@Component
-export default class Login extends Vue {
-  email = "";
-  password = "";
-  showError = false;
-  forgotten = false;
+export default defineComponent({
+  data() {
+    return {
+      email: "",
+      password: "",
+      showError: false,
+      forgotten: false
+    };
+  },
+  methods: {
+    async login() {
+      App.enableLoading();
+      await UserModule.login({ email: this.email, password: this.password });
+      if (UserModule.isAuthenticated) {
+        Router.push("/");
+      } else {
+        this.showError = true;
+      }
+      App.disableLoading();
+    },
 
-  async login() {
-    App.enableLoading();
-    await UserModule.login({ email: this.email, password: this.password });
-    if (UserModule.isAuthenticated) {
-      Router.push("/");
-    } else {
-      this.showError = true;
+    async resetPassword() {
+      await UserModule.resetPassword(this.email);
+      if (UserModule.passwordUpdated) {
+        toast.success("Password reset email sent.");
+      } else {
+        this.showError = true;
+      }
+    },
+
+    toggleForgotten() {
+      this.showError = false;
+      this.forgotten = !this.forgotten;
     }
-    App.disableLoading();
   }
-
-  async resetPassword() {
-    await UserModule.resetPassword(this.email);
-    if (UserModule.passwordUpdated) {
-      toast.success("Password reset email sent.");
-    } else {
-      this.showError = true;
-    }
-  }
-
-  toggleForgotten() {
-    this.showError = false;
-    this.forgotten = !this.forgotten;
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

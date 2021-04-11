@@ -26,23 +26,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import CreateUserForm from "@/components/users/CreateUserForm.vue";
 import NotificationSettings from "@/components/users/NotificationSettings.vue";
 import PasswordResetForm from "@/components/users/PasswordResetForm.vue";
 import { UserModule } from "@/store/modules/user";
 
-@Component({ components: { CreateUserForm, NotificationSettings, PasswordResetForm } })
-export default class Settings extends Vue {
-  created() {
+export default defineComponent({
+  components: {
+    CreateUserForm,
+    NotificationSettings,
+    PasswordResetForm
+  },
+  setup() {
     UserModule.fetchUsers();
+  },
+  computed: {
+    users() {
+      return UserModule.users;
+    }
   }
-
-  get users() {
-    return UserModule.users;
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

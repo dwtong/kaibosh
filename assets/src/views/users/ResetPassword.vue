@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import PasswordResetForm from "@/components/users/PasswordResetForm.vue";
 
-@Component({ components: { PasswordResetForm } })
-export default class ResetPassword extends Vue {}
+export default defineComponent({
+  components: { PasswordResetForm }
+});
 </script>
 
 <style lang="scss" scoped>
