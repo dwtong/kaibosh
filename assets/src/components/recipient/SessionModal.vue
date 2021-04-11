@@ -23,8 +23,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import { IRecipientSession, IAllocation } from "@/types";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import AllocationQuantitiesInput from "@/components/recipient/AllocationQuantitiesInput.vue";
@@ -32,61 +31,93 @@ import toast from "@/helpers/toast";
 import SessionSelect from "@/components/ui/SessionSelect.vue";
 import ModalForm from "@/components/ui/ModalForm.vue";
 
-@Component({ components: { SessionSelect, AllocationQuantitiesInput, ModalForm } })
-export default class SessionModal extends Vue {
-  @Prop({ required: true }) readonly recipientId!: string;
-  @Prop({ required: true }) readonly baseId!: string;
-  @Prop({ required: true }) readonly sessions!: IRecipientSession[];
-  @Prop() readonly session?: IRecipientSession;
-  allocations: IAllocation[] = [];
-  selectedSessionId = "";
-  isOpen = false;
-
-  async created() {
-    if (this.session) {
-      this.allocations = this.session.allocations ? [...this.session.allocations] : [];
-      this.selectedSessionId = this.session.sessionId ?? "";
+export default defineComponent({
+  components: {
+    SessionSelect,
+    AllocationQuantitiesInput,
+    ModalForm
+  },
+  props: {
+    recipientId: {
+      type: String,
+      required: true
+    },
+    baseId: {
+      type: String,
+      required: true
+    },
+    sessions: {
+      type: Array,
+      required: true
+    },
+    session: {
+      type: Object,
+      required: false
     }
-  }
+  },
+  emits: ["close"],
+  setup(props) {
+    let allocations: IAllocation[] = [];
+    let selectedSessionId = "";
 
-  get isExistingSession(): boolean {
-    return !!this.session;
-  }
+    if (props.session) {
+      allocations = props.session.allocations ? [...props.session.allocations] : [];
+      selectedSessionId = props.session.sessionId ?? "";
+    }
 
-  get showCategories(): boolean {
-    return this.selectedSessionId !== "" && !this.sessionExists;
-  }
-
-  get sessionExists(): boolean {
-    return !!this.sessions.find(s => s.sessionId === this.selectedSessionId && s.sessionId !== this.session?.sessionId);
-  }
-
-  openModal() {
-    this.isOpen = true;
-  }
-
-  async saveSession() {
-    const params = {
-      recipientId: this.recipientId,
-      sessionId: this.selectedSessionId,
-      allocations: this.allocations
+    return {
+      allocations,
+      selectedSessionId
     };
+  },
+  data() {
+    return {
+      isOpen: false
+    };
+  },
+  computed: {
+    isExistingSession(): boolean {
+      return !!this.session;
+    },
 
-    if (this.session) {
-      await RecipientSessions.updateSession({
-        ...this.session,
-        ...params
-      });
-    } else {
-      await RecipientSessions.createSession(params);
+    showCategories(): boolean {
+      return this.selectedSessionId !== "" && !this.sessionExists;
+    },
+
+    sessionExists(): boolean {
+      return !!this.sessions.find(
+        (s: any) => s.sessionId === this.selectedSessionId && s.sessionId !== this.session?.sessionId
+      );
     }
+  },
+  methods: {
+    openModal() {
+      this.isOpen = true;
+    },
 
-    this.$emit("close");
-    this.allocations = [];
-    this.selectedSessionId = "";
-    toast.success(`Session ${this.isExistingSession ? "updated" : "created"}.`);
+    async saveSession() {
+      const params = {
+        recipientId: this.recipientId,
+        sessionId: this.selectedSessionId,
+        allocations: this.allocations
+      };
+
+      if (this.session) {
+        await RecipientSessions.updateSession({
+          ...this.session,
+          ...params
+        });
+      } else {
+        await RecipientSessions.createSession(params);
+      }
+
+      this.$emit("close");
+      this.allocations = [];
+      this.selectedSessionId = "";
+      toast.success(`Session ${this.isExistingSession ? "updated" : "created"}.`);
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

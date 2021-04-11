@@ -31,23 +31,25 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { IAllocation, IAllocationCategory } from "@/types";
+import { defineComponent } from "vue";
+import { IAllocationCategory } from "@/types";
 import App from "@/store/modules/app";
 import { sortBy } from "lodash";
 import AllocationQuantitesSelect from "@/components/ui/AllocationQuantitesSelect.vue";
 
-@Component({ components: { AllocationQuantitesSelect } })
-export default class AllocationQuantitiesInput extends Vue {
-  @Prop() readonly value!: IAllocation[];
-  allocationCategories: any = [];
-
-  created() {
-    const allocations = this.value;
-
-    const allocationCategories = App.categories.map(fc => {
-      const allocation = allocations.find(a => a.categoryId === fc.id);
+export default defineComponent({
+  components: {
+    AllocationQuantitesSelect
+  },
+  props: {
+    value: {
+      type: Array,
+      required: true
+    }
+  },
+  setup(props) {
+    const unsortedAllocationCategories = App.categories.map(fc => {
+      const allocation: any = props.value.find((a: any) => a.categoryId === fc.id);
 
       if (allocation) {
         return {
@@ -69,35 +71,44 @@ export default class AllocationQuantitiesInput extends Vue {
       }
     });
 
-    this.allocationCategories = sortBy(allocationCategories, ["name"]);
-  }
+    const allocationCategories = sortBy(unsortedAllocationCategories, ["name"]);
 
-  @Watch("allocationCategories", { immediate: true, deep: true })
-  onAllocationChange() {
-    const allocations = this.allocationCategories
-      .filter((allocation: IAllocationCategory) => allocation.enabled)
-      .map((allocation: IAllocationCategory) => {
-        return {
-          categoryId: allocation.categoryId,
-          quantity: allocation.quantity,
-          id: allocation.id
-        };
-      });
-    this.$emit("input", allocations);
-  }
+    // TODO how to emit/watch?
+    watch(
+      () => allocationCategories,
+      (allocationCategories: any) => {
+        const allocations = allocationCategories
+          .filter((allocation: IAllocationCategory) => allocation.enabled)
+          .map((allocation: IAllocationCategory) => {
+            return {
+              categoryId: allocation.categoryId,
+              quantity: allocation.quantity,
+              id: allocation.id
+            };
+          });
+        this.$emit("input", allocations);
+      },
+      { immediate: true, deep: true }
+    );
 
-  setCategoryQuantity(category: IAllocationCategory, quantity: string) {
-    category.quantity = quantity;
-  }
+    return {
+      allocationCategories
+    };
+  },
+  methods: {
+    setCategoryQuantity(category: IAllocationCategory, quantity: string) {
+      category.quantity = quantity;
+    },
 
-  getCategoryQuantity(category: IAllocationCategory): string {
-    if (category.quantity === "0.0") {
-      return "";
-    } else {
-      return category.quantity;
+    getCategoryQuantity(category: IAllocationCategory): string {
+      if (category.quantity === "0.0") {
+        return "";
+      } else {
+        return category.quantity;
+      }
     }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

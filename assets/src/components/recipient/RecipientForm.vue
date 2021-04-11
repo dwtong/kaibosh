@@ -23,30 +23,43 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Emit, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import AddressField from "@/components/ui/AddressField.vue";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import ValidatedDate from "@/components/ui/ValidatedDate.vue";
-import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
-import { IRecipient } from "@/types";
+import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 
-@Component({ components: { AddressField, BaseSelect, ValidatedDate, ValidatedForm, ValidatedInput } })
-export default class RecipientForm extends Vue {
-  @Prop(Object) readonly recipient!: IRecipient;
-  recipientDetails: IRecipient = { ...defaultRecipientDetails, contact: { ...defaultRecipientDetails.contact } };
-
-  @Emit()
-  submit(): IRecipient {
-    return this.recipientDetails;
-  }
-
-  async created() {
-    if (this.recipient) {
-      this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
+export default defineComponent({
+  components: {
+    AddressField,
+    BaseSelect,
+    ValidatedDate,
+    ValidatedForm,
+    ValidatedInput
+  },
+  props: {
+    recipient: {
+      type: Object,
+      required: true
+    }
+  },
+  emits: ["submit"],
+  data() {
+    return {
+      recipientDetails: { ...defaultRecipientDetails, contact: { ...defaultRecipientDetails.contact } }
+    };
+  },
+  methods: {
+    async created() {
+      if (this.recipient) {
+        this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
+      }
+    },
+    submit() {
+      this.$emit("submit", this.recipientDetails);
     }
   }
-}
+});
 </script>

@@ -14,27 +14,35 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
 import { formatDate } from "@/helpers/date";
 import { sortBy } from "lodash";
 
-@Component({ filters: { formatDate } })
-export default class HoldTr extends Vue {
-  @Prop() readonly holds!: any[];
-  @Prop() readonly recipientId!: string;
+export default defineComponent({
+  props: {
+    holds: {
+      type: Array,
+      required: true
+    },
+    recipientId: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    sortedHolds(): any {
+      return sortBy(this.holds, ["startsAt"]);
+    }
+  },
+  methods: {
+    formatDate(date: any) {
+      return formatDate(date);
+    },
 
-  formatDate(date: any) {
-    return formatDate(date);
+    removeHold(holdId: string) {
+      RecipientSessions.deleteHold({ recipientId: this.recipientId, holdId });
+    }
   }
-
-  get sortedHolds() {
-    return sortBy(this.holds, ["startsAt"]);
-  }
-
-  removeHold(holdId: string) {
-    RecipientSessions.deleteHold({ recipientId: this.recipientId, holdId });
-  }
-}
+});
 </script>

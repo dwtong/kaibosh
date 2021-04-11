@@ -18,33 +18,35 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import InfoField from "@/components/ui/InfoField.vue";
-import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import { IContact } from "@/types";
 
-@Component({ components: { InfoField, RecipientStatusTag } })
-export default class RecipientContactDetails extends Vue {
-  get contact(): IContact {
-    return ActiveRecipient.details?.contact;
-  }
+export default defineComponent({
+  components: {
+    InfoField
+  },
+  computed: {
+    contact(): IContact {
+      return ActiveRecipient.details?.contact;
+    },
 
-  get name() {
-    return this.contact?.name;
-  }
+    name(): string {
+      return this.contact?.name ?? "";
+    },
 
-  get email() {
-    return this.contact?.email;
-  }
+    email(): string {
+      return this.contact?.email ?? "";
+    },
 
-  get phoneMobile() {
-    return this.contact?.phoneMobile;
-  }
+    phoneMobile(): string {
+      return this.contact?.phoneMobile ?? "";
+    },
 
-  get phoneLandline() {
-    return this.contact?.phoneLandline;
+    phoneLandline(): string {
+      return this.contact?.phoneLandline ?? "";
+    }
   }
-}
+});
 </script>

@@ -17,15 +17,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import OnboardingCheckbox from "@/components/ui/OnboardingCheckbox.vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { OnboardingCheckbox } })
-export default class RecipientOnboardingChecks extends Vue {
-  get recipient() {
-    return ActiveRecipient.details;
+export default defineComponent({
+  components: {
+    OnboardingCheckbox
+  },
+  computed: {
+    recipient() {
+      return ActiveRecipient.details;
+    }
   }
-}
+});
 </script>

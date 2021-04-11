@@ -42,38 +42,53 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import InfoField from "@/components/ui/InfoField.vue";
-import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
+import { defineComponent } from "vue";
 import HoldModal from "@/components/recipient/HoldModal.vue";
 import SessionCard from "@/components/recipient/SessionCard.vue";
 import SessionModal from "@/components/recipient/SessionModal.vue";
 import RecipientSessions from "@/store/modules/recipient-sessions";
-import { IRecipientSession } from "@/types";
 import { sortBy } from "lodash";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import { dayIndexFromString } from "@/helpers/date";
 
-@Component({ components: { InfoField, HoldModal, RecipientStatusTag, SessionCard, SessionModal } })
-export default class RecipientSortingSessions extends Vue {
-  selectedSession: IRecipientSession | null = null;
-  id = ActiveRecipient.details?.id ?? null;
-  baseId = ActiveRecipient.details?.baseId;
-  status = ActiveRecipient.status;
-  loading = true;
+export default defineComponent({
+  components: {
+    HoldModal,
+    SessionCard,
+    SessionModal
+  },
+  props: {},
+  async setup() {
+    {
+      const id = ActiveRecipient.details?.id ?? null;
+      const baseId = ActiveRecipient.details?.baseId;
 
-  async created() {
-    if (this.id && this.baseId) {
-      await RecipientSessions.fetchSessions(this.id);
+      if (id && baseId) {
+        await RecipientSessions.fetchSessions(id);
+      }
+
+      // TODO how to handle loading
+      // this.loading = false;
+
+      return {
+        id,
+        baseId
+      };
     }
-    this.loading = false;
+  },
+  data() {
+    return {
+      selectedSession: null,
+      status: ActiveRecipient.status,
+      loading: true
+    };
+  },
+  computed: {
+    recipientSessions() {
+      return sortBy(RecipientSessions.sessions, (s: any) => `${dayIndexFromString(s.day)}-${s.time}`);
+    }
   }
-
-  get recipientSessions() {
-    return sortBy(RecipientSessions.sessions, (s: any) => `${dayIndexFromString(s.day)}-${s.time}`);
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

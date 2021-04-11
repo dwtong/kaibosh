@@ -49,9 +49,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import { IRecipientSession } from "@/types";
+import { defineComponent } from "vue";
 import HoldsList from "@/components/recipient/HoldsList.vue";
 import AllocationList from "@/components/recipient/AllocationList.vue";
 import HoldStatusTag from "@/components/ui/HoldStatusTag.vue";
@@ -61,44 +59,69 @@ import toast from "@/helpers/toast";
 import { formatTime } from "@/helpers/date";
 import { capitalize } from "lodash";
 
-@Component({
-  components: { HoldsList, AllocationList, HoldStatusTag, SessionModal },
-  filters: { capitalize, formatTime }
-})
-export default class SessionCard extends Vue {
-  @Prop({ required: true }) readonly recipientSession!: IRecipientSession;
-  @Prop({ required: true }) readonly recipientSessions!: IRecipientSession[];
-  @Prop() readonly baseId!: string;
-  @Prop() readonly recipientId!: string;
-  isOpen = false;
+export default defineComponent({
+  components: {
+    HoldsList,
+    AllocationList,
+    HoldStatusTag,
+    SessionModal
+  },
+  props: {
+    recipientSession: {
+      type: Object,
+      required: true
+    },
+    recipientSessions: {
+      type: Array,
+      required: true
+    },
+    baseId: {
+      type: String,
+      required: true
+    },
+    recipientId: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isOpen: false
+    };
+  },
+  computed: {
+    sessionDay(): string {
+      const day = this.recipientSession.day;
+      return day ? capitalize(day) : "";
+    },
 
-  get sessionDay() {
-    const day = this.recipientSession.day;
-    return day ? capitalize(day) : "";
-  }
+    sessionTime(): string {
+      const time = this.recipientSession.time;
+      return time ? formatTime(time) : "";
+    }
+  },
+  methods: {
+    toggleIsOpen() {
+      this.isOpen = !this.isOpen;
+    },
 
-  get sessionTime() {
-    const time = this.recipientSession.time;
-    return time ? formatTime(time) : "";
-  }
-
-  toggleIsOpen() {
-    this.isOpen = !this.isOpen;
-  }
-
-  confirmSessionDeletion() {
-    this.$buefy.dialog.confirm({
-      message: "Are you sure you wish to remove this session?",
-      type: "is-danger",
-      onConfirm: async () => {
-        if (this.recipientSession.id) {
-          await RecipientSessions.deleteSession({ recipientId: this.recipientId, sessionId: this.recipientSession.id });
-          toast.success("Deleted session.");
+    confirmSessionDeletion() {
+      this.$buefy.dialog.confirm({
+        message: "Are you sure you wish to remove this session?",
+        type: "is-danger",
+        onConfirm: async () => {
+          if (this.recipientSession.id) {
+            await RecipientSessions.deleteSession({
+              recipientId: this.recipientId,
+              sessionId: this.recipientSession.id
+            });
+            toast.success("Deleted session.");
+          }
         }
-      }
-    });
+      });
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

@@ -11,29 +11,39 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import { IStatusLabelGroup } from "@/types";
 
-@Component
-export default class RecipientStatusTag extends Vue {
-  @Prop({ default: "" }) readonly status!: string;
-  @Prop({ default: "is-small" }) readonly size!: string;
-  @Prop({ default: false }) readonly withLabel!: boolean;
+export default defineComponent({
+  props: {
+    status: {
+      type: String,
+      default: ""
+    },
+    size: {
+      type: String,
+      default: "is-small"
+    },
+    withLabel: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    label(): string {
+      return this.status?.replace("_", " ");
+    },
 
-  get label() {
-    return this.status?.replace("_", " ");
+    type(): string {
+      const types: IStatusLabelGroup = {
+        on_hold: "is-warning",
+        active: "is-primary",
+        archived: "is-gray-darker",
+        pending: "is-info"
+      };
+
+      return this.status ? types[this.status] : "is-gray-darker";
+    }
   }
-
-  get type(): string {
-    const types: IStatusLabelGroup = {
-      on_hold: "is-warning",
-      active: "is-primary",
-      archived: "is-gray-darker",
-      pending: "is-info"
-    };
-
-    return this.status ? types[this.status] : "is-gray-darker";
-  }
-}
+});
 </script>

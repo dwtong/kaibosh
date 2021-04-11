@@ -22,36 +22,43 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import InfoField from "@/components/ui/InfoField.vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import App from "@/store/modules/app";
 import { formatDate } from "@/helpers/date";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { InfoField, RecipientStatusTag } })
-export default class RecipientOrganisationDetails extends Vue {
-  get status() {
-    return ActiveRecipient?.status;
-  }
-  get name() {
-    return ActiveRecipient.details?.name;
-  }
-  get description() {
-    return ActiveRecipient.details?.description;
-  }
-  get address() {
-    return ActiveRecipient.details?.physicalAddress;
-  }
+export default defineComponent({
+  components: {
+    InfoField,
+    RecipientStatusTag
+  },
+  computed: {
+    status() {
+      return ActiveRecipient?.status;
+    },
 
-  get baseName() {
-    return ActiveRecipient.details?.baseId ? App.baseNameById(ActiveRecipient.details.baseId) : "";
-  }
+    name() {
+      return ActiveRecipient.details?.name;
+    },
 
-  get startDate() {
-    const date = ActiveRecipient.details?.startedAt;
-    return date ? formatDate(new Date(date)) : null;
+    description() {
+      return ActiveRecipient.details?.description;
+    },
+
+    address() {
+      return ActiveRecipient.details?.physicalAddress;
+    },
+
+    baseName() {
+      return ActiveRecipient.details?.baseId ? App.baseNameById(ActiveRecipient.details.baseId) : "";
+    },
+
+    startDate() {
+      const date = ActiveRecipient.details?.startedAt;
+      return date ? formatDate(new Date(date)) : null;
+    }
   }
-}
+});
 </script>
