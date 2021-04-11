@@ -5,15 +5,19 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 
-@Component
-export default class PrintButton extends Vue {
-  @Prop({ default: "Print" }) readonly label!: string;
-
-  print() {
-    window.print();
+export default defineComponent({
+  props: {
+    label: {
+      type: String,
+      default: "Print"
+    }
+  },
+  methods: {
+    print() {
+      window.print();
+    }
   }
-}
+});
 </script>

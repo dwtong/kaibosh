@@ -1,7 +1,14 @@
 <template>
   <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules">
     <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors.length > 0 ? errors : help">
-      <b-select :value="value" :name="name" :placeholder="placeholder" expanded :disabled="disabled" @input="input">
+      <b-select
+        :value="value"
+        :name="name"
+        :placeholder="placeholder"
+        expanded
+        :disabled="disabled"
+        @input="$emit('input', $event)"
+      >
         <slot />
       </b-select>
     </b-field>
@@ -9,22 +16,39 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Emit, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import { ValidationProvider } from "vee-validate";
 
-@Component({ components: { ValidationProvider } })
-export default class ValidatedSelect extends Vue {
-  @Prop() readonly name!: string;
-  @Prop() readonly rules!: Record<string, any>;
-  @Prop() readonly value!: string;
-  @Prop({ default: false }) readonly disabled!: boolean;
-  @Prop({ default: "" }) readonly placeholder!: string;
-  @Prop({ default: "" }) readonly help!: string;
-
-  @Emit()
-  input(event: Event) {
-    return event;
-  }
-}
+export default defineComponent({
+  components: {
+    ValidationProvider
+  },
+  props: {
+    name: {
+      type: String,
+      required: true
+    },
+    rules: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    help: {
+      type: String,
+      default: ""
+    }
+  },
+  emits: ["input"]
+});
 </script>

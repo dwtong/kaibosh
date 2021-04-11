@@ -14,30 +14,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import { ValidationProvider } from "vee-validate";
-import Vue from "vue";
 
-@Component({ components: { ValidationProvider } })
-export default class ValidatedDate extends Vue {
-  @Prop({ default: "" }) readonly value!: Date | string;
-  @Prop({ default: false }) readonly disabled!: boolean;
-  @Prop(Object) readonly rules!: any;
+export default defineComponent({
+  components: {
+    ValidationProvider
+  },
+  props: {
+    value: {
+      type: String,
+      default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    rules: {
+      type: Object,
+      required: true
+    }
+  },
+  emits: ["input"],
+  computed: {
+    dateValue(): Date | null {
+      if (!this.value || this.value === "") {
+        return null;
+      } else {
+        return new Date(this.value);
+      }
+    },
 
-  get dateValue() {
-    if (!this.value || this.value === "") {
-      return null;
-    } else {
-      return new Date(this.value);
+    label(): string {
+      return this.name.replace(/-/g, " ");
+    },
+
+    name(): any {
+      return this.$attrs.name || this.$attrs.label;
     }
   }
-
-  get label() {
-    return this.name.replace(/-/g, " ");
-  }
-
-  get name() {
-    return this.$attrs.name || this.$attrs.label;
-  }
-}
+});
 </script>

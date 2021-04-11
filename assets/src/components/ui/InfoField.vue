@@ -10,11 +10,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-
-@Component
-export default class InfoField extends Vue {}
+import { defineComponent } from "vue";
+export default defineComponent({});
 </script>
 
 <style lang="scss" scoped>

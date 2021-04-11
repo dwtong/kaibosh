@@ -5,23 +5,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import Checkbox from "@/components/ui/Checkbox.vue";
-import Vue from "vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 
-@Component({ components: { Checkbox } })
-export default class OnboardingCheckbox extends Vue {
-  @Prop() readonly id!: string;
-  @Prop() readonly name!: string;
-  @Prop() readonly value!: boolean;
-  @Prop({ default: "" }) readonly label!: string;
-
-  async toggleValue() {
-    await ActiveRecipient.updateRecipient({
-      id: this.id,
-      [this.name]: !this.value
-    });
+export default defineComponent({
+  components: {
+    Checkbox
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: Boolean,
+      required: true
+    },
+    label: {
+      type: String,
+      default: ""
+    }
+  },
+  methods: {
+    async toggleValue() {
+      await ActiveRecipient.updateRecipient({
+        id: this.id,
+        [this.name]: !this.value
+      });
+    }
   }
-}
+});
 </script>

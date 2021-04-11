@@ -26,33 +26,46 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import SubmitButton from "@/components/ui/SubmitButton.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 
-@Component({ components: { SubmitButton, ValidatedForm } })
-export default class ModalForm extends Vue {
-  @Prop() readonly loading!: string;
-  @Prop({ default: false }) readonly value!: boolean;
+export default defineComponent({
+  components: {
+    SubmitButton,
+    ValidatedForm
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
+    },
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ["input", "submit"],
+  computed: {
+    isOpen(): boolean {
+      return this.value;
+    }
+  },
+  methods: {
+    close() {
+      this.$emit("input", false);
+    },
 
-  get isOpen() {
-    return this.value;
-  }
+    open() {
+      this.$emit("input", true);
+    },
 
-  close() {
-    this.$emit("input", false);
+    handleSubmit() {
+      this.$emit("submit");
+      this.close();
+    }
   }
-
-  open() {
-    this.$emit("input", true);
-  }
-
-  handleSubmit() {
-    this.$emit("submit");
-    this.close();
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

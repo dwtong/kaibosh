@@ -6,7 +6,7 @@
     :label="label"
     placeholder="Select a base..."
     :help="help"
-    @input="input"
+    @input="$emit('input', $event)"
   >
     <option v-if="all" :value="allValue">All</option>
     <option v-for="base in list" :key="base.id" :value="base.id">{{ base.name }}</option>
@@ -14,32 +14,49 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop } from "vue-property-decorator";
-import Vue from "vue";
+import { defineComponent } from "vue";
 import App from "@/store/modules/app";
 import ValidatedSelect from "@/components/ui/ValidatedSelect.vue";
 
-@Component({ components: { ValidatedSelect } })
-export default class BaseSelect extends Vue {
-  @Prop({ default: false }) readonly all!: boolean;
-  @Prop({ default: false }) readonly required!: boolean;
-  @Prop({ default: "" }) readonly label!: string;
-  @Prop({ default: "" }) readonly help!: string;
-  @Prop() readonly value!: string;
-
-  allValue = 0;
-
-  async created() {
-    await App.fetchBases();
+export default defineComponent({
+  components: {
+    ValidatedSelect
+  },
+  props: {
+    all: {
+      type: Boolean,
+      default: false
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      default: ""
+    },
+    help: {
+      type: String,
+      default: ""
+    },
+    value: {
+      type: String,
+      required: true
+    }
+  },
+  emits: ["input"],
+  setup() {
+    App.fetchBases();
+  },
+  data() {
+    return {
+      allValue: 0
+    };
+  },
+  computed: {
+    list() {
+      return App.bases;
+    }
   }
-
-  get list() {
-    return App.bases;
-  }
-
-  @Emit()
-  input(event: Event) {
-    return event;
-  }
-}
+});
 </script>

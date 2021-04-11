@@ -5,12 +5,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
+import { defineComponent } from "vue";
 
-@Component
-export default class Checkbox extends Vue {
-  @Prop() readonly value!: boolean;
-  @Prop({ default: "" }) readonly label!: string;
-}
+export default defineComponent({
+  props: {
+    value: {
+      type: Boolean,
+      required: true
+    },
+    label: {
+      type: String,
+      default: ""
+    }
+  },
+  emits: ["input"]
+});
 </script>

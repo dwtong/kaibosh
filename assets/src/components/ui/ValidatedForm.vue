@@ -7,15 +7,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Emit } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import { ValidationObserver } from "vee-validate";
 
-@Component({ components: { ValidationObserver } })
-export default class ValidatedForm extends Vue {
-  @Emit()
-  submit(event: Event) {
-    return event;
+export default defineComponent({
+  components: {
+    ValidationObserver
+  },
+  emits: ["input"],
+  methods: {
+    submit(event: Event) {
+      return this.$emit("input", event);
+    }
   }
-}
+});
 </script>

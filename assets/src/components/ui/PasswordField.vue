@@ -5,7 +5,7 @@
       :value="value"
       type="password"
       :rules="{ min: 8, required: true }"
-      @input="input"
+      @input="$emit('input', $event)"
     />
     <ValidatedInput
       v-if="withConfirmation"
@@ -18,19 +18,28 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Emit, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 
-@Component({ components: { ValidatedInput } })
-export default class PasswordField extends Vue {
-  @Prop({ default: false }) readonly withConfirmation!: boolean;
-  @Prop() readonly value!: string;
-  confirmationValue = "";
-
-  @Emit()
-  input(event: Event) {
-    return event;
+export default defineComponent({
+  components: {
+    ValidatedInput
+  },
+  props: {
+    withConfirmation: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: String,
+      required: true
+    }
+  },
+  emits: ["input"],
+  data() {
+    return {
+      confirmationValue: ""
+    };
   }
-}
+});
 </script>

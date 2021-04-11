@@ -3,14 +3,14 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import App from "@/store/modules/app";
 
-@Component
-export default class GlobalLoader extends Vue {
-  get loading() {
-    return App.loading;
+export default defineComponent({
+  computed: {
+    loading() {
+      return App.loading;
+    }
   }
-}
+});
 </script>

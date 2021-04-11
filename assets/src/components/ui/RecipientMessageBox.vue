@@ -22,29 +22,34 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
+import { defineComponent } from "vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import App from "@/store/modules/app";
 
-@Component
-export default class RecipientMessageBox extends Vue {
-  @Prop({ default: "" }) readonly status!: string;
+export default defineComponent({
+  props: {
+    status: {
+      type: String,
+      default: ""
+    }
+  },
+  computed: {
+    name() {
+      return ActiveRecipient.details.name;
+    }
+  },
+  methods: {
+    async reactivate() {
+      if (ActiveRecipient.details.id) {
+        App.enableLoading();
+        await ActiveRecipient.updateRecipient({
+          id: ActiveRecipient.details.id,
+          archivedAt: null
+        });
 
-  get name() {
-    return ActiveRecipient.details.name;
-  }
-
-  async reactivate() {
-    if (ActiveRecipient.details.id) {
-      App.enableLoading();
-      await ActiveRecipient.updateRecipient({
-        id: ActiveRecipient.details.id,
-        archivedAt: null
-      });
-
-      App.disableLoading();
+        App.disableLoading();
+      }
     }
   }
-}
+});
 </script>

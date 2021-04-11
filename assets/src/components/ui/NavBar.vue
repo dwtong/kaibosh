@@ -36,21 +36,21 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import AllRecipients from "@/store/modules/all-recipients";
 import { UserModule } from "@/store/modules/user";
 
-@Component
-export default class NavBar extends Vue {
-  resetRecipientNameFilter() {
-    AllRecipients.updateNameFilter("");
-  }
+export default defineComponent({
+  methods: {
+    resetRecipientNameFilter() {
+      AllRecipients.updateNameFilter("");
+    },
 
-  async logout() {
-    await UserModule.logout();
+    async logout() {
+      await UserModule.logout();
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

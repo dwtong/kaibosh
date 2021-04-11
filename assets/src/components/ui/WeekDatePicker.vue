@@ -20,29 +20,41 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import vClickOutside from "v-click-outside";
 import { today } from "@/helpers/date";
 
-@Component({ directives: { clickOutside: vClickOutside.directive } })
-export default class WeekDatePicker extends Vue {
-  @Prop(Date) readonly value!: Date;
-  isVisible = false;
-  today = today;
+export default defineComponent({
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
+  props: {
+    value: {
+      type: Date,
+      required: true
+    }
+  },
+  emits: ["input"],
+  data() {
+    return {
+      isVisible: false,
+      today: today
+    };
+  },
+  methods: {
+    toggleDatePicker() {
+      this.isVisible = !this.isVisible;
+    },
 
-  toggleDatePicker() {
-    this.isVisible = !this.isVisible;
-  }
+    onClickOutside() {
+      this.isVisible = false;
+    },
 
-  onClickOutside() {
-    this.isVisible = false;
+    setDate(value: Date) {
+      this.$emit("input", value);
+    }
   }
-
-  setDate(value: Date) {
-    this.$emit("input", value);
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>
