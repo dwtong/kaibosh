@@ -7,36 +7,45 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import PasswordField from "@/components/ui/PasswordField.vue";
 import SubmitButton from "@/components/ui/SubmitButton.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
+import Router from "@/router";
 
-@Component({ components: { PasswordField, SubmitButton, ValidatedForm } })
-export default class PasswordResetForm extends Vue {
-  password = "";
-  updatingPassword = false;
+export default defineComponent({
+  components: {
+    PasswordField,
+    SubmitButton,
+    ValidatedForm
+  },
+  data() {
+    return {
+      password: "",
+      updatingPassword: false
+    };
+  },
+  methods: {
+    async updatePassword() {
+      this.updatingPassword = true;
 
-  async updatePassword() {
-    this.updatingPassword = true;
+      const token = Router.currentRoute.query?.password_reset_token?.toString() ?? "";
+      await UserModule.updatePassword({ password: this.password, token });
 
-    const token = this.$route.query?.password_reset_token?.toString() ?? "";
-    await UserModule.updatePassword({ password: this.password, token });
+      if (UserModule.passwordUpdated) {
+        toast.success("Password updated.");
 
-    if (UserModule.passwordUpdated) {
-      toast.success("Password updated.");
-
-      if (!UserModule.isAuthenticated) {
-        this.$router.push("/login");
+        if (!UserModule.isAuthenticated) {
+          Router.push("/login");
+        }
+      } else {
+        toast.error("Failed to update password.");
       }
-    } else {
-      toast.error("Failed to update password.");
-    }
 
-    this.updatingPassword = false;
+      this.updatingPassword = false;
+    }
   }
-}
+});
 </script>
