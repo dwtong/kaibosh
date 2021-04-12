@@ -19,20 +19,30 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import RecipientStatusTag from "@/components/recipient/RecipientStatusTag.vue";
 import { IRecipientListItem } from "@/types";
 
-@Component({ components: { RecipientStatusTag } })
-export default class RecipientsList extends Vue {
-  @Prop({ default: false }) readonly loading!: boolean;
-  @Prop({ default: [] }) readonly recipients!: IRecipientListItem[];
-
-  viewRecipient(recipient: IRecipientListItem) {
-    this.$router.push(`/recipients/${recipient.id}`);
+export default defineComponent({
+  components: {
+    RecipientStatusTag
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    recipients: {
+      type: Array,
+      default: () => []
+    }
+  },
+  methods: {
+    viewRecipient(recipient: IRecipientListItem) {
+      this.$router.push(`/recipients/${recipient.id}`);
+    }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

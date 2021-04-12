@@ -7,27 +7,35 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import RecipientForm from "@/components/recipient/RecipientForm.vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
 import LoadRecipient from "@/mixins/load-recipient";
 
-@Component({ components: { RecipientForm }, mixins: [LoadRecipient] })
-export default class UpdateRecipient extends Vue {
-  @Prop(String) readonly id!: string;
-  recipient: IRecipient | null = null;
-
-  async created() {
-    this.recipient = ActiveRecipient.details;
+export default defineComponent({
+  components: {
+    RecipientForm
+  },
+  mixins: [LoadRecipient],
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      recipient: ActiveRecipient.details
+    };
+  },
+  methods: {
+    async updateRecipient(params: IRecipient) {
+      await ActiveRecipient.updateRecipient(params);
+      this.$router.push(`/recipients/${params.id}`);
+      toast.success("Recipient updated.");
+    }
   }
-
-  async updateRecipient(params: IRecipient) {
-    await ActiveRecipient.updateRecipient(params);
-    this.$router.push(`/recipients/${params.id}`);
-    toast.success("Recipient updated.");
-  }
-}
+});
 </script>

@@ -75,34 +75,42 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
-import { IRecipient } from "@/types";
+import { defineComponent } from "vue";
 import AddressField from "@/components/ui/AddressField.vue";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
-import ValidatedDate from "@/components/ui/ValidatedDate.vue";
 import ValidatedInput from "@/components/ui/ValidatedInput.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { defaultRecipientDetails } from "@/store/modules/active-recipient";
 import SignupService from "@/services/signup-service";
 
-@Component({ components: { AddressField, BaseSelect, ValidatedDate, ValidatedForm, ValidatedInput } })
-export default class CreateRecipient extends Vue {
-  success = false;
-  recipientDetails: IRecipient = {
-    ...defaultRecipientDetails,
-    contact: { ...defaultRecipientDetails.contact }
-  };
-
-  async createRecipient() {
-    try {
-      await SignupService.create(this.recipientDetails);
-      this.success = true;
-    } catch (e) {
-      this.success = false;
+export default defineComponent({
+  components: {
+    AddressField,
+    BaseSelect,
+    ValidatedInput,
+    ValidatedForm
+  },
+  props: {},
+  data() {
+    return {
+      success: false,
+      recipientDetails: {
+        ...defaultRecipientDetails,
+        contact: { ...defaultRecipientDetails.contact }
+      }
+    };
+  },
+  methods: {
+    async createRecipient() {
+      try {
+        await SignupService.create(this.recipientDetails);
+        this.success = true;
+      } catch (e) {
+        this.success = false;
+      }
     }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

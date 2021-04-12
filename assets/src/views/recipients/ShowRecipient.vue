@@ -36,8 +36,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import RecipientMessageBox from "@/components/ui/RecipientMessageBox.vue";
 import RecipientOrganisationDetails from "@/components/recipient/RecipientOrganisationDetails.vue";
 import RecipientOnboardingChecks from "@/components/recipient/RecipientOnboardingChecks.vue";
@@ -48,7 +47,7 @@ import App from "@/store/modules/app";
 import Sessions from "@/store/modules/sessions";
 import LoadRecipient from "@/mixins/load-recipient";
 
-@Component({
+export default defineComponent({
   components: {
     RecipientMessageBox,
     RecipientOrganisationDetails,
@@ -56,35 +55,34 @@ import LoadRecipient from "@/mixins/load-recipient";
     RecipientContactDetails,
     RecipientSortingSessions
   },
-  mixins: [LoadRecipient]
-})
-export default class ShowRecipient extends Vue {
-  @Prop(String) readonly id!: string;
+  mixins: [LoadRecipient],
+  props: {},
+  setup() {
+    Promise.all([App.fetchCategories(), Sessions.fetchList(this.baseId)]);
+  },
+  computed: {
+    baseId() {
+      return ActiveRecipient.details?.baseId ?? "0";
+    },
 
-  get baseId() {
-    return ActiveRecipient.details?.baseId ?? "0";
-  }
+    status() {
+      return ActiveRecipient.status;
+    },
 
-  get status() {
-    return ActiveRecipient.status;
-  }
-
-  get name() {
-    return ActiveRecipient.details?.name;
-  }
-
-  async created() {
-    await Promise.all([App.fetchCategories(), Sessions.fetchList(this.baseId)]);
-  }
-
-  async archiveRecipient() {
-    if (ActiveRecipient.details.id) {
-      App.enableLoading();
-      await ActiveRecipient.archiveRecipient(ActiveRecipient.details.id);
-      App.disableLoading();
+    name() {
+      return ActiveRecipient.details?.name;
+    }
+  },
+  methods: {
+    async archiveRecipient() {
+      if (ActiveRecipient.details.id) {
+        App.enableLoading();
+        await ActiveRecipient.archiveRecipient(ActiveRecipient.details.id);
+        App.disableLoading();
+      }
     }
   }
-}
+});
 </script>
 
 <style lang="scss" scoped>

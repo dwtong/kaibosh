@@ -24,23 +24,31 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import RecipientsList from "@/components/recipients/RecipientsList.vue";
 import RecipientsFilterPanel from "@/components/recipients/RecipientsFilterPanel.vue";
 import AllRecipients from "@/store/modules/all-recipients";
 
-@Component({ components: { RecipientsList, RecipientsFilterPanel } })
-export default class ListRecipients extends Vue {
-  loading = AllRecipients.filteredList.length === 0;
-
-  async created() {
-    await AllRecipients.fetchRecipients();
-    this.loading = false;
+export default defineComponent({
+  components: {
+    RecipientsList,
+    RecipientsFilterPanel
+  },
+  data() {
+    return {
+      loading: AllRecipients.filteredList.length === 0
+    };
+  },
+  computed: {
+    get recipientsList(): any {
+      return AllRecipients.filteredList;
+    }
+  },
+  methods: {
+    async created() {
+      await AllRecipients.fetchRecipients();
+      this.loading = false;
+    }
   }
-
-  get recipientsList() {
-    return AllRecipients.filteredList;
-  }
-}
+});
 </script>

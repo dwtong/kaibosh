@@ -17,23 +17,23 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import GlobalLoader from "@/components/ui/GlobalLoader.vue";
 import NavBar from "@/components/ui/NavBar.vue";
 import { UserModule } from "@/store/modules/user";
 
-@Component({ components: { GlobalLoader, NavBar } })
-export default class App extends Vue {
-  get isAuthenticated() {
-    return UserModule.isAuthenticated;
+export default defineComponent({
+  components: {
+    GlobalLoader,
+    NavBar
+  },
+  computed: {
+    showNav(): boolean {
+      const isPublicRoute = this.$route.matched.every(r => r.meta.public);
+      return !isPublicRoute && UserModule.isAuthenticated;
+    }
   }
-
-  get showNav() {
-    const isPublicRoute = this.$route.matched.every(r => r.meta.public);
-    return !isPublicRoute && this.isAuthenticated;
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

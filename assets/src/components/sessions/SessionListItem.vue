@@ -11,24 +11,34 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import SessionPlans from "@/store/modules/session-plans";
-import { Component, Prop } from "vue-property-decorator";
 import { dateOnDayOfWeek, formatDate } from "@/helpers/date";
 import SessionRecipientList from "@/components/sessions/SessionRecipientList.vue";
 
-@Component({ components: { SessionRecipientList }, filters: { formatDate } })
-export default class ListSessions extends Vue {
-  @Prop({ required: true }) readonly weekOfDate!: Date;
-  @Prop({ required: true }) readonly day!: string;
+export default defineComponent({
+  components: {
+    SessionRecipientList
+  },
+  props: {
+    weekOfDate: {
+      type: Date,
+      required: true
+    },
+    day: {
+      type: String,
+      required: true
+    }
+  },
+  computed: {
+    sessionDate(): string {
+      const date = dateOnDayOfWeek(this.weekOfDate, this.day);
+      return date ? formatDate(date, "EEEE do MMMM yyyy") : "";
+    },
 
-  get sessionDate() {
-    const date = dateOnDayOfWeek(this.weekOfDate, this.day);
-    return date ? formatDate(date, "EEEE do MMMM yyyy") : "";
+    plans(): any {
+      return SessionPlans.plansForDay(this.day);
+    }
   }
-
-  get plans() {
-    return SessionPlans.plansForDay(this.day);
-  }
-}
+});
 </script>

@@ -14,18 +14,19 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import AllRecipients from "@/store/modules/all-recipients";
 
-@Component
-export default class RecipientsNameFilter extends Vue {
-  get filteredName(): string {
-    return AllRecipients.filteredName;
+export default defineComponent({
+  computed: {
+    filteredName(): string {
+      return AllRecipients.filteredName;
+    }
+  },
+  methods: {
+    updateNameFilter(name: string): void {
+      AllRecipients.updateNameFilter(name);
+    }
   }
-
-  updateNameFilter(name: string): void {
-    AllRecipients.updateNameFilter(name);
-  }
-}
+});
 </script>

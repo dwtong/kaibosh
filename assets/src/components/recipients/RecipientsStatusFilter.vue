@@ -9,18 +9,20 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import AllRecipients from "@/store/modules/all-recipients";
 import { IStatus } from "@/types";
 
-@Component
-export default class RecipientsBaseFilter extends Vue {
-  get filteredStatus(): IStatus[] {
-    return AllRecipients.filteredStatus;
+export default defineComponent({
+  computed: {
+    filteredStatus(): IStatus[] {
+      return AllRecipients.filteredStatus;
+    }
+  },
+  methods: {
+    toggleStatusFilter(name: string): void {
+      AllRecipients.toggleStatusFilter(name);
+    }
   }
-  toggleStatusFilter(name: string) {
-    AllRecipients.toggleStatusFilter(name);
-  }
-}
+});
 </script>

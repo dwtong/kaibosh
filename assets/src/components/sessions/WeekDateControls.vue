@@ -27,27 +27,38 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import Router from "@/router";
 import { formatDate, subWeeks, addWeeks } from "@/helpers/date";
 import WeekDatePicker from "@/components/ui/WeekDatePicker.vue";
 
-@Component({ components: { WeekDatePicker } })
-export default class WeekDateControls extends Vue {
-  @Prop(Date) readonly date!: Date;
+export default defineComponent({
+  components: {
+    WeekDatePicker
+  },
+  props: {
+    date: {
+      type: Date,
+      required: true
+    }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    previousWeek(): Date {
+      return subWeeks(this.date, 1);
+    },
 
-  goToDate(datetime: Date) {
-    const date = formatDate(datetime, "yyyy-MM-dd");
-    Router.push({ path: "/sessions/week", query: { date } });
+    nextWeek(): Date {
+      return addWeeks(this.date, 1);
+    }
+  },
+  methods: {
+    goToDate(datetime: Date) {
+      const date = formatDate(datetime, "yyyy-MM-dd");
+      Router.push({ path: "/sessions/week", query: { date } });
+    }
   }
-
-  get previousWeek() {
-    return subWeeks(this.date, 1);
-  }
-
-  get nextWeek() {
-    return addWeeks(this.date, 1);
-  }
-}
+});
 </script>

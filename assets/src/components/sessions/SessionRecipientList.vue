@@ -19,30 +19,40 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import { sortBy } from "lodash";
 import { formatDate, formatTime } from "@/helpers/date";
-import { ISessionPlan } from "@/types";
 
-@Component({ components: { SessionRecipient }, filters: { formatTime } })
-export default class SessionRecipientList extends Vue {
-  @Prop() readonly plan!: ISessionPlan;
-
-  sortRecipients(list: any) {
-    return sortBy(list, ["name"]);
+export default defineComponent({
+  components: {
+    SessionRecipient
+  },
+  props: {
+    plan: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    date(): string {
+      const sessionDate = new Date(this.plan.session.date);
+      return formatDate(sessionDate, "yyyy-MM-dd");
+    },
+    sessionTime(): string {
+      const time = this.plan.session.time;
+      return time ? formatTime(time) : "";
+    }
+  },
+  methods: {
+    sortRecipients(list: any) {
+      return sortBy(list, ["name"]);
+    }
   }
-
-  get date() {
-    const sessionDate = new Date(this.plan.session.date);
-    return formatDate(sessionDate, "yyyy-MM-dd");
-  }
-  get sessionTime() {
-    const time = this.plan.session.time;
-    return time ? formatTime(time) : "";
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

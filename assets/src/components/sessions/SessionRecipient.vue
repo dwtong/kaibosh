@@ -20,27 +20,38 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import AllocationHelper from "@/helpers/allocations";
 
-@Component
-export default class SessionRecipient extends Vue {
-  @Prop(String) readonly quantity!: string;
-  @Prop(Object) readonly recipient!: any;
+export default defineComponent({
+  props: {
+    quantity: {
+      type: String,
+      required: true
+    },
+    recipient: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    quantityLabel(): string {
+      return AllocationHelper.quantityLabel(this.quantity);
+    }
+  },
+  methods: {
+    recipientOnHold(recipient: any) {
+      return recipient.status === "on_hold";
+    },
 
-  recipientOnHold(recipient: any) {
-    return recipient.status === "on_hold";
+    viewRecipient() {
+      this.$router.push(`/recipients/${this.recipient.id}`);
+    }
   }
-
-  viewRecipient() {
-    this.$router.push(`/recipients/${this.recipient.id}`);
-  }
-
-  get quantityLabel() {
-    return AllocationHelper.quantityLabel(this.quantity);
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>
