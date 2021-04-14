@@ -26,39 +26,51 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import SessionPlans from "@/store/modules/session-plans";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
 import Router from "@/router";
 
-@Component({ components: { PrintButton }, filters: { formatDate } })
-export default class GenerateDescriptionsButton extends Vue {
-  @Prop(String) readonly id!: string;
-  includeOnHold = false;
+export default defineComponent({
+  components: {
+    PrintButton
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      includeOnHold: false
+    };
+  },
+  computed: {
+    recipients() {
+      if (this.includeOnHold) {
+        return SessionPlans.orderedRecipients;
+      } else {
+        return SessionPlans.orderedRecipients.filter(r => r.status !== "on_hold");
+      }
+    },
 
-  get recipients() {
-    if (this.includeOnHold) {
-      return SessionPlans.orderedRecipients;
-    } else {
-      return SessionPlans.orderedRecipients.filter(r => r.status !== "on_hold");
+    sessionDate() {
+      const date = SessionPlans.planDetails?.session.date;
+      return date ? formatDate(date, "EEEE h:mma") : "";
+    }
+  },
+  methods: {
+    goBack() {
+      Router.go(-1);
+    },
+
+    print() {
+      window.print();
     }
   }
-
-  get sessionDate() {
-    const date = SessionPlans.planDetails?.session.date;
-    return date ? formatDate(date, "EEEE h:mma") : "";
-  }
-
-  goBack() {
-    Router.go(-1);
-  }
-
-  print() {
-    window.print();
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>

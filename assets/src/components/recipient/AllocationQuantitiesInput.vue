@@ -32,6 +32,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+:w
 import { IAllocationCategory } from "@/types";
 import App from "@/store/modules/app";
 import { sortBy } from "lodash";

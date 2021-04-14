@@ -5,7 +5,8 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     label: {
       required: true,
@@ -42,5 +43,5 @@ export default {
     };
     document.head.appendChild(script);
   }
-};
+});
 </script>

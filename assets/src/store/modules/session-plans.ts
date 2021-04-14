@@ -21,6 +21,10 @@ class SessionPlans extends VuexModule {
     return (id: string) => this.planDetails.recipients.find(r => r.id === id);
   }
 
+  get sessionDateTime(): Date {
+    return new Date(`${this.planDetails.session.date}T${this.planDetails.session.time}`);
+  }
+
   get orderedRecipients() {
     return sortBy(this.planDetails.recipients, "name");
   }

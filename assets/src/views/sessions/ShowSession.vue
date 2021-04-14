@@ -51,74 +51,78 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { capitalize, sortBy } from "lodash";
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
 import App from "@/store/modules/app";
 import SessionPlans from "@/store/modules/session-plans";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
+import Router from "@/router/";
 
-@Component({ components: { SessionRecipient, PrintButton }, filters: { formatDate } })
-export default class ShowSession extends Vue {
-  @Prop(String) readonly id!: string;
-
-  allocationsForCategory(categoryId: string) {
-    const allocations = SessionPlans.allocationsForCategory(categoryId).map((a: any) => {
-      return { ...a, recipient: SessionPlans.recipientById(a.recipientId) };
-    });
-
-    return sortBy(allocations, a => [a.recipient.status, a.recipient.name]);
-  }
-
-  recipientById(recipientId: string) {
-    return SessionPlans.recipientById(recipientId);
-  }
-
-  async created() {
+export default defineComponent({
+  components: {
+    SessionRecipient,
+    PrintButton
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  setup() {
     App.enableLoading();
-    const baseId = this.$route.query.baseId?.toString();
-    const sessionId = this.$route.params.id?.toString();
-    const date = this.$route.query.date?.toString();
+    const baseId = Router.currentRoute.query.baseId?.toString();
+    const sessionId = Router.currentRoute.params.id?.toString();
+    const date = Router.currentRoute.date?.toString();
 
-    await App.fetchCategories();
-    await SessionPlans.fetchPlanDetails({ baseId, sessionId, date });
+    // TODO how to handle data fetching aync in setup
+    async () => {
+      await App.fetchCategories();
+      await SessionPlans.fetchPlanDetails({ baseId, sessionId, date });
+    };
 
     App.disableLoading();
-  }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    categories() {
+      return sortBy(App.categories, "name");
+    },
 
-  capitalize(str: string) {
-    return capitalize(str);
-  }
+    sessionDateString() {
+      return formatDate(SessionPlans.sessionDateTime, "MMMM do, Y");
+    },
 
-  imagePath(imageName: string) {
-    const images = require.context("@/assets/images/foods", false, /\.png$/);
-    return images("./" + imageName + "-min.png");
-  }
+    sessionDayAndTime() {
+      return formatDate(SessionPlans.sessionDateTime, "EEEE h:mma");
+    }
+  },
+  methods: {
+    capitalize(str: string) {
+      return capitalize(str);
+    },
 
-  get categories() {
-    return sortBy(App.categories, "name");
-  }
+    imagePath(imageName: string) {
+      const images = require.context("@/assets/images/foods", false, /\.png$/);
+      return images("./" + imageName + "-min.png");
+    },
+    allocationsForCategory(categoryId: string) {
+      const allocations = SessionPlans.allocationsForCategory(categoryId).map((a: any) => {
+        return { ...a, recipient: SessionPlans.recipientById(a.recipientId) };
+      });
 
-  get sessionDate() {
-    if (SessionPlans.planDetails?.session.date) {
-      return new Date(`${SessionPlans.planDetails.session.date}T${SessionPlans.planDetails.session.time}`);
-    } else {
-      return null;
+      return sortBy(allocations, a => [a.recipient.status, a.recipient.name]);
+    },
+
+    recipientById(recipientId: string) {
+      return SessionPlans.recipientById(recipientId);
     }
   }
-
-  get sessionDateString() {
-    const date = this.sessionDate;
-    return date ? formatDate(date, "MMMM do, Y") : "";
-  }
-
-  get sessionDayAndTime() {
-    const date = this.sessionDate;
-    return date ? formatDate(date, "EEEE h:mma") : "";
-  }
-}
+});
 </script>
 
 <style lang="scss" scoped>
