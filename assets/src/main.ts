@@ -1,6 +1,5 @@
 import App from "@/App.vue";
 import "@/assets/scss/app.scss";
-import "@/class-component-hooks";
 import Router from "@/router";
 import Store from "@/store";
 
