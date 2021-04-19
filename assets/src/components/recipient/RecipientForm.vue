@@ -54,6 +54,8 @@ export default defineComponent({
   methods: {
     async created() {
       if (this.recipient) {
+        // TODO: Correct typing for contact
+        // @ts-ignore
         this.recipientDetails = { ...this.recipient, contact: { ...this.recipient.contact } };
       }
     },

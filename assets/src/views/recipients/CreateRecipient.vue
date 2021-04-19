@@ -12,7 +12,6 @@ import RecipientForm from "@/components/recipient/RecipientForm.vue";
 import ActiveRecipient from "@/store/modules/active-recipient";
 import { IRecipient } from "@/types";
 import toast from "@/helpers/toast";
-import { Route } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -28,7 +27,7 @@ export default defineComponent({
       }
     },
 
-    beforeRouteEnter(to: Route, from: Route, next: any) {
+    beforeRouteEnter(_to: any, _from: any, next: any) {
       ActiveRecipient.resetActiveRecipient();
       next();
     }

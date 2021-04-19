@@ -58,7 +58,7 @@ import SessionPlans from "@/store/modules/session-plans";
 import SessionRecipient from "@/components/sessions/SessionRecipient.vue";
 import PrintButton from "@/components/ui/PrintButton.vue";
 import { formatDate } from "@/helpers/date";
-import Router from "@/router/";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -73,9 +73,10 @@ export default defineComponent({
   },
   setup() {
     App.enableLoading();
-    const baseId = Router.currentRoute.query.baseId?.toString();
-    const sessionId = Router.currentRoute.params.id?.toString();
-    const date = Router.currentRoute.date?.toString();
+    const route = useRoute();
+    const baseId = route.query.baseId?.toString() ?? "";
+    const sessionId = route.params.id?.toString();
+    const date = route.query.date?.toString() ?? "";
 
     // TODO how to handle data fetching aync in setup
     async () => {

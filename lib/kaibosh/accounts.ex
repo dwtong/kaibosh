@@ -2,7 +2,7 @@ defmodule Kaibosh.Accounts do
   @moduledoc """
   The Accounts context.
   """
-  import Kaibosh.Accounts.Query
+    import Kaibosh.Accounts.Query
 
   alias Kaibosh.Accounts.User
   alias Kaibosh.Accounts.UserSession

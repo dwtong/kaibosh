@@ -14,13 +14,12 @@ import Login from "@/views/users/Login.vue";
 import ResetPassword from "@/views/users/ResetPassword.vue";
 import Settings from "@/views/users/Settings.vue";
 
-import NotFound from "@/views/NotFound.vue";
+// import NotFound from "@/views/NotFound.vue";
 
 import auth from "@/helpers/auth";
 import { UserModule } from "@/store/modules/user";
-import { Route } from "vue-router";
 
-const ifNotAuthenticated = (to: Route, from: Route, next: any) => {
+const ifNotAuthenticated = (_to: any, _from: any, next: any) => {
   if (!UserModule.isAuthenticated) {
     next();
   } else {
@@ -28,7 +27,7 @@ const ifNotAuthenticated = (to: Route, from: Route, next: any) => {
   }
 };
 
-const ifAuthenticated = (to: Route, from: Route, next: any) => {
+const ifAuthenticated = (_to: any, _from: any, next: any) => {
   if (UserModule.isAuthenticated) {
     next();
   } else {
@@ -36,7 +35,7 @@ const ifAuthenticated = (to: Route, from: Route, next: any) => {
   }
 };
 
-const saveResetParams = (to: Route, from: Route, next: any) => {
+const saveResetParams = (_to: any, _from: any, next: any) => {
   auth.saveAuthTokenFromUrlParams();
   next();
 };
@@ -60,24 +59,26 @@ export default [
   {
     path: "/recipients",
     component: ListRecipients,
-    beforeEnter: ifAuthenticated
-  },
-  {
-    path: "/recipients/new",
-    component: CreateRecipient,
-    beforeEnter: ifAuthenticated
-  },
-  {
-    path: "/recipients/:id",
-    component: ShowRecipient,
     beforeEnter: ifAuthenticated,
-    props: true
-  },
-  {
-    path: "/recipients/update/:id",
-    component: UpdateRecipient,
-    beforeEnter: ifAuthenticated,
-    props: true
+    children: [
+      {
+        path: "new",
+        component: CreateRecipient,
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: "update/:id",
+        component: UpdateRecipient,
+        beforeEnter: ifAuthenticated,
+        props: true
+      },
+      {
+        path: ":id",
+        component: ShowRecipient,
+        beforeEnter: ifAuthenticated,
+        props: true
+      }
+    ]
   },
   {
     path: "/sessions/week",
@@ -89,13 +90,15 @@ export default [
     path: "/sessions/:id",
     component: ShowSession,
     beforeEnter: ifAuthenticated,
-    props: true
-  },
-  {
-    path: "/sessions/:id/descriptions",
-    component: PrintRecipientDescriptions,
-    beforeEnter: ifAuthenticated,
-    props: true
+    props: true,
+    children: [
+      {
+        path: "descriptions",
+        component: PrintRecipientDescriptions,
+        beforeEnter: ifAuthenticated,
+        props: true
+      }
+    ]
   },
   {
     path: "/settings",
@@ -108,9 +111,12 @@ export default [
     component: ResetPassword,
     beforeEnter: saveResetParams,
     props: true
-  },
-  {
-    component: NotFound,
-    path: "*"
   }
+
+  // TODO: fix 404 page
+  // {
+  //   path: "/:pathMatch(.*)*",
+  //   name: "not-found",
+  //   component: NotFound
+  // }
 ];

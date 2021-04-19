@@ -13,7 +13,6 @@ import SubmitButton from "@/components/ui/SubmitButton.vue";
 import ValidatedForm from "@/components/ui/ValidatedForm.vue";
 import { UserModule } from "@/store/modules/user";
 import toast from "@/helpers/toast";
-import Router from "@/router";
 
 export default defineComponent({
   components: {
@@ -31,14 +30,14 @@ export default defineComponent({
     async updatePassword() {
       this.updatingPassword = true;
 
-      const token = Router.currentRoute.query?.password_reset_token?.toString() ?? "";
+      const token = this.$route.query?.password_reset_token?.toString() ?? "";
       await UserModule.updatePassword({ password: this.password, token });
 
       if (UserModule.passwordUpdated) {
         toast.success("Password updated.");
 
         if (!UserModule.isAuthenticated) {
-          Router.push("/login");
+          this.$router.push("/login");
         }
       } else {
         toast.error("Failed to update password.");

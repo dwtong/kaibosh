@@ -90,10 +90,9 @@ export default defineComponent({
     ValidatedInput,
     ValidatedForm
   },
-  props: {},
   data() {
     return {
-      success: false,
+      //success: false
       recipientDetails: {
         ...defaultRecipientDetails,
         contact: { ...defaultRecipientDetails.contact }
@@ -102,12 +101,12 @@ export default defineComponent({
   },
   methods: {
     async createRecipient() {
-      try {
-        await SignupService.create(this.recipientDetails);
-        this.success = true;
-      } catch (e) {
-        this.success = false;
-      }
+      //try {
+      await SignupService.create(this.recipientDetails);
+      // this.success = true;
+      //} catch (e) {
+      //this.success = false;
+      //}
     }
   }
 });

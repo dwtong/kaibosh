@@ -56,15 +56,15 @@ export default defineComponent({
     RecipientSortingSessions
   },
   mixins: [LoadRecipient],
-  props: {},
   setup() {
-    Promise.all([App.fetchCategories(), Sessions.fetchList(this.baseId)]);
+    const baseId = ActiveRecipient.details?.baseId ?? "0";
+    Promise.all([App.fetchCategories(), Sessions.fetchList(baseId)]);
+
+    return {
+      baseId
+    };
   },
   computed: {
-    baseId() {
-      return ActiveRecipient.details?.baseId ?? "0";
-    },
-
     status() {
       return ActiveRecipient.status;
     },

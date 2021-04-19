@@ -25,8 +25,9 @@ import SessionPlans from "@/store/modules/session-plans";
 import BaseSelect from "@/components/ui/BaseSelect.vue";
 import SessionListItem from "@/components/sessions/SessionListItem.vue";
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue";
-import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
+import { mondayOfWeek, thisWeek, formatDate } from "@/helpers/date";
 import App from "@/store/modules/app";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -36,58 +37,55 @@ export default defineComponent({
   },
   setup() {
     const baseId = localStorage.getItem("baseId");
-    if (baseId && baseId !== "0") {
-      this.fetchPlans();
+    let showSessionOptions;
+    const route = useRoute();
 
-      this.showSessionOptions = true;
-    } else {
-      this.showSessionOptions = false;
-    }
+    const fetchPlans = async (baseId: string) => {
+      const dateParam = route.query.date?.toString();
+      App.enableLoading();
+
+      if (baseId && baseId !== "0") {
+        let weekOfDate: string | Date = dateParam ? mondayOfWeek(new Date(dateParam)) : thisWeek;
+        weekOfDate = formatDate(weekOfDate, "yyyy-MM-dd");
+        await Sessions.fetchList(baseId);
+        await SessionPlans.fetchPlanList({ baseId, weekOfDate });
+        showSessionOptions = true;
+      } else {
+        showSessionOptions = false;
+      }
+      App.disableLoading();
+    };
+
+    baseId && fetchPlans(baseId);
+
+    return {
+      baseId,
+      showSessionOptions,
+      fetchPlans
+    };
   },
   data() {
     return {
-      sessionId: "0",
-      showSessionOptions: true
+      sessionId: "0"
     };
-  },
-  computed: {
-    showSubmitButton() {
-      return this.baseId !== "0" && this.sessionId !== "0";
-    },
-
-    days() {
-      return listOfDays;
-    },
-
-    weekOfDate() {
-      const dateParam = this.$route.query.date?.toString();
-
-      if (dateParam) {
-        return mondayOfWeek(new Date(dateParam));
-      } else {
-        return thisWeek;
-      }
-    }
-  },
-  methods: {
-    async fetchPlans() {
-      App.enableLoading();
-
-      if (this.baseId) {
-        const weekOfDate = formatDate(this.weekOfDate, "yyyy-MM-dd");
-        await Sessions.fetchList(this.baseId);
-        await SessionPlans.fetchPlanList({ baseId: this.baseId, weekOfDate });
-      }
-      App.disableLoading();
-    },
-
-    async setBase(baseId: string) {
-      localStorage.setItem("baseId", baseId);
-      this.baseId = baseId;
-      await this.fetchPlans();
-      this.showSessionOptions = true;
-    }
   }
+  // computed: {
+  //   showSubmitButton() {
+  //     const baseId = localStorage.getItem("baseId");
+  //     return baseId !== "0" && this.sessionId !== "0";
+  //   },
+
+  //   days() {
+  //     return listOfDays;
+  //   }
+  // },
+  // methods: {
+  //   async setBase(baseId: string) {
+  //     localStorage.setItem("baseId", baseId);
+  //     await this.fetchPlans(baseId);
+  //     this.showSessionOptions = true;
+  //   }
+  // }
 });
 </script>
 

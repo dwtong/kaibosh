@@ -69,7 +69,14 @@ export default defineComponent({
     }
   },
   emits: ["close"],
-  data() {
+  data(): {
+    startDate: Date;
+    endDate: Date | null;
+    disableEndDate: boolean;
+    allSessions: boolean;
+    sessions: any;
+    isOpen: boolean;
+  } {
     return {
       startDate: new Date(),
       endDate: null,
@@ -84,15 +91,15 @@ export default defineComponent({
       const endDate = this.disableEndDate ? null : this.endDate;
 
       return this.sessions
-        .filter(s => s.enabled)
-        .map(s => {
+        .filter((s: any) => s.enabled)
+        .map((s: any) => {
           return {
             recipientSessionId: s.id,
             startsAt: startOfDayString(this.startDate),
             endsAt: endDate ? endOfDayString(endDate) : ""
           };
         })
-        .filter(h => h !== null);
+        .filter((h: any) => h !== null);
     }
   },
   methods: {
@@ -122,7 +129,7 @@ export default defineComponent({
 
     toggleAllSessions() {
       this.allSessions = !this.allSessions;
-      this.sessions.forEach(s => (s.enabled = this.allSessions));
+      this.sessions.forEach((s: any) => (s.enabled = this.allSessions));
     }
   }
 });

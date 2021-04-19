@@ -4,7 +4,7 @@
   </b-field>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
 export default defineComponent({
   props: {
@@ -24,17 +24,25 @@ export default defineComponent({
     }
   },
   emits: ["input"],
+  data() {
+    return {
+      widget: null
+    };
+  },
   mounted() {
     const script = document.createElement("script");
     script.setAttribute("src", "https://api.addressfinder.io/assets/v3/widget.js");
-    script.setAttribute("async", true);
+    script.setAttribute("async", "true");
     script.onload = () => {
       const addressElement = document.getElementById("address");
       if (addressElement) {
+        // @ts-ignore
         this.widget = new window.AddressFinder.Widget(addressElement, "A3XCU7TYNHVR48P6WK9G", "NZ", {
           address_params: {}
         });
+        // @ts-ignore
         this.widget.on("result:select", (fullAddress, metaData) => {
+          // @ts-ignore
           const selected = new window.AddressFinder.NZSelectedAddress(fullAddress, metaData);
 
           this.$emit("input", selected.fullAddress);

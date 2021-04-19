@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import LogRocket from "logrocket";
 import createPlugin from "logrocket-vuex";
 import { config } from "vuex-module-decorators";
@@ -10,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
   plugins.push(createPlugin(LogRocket));
 }
 
-export default Vuex.createStore({
+export default createStore({
   strict: process.env.NODE_ENV !== "production",
   plugins
 });

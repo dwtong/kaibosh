@@ -1,4 +1,3 @@
-import Vue from "vue";
 import Store from "@/store";
 import { IHold, IRecipientSession } from "@/types";
 import { Action, getModule, Module, Mutation, VuexModule } from "vuex-module-decorators";
@@ -28,7 +27,7 @@ class RecipientSessions extends VuexModule {
 
   @Mutation
   setSessions(sessions: []) {
-    Vue.set(this, "sessions", sessions);
+    this.sessions == sessions;
   }
 
   @Mutation
@@ -47,7 +46,7 @@ class RecipientSessions extends VuexModule {
   @Mutation
   modifySession(updatedSession: IRecipientSession, sessionId: string) {
     const sessionIndex = this.sessions.findIndex((s: IRecipientSession) => s.id === sessionId);
-    Vue.set(this.sessions, sessionIndex, updatedSession);
+    this.sessions[sessionIndex] = updatedSession;
   }
 
   @Action

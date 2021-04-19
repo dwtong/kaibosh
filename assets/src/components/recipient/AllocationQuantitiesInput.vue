@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-:w
 import { IAllocationCategory } from "@/types";
 import App from "@/store/modules/app";
 import { sortBy } from "lodash";
@@ -75,22 +74,22 @@ export default defineComponent({
     const allocationCategories = sortBy(unsortedAllocationCategories, ["name"]);
 
     // TODO how to emit/watch?
-    watch(
-      () => allocationCategories,
-      (allocationCategories: any) => {
-        const allocations = allocationCategories
-          .filter((allocation: IAllocationCategory) => allocation.enabled)
-          .map((allocation: IAllocationCategory) => {
-            return {
-              categoryId: allocation.categoryId,
-              quantity: allocation.quantity,
-              id: allocation.id
-            };
-          });
-        this.$emit("input", allocations);
-      },
-      { immediate: true, deep: true }
-    );
+    //watch(
+    //  () => allocationCategories,
+    //  (allocationCategories: any) => {
+    //    const allocations = allocationCategories
+    //      .filter((allocation: IAllocationCategory) => allocation.enabled)
+    //      .map((allocation: IAllocationCategory) => {
+    //        return {
+    //          categoryId: allocation.categoryId,
+    //          quantity: allocation.quantity,
+    //          id: allocation.id
+    //        };
+    //      });
+    //    this.$emit("input", allocations);
+    //  },
+    //  { immediate: true, deep: true }
+    //);
 
     return {
       allocationCategories

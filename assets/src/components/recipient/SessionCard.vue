@@ -106,19 +106,20 @@ export default defineComponent({
     },
 
     confirmSessionDeletion() {
-      this.$buefy.dialog.confirm({
-        message: "Are you sure you wish to remove this session?",
-        type: "is-danger",
-        onConfirm: async () => {
-          if (this.recipientSession.id) {
-            await RecipientSessions.deleteSession({
-              recipientId: this.recipientId,
-              sessionId: this.recipientSession.id
-            });
-            toast.success("Deleted session.");
-          }
-        }
-      });
+      // TODO: replace buefy dialog
+      // this.$buefy.dialog.confirm({
+      //   message: "Are you sure you wish to remove this session?",
+      //   type: "is-danger",
+      //   onConfirm: async () => {
+      //     if (this.recipientSession.id) {
+      //       await RecipientSessions.deleteSession({
+      //         recipientId: this.recipientId,
+      //         sessionId: this.recipientSession.id
+      //       });
+      //       toast.success("Deleted session.");
+      //     }
+      //   }
+      // });
     }
   }
 });
