@@ -1,30 +1,37 @@
-import { required, excluded, email, min, is } from "vee-validate/dist/rules";
-import { setInteractionMode, extend } from "vee-validate";
-import { capitalize } from "lodash";
+import { required, email, min, is } from "@vee-validate/rules";
+import { defineRule } from "vee-validate";
+// import { capitalize } from "lodash";
 
-setInteractionMode("lazy");
+// setInteractionMode("lazy");
 
-extend("required", {
-  ...required,
-  message: fieldName => `${capitalize(fieldName)} is required`
-});
+defineRule("required", required);
+defineRule("is", is);
+defineRule("min", min);
+defineRule("email", email);
+// defineRule("excluded", excluded);
 
-extend("is", {
-  ...is,
-  message: () => `Password does not match`
-});
+// TODO: Update custom messages for rules
+// extend("required", {
+//   ...required,
+//   message: fieldName => `${capitalize(fieldName)} is required`
+// });
 
-extend("min", {
-  ...min,
-  message: fieldName => `the ${fieldName} must have at least 8 characters`
-});
+// extend("is", {
+//   ...is,
+//   message: () => `Password does not match`
+// });
 
-extend("email", {
-  ...email,
-  message: "Value must be a valid email"
-});
+// extend("min", {
+//   ...min,
+//   message: fieldName => `the ${fieldName} must have at least 8 characters`
+// });
 
-extend("excluded", {
-  ...excluded,
-  message: fieldName => `${capitalize(fieldName)} already exists`
-});
+// extend("email", {
+//   ...email,
+//   message: "Value must be a valid email"
+// });
+
+// extend("excluded", {
+//   ...excluded,
+//   message: fieldName => `${capitalize(fieldName)} already exists`
+// });
