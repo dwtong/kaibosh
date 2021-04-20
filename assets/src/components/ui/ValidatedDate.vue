@@ -1,26 +1,27 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules">
-    <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors">
-      <b-datepicker
-        placeholder="Click to select..."
-        :value="dateValue"
-        icon-pack="fas"
-        :name="name"
-        :disabled="disabled"
-        @input="$emit('input', $event)"
-      />
-    </b-field>
-  </ValidationProvider>
+  <p>TODO: Date picker</p>
+  <!-- <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules"> -->
+  <!--   <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors"> -->
+  <!--     <b-datepicker -->
+  <!--       placeholder="Click to select..." -->
+  <!--       :value="dateValue" -->
+  <!--       icon-pack="fas" -->
+  <!--       :name="name" -->
+  <!--       :disabled="disabled" -->
+  <!--       @input="$emit('input', $event)" -->
+  <!--     /> -->
+  <!--   </b-field> -->
+  <!-- </ValidationProvider> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ValidationProvider } from "vee-validate";
+//import { ValidationProvider } from "vee-validate";
 
 export default defineComponent({
-  components: {
-    ValidationProvider
-  },
+  // components: {
+  //    ValidationProvider
+  //},
   props: {
     value: {
       type: String,

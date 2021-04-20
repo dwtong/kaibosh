@@ -1,28 +1,33 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules">
-    <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors.length > 0 ? errors : help">
-      <b-select
-        :value="value"
-        :name="name"
-        :placeholder="placeholder"
-        expanded
-        :disabled="disabled"
-        @input="$emit('input', $event)"
-      >
-        <slot />
-      </b-select>
-    </b-field>
-  </ValidationProvider>
+  <!-- <ValidationProvider v-slot="{ errors }" :vid="name" :name="name" :rules="rules"> -->
+  <!--   <b-field v-bind="$attrs" :type="{ 'is-danger': errors[0] }" :message="errors.length > 0 ? errors : help"> -->
+  <!--     <b-select -->
+  <!--       :value="value" -->
+  <!--       :name="name" -->
+  <!--       :placeholder="placeholder" -->
+  <!--       expanded -->
+  <!--       :disabled="disabled" -->
+  <!--       @input="$emit('input', $event)" -->
+  <!--     > -->
+  <!--       <slot /> -->
+  <!--     </b-select> -->
+  <!--   </b-field> -->
+  <!-- </ValidationProvider> -->
+  <div class="select">
+    <select :value="value" :name="name" :placeholder="placeholder" :disabled="disabled">
+      <slot />
+    </select>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { ValidationProvider } from "vee-validate";
+//import { ValidationProvider } from "vee-validate";
 
 export default defineComponent({
-  components: {
-    ValidationProvider
-  },
+  //  components: {
+  //   ValidationProvider
+  //},
   props: {
     name: {
       type: String,
