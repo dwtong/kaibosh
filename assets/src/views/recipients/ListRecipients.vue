@@ -40,7 +40,7 @@ export default defineComponent({
     };
   },
   computed: {
-    get recipientsList(): any {
+    recipientsList(): any {
       return AllRecipients.filteredList;
     }
   },

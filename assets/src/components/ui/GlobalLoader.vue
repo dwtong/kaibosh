@@ -1,5 +1,7 @@
 <template>
-  <b-loading v-model="loading"></b-loading>
+  <div class="loader-wrapper">
+    <div class="loader" :class="{ 'is-loading': loading }"></div>
+  </div>
 </template>
 
 <script lang="ts">

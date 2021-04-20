@@ -1,5 +1,5 @@
 <template>
-  <BaseSelect :value="filteredBase" all="true" @input="updateBaseFilter($event)" />
+  <BaseSelect :value="filteredBase" :all="true" @input="updateBaseFilter($event)" />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
