@@ -36,7 +36,7 @@ $colors: map-merge($colors, $addColors);
 
 // 4. Provide custom buefy overrides and site styles here
 
-.b-table .table {
+.table {
   td {
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
