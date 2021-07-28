@@ -60,6 +60,7 @@ defmodule Kaibosh.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.3"},
+      {:plug_crypto, "~> 1.2"},
 
       # Prod
       {:argon2_elixir, "~> 2.3"},
