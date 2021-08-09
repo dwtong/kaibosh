@@ -8,6 +8,9 @@ if [ -n "$(git status --porcelain)" ]; then
   echo "ERROR: uncommitted changes." && exit 1
 fi
 
+# Build ubuntu-elixir image
+docker build -f Dockerfile.ubuntu -t "ubuntu-elixir:latest" .
+
 # Build image
 docker build -t ${APP_NAME}_server .
 
