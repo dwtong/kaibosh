@@ -5,7 +5,7 @@ const resource = "recipients";
 
 export default {
   all: () => get(resource),
-  export: (params: object) => get(`${resource}/export`, params),
+  export: (params: any) => get(`${resource}/export`, params),
   get: (id: string) => get(`${resource}/${id}`),
   create: (recipient: IRecipient) => post(resource, { recipient }),
   update: (id: string, recipient: any) => put(`${resource}/${id}`, { recipient }),
