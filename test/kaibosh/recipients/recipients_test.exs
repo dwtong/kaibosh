@@ -16,6 +16,23 @@ defmodule Kaibosh.RecipientsTest do
       assert Recipients.list_recipients() == [recipient]
     end
 
+    test "search_recipients/1 returns recipients with filters" do
+      recipient = insert(:recipient) |> Repo.preload(:contact) |> Status.put()
+
+      recipient_2 =
+        insert(:recipient, archived_at: now()) |> Repo.preload(:contact) |> Status.put()
+
+      assert Recipients.search_recipients(%{"name" => recipient_2.name}) == [recipient_2]
+      assert Recipients.search_recipients(%{"base" => recipient.base_id}) == [recipient]
+
+      assert Recipients.search_recipients(%{"status" => ["pending", "archived"]}) == [
+               recipient,
+               recipient_2
+             ]
+
+      assert Recipients.search_recipients(%{"status" => ["archived"]}) == [recipient_2]
+    end
+
     test "get_recipient!/1 returns the recipient and contact with given id" do
       expected_recipient = insert(:recipient, contact: insert(:contact)) |> Repo.forget(:base)
       recipient = Recipients.get_recipient!(expected_recipient.id)
