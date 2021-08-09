@@ -6,10 +6,11 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :kaibosh, Kaibosh.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("PGUSER") || "postgres",
+  password: System.get_env("PGPASSWORD") || "postgres",
   database: "kaibosh_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
+  hostname: System.get_env("PGHOST") || "localhost",
+  port: System.get_env("PGPORT") || 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.TestAdapter

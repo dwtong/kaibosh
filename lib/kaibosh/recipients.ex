@@ -14,6 +14,23 @@ defmodule Kaibosh.Recipients do
     |> Enum.map(&Status.put/1)
   end
 
+  def search_recipients(params) do
+    statuses = map_statuses(params)
+
+    params
+    |> get_recipients_with_params()
+    |> Repo.all()
+    |> Repo.preload([:contact, [base: :organisation]])
+    |> Enum.map(&Status.put/1)
+    |> Enum.reject(fn r -> length(statuses) > 0 && !Enum.member?(statuses, r.status) end)
+  end
+
+  defp map_statuses(%{"status" => statuses}) when is_list(statuses) do
+    Enum.map(statuses, &String.to_existing_atom(&1))
+  end
+
+  defp map_statuses(_), do: []
+
   def get_recipient!(recipient_id) do
     recipient_id
     |> get_recipient_by_id()

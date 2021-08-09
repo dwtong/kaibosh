@@ -84,6 +84,7 @@ export default class GenerateDescriptionsButton extends Vue {
   background-color: white;
   font-size: 16px;
   color: black;
+  overflow-y: auto;
 }
 
 .title {

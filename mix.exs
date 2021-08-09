@@ -67,6 +67,7 @@ defmodule Kaibosh.MixProject do
       {:timex, "~> 3.6"},
       {:bamboo, "~> 1.5"},
       {:sentry, "~> 8.0"},
+      {:csv, "~> 2.4"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},

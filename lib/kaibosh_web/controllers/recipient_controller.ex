@@ -11,6 +11,15 @@ defmodule KaiboshWeb.RecipientController do
     render(conn, "index.json", recipients: recipients)
   end
 
+  def export(conn, params) do
+    recipients = Recipients.search_recipients(params)
+
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"recipients.csv\"")
+    |> send_resp(200, csv_content(recipients))
+  end
+
   def create(conn, %{"recipient" => recipient_params}) do
     with {:ok, %Recipient{} = recipient} <- Recipients.create_recipient(recipient_params) do
       conn
@@ -61,4 +70,26 @@ defmodule KaiboshWeb.RecipientController do
 
   defp bool_to_timestamp(true), do: DateTime.utc_now()
   defp bool_to_timestamp(false), do: nil
+
+  defp csv_content(content) when is_list(content) do
+    headers =
+      ~w(name status base contact_name contact_email contact_phone_landline contact_phone_mobile description)a
+
+    content
+    |> Enum.map(fn recipient ->
+      %{
+        name: recipient.name,
+        status: recipient.status,
+        base: recipient.base.name,
+        contact_name: recipient.contact.name,
+        contact_phone_mobile: recipient.contact.phone_mobile,
+        contact_phone_landline: recipient.contact.phone_landline,
+        contact_email: recipient.contact.email,
+        description: recipient.description
+      }
+    end)
+    |> CSV.encode(headers: headers)
+    |> Enum.to_list()
+    |> to_string()
+  end
 end

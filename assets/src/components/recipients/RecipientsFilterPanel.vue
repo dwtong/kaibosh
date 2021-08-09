@@ -27,7 +27,7 @@ import AllRecipients from "@/store/modules/all-recipients";
 import RecipientsBaseFilter from "@/components/recipients/RecipientsBaseFilter.vue";
 import RecipientsNameFilter from "@/components/recipients/RecipientsNameFilter.vue";
 import RecipientsStatusFilter from "@/components/recipients/RecipientsStatusFilter.vue";
-import { downloadCsv, generateCsv } from "@/helpers/recipient-csv";
+import RecipientService from "@/services/recipient-service";
 
 @Component({ components: { RecipientsBaseFilter, RecipientsNameFilter, RecipientsStatusFilter } })
 export default class RecipientsFilterPanel extends Vue {
@@ -36,8 +36,18 @@ export default class RecipientsFilterPanel extends Vue {
   }
 
   async downloadCsv() {
-    const csvData = await generateCsv(AllRecipients.filteredList);
-    downloadCsv("recipients.csv", csvData);
+    const params = {
+      baseId: AllRecipients.filteredBase,
+      name: AllRecipients.filteredName,
+      status: AllRecipients.filteredStatusNames
+    }
+    const csv = await RecipientService.export(params);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = "recipients.csv"
+    link.click();
+    URL.revokeObjectURL(link.href);
   }
 }
 </script>
