@@ -61,6 +61,8 @@ defmodule KaiboshWeb.Router do
       resources "/plans", SessionPlanController, only: [:index, :show]
     end
 
+    get "/recipients/export", RecipientController, :export
+
     resources "/recipients", RecipientController, except: [:new, :edit] do
       resources "/sessions", RecipientSessionController, except: [:new, :edit]
       resources "/holds", HoldController, only: [:create, :delete]

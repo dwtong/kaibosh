@@ -14,6 +14,13 @@ defmodule Kaibosh.Recipients do
     |> Enum.map(&Status.put/1)
   end
 
+  def search_recipients do
+    get_recipients()
+    |> Repo.all()
+    |> Repo.preload([:contact, :base])
+    |> Enum.map(&Status.put/1)
+  end
+
   def get_recipient!(recipient_id) do
     recipient_id
     |> get_recipient_by_id()

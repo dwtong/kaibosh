@@ -16,6 +16,20 @@ defmodule KaiboshWeb.RecipientControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  describe "list recipients in csv format" do
+    setup [:create_recipient]
+
+    test "returns csv of recipients with details", %{conn: conn, recipient: expected_recipient, contact: expected_contact} do
+      conn = get(conn, Routes.recipient_path(conn, :export))
+
+      assert get_resp_header(conn, "content-type") == ["text/csv; charset=utf-8"]
+      assert get_resp_header(conn, "content-disposition") == ["attachment; filename=\"recipients.csv\""]
+      assert [headers, r1,""] = response(conn, 200) |> String.split("\r\n")
+      assert headers == "name,status,base,contact_name,contact_email,contact_phone_landline,contact_phone_mobile"
+      assert r1 == "#{expected_recipient.name},pending,#{expected_recipient.base.name},#{expected_contact.name},#{expected_contact.phone_mobile},#{expected_contact.phone_landline},#{expected_contact.email}"
+    end
+  end
+
   describe "list recipients" do
     setup [:create_recipient]
 

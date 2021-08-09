@@ -15,6 +15,12 @@ class AllRecipients extends VuexModule {
     { label: "Archived", name: "archived", enabled: false }
   ];
 
+  get filteredStatusNames() {
+    return this.filteredStatus
+      .filter((s: IStatus) => s.enabled)
+      .map((s: IStatus) => s.name)
+  }
+
   get filteredList() {
     const filters = this.filteredStatus.filter(f => f.enabled).map(f => f.name);
 
