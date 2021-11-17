@@ -1,6 +1,11 @@
 #!/bin/bash
 # Docker entrypoint script.
 
+if [ -n "${PG_USER+set}" ]; then
+  echo "env variables not set"
+  exit 1
+fi
+
 # Wait until Postgres is ready
 echo "Testing if Postgres is accepting connections. {$PGHOST} {$PGPORT} ${PGUSER}"
 while ! pg_isready -q -h $PGHOST -p $PGPORT -U $PGUSER
