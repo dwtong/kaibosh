@@ -49,14 +49,14 @@ defmodule Kaibosh.MixProject do
   defp deps do
     [
       # Default Phoenix dependencies
-      {:phoenix, "~> 1.5.3"},
+      {:phoenix, "~> 1.6"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.3"},
+      # {:phoenix_html, "~> 2.11"},
+      {:phoenix_live_dashboard, "~> 0.6"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.3"},
@@ -65,7 +65,8 @@ defmodule Kaibosh.MixProject do
       # Prod
       {:argon2_elixir, "~> 2.3"},
       {:timex, "~> 3.6"},
-      {:bamboo, "~> 1.5"},
+      {:bamboo, "~> 2.2"},
+      {:bamboo_phoenix, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:csv, "~> 2.4"},
 
