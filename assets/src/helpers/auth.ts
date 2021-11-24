@@ -1,3 +1,5 @@
+import { AxiosResponseHeaders } from "axios";
+
 interface AuthToken {
   authorization: string;
 }
@@ -16,7 +18,7 @@ export default {
     }
   },
 
-  saveAuthToken(headers: AuthToken) {
+  saveAuthToken(headers: AxiosResponseHeaders) {
     if (headers.authorization) {
       localStorage.setItem("authorization", headers.authorization);
     }

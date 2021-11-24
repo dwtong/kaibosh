@@ -14,7 +14,7 @@ const service = axios.create({
 
 service.defaults.transformResponse = [
   (data, headers) => {
-    if (data && headers["content-type"].includes("application/json")) {
+    if (data && headers?.["content-type"].includes("application/json")) {
       return camelCaseKeys(JSON.parse(data), { deep: true });
     } else {
       return data;
@@ -24,7 +24,7 @@ service.defaults.transformResponse = [
 
 service.defaults.transformRequest = [
   (data, headers) => {
-    if (data && headers["Content-Type"].includes("application/json")) {
+    if (data && headers?.["Content-Type"].includes("application/json")) {
       return JSON.stringify(snakeCaseKeys(data, { deep: true }));
     } else {
       return data;
@@ -64,7 +64,7 @@ export const get = async (resource: string, params?: any) => {
   try {
     const response = await service.get(resource, { params });
     return Promise.resolve(response.data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error(`Failed to fetch ${resource}.`);
     return Promise.reject(error.response.data);
   }
@@ -74,7 +74,7 @@ export const post = async (resource: string, params: any) => {
   try {
     const response = await service.post(resource, params);
     return Promise.resolve(response.data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error(`Failed to create ${resource}.`);
     return Promise.reject(error.response.data);
   }
@@ -84,7 +84,7 @@ export const put = async (resource: string, params: any) => {
   try {
     const response = await service.put(resource, params);
     return Promise.resolve(response.data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error(`Failed to update ${resource}.`);
     return Promise.reject(error.response.data);
   }
@@ -94,7 +94,7 @@ export const destroy = async (resource: string) => {
   try {
     const response = await service.delete(resource);
     return Promise.resolve(response.data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error(`Failed to delete ${resource}.`);
     return Promise.reject(error.response.data);
   }

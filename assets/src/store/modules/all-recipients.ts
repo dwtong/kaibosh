@@ -16,9 +16,7 @@ class AllRecipients extends VuexModule {
   ];
 
   get filteredStatusNames() {
-    return this.filteredStatus
-      .filter((s: IStatus) => s.enabled)
-      .map((s: IStatus) => s.name)
+    return this.filteredStatus.filter((s: IStatus) => s.enabled).map((s: IStatus) => s.name);
   }
 
   get filteredList() {
