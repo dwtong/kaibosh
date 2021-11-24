@@ -1,4 +1,7 @@
 version: '3.9'
+volumes:
+  postgres-kaibosh:
+
 services:
   web:
     build:
@@ -19,7 +22,7 @@ services:
       - POSTGRES_USER=kaibosh
       - POSTGRES_PASSWORD=kaibosh
     volumes:
-      - ./postgres-kaibosh:/var/lib/postgresql/data
+      - postgres-kaibosh:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:

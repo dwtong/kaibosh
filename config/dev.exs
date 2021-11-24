@@ -2,11 +2,11 @@ use Mix.Config
 
 # Configure your database
 config :kaibosh, Kaibosh.Repo,
-  username: System.get_env("PGUSER"),
-  password: System.get_env("PGPASSWORD"),
-  database: System.get_env("PGDATABASE"),
-  hostname: System.get_env("PGHOST"),
-  port: System.get_env("PGPORT"),
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  database: System.get_env("POSTGRES_DATABASE"),
+  hostname: System.get_env("POSTGRES_HOST"),
+  port: System.get_env("POSTGRES_PORT"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
