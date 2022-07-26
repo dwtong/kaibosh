@@ -30,7 +30,7 @@ defmodule Kaibosh.Recipients.Recipient do
     has_one :contact, Contact, on_replace: :update
     belongs_to :base, Kaibosh.Organisations.Base
 
-    field :name, :string, null: false
+    field :name, :string
     field :physical_address, :string
     field :description, :string
     field :started_at, :utc_datetime_usec

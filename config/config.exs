@@ -1,11 +1,4 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
-
-# General application configuration
-use Mix.Config
+import Config
 
 config :kaibosh,
   ecto_repos: [Kaibosh.Repo],
@@ -42,4 +35,4 @@ config :sentry,
 # of this file so it overrides the configuration defined above.
 config :sentry, included_environments: ["staging", "prod"]
 
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"

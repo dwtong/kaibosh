@@ -7,7 +7,7 @@ defmodule Kaibosh.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -52,7 +52,7 @@ defmodule Kaibosh.MixProject do
       {:phoenix, "~> 1.6"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.0.0"},
+      {:postgrex, "~> 0.15.0"},
       # {:phoenix_html, "~> 2.11"},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:telemetry_metrics, "~> 0.4"},
@@ -63,7 +63,7 @@ defmodule Kaibosh.MixProject do
       {:plug_crypto, "~> 1.2"},
 
       # Prod
-      {:argon2_elixir, "~> 2.3"},
+      {:argon2_elixir, "~> 3.0"},
       {:timex, "~> 3.6"},
       {:bamboo, "~> 2.2"},
       {:bamboo_phoenix, "~> 1.0"},
