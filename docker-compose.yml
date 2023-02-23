@@ -13,8 +13,11 @@ services:
       - .:/app
     depends_on:
       - db
-    env_file:
-      - dev.env
+    environment:
+      - POSTGRES_USER=kaibosh
+      - POSTGRES_PASSWORD=kaibosh
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
 
   db:
     image: postgres:11
