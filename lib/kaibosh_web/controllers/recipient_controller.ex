@@ -73,7 +73,7 @@ defmodule KaiboshWeb.RecipientController do
 
   defp csv_content(content) when is_list(content) do
     headers =
-      ~w(name status base contact_name contact_email contact_phone_landline contact_phone_mobile description)a
+      ~w(name status base contact_name contact_email contact_phone_landline contact_phone_mobile address description)a
 
     content
     |> Enum.map(fn recipient ->
@@ -85,6 +85,7 @@ defmodule KaiboshWeb.RecipientController do
         contact_phone_mobile: recipient.contact.phone_mobile,
         contact_phone_landline: recipient.contact.phone_landline,
         contact_email: recipient.contact.email,
+        address: recipient.physical_address,
         description: recipient.description
       }
     end)
