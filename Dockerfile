@@ -1,7 +1,11 @@
-FROM ubuntu-elixir as build
+FROM elixir:1.14 as build
 
-# prepare build dir
 WORKDIR /app
+
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get update -y && \
+    apt-get install nodejs
 
 # clean up workspace
 RUN mkdir -p priv/static && \

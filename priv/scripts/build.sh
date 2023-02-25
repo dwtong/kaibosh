@@ -8,8 +8,10 @@ if [ -n "$(git status --porcelain)" ]; then
   echo "ERROR: uncommitted changes." && exit 1
 fi
 
-# Build ubuntu-elixir image
-docker build -f Dockerfile.ubuntu -t "ubuntu-elixir:latest" .
+if [ ! -n "${APP_NAME+set}" ]; then
+  echo "Error: No app name specified."
+  exit 1;
+fi
 
 # Build image
 docker build -t ${APP_NAME}_server .
