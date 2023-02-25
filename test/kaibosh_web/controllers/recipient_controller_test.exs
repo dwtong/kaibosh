@@ -35,10 +35,10 @@ defmodule KaiboshWeb.RecipientControllerTest do
       assert [headers, r1, ""] = response(conn, 200) |> String.split("\r\n")
 
       assert headers ==
-               "name,status,base,contact_name,contact_email,contact_phone_landline,contact_phone_mobile,description"
+               "name,status,base,contact_name,contact_email,contact_phone_landline,contact_phone_mobile,address,description"
 
       assert r1 ==
-               "#{expected_recipient.name},pending,#{expected_recipient.base.name},#{expected_contact.name},#{expected_contact.phone_mobile},#{expected_contact.phone_landline},#{expected_contact.email},#{expected_recipient.description}"
+               "#{expected_recipient.name},pending,#{expected_recipient.base.name},#{expected_contact.name},#{expected_contact.phone_mobile},#{expected_contact.phone_landline},#{expected_contact.email},#{expected_recipient.physical_address},#{expected_recipient.description}"
     end
   end
 
