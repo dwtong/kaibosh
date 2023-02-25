@@ -1,4 +1,4 @@
-FROM elixir:1.14 as build
+FROM --platform=linux/amd64 elixir:1.14 as build
 
 WORKDIR /app
 
@@ -42,7 +42,7 @@ COPY lib lib
 RUN mix compile --warnings-as-errors
 RUN mix release
 
-FROM scratch AS app
+FROM --platform=linux/amd64 scratch AS app
 
 WORKDIR /app
 COPY --from=build /app/_build/prod/kaibosh-0.1.0.tar.gz ./kaibosh.tar.gz
