@@ -1,0 +1,24 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set release version
+        run: echo APP_NAME=kaibosh-${GITHUB_SHA:0:7} >> $GITHUB_OUTPUT
+
+      - name: Build app
+        run: APP_NAME=kaibosh-${GITHUB_SHA:0:7} ./priv/scripts/build.sh
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: tmp/kaibosh-*
