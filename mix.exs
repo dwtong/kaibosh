@@ -52,8 +52,7 @@ defmodule Kaibosh.MixProject do
       {:phoenix, "~> 1.6"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
-      {:postgrex, "~> 0.15.0"},
-      # {:phoenix_html, "~> 2.11"},
+      {:postgrex, "~> 0.15"},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 1.0"},
@@ -68,7 +67,7 @@ defmodule Kaibosh.MixProject do
       {:bamboo, "~> 2.2"},
       {:bamboo_phoenix, "~> 1.0"},
       {:sentry, "~> 8.0"},
-      {:csv, "~> 2.4"},
+      {:csv, "~> 3.0"},
 
       # Test
       {:ex_machina, "~> 2.4", only: :test},

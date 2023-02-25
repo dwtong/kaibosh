@@ -23,6 +23,8 @@ if [[ -z `psql -Atqc "\\list $POSTGRES_DATABASE"` ]]; then
   echo "Database $POSTGRES_DATABASE created."
 fi
 
+echo "Installing npm packages."
 npm install --prefix assets
 
+echo "Starting phoenix server."
 exec mix phx.server
