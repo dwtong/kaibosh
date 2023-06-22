@@ -1,7 +1,11 @@
-FROM ubuntu-elixir as build
+FROM --platform=linux/amd64 elixir:1.14 as build
 
-# prepare build dir
 WORKDIR /app
+
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get update -y && \
+    apt-get install nodejs
 
 # clean up workspace
 RUN mkdir -p priv/static && \
@@ -38,7 +42,7 @@ COPY lib lib
 RUN mix compile --warnings-as-errors
 RUN mix release
 
-FROM scratch AS app
+FROM --platform=linux/amd64 scratch AS app
 
 WORKDIR /app
 COPY --from=build /app/_build/prod/kaibosh-0.1.0.tar.gz ./kaibosh.tar.gz
