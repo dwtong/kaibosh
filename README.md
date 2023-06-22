@@ -4,6 +4,10 @@
 
 There is a development environment available with docker compose. Start it with `docker compose up`.
 
+You will need some dev secrets. Start with `cp config/dev.secret.exs.example config/dev.secret.exs`.
+
+If mix dependencies need installing, run `docker compose run web mix deps.get`.
+
 Alternatively, you can:
 
   * Install dependencies with `mix deps.get`
