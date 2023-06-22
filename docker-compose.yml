@@ -14,6 +14,7 @@ services:
     depends_on:
       - db
     environment:
+      - MIX_ENV=dev
       - POSTGRES_USER=kaibosh
       - POSTGRES_PASSWORD=kaibosh
       - POSTGRES_HOST=db

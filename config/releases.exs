@@ -11,7 +11,7 @@ config :kaibosh, Kaibosh.Repo,
   hostname: System.fetch_env!("DB_HOST"),
   port: System.fetch_env!("DB_PORT"),
   ssl: true,
-  ssl_opts: [cacertfile: '/src/kaibosh/ca-certificate.crt'],
+  ssl_opts: [cacertfile: ~c"/src/kaibosh/ca-certificate.crt"],
   start_apps_before_migration: [:ssl]
 
 config :sentry,

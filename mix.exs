@@ -7,7 +7,7 @@ defmodule Kaibosh.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -50,6 +50,7 @@ defmodule Kaibosh.MixProject do
     [
       # Default Phoenix dependencies
       {:phoenix, "~> 1.6"},
+      {:phoenix_view, "~> 2.0"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, "~> 0.15"},
