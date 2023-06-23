@@ -12,5 +12,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import "node_modules/bulma/sass/utilities/functions";
+          @import "@/assets/scss/_variables.scss";
+        `
+      }
+    }
   }
 })

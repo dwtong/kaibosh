@@ -1,85 +1,70 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from "vue"
+import GlobalLoader from '@/components/ui/GlobalLoader.vue'
+
+const showNav = ref(true)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <GlobalLoader />
+  <div>
+    <div v-if="showNav" class="sidenav is-hidden-print">
+      <NavBar />
     </div>
-  </header>
+    <div class="main" :class="{ 'with-nav': showNav }">
+      <section class="section">
+        <div class="container is-fluid">
+          <!-- <RouterView :key="$route.fullPath"></RouterView> -->
+          <RouterView></RouterView>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- <header> -->
+  <!--   <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
-  <RouterView />
+  <!--   <div class="wrapper"> -->
+  <!--     <HelloWorld msg="You dud it!" /> -->
+
+  <!--     <nav> -->
+  <!--       <RouterLink to="/">Home</RouterLink> -->
+  <!--       <RouterLink to="/about">About</RouterLink> -->
+  <!--     </nav> -->
+  <!--   </div> -->
+  <!-- </header> -->
+
+  <!-- <RouterView /> -->
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+.main {
+  background-color: $app-background;
+  min-height: 100vh;
+  overflow: hidden;
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  @media print {
+    background-color: white;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+  &.with-nav {
+    margin-left: $navbar-width;
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+    @media print {
+      margin-left: 0;
+    }
   }
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.sidenav {
+  height: 100%;
+  width: $navbar-width;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  padding: 1.3rem 0rem 2rem 1rem;
+  background-color: $navbar-background;
 }
 </style>

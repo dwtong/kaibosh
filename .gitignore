@@ -42,3 +42,4 @@ npm-debug.log
 *.env
 
 config/dev.secret.exs
+node_modules
