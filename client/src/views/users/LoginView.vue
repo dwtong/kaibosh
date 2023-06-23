@@ -4,8 +4,8 @@ import { useUserStore } from "@/stores/user"
 import { ref } from "vue"
 
 const forgotten = false
-const email = ""
-const password = ""
+const email = ref("")
+const password = ref("")
 const showError = ref(false)
 const loading = ref(false)
 const user = useUserStore()
@@ -15,10 +15,11 @@ const toggleForgotten = () => console.log('forgotten')
 
 async function login() {
   loading.value = true
-  await user.login({ email, password })
+  await user.login({ email: email.value, password: password.value })
   loading.value = false
+
   if (user.isAuthenticated) {
-    router.push("/foo");
+    router.push("/");
   } else {
     showError.value = true
   }

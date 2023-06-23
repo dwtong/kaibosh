@@ -9,11 +9,11 @@ const router = createRouter({
     // redirect: "/sessions/week"
     redirect: "/login"
   },
-{
+  {
     path: "/login",
     component: LoginView,
     // beforeEnter: ifNotAuthenticated
-  }  ]
+  }]
 })
 
 export default router

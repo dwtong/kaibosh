@@ -5,7 +5,7 @@ import { loadAuthToken, saveAuthToken } from "@/utils/local-storage"
 // import toast from "@/helpers/toast"
 // import { UserModule } from "@/store/modules/user"
 
-const basePath = "/api"
+const basePath = "http://localhost:4000/api"
 
 const service = axios.create({
   baseURL: basePath,
