@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import router from "@/router";
+import { useRouter } from "vue-router"
 import { useUserStore } from "@/stores/user"
 import { ref } from "vue"
 
+const router = useRouter()
 const forgotten = false
 const email = ref("")
 const password = ref("")

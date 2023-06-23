@@ -1,9 +1,10 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { signIn, type LoginCreds } from '@/api/auth'
+import { authTokenIsPresent } from '@/utils/local-storage'
 
 export const useUserStore = defineStore('user', () => {
-  const isAuthenticated = ref(false)
+  const isAuthenticated = ref(authTokenIsPresent())
 
   async function login(params: LoginCreds) {
     const response = await signIn(params);
@@ -14,12 +15,4 @@ export const useUserStore = defineStore('user', () => {
 
   return { login, isAuthenticated }
 })
-
-  // @Action
-  // async login(params: ILoginCreds) {
-  //   const response = await AuthService.signIn(params);
-  //   if (response) {
-  //     this.context.commit("setAuthenticated", true);
-  //   }
-  // }
 

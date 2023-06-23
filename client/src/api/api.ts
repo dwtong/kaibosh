@@ -33,7 +33,7 @@ service.defaults.transformRequest = [
 ]
 
 service.interceptors.request.use(config => {
-  config.headers.Authorization = loadAuthToken()
+  // config.headers.Authorization = loadAuthToken()
 
   if (config.params) {
     config.params = snakeCaseKeys(config.params, { deep: true })
@@ -44,19 +44,20 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(
   response => {
-    const authToken = response.headers.getAuthorization?.toString()
+    const authToken = response.headers.authorization
     if (authToken) {
       saveAuthToken(authToken)
     }
     return response
   },
   error => {
-    const authToken = error.response.headers.getAuthorization?.toString()
-    if (error.response?.status === 401) {
-      // UserModule.logout()
-    } else if (authToken && error.response?.headers.client) {
-      saveAuthToken(authToken)
-    }
+    console.log(error)
+    // const authToken = error.response.headers.getAuthorization?.toString()
+    // if (error.response?.status === 401) {
+    //   // UserModule.logout()
+    // } else if (authToken && error.response?.headers.client) {
+    //   saveAuthToken(authToken)
+    // }
     return error
   }
 )
@@ -76,6 +77,7 @@ export const post = async (resource: string, params: any) => {
     const response = await service.post(resource, params)
     return Promise.resolve(response.data)
   } catch (error: any) {
+    console.error(error)
     // toast.error(`Failed to create ${resource}.`)
     return Promise.reject(error.response.data)
   }

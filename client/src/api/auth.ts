@@ -7,7 +7,8 @@ export type LoginCreds = {
 
 const resource = "auth";
 
-export function signIn(params: LoginCreds) {
+export async function signIn(params: LoginCreds): Promise<string> {
+  console.log('params', params)
   return post(`${resource}/sign_in`, params);
 }
 
