@@ -2,11 +2,12 @@
 import { RouterLink, RouterView } from 'vue-router'
 import { computed } from "vue"
 import GlobalLoader from '@/components/ui/GlobalLoader.vue'
+import { useUserStore } from "@/stores/user"
 
+const user = useUserStore()
 const showNav = computed(() => {
-  // const isPublicRoute = this.$route.matched.every(r => r.meta.public);
-  // return !isPublicRoute && this.isAuthenticated;
-  return false
+  const isPublicRoute = false//this.$route.matched.every(r => r.meta.public);
+  return !isPublicRoute && user.isAuthenticated;
 })
 </script>
 
