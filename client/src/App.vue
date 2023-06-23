@@ -1,25 +1,27 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { ref } from "vue"
+import { computed } from "vue"
 import GlobalLoader from '@/components/ui/GlobalLoader.vue'
 
-const showNav = ref(true)
+const showNav = computed(() => {
+  // const isPublicRoute = this.$route.matched.every(r => r.meta.public);
+  // return !isPublicRoute && this.isAuthenticated;
+  return false
+})
 </script>
 
 <template>
   <GlobalLoader />
-  <div>
-    <div v-if="showNav" class="sidenav is-hidden-print">
-      <NavBar />
-    </div>
-    <div class="main" :class="{ 'with-nav': showNav }">
-      <section class="section">
-        <div class="container is-fluid">
-          <!-- <RouterView :key="$route.fullPath"></RouterView> -->
-          <RouterView></RouterView>
-        </div>
-      </section>
-    </div>
+  <div v-if="showNav" class="sidenav is-hidden-print">
+    <NavBar />
+  </div>
+  <div class="main" :class="{ 'with-nav': showNav }">
+    <section class="section">
+      <div class="container is-fluid">
+        <!-- <RouterView :key="$route.fullPath"></RouterView> -->
+        <RouterView></RouterView>
+      </div>
+    </section>
   </div>
   <!-- <header> -->
   <!--   <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
@@ -37,10 +39,11 @@ const showNav = ref(true)
   <!-- <RouterView /> -->
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .main {
   background-color: $app-background;
   min-height: 100vh;
+  min-width: 100vw;
   overflow: hidden;
 
   @media print {
