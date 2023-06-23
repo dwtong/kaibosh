@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { computed } from "vue"
 import { useUserStore } from "@/stores/user"
+import NavBar from './components/ui/NavBar.vue';
+import { useRoute } from "vue-router"
 
+const route = useRoute()
 const user = useUserStore()
 const showNav = computed(() => {
   const isPublicRoute = false//this.$route.matched.every(r => r.meta.public);
@@ -17,25 +20,10 @@ const showNav = computed(() => {
   <div class="main" :class="{ 'with-nav': showNav }">
     <section class="section">
       <div class="container is-fluid">
-        <!-- <RouterView :key="$route.fullPath"></RouterView> -->
-        <RouterView></RouterView>
+        <RouterView :key="route.fullPath"></RouterView>
       </div>
     </section>
   </div>
-  <!-- <header> -->
-  <!--   <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-
-  <!--   <div class="wrapper"> -->
-  <!--     <HelloWorld msg="You dud it!" /> -->
-
-  <!--     <nav> -->
-  <!--       <RouterLink to="/">Home</RouterLink> -->
-  <!--       <RouterLink to="/about">About</RouterLink> -->
-  <!--     </nav> -->
-  <!--   </div> -->
-  <!-- </header> -->
-
-  <!-- <RouterView /> -->
 </template>
 
 <style lang="scss" scoped>
