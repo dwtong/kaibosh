@@ -23,12 +23,19 @@ defmodule KaiboshWeb.Endpoint do
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
-  plug Plug.Static,
-    at: "/",
-    from: {:kaibosh, "priv/static"},
-    gzip: false,
-    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
-    only_matching: ["precache-manifest"]
+  # plug Plug.Static,
+  #   at: "/",
+  #   from: {:kaibosh, "priv/static"},
+  #   gzip: false,
+  #   only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
+  #   only_matching: ["precache-manifest"]
+
+  if Mix.env() == :dev do
+    plug Plug.Static,
+      at: "/",
+      from: "client",
+      gzip: false
+  end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
