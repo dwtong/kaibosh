@@ -61,7 +61,6 @@ defmodule Kaibosh.MixProject do
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.3"},
       {:plug_crypto, "~> 1.2"},
-      {:cors_plug, "~> 3.0"},
 
       # Prod
       {:argon2_elixir, "~> 3.0"},
