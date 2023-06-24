@@ -1,10 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div>
-    sessions list view
-  </div>
+  <div>sessions list view</div>
 </template>
 
 <!-- <template> -->

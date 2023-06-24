@@ -20,19 +20,28 @@ async function logout() {
     <p class="menu-label">Schedule</p>
     <ul class="menu-list">
       <li>
-        <RouterLink to="/sessions/week" active-class="is-active" exact> Sessions By Week </RouterLink>
+        <RouterLink to="/sessions/week" active-class="is-active" exact>
+          Sessions By Week
+        </RouterLink>
       </li>
     </ul>
 
     <p class="menu-label">Food Recipients</p>
     <ul class="menu-list">
       <li>
-        <RouterLink to="/recipients" active-class="is-active" exact @click="resetRecipientNameFilter">
+        <RouterLink
+          to="/recipients"
+          active-class="is-active"
+          exact
+          @click="resetRecipientNameFilter"
+        >
           View Recipients
         </RouterLink>
       </li>
       <li>
-        <RouterLink to="/recipients/new" active-class="is-active" exact> Add New Recipient </RouterLink>
+        <RouterLink to="/recipients/new" active-class="is-active" exact>
+          Add New Recipient
+        </RouterLink>
       </li>
     </ul>
 
@@ -47,7 +56,6 @@ async function logout() {
     </ul>
   </aside>
 </template>
-
 
 <style lang="scss" scoped>
 .logo {

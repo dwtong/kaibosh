@@ -32,7 +32,7 @@ service.defaults.transformRequest = [
   }
 ]
 
-service.interceptors.request.use(config => {
+service.interceptors.request.use((config) => {
   config.headers.Authorization = loadAuthToken()
 
   if (config.params) {
@@ -43,15 +43,15 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use(
-  response => {
+  (response) => {
     const authToken = response.headers.authorization
     if (authToken) {
-      console.log('updated token')
+      console.log("updated token")
       saveAuthToken(authToken)
     }
     return response
   },
-  error => {
+  (error) => {
     console.log(error)
     // const authToken = error.response.headers.getAuthorization?.toString()
     // if (error.response?.status === 401) {

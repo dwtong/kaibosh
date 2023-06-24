@@ -1,27 +1,25 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url"
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }: any) => {
-  const isDev = command !== "build";
+  const isDev = command !== "build"
   if (isDev) {
     // Terminate the watcher when Phoenix quits
     process.stdin.on("close", () => {
-      process.exit(0);
-    });
+      process.exit(0)
+    })
 
-    process.stdin.resume();
+    process.stdin.resume()
   }
 
   return {
-    plugins: [
-      vue(),
-    ],
+    plugins: [vue()],
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
+        "@": fileURLToPath(new URL("./src", import.meta.url))
       }
     },
     css: {
