@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import CreateRecipientView from "@/views/recipients/CreateRecipientView.vue"
 import UpdateRecipientView from "@/views/recipients/UpdateRecipientView.vue"
 import SignupView from "@/views/recipients/SignupView.vue"
@@ -82,11 +82,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const user = useUserStore()
+  const auth = useAuthStore()
 
-  if (!to.meta.public && !user.isAuthenticated) {
-    console.log('meta', to.meta.public)
-    console.log('auth', user.isAuthenticated)
+  if (!to.meta.public && !auth.isAuthenticated) {
     return {
       path: '/login',
       query: { redirect: to.fullPath }
@@ -96,31 +94,3 @@ router.beforeEach((to) => {
 })
 
 export default router
-
-// import auth from "@/helpers/auth";
-// import { UserModule } from "@/store/modules/user";
-// import { Route } from "vue-router";
-
-// const ifNotAuthenticated = (to: Route, from: Route, next: any) => {
-//   if (!UserModule.isAuthenticated) {
-//     next();
-//   } else {
-//     next("/recipients");
-//   }
-// };
-
-
-//   if (UserModule.isAuthenticated) {
-//     next();
-//   } else {
-//     next("/login");
-//   }
-// };
-
-// const saveResetParams = (to: Route, from: Route, next: any) => {
-//   auth.saveAuthTokenFromUrlParams();
-//   next();
-// };
-
-// export default [
-// ];

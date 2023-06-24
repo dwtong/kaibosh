@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router"
-import { useUserStore } from "@/stores/user"
 import { ref } from "vue"
+import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter()
 const forgotten = false
@@ -9,17 +9,17 @@ const email = ref("")
 const password = ref("")
 const showError = ref(false)
 const loading = ref(false)
-const user = useUserStore()
+const auth = useAuthStore()
 
 const resetPassword = () => console.log('reset')
 const toggleForgotten = () => console.log('forgotten')
 
 async function login() {
   loading.value = true
-  await user.login({ email: email.value, password: password.value })
+  await auth.login({ email: email.value, password: password.value })
   loading.value = false
 
-  if (user.isAuthenticated) {
+  if (auth.isAuthenticated) {
     router.push("/");
   } else {
     showError.value = true

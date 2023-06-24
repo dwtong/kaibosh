@@ -33,7 +33,7 @@ service.defaults.transformRequest = [
 ]
 
 service.interceptors.request.use(config => {
-  // config.headers.Authorization = loadAuthToken()
+  config.headers.Authorization = loadAuthToken()
 
   if (config.params) {
     config.params = snakeCaseKeys(config.params, { deep: true })
@@ -46,6 +46,7 @@ service.interceptors.response.use(
   response => {
     const authToken = response.headers.authorization
     if (authToken) {
+      console.log('updated token')
       saveAuthToken(authToken)
     }
     return response

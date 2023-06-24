@@ -1,18 +1,20 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { signIn, type LoginCreds } from '@/api/auth'
-import { authTokenIsPresent } from '@/utils/local-storage'
+import { getUsers, postUser } from '@/api/users'
 
 export const useUserStore = defineStore('user', () => {
-  const isAuthenticated = ref(authTokenIsPresent())
+  const users = ref()
 
-  async function login(params: LoginCreds) {
-    const response = await signIn(params);
-    if (response) {
-      isAuthenticated.value = true
-    }
+  async function createUser(email: string) {
+    await postUser(email)
   }
 
-  return { login, isAuthenticated }
+  function fetchUsers() {
+    getUsers().then(data => users.value = data)
+  }
+
+  fetchUsers()
+
+  return { createUser, fetchUsers, users }
 })
 

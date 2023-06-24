@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { computed } from "vue"
-import { useUserStore } from "@/stores/user"
 import NavBar from './components/ui/NavBar.vue';
 import { useRoute } from "vue-router"
+import { useAuthStore } from './stores/auth';
 
 const route = useRoute()
-const user = useUserStore()
+const auth = useAuthStore()
 const showNav = computed(() => {
   const isPublicRoute = false//this.$route.matched.every(r => r.meta.public);
-  return !isPublicRoute && user.isAuthenticated
+  return !isPublicRoute && auth.isAuthenticated
 })
 </script>
 
