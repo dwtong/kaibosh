@@ -1,6 +1,6 @@
-import { get, post, put } from "./api"
+import { get, post, put } from './api'
 
-const resource = "users"
+const resource = 'users'
 
 export function getUsers() {
   return get(resource)

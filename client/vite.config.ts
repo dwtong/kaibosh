@@ -1,14 +1,15 @@
-import { fileURLToPath, URL } from "node:url"
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from "vite"
-import vue from "@vitejs/plugin-vue"
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { ConfigEnv } from 'vite'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }: any) => {
-  const isDev = command !== "build"
+export default defineConfig(({ command }: ConfigEnv) => {
+  const isDev = command !== 'build'
   if (isDev) {
     // Terminate the watcher when Phoenix quits
-    process.stdin.on("close", () => {
+    process.stdin.on('close', () => {
       process.exit(0)
     })
 
@@ -19,8 +20,8 @@ export default defineConfig(({ command }: any) => {
     plugins: [vue()],
     resolve: {
       alias: {
-        "@": fileURLToPath(new URL("./src", import.meta.url))
-      }
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
     css: {
       preprocessorOptions: {
@@ -28,27 +29,27 @@ export default defineConfig(({ command }: any) => {
           additionalData: `
           @import "node_modules/bulma/sass/utilities/functions";
           @import "@/assets/scss/_variables.scss";
-        `
-        }
-      }
+        `,
+        },
+      },
     },
-    publicDir: "static",
+    publicDir: 'static',
     build: {
-      target: "esnext", // build for recent browsers
-      outDir: "../priv/static", // emit assets to priv/static
+      target: 'esnext', // build for recent browsers
+      outDir: '../priv/static', // emit assets to priv/static
       emptyOutDir: true,
       sourcemap: isDev, // enable source map in dev build
       manifest: false, // do not generate manifest.json
       rollupOptions: {
         input: {
-          main: "./src/main.ts"
+          main: './src/main.ts',
         },
         output: {
-          entryFileNames: "assets/[name].js", // remove hash
-          chunkFileNames: "assets/[name].js",
-          assetFileNames: "assets/[name][extname]"
-        }
-      }
-    }
+          entryFileNames: 'assets/[name].js', // remove hash
+          chunkFileNames: 'assets/[name].js',
+          assetFileNames: 'assets/[name][extname]',
+        },
+      },
+    },
   }
 })

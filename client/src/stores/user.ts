@@ -1,8 +1,8 @@
-import { ref } from "vue"
-import { defineStore } from "pinia"
-import { getUsers, postUser } from "@/api/users"
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+import { getUsers, postUser } from '@/api/users'
 
-export const useUserStore = defineStore("user", () => {
+export const useUserStore = defineStore('user', () => {
   const users = ref()
 
   async function createUser(email: string) {

@@ -1,8 +1,8 @@
-@import "node_modules/bulma/sass/utilities/initial-variables";
-@import "node_modules/bulma/sass/utilities/functions";
+@import 'node_modules/bulma/sass/utilities/initial-variables';
+@import 'node_modules/bulma/sass/utilities/functions';
 // 1. Set your own initial variables and derived
 //    variables in _variables.scss
-@import "variables";
+@import 'variables';
 
 $kaibosh-green: #00bd00;
 
@@ -16,26 +16,26 @@ $twitter-invert: findColorInvert($twitter);
 $github: #333;
 $github-invert: findColorInvert($github);
 
-@import "node_modules/bulma/sass/utilities/derived-variables";
+@import 'node_modules/bulma/sass/utilities/derived-variables';
 
 // 3. Add new color variables to the color map.
 $addColors: (
-  "twitter": (
+  'twitter': (
     $twitter,
-    $twitter-invert
+    $twitter-invert,
   ),
-  "linkedin": (
+  'linkedin': (
     $linkedin,
-    $linkedin-invert
+    $linkedin-invert,
   ),
-  "github": (
+  'github': (
     $github,
-    $github-invert
-  )
+    $github-invert,
+  ),
 );
 $colors: map-merge($colors, $addColors);
 
-@import "node_modules/bulma/bulma.sass";
+@import 'node_modules/bulma/bulma.sass';
 // @import "~buefy/src/scss/buefy";
 
 // 4. Provide custom buefy overrides and site styles here

@@ -48,7 +48,9 @@ async function logout() {
     <p class="menu-label">Settings</p>
     <ul class="menu-list">
       <li>
-        <RouterLink to="/settings" active-class="is-active"> User Settings </RouterLink>
+        <RouterLink to="/settings" active-class="is-active">
+          User Settings
+        </RouterLink>
       </li>
       <li>
         <a @click="logout">Logout</a>

@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import { useRouter } from "vue-router"
-import { ref } from "vue"
-import { useAuthStore } from "@/stores/auth"
+import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const forgotten = false
-const email = ref("")
-const password = ref("")
+const email = ref('')
+const password = ref('')
 const showError = ref(false)
 const loading = ref(false)
 const auth = useAuthStore()
 
-const resetPassword = () => console.log("reset")
-const toggleForgotten = () => console.log("forgotten")
+const resetPassword = () => console.log('reset')
+const toggleForgotten = () => console.log('forgotten')
 
 async function login() {
   loading.value = true
@@ -20,7 +20,7 @@ async function login() {
   loading.value = false
 
   if (auth.isAuthenticated) {
-    router.push("/")
+    router.push('/')
   } else {
     showError.value = true
   }
@@ -49,8 +49,15 @@ async function login() {
           </div>
           <div class="field">
             <p class="control">
-              <button class="button is-primary is-loading">Reset Password</button>
-              <a class="button is-text forgotten-button" @click="toggleForgotten"> Login </a>
+              <button class="button is-primary is-loading">
+                Reset Password
+              </button>
+              <a
+                class="button is-text forgotten-button"
+                @click="toggleForgotten"
+              >
+                Login
+              </a>
             </p>
           </div>
         </form>
@@ -79,8 +86,16 @@ async function login() {
           </div>
           <div class="field">
             <p class="control">
-              <button class="button is-primary" :class="{ 'is-loading': loading }">Login</button>
-              <a class="button is-text forgotten-button" @click="toggleForgotten">
+              <button
+                class="button is-primary"
+                :class="{ 'is-loading': loading }"
+              >
+                Login
+              </button>
+              <a
+                class="button is-text forgotten-button"
+                @click="toggleForgotten"
+              >
                 Forgotten Password?
               </a>
             </p>

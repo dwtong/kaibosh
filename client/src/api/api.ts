@@ -1,35 +1,38 @@
-import axios from "axios"
-import camelCaseKeys from "camelcase-keys"
-import snakeCaseKeys from "snakecase-keys"
-import { loadAuthToken, saveAuthToken } from "@/utils/local-storage"
+import axios from 'axios'
+import camelCaseKeys from 'camelcase-keys'
+import snakeCaseKeys from 'snakecase-keys'
+import { loadAuthToken, saveAuthToken } from '@/utils/local-storage'
 // import toast from "@/helpers/toast"
 // import { UserModule } from "@/store/modules/user"
 
-const basePath = "http://localhost:4000/api"
+const basePath = 'http://localhost:4000/api'
 
 const service = axios.create({
   baseURL: basePath,
-  headers: { "Content-Type": "application/json" }
+  headers: { 'Content-Type': 'application/json' },
 })
 
 service.defaults.transformResponse = [
   (data, headers) => {
-    if (data && headers?.["content-type"].includes("application/json")) {
+    if (data && headers?.['content-type'].includes('application/json')) {
       return camelCaseKeys(JSON.parse(data), { deep: true })
     } else {
       return data
     }
-  }
+  },
 ]
 
 service.defaults.transformRequest = [
   (data, headers) => {
-    if (data && headers.get("Content-Type")?.toString().includes("application/json")) {
+    if (
+      data &&
+      headers.get('Content-Type')?.toString().includes('application/json')
+    ) {
       return JSON.stringify(snakeCaseKeys(data, { deep: true }))
     } else {
       return data
     }
-  }
+  },
 ]
 
 service.interceptors.request.use((config) => {
@@ -46,7 +49,7 @@ service.interceptors.response.use(
   (response) => {
     const authToken = response.headers.authorization
     if (authToken) {
-      console.log("updated token")
+      console.log('updated token')
       saveAuthToken(authToken)
     }
     return response
@@ -60,7 +63,7 @@ service.interceptors.response.use(
     //   saveAuthToken(authToken)
     // }
     return error
-  }
+  },
 )
 
 export const get = async (resource: string, params?: any) => {
