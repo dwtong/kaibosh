@@ -20,7 +20,7 @@ const showNav = computed(() => {
   <div class="main" :class="{ 'with-nav': showNav }">
     <section class="section">
       <div class="container is-fluid">
-        <RouterView :key="route.fullPath"></RouterView>
+        <RouterView :key="route.fullPath" />
       </div>
     </section>
   </div>

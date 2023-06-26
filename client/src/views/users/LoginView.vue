@@ -40,7 +40,7 @@ async function login() {
             <p class="control has-icons-left">
               <input v-model="email" class="input" type="email" />
               <span class="icon is-small is-left">
-                <i class="fa fa-envelope"></i>
+                <i class="fa fa-envelope" />
               </span>
             </p>
           </div>
@@ -61,7 +61,7 @@ async function login() {
             <p class="control has-icons-left">
               <input v-model="email" class="input" type="email" />
               <span class="icon is-small is-left">
-                <i class="fa fa-envelope"></i>
+                <i class="fa fa-envelope" />
               </span>
             </p>
           </div>
@@ -70,7 +70,7 @@ async function login() {
             <p class="control has-icons-left">
               <input v-model="password" class="input" type="password" />
               <span class="icon is-small is-left">
-                <i class="fa fa-lock"></i>
+                <i class="fa fa-lock" />
               </span>
             </p>
           </div>
