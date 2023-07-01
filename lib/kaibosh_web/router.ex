@@ -103,6 +103,7 @@ defmodule KaiboshWeb.Router do
   scope "/", KaiboshWeb do
     pipe_through :browser
 
+    get "/api/*path", FallbackController, {:error, :not_found}
     get "/*path", PageController, :index
   end
 end
