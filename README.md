@@ -29,3 +29,7 @@ Alternatively, you can:
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Sending Emails in Development
+
+Any emails sent in development can be viewed at [`http://localhost:4000/sent_emails`](http://localhost:4000/sent_emails)
