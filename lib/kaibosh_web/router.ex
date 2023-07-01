@@ -3,10 +3,10 @@ defmodule KaiboshWeb.Router do
   alias KaiboshWeb.Plugs.Authenticate
 
   @csp """
-  default-src 'self' localhost:5173 api.usersnap.com api.addressfinder.io;\
-  script-src 'self' localhost:5173 blob: plausible.io api.usersnap.com api.addressfinder.io cdn.lr-ingest.io cdn.usersnap.com use.fontawesome.com 'unsafe-inline' 'unsafe-eval';\
+  default-src 'self' localhost:5173 api.addressfinder.io;\
+  script-src 'self' localhost:5173 blob: api.addressfinder.io use.fontawesome.com 'unsafe-inline' 'unsafe-eval';\
   style-src 'self' localhost:5173 'unsafe-inline' 'unsafe-eval' api.addressfinder.io;\
-  img-src 'self' localhost:5173 cdn.usersnap.com data:;\
+  img-src 'self' localhost:5173 data:;\
   connect-src 'self' ws://localhost:5173;\
   """
 
