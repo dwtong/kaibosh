@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
-const users = useUserStore()
+
+const userStore = useUserStore()
+userStore.fetchUsers()
 </script>
 
 <template>
@@ -17,7 +19,7 @@ const users = useUserStore()
 
       <div class="box">
         <h1 class="title">Users</h1>
-        <div v-for="user in users" :key="user.email">
+        <div v-for="user in userStore.users" :key="user.email">
           {{ user.email }}
         </div>
       </div>
