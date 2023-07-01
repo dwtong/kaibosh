@@ -1,31 +1,43 @@
-import { post, put, destroy } from './api'
+import api from './api'
 
-export type LoginCreds = {
+export type LoginParams = {
   email: string
   password: string
 }
 
-const resource = 'auth'
-
-export async function signIn(params: LoginCreds): Promise<string> {
-  console.log('params', params)
-  return post(`${resource}/sign_in`, params)
+export type ResetPasswordParams = {
+  email: string
 }
 
-export function signOut() {
-  destroy(`${resource}/sign_out`)
+export type UpdatePasswordParams = {
+  password: string
+  token: string
 }
 
-export function resetPassword(email: string) {
-  return post(`${resource}/reset_password`, {
-    email,
-    redirectUrl: `${window.location.origin}/reset_password`,
-  })
+export type AuthResponse = {
+  message: string
 }
 
-export function changePassword(password: string, token: string) {
-  return put(`${resource}/update_password`, {
-    password,
-    token: token,
-  })
+export async function signIn(params: LoginParams): Promise<AuthResponse> {
+  return api.post<AuthResponse>('auth/sign_in', params).then(({ data }) => data)
+}
+
+export async function signOut(): Promise<void> {
+  return api.delete('auth/sign_out')
+}
+
+export async function resetPassword(
+  params: ResetPasswordParams,
+): Promise<AuthResponse> {
+  return api
+    .post<AuthResponse>('auth/reset_password', params)
+    .then(({ data }) => data)
+}
+
+export async function updatePassword(
+  params: UpdatePasswordParams,
+): Promise<AuthResponse> {
+  return api
+    .put<AuthResponse>('auth/update_password', params)
+    .then(({ data }) => data)
 }

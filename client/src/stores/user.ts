@@ -6,7 +6,7 @@ export const useUserStore = defineStore('user', () => {
   const users = ref()
 
   async function createUser(email: string) {
-    await postUser(email)
+    await postUser({ email })
   }
 
   async function fetchUsers() {
