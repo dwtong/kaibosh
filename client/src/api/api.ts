@@ -1,7 +1,13 @@
 import Axios from 'axios'
 import camelCaseKeys from 'camelcase-keys'
 import snakeCaseKeys from 'snakecase-keys'
-import { loadAuthToken, saveAuthToken } from '@/utils/local-storage'
+import {
+  deleteAuthToken,
+  loadAuthToken,
+  saveAuthToken,
+} from '@/utils/local-storage'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 // import toast from "@/helpers/toast"
 // import { UserModule } from "@/store/modules/user"
 
@@ -49,19 +55,21 @@ api.interceptors.response.use(
   (response) => {
     const authToken = response.headers.authorization
     if (authToken) {
-      console.log('updated token')
       saveAuthToken(authToken)
     }
     return response
   },
   (error) => {
     console.log(error)
-    // const authToken = error.response.headers.getAuthorization?.toString()
-    // if (error.response?.status === 401) {
-    //   // UserModule.logout()
-    // } else if (authToken && error.response?.headers.client) {
-    //   saveAuthToken(authToken)
-    // }
+    const authToken = error.response.headers.authorization
+    const authStore = useAuthStore()
+
+    if (error.response?.status === 401) {
+      authStore.logout()
+      deleteAuthToken()
+    } else if (authToken && error.response?.headers.client) {
+      saveAuthToken(authToken)
+    }
     return error
   },
 )
