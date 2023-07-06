@@ -1,17 +1,21 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { signIn, type LoginParams } from '@/api/auth'
+import { signIn, type LoginParams, signOut } from '@/api/auth'
 import { authTokenIsPresent } from '@/utils/local-storage'
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(authTokenIsPresent())
 
-  async function login(params: LoginParams) {
-    const response = await signIn(params)
-    if (response) {
+  async function login(params: LoginParams): Promise<void> {
+    if (await signIn(params)) {
       isAuthenticated.value = true
     }
   }
 
-  return { login, isAuthenticated }
+  async function logout(): Promise<void> {
+    await signOut()
+    isAuthenticated.value = false
+  }
+
+  return { login, logout, isAuthenticated }
 })
