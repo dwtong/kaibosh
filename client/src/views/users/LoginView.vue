@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
-const router = useRouter()
 const forgotten = false
 const email = ref('')
 const password = ref('')
@@ -19,9 +17,7 @@ async function login() {
   await auth.login({ email: email.value, password: password.value })
   loading.value = false
 
-  if (auth.isAuthenticated) {
-    router.push('/')
-  } else {
+  if (!auth.isAuthenticated) {
     showError.value = true
   }
 }

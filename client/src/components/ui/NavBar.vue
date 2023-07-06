@@ -1,22 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { deleteAuthToken } from '@/utils/local-storage'
-import { useRouter } from 'vue-router'
-
 const authStore = useAuthStore()
-const router = useRouter()
 
 // import AllRecipients from "@/store/modules/all-recipients";
 // import { UserModule } from "@/store/modules/user";
 
 function resetRecipientNameFilter() {
   //   AllRecipients.updateNameFilter("");
-}
-
-function logout() {
-  authStore.logout()
-  deleteAuthToken()
-  router.push('/login')
 }
 </script>
 
@@ -62,7 +52,7 @@ function logout() {
         </RouterLink>
       </li>
       <li>
-        <a @click="logout">Logout</a>
+        <a @click="authStore.logout">Logout</a>
       </li>
     </ul>
   </aside>
