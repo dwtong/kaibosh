@@ -66,7 +66,6 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401) {
       authStore.logout()
-      deleteAuthToken()
     } else if (authToken && error.response?.headers.client) {
       saveAuthToken(authToken)
     }
