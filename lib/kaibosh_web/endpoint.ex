@@ -2,6 +2,8 @@ defmodule KaiboshWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :kaibosh
 
+  @one_week 60 * 60 * 24 * 7
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -10,7 +12,8 @@ defmodule KaiboshWeb.Endpoint do
     key: "_kaibosh_key",
     signing_salt: "3H1zjXAA",
     extra: "SameSite=Strict",
-    http_only: true
+    http_only: true,
+    max_age: @one_week
   ]
 
   # socket "/socket", KaiboshWeb.UserSocket,
