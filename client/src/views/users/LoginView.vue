@@ -1,16 +1,26 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { resetPassword } from '@/api/auth'
 
-const forgotten = false
+const forgotten = ref(false)
 const email = ref('')
 const password = ref('')
 const showError = ref(false)
+const showSuccess = ref(false)
 const loading = ref(false)
 const auth = useAuthStore()
 
-const resetPassword = () => console.log('reset')
-const toggleForgotten = () => console.log('forgotten')
+async function passwordReset() {
+  loading.value = true
+  const reset = await resetPassword({ email: email.value })
+  if (reset) {
+    showSuccess.value = true
+  } else {
+    showError.value = true
+  }
+  loading.value = false
+}
 
 async function login() {
   loading.value = true
@@ -30,7 +40,7 @@ async function login() {
         <div class="logo">
           <img src="@/assets/images/kaibosh.png" />
         </div>
-        <form v-if="forgotten" class="login" @submit.prevent="resetPassword">
+        <form v-if="forgotten" class="login" @submit.prevent="passwordReset">
           <div class="field">
             <label class="label">Email</label>
             <p class="control has-icons-left">
@@ -43,14 +53,21 @@ async function login() {
           <div v-if="showError" class="field">
             <p class="error-msg">Reset password failed. Please try again.</p>
           </div>
+          <div v-if="showSuccess" class="field">
+            <p class="success-msg">Reset password email sent.</p>
+          </div>
           <div class="field">
             <p class="control">
-              <button class="button is-primary is-loading">
+              <button
+                class="button is-primary"
+                :class="{ 'is-loading': loading }"
+                :disabled="showSuccess"
+              >
                 Reset Password
               </button>
               <a
                 class="button is-text forgotten-button"
-                @click="toggleForgotten"
+                @click="forgotten = false"
               >
                 Login
               </a>
@@ -90,7 +107,7 @@ async function login() {
               </button>
               <a
                 class="button is-text forgotten-button"
-                @click="toggleForgotten"
+                @click="forgotten = true"
               >
                 Forgotten Password?
               </a>
@@ -181,6 +198,11 @@ async function login() {
     color: white;
     font-size: 2.5rem;
   }
+}
+
+.success-msg {
+  font-size: 0.8rem;
+  color: $kaibosh-green;
 }
 
 .error-msg {
