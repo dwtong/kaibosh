@@ -6,10 +6,11 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 
 const route = useRoute()
-const auth = useAuthStore()
+const authStore = useAuthStore()
+
 const showNav = computed(() => {
-  const isPublicRoute = false //this.$route.matched.every(r => r.meta.public);
-  return !isPublicRoute && auth.isAuthenticated
+  const isPublicRoute = route.matched.every((r) => r.meta.public)
+  return !isPublicRoute && authStore.isAuthenticated
 })
 </script>
 
