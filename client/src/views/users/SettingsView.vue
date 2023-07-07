@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import PasswordResetForm from '@/components/users/PasswordResetForm.vue'
+import NotificationSettings from '@/components/users/NotificationSettings.vue'
 import { putUser } from '@/api/users'
 import { toast } from '@/utils/toast'
 
@@ -17,7 +18,7 @@ async function updatePassword(password: string) {
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
       <div class="box">
-        <h1 class="title">Signup Emails</h1>
+        <h1 class="title">Signup Notifications</h1>
         <NotificationSettings />
       </div>
 

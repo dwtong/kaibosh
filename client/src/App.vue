@@ -31,7 +31,6 @@ const showNav = computed(() => {
 .main {
   background-color: $app-background;
   min-height: 100vh;
-  min-width: 100vw;
   overflow: hidden;
 
   @media print {
