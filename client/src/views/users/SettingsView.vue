@@ -2,6 +2,7 @@
 import { useUserStore } from '@/stores/user'
 import PasswordResetForm from '@/components/users/PasswordResetForm.vue'
 import NotificationSettings from '@/components/users/NotificationSettings.vue'
+import CreateUserForm from '@/components/users/CreateUserForm.vue'
 import { putUser } from '@/api/users'
 import { toast } from '@/utils/toast'
 
