@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
+import PasswordResetForm from '@/components/users/PasswordResetForm.vue'
+import { putUser } from '@/api/users'
+import { toast } from '@/utils/toast'
 
 const userStore = useUserStore()
 userStore.fetchUsers()
+
+async function updatePassword(password: string) {
+  await putUser({ password })
+  toast({ message: 'Password updated.' })
+}
 </script>
 
 <template>
@@ -14,7 +22,7 @@ userStore.fetchUsers()
       </div>
 
       <div class="box">
-        <PasswordResetForm />
+        <PasswordResetForm :on-submit="updatePassword" />
       </div>
 
       <div class="box">
