@@ -12,6 +12,7 @@ import ResetPasswordView from '@/views/users/ResetPasswordView.vue'
 import SettingsView from '@/views/users/SettingsView.vue'
 import LoginView from '@/views/users/LoginView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
+import { saveAuthTokenFromUrlParams } from '@/utils/local-storage'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,8 +72,12 @@ const router = createRouter({
     {
       path: '/reset_password',
       component: ResetPasswordView,
-      // beforeEnter: saveResetParams,
       props: true,
+      meta: { public: true },
+      beforeEnter: (_to, _from, next) => {
+        saveAuthTokenFromUrlParams()
+        next()
+      },
     },
     {
       component: NotFoundView,
