@@ -18,6 +18,10 @@ export type AuthResponse = {
   message: string
 }
 
+export type UpdatePasswordResponse = AuthResponse & {
+  email: string
+}
+
 export async function signIn(params: LoginParams): Promise<AuthResponse> {
   return api.post<AuthResponse>('auth/sign_in', params).then(({ data }) => data)
 }
@@ -36,8 +40,8 @@ export async function resetPassword(
 
 export async function updatePassword(
   params: UpdatePasswordParams,
-): Promise<AuthResponse> {
+): Promise<UpdatePasswordResponse> {
   return api
-    .put<AuthResponse>('auth/update_password', params)
+    .put<UpdatePasswordResponse>('auth/update_password', params)
     .then(({ data }) => data)
 }

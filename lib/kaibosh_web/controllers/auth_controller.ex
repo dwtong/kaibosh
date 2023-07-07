@@ -42,7 +42,7 @@ defmodule KaiboshWeb.AuthController do
          {:ok, %User{}} <- Accounts.update_user(user, %{password: password}) do
       conn
       |> put_status(:ok)
-      |> render("password_updated.json")
+      |> render("password_updated.json", user: user)
     else
       _err -> send_resp(conn, :unprocessable_entity, "")
     end

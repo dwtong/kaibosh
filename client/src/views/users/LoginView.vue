@@ -14,11 +14,8 @@ const auth = useAuthStore()
 async function passwordReset() {
   loading.value = true
   const reset = await resetPassword({ email: email.value })
-  if (reset) {
-    showSuccess.value = true
-  } else {
-    showError.value = true
-  }
+  showSuccess.value = !!reset
+  showError.value = !showSuccess.value
   loading.value = false
 }
 
@@ -53,9 +50,10 @@ async function login() {
           <div v-if="showError" class="field">
             <p class="error-msg">Reset password failed. Please try again.</p>
           </div>
-          <div v-if="showSuccess" class="field">
-            <p class="success-msg">Reset password email sent.</p>
-          </div>
+          <p v-if="showSuccess" class="success-msg">
+            Password reset email sent.<br />
+            Please check your email inbox.
+          </p>
           <div class="field">
             <p class="control">
               <button

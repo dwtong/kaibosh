@@ -61,7 +61,7 @@ api.interceptors.response.use(
   },
   (error) => {
     console.log(error)
-    const authToken = error.response.headers.authorization
+    const authToken = error.response.headers?.authorization
     const authStore = useAuthStore()
 
     if (error.response?.status === 401) {
