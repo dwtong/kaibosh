@@ -3,15 +3,20 @@ import { computed, ref } from 'vue'
 import SubmitButton from '../ui/SubmitButton.vue'
 import ValidatedInput from '../ui/ValidatedInput.vue'
 import { useForm } from 'vee-validate'
-import * as yup from 'yup'
+import { object, string } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
 import { postUser } from '@/api/users'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 const isSubmitting = ref(false)
-const validationSchema = yup.object({
-  email: yup.string().required().email(),
-})
+const validationSchema = toTypedSchema(
+  object({
+    email: string()
+      .nonempty('Email is required')
+      .email('Must be a valid email'),
+  }),
+)
 const { handleSubmit, submitCount } = useForm({
   validationSchema,
 })

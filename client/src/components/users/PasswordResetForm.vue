@@ -3,19 +3,21 @@ import { computed, ref } from 'vue'
 import SubmitButton from '../ui/SubmitButton.vue'
 import ValidatedInput from '../ui/ValidatedInput.vue'
 import { useForm } from 'vee-validate'
-import * as yup from 'yup'
+import { object, string } from 'zod'
+import { toTypedSchema } from '@vee-validate/zod'
 
 const props = defineProps<{
   onSubmit: (password: string) => Promise<void>
 }>()
-const validationSchema = yup.object({
-  password: yup.string().required().min(6),
-  confirmation: yup
-    .string()
-    .required()
-    .min(8)
-    .oneOf([yup.ref('password')], 'Passwords must match'),
-})
+const validationSchema = toTypedSchema(
+  object({
+    password: string().min(6, 'Password is required'),
+    confirmation: string().min(6, 'Password confirmation is required'),
+  }).refine((data) => data.password === data.confirmation, {
+    path: ['confirmation'],
+    message: 'Passwords must match',
+  }),
+)
 const isSubmitting = ref(false)
 const { handleSubmit, submitCount } = useForm({
   validationSchema,
