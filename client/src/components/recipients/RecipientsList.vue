@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import type { RecipientSummary } from '@/api/recipients'
 import RecipientStatusTag from '../recipient/RecipientStatusTag.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps<{
   recipients: RecipientSummary[]
 }>()
+
+function navigate(recipientId: string): void {
+  router.push(`/recipients/${recipientId}`)
+}
 </script>
 
 <template>
@@ -14,7 +21,11 @@ const props = defineProps<{
       <th class="th-status">Status</th>
     </thead>
     <tbody>
-      <tr v-for="recipient in props.recipients" :key="recipient.id">
+      <tr
+        v-for="recipient in props.recipients"
+        :key="recipient.id"
+        @click="navigate(recipient.id)"
+      >
         <td>{{ recipient.name }}</td>
         <td><RecipientStatusTag :status="recipient.status" /></td>
       </tr>
