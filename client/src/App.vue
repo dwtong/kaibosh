@@ -57,4 +57,8 @@ const showNav = computed(() => {
   padding: 1.3rem 0rem 2rem 1rem;
   background-color: $navbar-background;
 }
+
+.section {
+  padding: 3rem 1.3rem;
+}
 </style>
