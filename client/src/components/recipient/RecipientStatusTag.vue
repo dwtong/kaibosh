@@ -2,9 +2,9 @@
 import { computed } from 'vue'
 
 type Props = {
-  status: string
-  size: 'is-normal' | 'is-medium' | 'is-large'
-  withLabel: boolean
+  status?: string
+  size?: 'is-normal' | 'is-medium' | 'is-large'
+  withLabel?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,7 +28,7 @@ const type = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="status-container">
     <div v-if="props.withLabel" class="field">
       <label class="label">Status</label>
       <transition name="fade">
@@ -40,6 +40,10 @@ const type = computed(() => {
 </template>
 
 <style scoped lang="scss">
+.status-container {
+  text-align: center;
+}
+
 .tag {
   border-radius: 1rem;
 }
