@@ -15,21 +15,36 @@ export const useRecipientsStore = defineStore('recipients', () => {
   const rawRecipients = ref<RecipientSummary[]>([])
   const sortField = ref<SortField>('name')
   const sortDir = ref<SortDir>('asc')
-  const filteredBase = ref('0')
-  const filteredName = ref('')
-  const filteredStatus: Status[] = reactive([
-    { label: 'Active', name: 'active', enabled: false },
-    { label: 'Pending', name: 'pending', enabled: false },
-    { label: 'On Hold', name: 'on_hold', enabled: false },
-    { label: 'Archived', name: 'archived', enabled: false },
-  ])
+  const initialFilters = {
+    base: '0',
+    name: '',
+    status: [
+      { label: 'Active', name: 'active', enabled: false },
+      { label: 'Pending', name: 'pending', enabled: false },
+      { label: 'On Hold', name: 'on_hold', enabled: false },
+      { label: 'Archived', name: 'archived', enabled: false },
+    ],
+  }
+
+  const filteredBase = ref(initialFilters.base)
+  const filteredName = ref(initialFilters.name)
+  const filteredStatus: Status[] = reactive(initialFilters.status)
+
   const filteredStatusNames = computed(() => {
     return filteredStatus
       .filter((s: Status) => s.enabled)
       .map((s: Status) => s.name)
   })
 
-  function resetFilters() {}
+  function resetFilters() {
+    filteredName.value = initialFilters.name
+    filteredBase.value = initialFilters.base
+    filteredStatus.forEach((s) => (s.enabled = false))
+  }
+
+  function setFilteredName(value: string): void {
+    filteredName.value = value
+  }
 
   function setSort(field: SortField): void {
     if (field !== sortField.value) {
@@ -49,7 +64,7 @@ export const useRecipientsStore = defineStore('recipients', () => {
     await getRecipients().then((data) => (rawRecipients.value = data))
   }
 
-  function sortRecipients(a: RecipientSummary, b: RecipientSummary) {
+  function sortRecipients(a: RecipientSummary, b: RecipientSummary): number {
     const dir = sortDir.value
     const key = sortField.value
 
@@ -60,7 +75,17 @@ export const useRecipientsStore = defineStore('recipients', () => {
     }
   }
 
-  const recipients = computed(() => rawRecipients.value.sort(sortRecipients))
+  function filterRecipients(recipient: RecipientSummary): boolean {
+    const matchesFilter = recipient.name
+      .toLowerCase()
+      .includes(filteredName.value.toLowerCase())
+
+    return matchesFilter
+  }
+
+  const recipients = computed(() => {
+    return rawRecipients.value.sort(sortRecipients).filter(filterRecipients)
+  })
 
   return {
     fetchRecipients,
@@ -70,6 +95,7 @@ export const useRecipientsStore = defineStore('recipients', () => {
     filteredStatusNames,
     recipients,
     resetFilters,
+    setFilteredName,
     setSort,
     sortDir,
     sortField,
