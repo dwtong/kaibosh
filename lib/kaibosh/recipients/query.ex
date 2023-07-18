@@ -28,6 +28,7 @@ defmodule Kaibosh.Recipients.Query do
     |> join(:left, [r, s], h in subquery(active_holds()), on: r.id == h.recipient_id)
     |> where(^filter_where(params))
     |> select_merge([r, s, h], %{r | session_count: s.count, hold_count: h.count})
+    |> order_by(:name)
   end
 
   defp filter_where(params) do
