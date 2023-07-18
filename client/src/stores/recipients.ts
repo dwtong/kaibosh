@@ -1,14 +1,35 @@
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getRecipients, type RecipientSummary } from '@/api/recipients'
 
 type SortDir = 'asc' | 'desc'
 type SortField = keyof RecipientSummary
 
+export type Status = {
+  name: string
+  label: string
+  enabled?: boolean
+}
+
 export const useRecipientsStore = defineStore('recipients', () => {
   const rawRecipients = ref<RecipientSummary[]>([])
   const sortField = ref<SortField>('name')
   const sortDir = ref<SortDir>('asc')
+  const filteredBase = ref('0')
+  const filteredName = ref('')
+  const filteredStatus: Status[] = reactive([
+    { label: 'Active', name: 'active', enabled: false },
+    { label: 'Pending', name: 'pending', enabled: false },
+    { label: 'On Hold', name: 'on_hold', enabled: false },
+    { label: 'Archived', name: 'archived', enabled: false },
+  ])
+  const filteredStatusNames = computed(() => {
+    return filteredStatus
+      .filter((s: Status) => s.enabled)
+      .map((s: Status) => s.name)
+  })
+
+  function resetFilters() {}
 
   function setSort(field: SortField): void {
     if (field !== sortField.value) {
@@ -41,5 +62,16 @@ export const useRecipientsStore = defineStore('recipients', () => {
 
   const recipients = computed(() => rawRecipients.value.sort(sortRecipients))
 
-  return { fetchRecipients, recipients, setSort, sortDir, sortField }
+  return {
+    fetchRecipients,
+    filteredBase,
+    filteredName,
+    filteredStatus,
+    filteredStatusNames,
+    recipients,
+    resetFilters,
+    setSort,
+    sortDir,
+    sortField,
+  }
 })

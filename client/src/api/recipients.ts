@@ -24,6 +24,12 @@ export type Recipient = RecipientSummary & {
   archivedAt: Date | string | null
 }
 
+export type ExportRecipientParams = {
+  baseId: string
+  name: string
+  status: string[]
+}
+
 export async function getRecipients(): Promise<RecipientSummary[]> {
   return api.get<RecipientSummary[]>('recipients').then(({ data }) => data)
 }
@@ -49,6 +55,8 @@ export async function destroyRecipient(id: string): Promise<void> {
   api.delete(`recipients/${id}`)
 }
 
-export async function exportRecipients(params: string[]): Promise<unknown> {
+export async function exportRecipients(
+  params: ExportRecipientParams,
+): Promise<string> {
   return api.get(`recipients/export`, { params }).then(({ data }) => data)
 }
