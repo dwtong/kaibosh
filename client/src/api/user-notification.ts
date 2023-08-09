@@ -1,7 +1,7 @@
-import api from './api'
+import api from "./api"
 
 // FIXME Currently API ignores user ID but it is still required
-const resource = 'users/1/notifications'
+const resource = "users/1/notifications"
 
 export type Notification = {
   id: string

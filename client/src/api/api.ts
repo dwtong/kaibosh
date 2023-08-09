@@ -1,26 +1,26 @@
-import Axios from 'axios'
-import camelCaseKeys from 'camelcase-keys'
-import snakeCaseKeys from 'snakecase-keys'
+import Axios from "axios"
+import camelCaseKeys from "camelcase-keys"
+import snakeCaseKeys from "snakecase-keys"
 import {
   deleteAuthToken,
   loadAuthToken,
   saveAuthToken,
-} from '@/utils/local-storage'
-import { useAuthStore } from '@/stores/auth'
-import { useRouter } from 'vue-router'
+} from "@/utils/local-storage"
+import { useAuthStore } from "@/stores/auth"
+import { useRouter } from "vue-router"
 // import toast from "@/helpers/toast"
 // import { UserModule } from "@/store/modules/user"
 
-const baseURL = 'http://localhost:4000/api'
+const baseURL = "http://localhost:4000/api"
 
 const api = Axios.create({
   baseURL,
-  headers: { 'Content-Type': 'application/json' },
+  headers: { "Content-Type": "application/json" },
 })
 
 api.defaults.transformResponse = [
   (data, headers) => {
-    if (data && headers?.['content-type'].includes('application/json')) {
+    if (data && headers?.["content-type"].includes("application/json")) {
       return camelCaseKeys(JSON.parse(data), { deep: true })
     } else {
       return data
@@ -32,7 +32,7 @@ api.defaults.transformRequest = [
   (data, headers) => {
     if (
       data &&
-      headers.get('Content-Type')?.toString().includes('application/json')
+      headers.get("Content-Type")?.toString().includes("application/json")
     ) {
       return JSON.stringify(snakeCaseKeys(data, { deep: true }))
     } else {

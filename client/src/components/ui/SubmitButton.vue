@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue"
 
 type Props = {
   isSubmitting: boolean
@@ -7,12 +7,12 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'is-primary',
+  type: "is-primary",
 })
 
 const cssClass = computed(() => {
   return {
-    'is-loading': props.isSubmitting,
+    "is-loading": props.isSubmitting,
     [props.type]: true,
   }
 })

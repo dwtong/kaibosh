@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { updatePassword } from '@/api/auth'
-import PasswordResetForm from '@/components/users/PasswordResetForm.vue'
-import { useAuthStore } from '@/stores/auth'
-import { toast } from '@/utils/toast'
-import { useRoute } from 'vue-router'
+import { updatePassword } from "@/api/auth"
+import PasswordResetForm from "@/components/users/PasswordResetForm.vue"
+import { useAuthStore } from "@/stores/auth"
+import { toast } from "@/utils/toast"
+import { useRoute } from "vue-router"
 
 const route = useRoute()
 const auth = useAuthStore()
 
 async function onSubmit(password: string) {
-  const token = route.query?.password_reset_token?.toString() ?? ''
+  const token = route.query?.password_reset_token?.toString() ?? ""
   const { email } = await updatePassword({ token, password })
-  toast({ message: 'Password updated.' })
+  toast({ message: "Password updated." })
   await auth.login({ email, password })
 }
 </script>

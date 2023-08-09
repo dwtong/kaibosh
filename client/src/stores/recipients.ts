@@ -1,8 +1,8 @@
-import { computed, reactive, ref } from 'vue'
-import { defineStore } from 'pinia'
-import { getRecipients, type RecipientSummary } from '@/api/recipients'
+import { computed, reactive, ref } from "vue"
+import { defineStore } from "pinia"
+import { getRecipients, type RecipientSummary } from "@/api/recipients"
 
-type SortDir = 'asc' | 'desc'
+type SortDir = "asc" | "desc"
 type SortField = keyof RecipientSummary
 
 export type Status = {
@@ -11,18 +11,18 @@ export type Status = {
   enabled?: boolean
 }
 
-export const useRecipientsStore = defineStore('recipients', () => {
+export const useRecipientsStore = defineStore("recipients", () => {
   const rawRecipients = ref<RecipientSummary[]>([])
-  const sortField = ref<SortField>('name')
-  const sortDir = ref<SortDir>('asc')
+  const sortField = ref<SortField>("name")
+  const sortDir = ref<SortDir>("asc")
   const initialFilters = {
-    base: '0',
-    name: '',
+    base: "0",
+    name: "",
     status: [
-      { label: 'Active', name: 'active', enabled: false },
-      { label: 'Pending', name: 'pending', enabled: false },
-      { label: 'On Hold', name: 'on_hold', enabled: false },
-      { label: 'Archived', name: 'archived', enabled: false },
+      { label: "Active", name: "active", enabled: false },
+      { label: "Pending", name: "pending", enabled: false },
+      { label: "On Hold", name: "on_hold", enabled: false },
+      { label: "Archived", name: "archived", enabled: false },
     ],
   }
 
@@ -49,14 +49,14 @@ export const useRecipientsStore = defineStore('recipients', () => {
   function setSort(field: SortField): void {
     if (field !== sortField.value) {
       sortField.value = field
-      sortDir.value = 'asc'
+      sortDir.value = "asc"
       return
     }
 
-    if (sortDir.value === 'asc') {
-      sortDir.value = 'desc'
+    if (sortDir.value === "asc") {
+      sortDir.value = "desc"
     } else {
-      sortDir.value = 'asc'
+      sortDir.value = "asc"
     }
   }
 
@@ -68,7 +68,7 @@ export const useRecipientsStore = defineStore('recipients', () => {
     const dir = sortDir.value
     const key = sortField.value
 
-    if (dir === 'asc') {
+    if (dir === "asc") {
       return a[key].localeCompare(b[key])
     } else {
       return b[key].localeCompare(a[key])

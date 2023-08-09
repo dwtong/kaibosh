@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRecipientsStore } from '@/stores/recipients'
+import { useRecipientsStore } from "@/stores/recipients"
 
 const recipientStore = useRecipientsStore()
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from "@/stores/auth"
 const authStore = useAuthStore()
 
 // import AllRecipients from "@/store/modules/all-recipients";

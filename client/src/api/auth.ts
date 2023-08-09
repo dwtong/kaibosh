@@ -1,4 +1,4 @@
-import api from './api'
+import api from "./api"
 
 export type LoginParams = {
   email: string
@@ -23,18 +23,18 @@ export type UpdatePasswordResponse = AuthResponse & {
 }
 
 export async function signIn(params: LoginParams): Promise<AuthResponse> {
-  return api.post<AuthResponse>('auth/sign_in', params).then(({ data }) => data)
+  return api.post<AuthResponse>("auth/sign_in", params).then(({ data }) => data)
 }
 
 export async function signOut(): Promise<void> {
-  return api.delete('auth/sign_out')
+  return api.delete("auth/sign_out")
 }
 
 export async function resetPassword(
   params: ResetPasswordParams,
 ): Promise<AuthResponse> {
   return api
-    .post<AuthResponse>('auth/reset_password', params)
+    .post<AuthResponse>("auth/reset_password", params)
     .then(({ data }) => data)
 }
 
@@ -42,6 +42,6 @@ export async function updatePassword(
   params: UpdatePasswordParams,
 ): Promise<UpdatePasswordResponse> {
   return api
-    .put<UpdatePasswordResponse>('auth/update_password', params)
+    .put<UpdatePasswordResponse>("auth/update_password", params)
     .then(({ data }) => data)
 }

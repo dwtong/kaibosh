@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue"
 
 type Props = {
   status?: string
-  size?: 'is-normal' | 'is-medium' | 'is-large'
+  size?: "is-normal" | "is-medium" | "is-large"
   withLabel?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  status: 'is-primary',
-  size: 'is-normal',
+  status: "is-primary",
+  size: "is-normal",
   withLabel: false,
 })
 
-const label = computed(() => props.status?.replace('_', ' '))
+const label = computed(() => props.status?.replace("_", " "))
 const type = computed(() => {
   const typeKey = props.status as keyof typeof types
   const types = {
-    on_hold: 'is-warning',
-    active: 'is-primary',
-    archived: 'is-gray-darker',
-    pending: 'is-info',
+    on_hold: "is-warning",
+    active: "is-primary",
+    archived: "is-gray-darker",
+    pending: "is-info",
   }
 
-  return types[typeKey] || 'is-gray-darker'
+  return types[typeKey] || "is-gray-darker"
 })
 </script>
 

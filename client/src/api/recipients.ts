@@ -1,4 +1,4 @@
-import api from './api'
+import api from "./api"
 
 export type Contact = {
   name: string
@@ -31,7 +31,7 @@ export type ExportRecipientParams = {
 }
 
 export async function getRecipients(): Promise<RecipientSummary[]> {
-  return api.get<RecipientSummary[]>('recipients').then(({ data }) => data)
+  return api.get<RecipientSummary[]>("recipients").then(({ data }) => data)
 }
 
 export async function getRecipient(id: string): Promise<Recipient> {
@@ -41,7 +41,7 @@ export async function getRecipient(id: string): Promise<Recipient> {
 export async function createRecipient(
   recipient: Partial<Recipient>,
 ): Promise<Recipient> {
-  return api.post('recipients', { recipient }).then(({ data }) => data)
+  return api.post("recipients", { recipient }).then(({ data }) => data)
 }
 
 export async function updateRecipient(

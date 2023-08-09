@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
-import PasswordResetForm from '@/components/users/PasswordResetForm.vue'
-import NotificationSettings from '@/components/users/NotificationSettings.vue'
-import CreateUserForm from '@/components/users/CreateUserForm.vue'
-import { putUser } from '@/api/users'
-import { toast } from '@/utils/toast'
+import { useUserStore } from "@/stores/user"
+import PasswordResetForm from "@/components/users/PasswordResetForm.vue"
+import NotificationSettings from "@/components/users/NotificationSettings.vue"
+import CreateUserForm from "@/components/users/CreateUserForm.vue"
+import { putUser } from "@/api/users"
+import { toast } from "@/utils/toast"
 
 const userStore = useUserStore()
 userStore.fetchUsers()
 
 async function updatePassword(password: string) {
   await putUser({ password })
-  toast({ message: 'Password updated.' })
+  toast({ message: "Password updated." })
 }
 </script>
 

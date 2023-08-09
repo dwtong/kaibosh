@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import RecipientsList from '@/components/recipients/RecipientsList.vue'
-import RecipientsFilterPanel from '@/components/recipients/RecipientsFilterPanel.vue'
-import { useRecipientsStore } from '@/stores/recipients'
+import RecipientsList from "@/components/recipients/RecipientsList.vue"
+import RecipientsFilterPanel from "@/components/recipients/RecipientsFilterPanel.vue"
+import { useRecipientsStore } from "@/stores/recipients"
 
 const recipientStore = useRecipientsStore()
 recipientStore.fetchRecipients()

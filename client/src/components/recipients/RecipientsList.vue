@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { RecipientSummary } from '@/api/recipients'
-import RecipientStatusTag from '../recipient/RecipientStatusTag.vue'
-import { useRouter } from 'vue-router'
-import { useRecipientsStore } from '@/stores/recipients'
+import type { RecipientSummary } from "@/api/recipients"
+import RecipientStatusTag from "../recipient/RecipientStatusTag.vue"
+import { useRouter } from "vue-router"
+import { useRecipientsStore } from "@/stores/recipients"
 
 const router = useRouter()
 const recipientStore = useRecipientsStore()

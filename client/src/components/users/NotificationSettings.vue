@@ -4,8 +4,8 @@ import {
   listNotifications,
   createNotification,
   deleteNotification,
-} from '@/api/user-notification'
-import { ref } from 'vue'
+} from "@/api/user-notification"
+import { ref } from "vue"
 
 const notifications = ref<Notification[]>()
 listNotifications().then((values) => (notifications.value = values))

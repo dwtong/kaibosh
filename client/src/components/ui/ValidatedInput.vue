@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useField } from 'vee-validate'
-import { computed } from 'vue'
+import { useField } from "vee-validate"
+import { computed } from "vue"
 
 const props = defineProps<{
   label?: string
@@ -9,7 +9,7 @@ const props = defineProps<{
   showError?: boolean
 }>()
 
-const label = computed(() => props.label || props.name.replace(/-/g, ' '))
+const label = computed(() => props.label || props.name.replace(/-/g, " "))
 const { errorMessage, value } = useField<string>(() => props.name)
 </script>
 

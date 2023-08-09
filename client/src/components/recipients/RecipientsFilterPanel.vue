@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useRecipientsStore } from '@/stores/recipients'
-import RecipientsBaseFilter from './RecipientsBaseFilter.vue'
-import RecipientsNameFilter from './RecipientsNameFilter.vue'
-import RecipientsStatusFilter from './RecipientsStatusFilter.vue'
-import { exportRecipients } from '@/api/recipients'
+import { useRecipientsStore } from "@/stores/recipients"
+import RecipientsBaseFilter from "./RecipientsBaseFilter.vue"
+import RecipientsNameFilter from "./RecipientsNameFilter.vue"
+import RecipientsStatusFilter from "./RecipientsStatusFilter.vue"
+import { exportRecipients } from "@/api/recipients"
 
 const recipientStore = useRecipientsStore()
 const resetFilters = recipientStore.resetFilters
@@ -12,13 +12,13 @@ async function downloadCsv() {
   const params = {
     baseId: recipientStore.filteredBase,
     name: recipientStore.filteredName,
-    status: ['active'],
+    status: ["active"],
   }
   const csv = await exportRecipients(params)
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const link = document.createElement('a')
+  const blob = new Blob([csv], { type: "text/csv" })
+  const link = document.createElement("a")
   link.href = URL.createObjectURL(blob)
-  link.download = 'recipients.csv'
+  link.download = "recipients.csv"
   link.click()
   URL.revokeObjectURL(link.href)
 }

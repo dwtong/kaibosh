@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { resetPassword } from '@/api/auth'
+import { ref } from "vue"
+import { useAuthStore } from "@/stores/auth"
+import { resetPassword } from "@/api/auth"
 
 const forgotten = ref(false)
-const email = ref('')
-const password = ref('')
+const email = ref("")
+const password = ref("")
 const showError = ref(false)
 const showSuccess = ref(false)
 const loading = ref(false)
