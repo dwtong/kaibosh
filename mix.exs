@@ -63,7 +63,7 @@ defmodule Kaibosh.MixProject do
       {:plug_crypto, "~> 1.2"},
 
       # Prod
-      {:argon2_elixir, "~> 3.0"},
+      {:argon2_elixir, "~> 3.2.1"},
       {:timex, "~> 3.6"},
       {:bamboo, "~> 2.2"},
       {:bamboo_phoenix, "~> 1.0"},

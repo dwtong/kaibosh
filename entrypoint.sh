@@ -14,6 +14,8 @@ do
   sleep 2
 done
 
+mix deps.get
+
 # Create, migrate, and seed database if it doesn't exist.
 if [[ -z `psql -Atqc "\\list $POSTGRES_DATABASE"` ]]; then
   echo "Database $POSTGRES_DATABASE does not exist. Creating..."
@@ -24,7 +26,7 @@ if [[ -z `psql -Atqc "\\list $POSTGRES_DATABASE"` ]]; then
 fi
 
 echo "Installing npm packages."
-npm install --prefix assets
+npm install --prefix client
 
 echo "Starting phoenix server."
 exec mix phx.server
