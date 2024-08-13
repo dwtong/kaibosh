@@ -9,7 +9,7 @@ export type Contact = {
 
 export type RecipientSummary = {
   id: string
-  baseId: string
+  baseId: number
   name: string
   status: string
 }
@@ -25,7 +25,7 @@ export type Recipient = RecipientSummary & {
 }
 
 export type ExportRecipientParams = {
-  baseId: string
+  baseId: number
   name: string
   status: string[]
 }

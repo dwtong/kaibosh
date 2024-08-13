@@ -10,7 +10,7 @@ const resetFilters = recipientStore.resetFilters
 
 async function downloadCsv() {
   const params = {
-    baseId: recipientStore.filteredBase,
+    baseId: parseInt(recipientStore.filteredBase),
     name: recipientStore.filteredName,
     status: ["active"],
   }

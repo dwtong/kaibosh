@@ -42,6 +42,10 @@ export const useRecipientsStore = defineStore("recipients", () => {
     filteredStatus.forEach((s) => (s.enabled = false))
   }
 
+  function setFilteredBase(value: number): void {
+    filteredBase.value = value.toString()
+  }
+
   function setFilteredName(value: string): void {
     filteredName.value = value
   }
@@ -67,20 +71,26 @@ export const useRecipientsStore = defineStore("recipients", () => {
   function sortRecipients(a: RecipientSummary, b: RecipientSummary): number {
     const dir = sortDir.value
     const key = sortField.value
+    const valA = a[key].toString()
+    const valB = b[key].toString()
 
     if (dir === "asc") {
-      return a[key].localeCompare(b[key])
+      return valA.localeCompare(valB)
     } else {
-      return b[key].localeCompare(a[key])
+      return valB.localeCompare(valA)
     }
   }
 
   function filterRecipients(recipient: RecipientSummary): boolean {
-    const matchesFilter = recipient.name
+    const matchesName = recipient.name
       .toLowerCase()
       .includes(filteredName.value.toLowerCase())
 
-    return matchesFilter
+    const matchesBase =
+      filteredBase.value === "0" ||
+      recipient.baseId.toString() === filteredBase.value
+
+    return matchesName && matchesBase
   }
 
   const recipients = computed(() => {
@@ -95,6 +105,7 @@ export const useRecipientsStore = defineStore("recipients", () => {
     filteredStatusNames,
     recipients,
     resetFilters,
+    setFilteredBase,
     setFilteredName,
     setSort,
     sortDir,
