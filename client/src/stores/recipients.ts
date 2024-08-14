@@ -8,7 +8,7 @@ type SortField = keyof RecipientSummary
 export type Status = {
   name: string
   label: string
-  enabled?: boolean
+  enabled: boolean
 }
 
 export const useRecipientsStore = defineStore("recipients", () => {
@@ -40,6 +40,12 @@ export const useRecipientsStore = defineStore("recipients", () => {
     filteredName.value = initialFilters.name
     filteredBase.value = initialFilters.base
     filteredStatus.forEach((s) => (s.enabled = false))
+  }
+
+  function setFilteredStatus(name: string, value: boolean) {
+    const index = filteredStatus.findIndex((s) => s.name === name)
+    filteredStatus[index].enabled = value
+    console.log(filteredStatus)
   }
 
   function setFilteredBase(value: number): void {
@@ -90,7 +96,11 @@ export const useRecipientsStore = defineStore("recipients", () => {
       filteredBase.value === "0" ||
       recipient.baseId.toString() === filteredBase.value
 
-    return matchesName && matchesBase
+    const matchesStatus =
+      filteredStatusNames.value.length === 0 ||
+      filteredStatusNames.value.includes(recipient.status)
+
+    return matchesName && matchesBase && matchesStatus
   }
 
   const recipients = computed(() => {
@@ -107,6 +117,7 @@ export const useRecipientsStore = defineStore("recipients", () => {
     resetFilters,
     setFilteredBase,
     setFilteredName,
+    setFilteredStatus,
     setSort,
     sortDir,
     sortField,
