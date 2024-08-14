@@ -6,6 +6,7 @@ import {
   deleteNotification,
 } from "@/api/user-notification"
 import { ref } from "vue"
+import CheckBox from "../ui/CheckBox.vue"
 
 const notifications = ref<Notification[]>()
 listNotifications().then((values) => (notifications.value = values))
@@ -16,20 +17,11 @@ function toggleValue(checked: boolean, id: string) {
 </script>
 
 <template>
-  <div>
-    <label
-      v-for="notification in notifications"
-      :key="notification.id"
-      class="checkbox"
-    >
-      <input
-        :id="notification.id"
-        v-model="notification.enabled"
-        type="checkbox"
-        @input="(e) => toggleValue((e.target as HTMLInputElement).checked,
-          notification.id)"
-      />
-      {{ notification.name }}
-    </label>
-  </div>
+  <CheckBox
+    v-for="notification in notifications"
+    :key="notification.id"
+    :value="notification.enabled"
+    :label="notification.name"
+    @input="(value: boolean) => toggleValue(value, notification.id)"
+  />
 </template>
