@@ -22,6 +22,7 @@
     "bulma-checkbox": "^1.2.1",
     "bulma-toast": "^2.4.2",
     "pinia": "^2.1.3",
+    "vanillajs-datepicker": "^1.3.4",
     "vee-validate": "^4.10.5",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2"
@@ -30,6 +31,7 @@
     "@rushstack/eslint-patch": "^1.2.0",
     "@tsconfig/node18": "^2.0.1",
     "@types/node": "^18.16.17",
+    "@types/vanillajs-datepicker": "^1.3.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",

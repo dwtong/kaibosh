@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from "vue"
 import { useForm } from "vee-validate"
-import { object, string } from "zod"
+import { object, string, date } from "zod"
 import { toTypedSchema } from "@vee-validate/zod"
 import SubmitButton from "../ui/SubmitButton.vue"
 import ValidatedInput from "../ui/ValidatedInput.vue"
 import ValidatedBaseSelect from "../ui/ValidatedBaseSelect.vue"
+import ValidatedDate from "../ui/ValidatedDate.vue"
 
 export type NewRecipientDetails = {
   name: string
@@ -22,6 +23,7 @@ const validationSchema = toTypedSchema(
     name: string().nonempty("Name is required"),
     baseId: string().nonempty("Base is required"),
     description: string().optional(),
+    date: date().optional(),
   }),
 )
 const { handleSubmit, submitCount } = useForm({
@@ -51,6 +53,7 @@ const submit = handleSubmit(async (recipient) => {
         :show-error="showErrors"
       />
       <ValidatedInput name="address" type="text" :show-error="showErrors" />
+      <ValidatedDate name="date" label="start date" :show-error="showErrors" />
       <ValidatedInput
         name="description"
         type="textarea"
