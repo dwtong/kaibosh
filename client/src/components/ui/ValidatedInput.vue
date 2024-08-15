@@ -16,13 +16,22 @@ const { errorMessage, value } = useField<string>(() => props.name)
 <template>
   <div class="field">
     <label class="label">{{ label }}</label>
-    <div class="control">
+    <div v-if="type === 'textarea'">
+      <textarea
+        :id="name"
+        v-model="value"
+        :type="type || 'text'"
+        :name="name"
+        class="textarea"
+      />
+    </div>
+    <div v-else class="control">
       <input
         :id="name"
         v-model="value"
-        class="input"
         :type="type || 'text'"
         :name="name"
+        class="input"
       />
     </div>
     <p v-if="showError && errorMessage" class="error-msg">{{ errorMessage }}</p>

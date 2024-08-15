@@ -45,7 +45,6 @@ export const useRecipientsStore = defineStore("recipients", () => {
   function setFilteredStatus(name: string, value: boolean) {
     const index = filteredStatus.findIndex((s) => s.name === name)
     filteredStatus[index].enabled = value
-    console.log(filteredStatus)
   }
 
   function setFilteredBase(value: number): void {

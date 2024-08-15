@@ -60,7 +60,7 @@ api.interceptors.response.use(
     return response
   },
   (error) => {
-    console.log(error)
+    console.error(error)
     const authToken = error.response.headers?.authorization
     const authStore = useAuthStore()
 

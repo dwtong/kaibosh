@@ -7,7 +7,7 @@ defmodule KaiboshWeb.Router do
   script-src 'self' localhost:5173 blob: api.addressfinder.io use.fontawesome.com 'unsafe-inline' 'unsafe-eval';\
   style-src 'self' localhost:5173 'unsafe-inline' 'unsafe-eval' api.addressfinder.io;\
   img-src 'self' localhost:5173 data:;\
-  connect-src 'self' ws://localhost:5173;\
+  connect-src 'self' ws://localhost:5173 https://api.addressfinder.io;\
   """
 
   pipeline :browser do

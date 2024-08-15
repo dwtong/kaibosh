@@ -1,5 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NewRecipientForm, {
+  type NewRecipientDetails,
+} from "@/components/recipient/NewRecipientForm.vue"
+
+async function onSubmit(recipient: NewRecipientDetails) {
+  console.log("submitted", recipient)
+}
+</script>
 
 <template>
-  <h1>create recipient view</h1>
+  <div class="columns">
+    <div class="column is-half is-offset-one-quarter">
+      <NewRecipientForm :on-submit="onSubmit" />
+    </div>
+  </div>
 </template>
