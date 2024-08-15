@@ -1,12 +1,24 @@
-# Kaibosh
+# Kaibosh Platform
+
+## Overview
+
+Kaibosh Platform is a web application built for [Kaibosh Food Rescue](https://kaibosh.org.nz), to manage the allocation and distribution of donated food.
+
+The core of the web application is a REST API built using Phoenix/Elixir, with a web based VueJS front-end.
 
 ## Development Environment
 
 There is a development environment available with docker compose. Start it with `docker compose up`.
 
-You will need some dev secrets. Start with `cp config/dev.secret.exs.example config/dev.secret.exs`.
+You will need a dev.secret.exs file. Start with the example:
+```sh
+cp config/dev.secret.exs.example config/dev.secret.exs
+```
 
-If mix dependencies need installing, run `docker compose run web mix deps.get`.
+If mix dependencies need installing, run:
+```sh
+docker compose run web mix deps.get`
+```
 
 Alternatively, you can:
 
