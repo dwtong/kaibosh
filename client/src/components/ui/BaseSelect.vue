@@ -2,11 +2,12 @@
 import { useAppStore } from "@/stores/app"
 
 type Props = {
+  value: string
   all?: boolean
   required?: boolean
   label?: string
   help?: string
-  value: string
+  placeholder: string | undefined
 }
 
 withDefaults(defineProps<Props>(), {
@@ -26,7 +27,14 @@ appStore.fetchBases()
 
 <template>
   <div class="select">
-    <select :value="value" @change="(e) => $emit('input', e)">
+    <select
+      :value="value"
+      :placeholder="placeholder"
+      @change="(e) => $emit('input', e)"
+    >
+      <option v-if="placeholder" class="placeholder" value="" disabled selected>
+        {{ placeholder }}
+      </option>
       <option v-if="all" :value="0">All</option>
       <option v-for="base in appStore.bases" :key="base.id" :value="base.id">
         {{ base.name }}
@@ -34,3 +42,9 @@ appStore.fetchBases()
     </select>
   </div>
 </template>
+
+<style>
+.placeholder {
+  color: hsl(0deg 0% 78.04%);
+}
+</style>

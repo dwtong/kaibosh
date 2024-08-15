@@ -3,9 +3,10 @@ import { useField } from "vee-validate"
 import { computed } from "vue"
 
 const props = defineProps<{
-  label?: string
   name: string
+  label?: string
   type?: string
+  placeholder?: string
   showError?: boolean
 }>()
 
@@ -22,6 +23,7 @@ const { errorMessage, value } = useField<string>(() => props.name)
         v-model="value"
         :type="type || 'text'"
         :name="name"
+        :placeholder="placeholder"
         class="textarea"
       />
     </div>
@@ -31,6 +33,7 @@ const { errorMessage, value } = useField<string>(() => props.name)
         v-model="value"
         :type="type || 'text'"
         :name="name"
+        :placeholder="placeholder"
         class="input"
       />
     </div>

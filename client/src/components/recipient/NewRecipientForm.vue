@@ -50,10 +50,16 @@ const submit = handleSubmit(async (recipient) => {
       <ValidatedBaseSelect
         name="baseId"
         label="kaibosh base"
+        placeholder="Select a base..."
         :show-error="showErrors"
       />
       <ValidatedInput name="address" type="text" :show-error="showErrors" />
-      <ValidatedDate name="date" label="start date" :show-error="showErrors" />
+      <ValidatedDate
+        name="date"
+        label="start date"
+        :show-error="showErrors"
+        placeholder="Click to select..."
+      />
       <ValidatedInput
         name="description"
         type="textarea"

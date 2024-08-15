@@ -3,8 +3,9 @@ import { useField } from "vee-validate"
 import BaseSelect from "./BaseSelect.vue"
 
 const props = defineProps<{
-  label?: string
   name: string
+  label?: string
+  placeholder?: string
   showError?: boolean
 }>()
 
@@ -19,7 +20,7 @@ function onInput(event: Event) {
 <template>
   <div class="field">
     <label class="label">{{ label || "base" }}</label>
-    <BaseSelect :value="value" @input="onInput" />
+    <BaseSelect :value="value" :placeholder="placeholder" @input="onInput" />
     <p v-if="showError && errorMessage" class="error-msg">{{ errorMessage }}</p>
   </div>
 </template>

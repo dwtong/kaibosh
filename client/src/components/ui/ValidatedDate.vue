@@ -4,8 +4,9 @@ import { computed, onMounted, watch } from "vue"
 import { Datepicker } from "vanillajs-datepicker"
 
 const props = defineProps<{
-  label?: string
   name: string
+  label?: string
+  placeholder?: string
   showError?: boolean
 }>()
 
@@ -36,7 +37,12 @@ const label = computed(() => props.label || props.name.replace(/-/g, " "))
   <div class="field">
     <label class="label">{{ label }}</label>
     <div class="control">
-      <input type="text" class="input date datepicker-input" :name="name" />
+      <input
+        type="text"
+        class="input date datepicker-input"
+        :name="name"
+        :placeholder="placeholder"
+      />
     </div>
     <p v-if="showError && errorMessage" class="error-msg">{{ errorMessage }}</p>
   </div>
