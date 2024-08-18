@@ -7,6 +7,7 @@ import SubmitButton from "../ui/SubmitButton.vue"
 import ValidatedInput from "../ui/ValidatedInput.vue"
 import ValidatedBaseSelect from "../ui/ValidatedBaseSelect.vue"
 import ValidatedDate from "../ui/ValidatedDate.vue"
+import ValidatedAddress from "../ui/ValidatedAddress.vue"
 
 export type NewRecipientDetails = {
   name: string
@@ -64,7 +65,7 @@ const submit = handleSubmit(async (recipient) => {
         placeholder="Select a base..."
         :show-error="showErrors"
       />
-      <ValidatedInput
+      <ValidatedAddress
         name="physicalAddress"
         type="text"
         label="physical address"
