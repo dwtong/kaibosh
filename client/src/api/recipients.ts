@@ -24,6 +24,8 @@ export type Recipient = RecipientSummary & {
   archivedAt: Date | string | null
 }
 
+export type NewRecipient = Partial<Recipient>
+
 export type ExportRecipientParams = {
   baseId: number
   name: string
@@ -39,7 +41,7 @@ export async function getRecipient(id: string): Promise<Recipient> {
 }
 
 export async function createRecipient(
-  recipient: Partial<Recipient>,
+  recipient: NewRecipient,
 ): Promise<Recipient> {
   return api.post("recipients", { recipient }).then(({ data }) => data)
 }

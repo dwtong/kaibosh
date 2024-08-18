@@ -12,6 +12,12 @@ export type NewRecipientDetails = {
   name: string
   baseId: string
   description?: string
+  startDate?: Date
+  contactName?: string
+  contactEmail?: string
+  contactPhoneLandline?: string
+  contactPhoneMobile?: string
+  physicalAddress?: string
 }
 
 const props = defineProps<{
@@ -23,7 +29,12 @@ const validationSchema = toTypedSchema(
     name: string().nonempty("Name is required"),
     baseId: string().nonempty("Base is required"),
     description: string().optional(),
-    date: date().optional(),
+    startDate: date().optional(),
+    contactName: string().optional(),
+    contactEmail: string().email().optional(),
+    contactPhoneLandline: string().optional(),
+    contactPhoneMobile: string().optional(),
+    physicalAddress: string().optional(),
   }),
 )
 const { handleSubmit, submitCount } = useForm({
@@ -39,13 +50,13 @@ const submit = handleSubmit(async (recipient) => {
 </script>
 
 <template>
-  <div class="box">
-    <h1 class="title">Organisation Details</h1>
-    <form
-      class="form"
-      :validation-schema="validationSchema"
-      @submit.prevent="submit"
-    >
+  <form
+    class="form"
+    :validation-schema="validationSchema"
+    @submit.prevent="submit"
+  >
+    <div class="box">
+      <h1 class="title">Organisation Details</h1>
       <ValidatedInput name="name" type="text" :show-error="showErrors" />
       <ValidatedBaseSelect
         name="baseId"
@@ -53,9 +64,14 @@ const submit = handleSubmit(async (recipient) => {
         placeholder="Select a base..."
         :show-error="showErrors"
       />
-      <ValidatedInput name="address" type="text" :show-error="showErrors" />
+      <ValidatedInput
+        name="physicalAddress"
+        type="text"
+        label="physical address"
+        :show-error="showErrors"
+      />
       <ValidatedDate
-        name="date"
+        name="startDate"
         label="start date"
         :show-error="showErrors"
         placeholder="Click to select..."
@@ -65,20 +81,44 @@ const submit = handleSubmit(async (recipient) => {
         type="textarea"
         :show-error="showErrors"
       />
-      <SubmitButton :is-submitting="isSubmitting" />
-    </form>
+    </div>
 
-    <!-- <AddressField v-model="recipientDetails.physicalAddress" label="Physical address" /> -->
-    <!-- <ValidatedDate v-model="recipientDetails.startedAt" label="start date" /> -->
-    <!-- <ValidatedInput v-model="recipientDetails.description" label="description" type="textarea" /> -->
-  </div>
+    <div class="box">
+      <h1 class="title">Primary Contact Details</h1>
 
-  <div class="box">
-    <h1 class="title">Primary Contact Details</h1>
-
-    <!-- <ValidatedInput v-model="recipientDetails.contact.name" label="contact name" /> -->
-    <!-- <ValidatedInput v-model="recipientDetails.contact.email" label="contact email" :rules="{ email: true }" /> -->
-    <!-- <ValidatedInput v-model="recipientDetails.contact.phoneLandline" label="contact landline" /> -->
-    <!-- <ValidatedInput v-model="recipientDetails.contact.phoneMobile" label="contact mobile" /> -->
-  </div>
+      <ValidatedInput
+        name="contactName"
+        label="contact name"
+        type="text"
+        :show-error="showErrors"
+      />
+      <ValidatedInput
+        name="contactEmail"
+        label="contact email"
+        type="text"
+        :show-error="showErrors"
+      />
+      <ValidatedInput
+        name="contactPhoneLandline"
+        label="contact phone (landline)"
+        type="text"
+        :show-error="showErrors"
+      />
+      <ValidatedInput
+        name="contactPhoneMobile"
+        label="contact phone (mobile)"
+        type="text"
+        :show-error="showErrors"
+      />
+      <!-- <ValidatedInput v-model="recipientDetails.contact.name" label="contact name" /> -->
+      <!-- <ValidatedInput v-model="recipientDetails.contact.email" label="contact email" :rules="{ email: true }" /> -->
+      <!-- <ValidatedInput v-model="recipientDetails.contact.phoneLandline" label="contact landline" /> -->
+      <!-- <ValidatedInput v-model="recipientDetails.contact.phoneMobile" label="contact mobile" /> -->
+    </div>
+    <SubmitButton
+      :is-submitting="isSubmitting"
+      class="button is-primary is-pulled-right"
+      label="Save Recipient"
+    />
+  </form>
 </template>

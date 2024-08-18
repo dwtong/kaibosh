@@ -4,10 +4,12 @@ import { computed } from "vue"
 type Props = {
   isSubmitting: boolean
   type?: string
+  label?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   type: "is-primary",
+  label: "Submit",
 })
 
 const cssClass = computed(() => {
@@ -25,6 +27,6 @@ const cssClass = computed(() => {
     class="button"
     :disabled="isSubmitting"
   >
-    <slot>Submit</slot>
+    <slot>{{ label }}</slot>
   </button>
 </template>

@@ -11,7 +11,9 @@ const props = defineProps<{
 }>()
 
 const label = computed(() => props.label || props.name.replace(/-/g, " "))
-const { errorMessage, value } = useField<string>(() => props.name)
+const { errorMessage, value } = useField<string>(() => {
+  return props.name
+})
 </script>
 
 <template>
