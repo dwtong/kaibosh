@@ -1,6 +1,13 @@
 import { computed, reactive, ref } from "vue"
 import { defineStore } from "pinia"
-import { getRecipients, type RecipientSummary } from "@/api/recipients"
+import {
+  destroyRecipient,
+  getRecipient,
+  getRecipients,
+  putRecipient,
+  type Recipient,
+  type RecipientSummary,
+} from "@/api/recipients"
 
 type SortDir = "asc" | "desc"
 type SortField = keyof RecipientSummary
@@ -13,6 +20,7 @@ export type Status = {
 
 export const useRecipientsStore = defineStore("recipients", () => {
   const rawRecipients = ref<RecipientSummary[]>([])
+  const recipient = ref<Recipient>()
   const sortField = ref<SortField>("name")
   const sortDir = ref<SortDir>("asc")
   const initialFilters = {
@@ -69,6 +77,18 @@ export const useRecipientsStore = defineStore("recipients", () => {
     }
   }
 
+  async function fetchRecipient(id: string) {
+    await getRecipient(id).then((data) => (recipient.value = data))
+  }
+
+  async function archiveRecipient(id: string) {
+    await destroyRecipient(id).then((data) => (recipient.value = data))
+  }
+
+  async function updateRecipient(id: string, params: Partial<Recipient>) {
+    await putRecipient(id, params).then((data) => (recipient.value = data))
+  }
+
   async function fetchRecipients() {
     await getRecipients().then((data) => (rawRecipients.value = data))
   }
@@ -106,12 +126,18 @@ export const useRecipientsStore = defineStore("recipients", () => {
     return rawRecipients.value.sort(sortRecipients).filter(filterRecipients)
   })
 
+  const recipientStatus = computed(() => recipient.value?.status)
+
   return {
+    archiveRecipient,
+    fetchRecipient,
     fetchRecipients,
     filteredBase,
     filteredName,
     filteredStatus,
     filteredStatusNames,
+    recipient,
+    recipientStatus,
     recipients,
     resetFilters,
     setFilteredBase,
@@ -120,5 +146,6 @@ export const useRecipientsStore = defineStore("recipients", () => {
     setSort,
     sortDir,
     sortField,
+    updateRecipient,
   }
 })

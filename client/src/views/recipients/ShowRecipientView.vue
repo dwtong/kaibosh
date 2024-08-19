@@ -1,5 +1,93 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import RecipientMessageBox from "@/components/recipient/RecipientMessageBox.vue"
+import { useAppStore } from "@/stores/app"
+import { useRecipientsStore } from "@/stores/recipients"
+import { toast } from "@/utils/toast"
+import { storeToRefs } from "pinia"
+import { onBeforeMount } from "vue"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
+const appStore = useAppStore()
+const recipientStore = useRecipientsStore()
+const { recipient, recipientStatus } = storeToRefs(recipientStore)
+
+onBeforeMount(async () => {
+  appStore.setIsLoading(true)
+  await recipientStore.fetchRecipient(route.params.id as string)
+  appStore.setIsLoading(false)
+})
+
+async function archiveRecipient() {
+  const recipientId = recipient?.value?.id as string
+  try {
+    await recipientStore.archiveRecipient(recipientId)
+    toast({ message: "Recipient archived.", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to archive recipient.", type: "is-danger" })
+  }
+}
+
+async function reactivateRecipient() {
+  const recipientId = recipient?.value?.id as string
+  try {
+    await recipientStore.updateRecipient(recipientId, { archivedAt: null })
+    toast({ message: "Recipient reactivated.", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to reactivate recipient.", type: "is-danger" })
+  }
+}
+</script>
 
 <template>
-  <h1>show recipient view</h1>
+  <div v-if="!appStore.isLoading">
+    <div class="title-box">
+      <h1 class="title is-inline-block">
+        {{ recipient?.name }}
+      </h1>
+
+      <div
+        v-if="recipientStatus !== 'archived'"
+        class="field buttons is-pulled-right"
+      >
+        <p class="control">
+          <router-link
+            :to="`/recipients/update/${recipient?.id}`"
+            class="button is-info"
+          >
+            Edit Recipient
+          </router-link>
+        </p>
+        <p class="control">
+          <a class="button is-danger" @click="archiveRecipient">
+            Archive Recipient
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column">
+        <RecipientMessageBox
+          :name="recipient?.name"
+          :status="recipientStatus"
+          :reactivate="reactivateRecipient"
+        />
+      </div>
+    </div>
+
+    <div v-if="recipientStatus !== 'archived'" class="columns">
+      <div class="column is-half">
+        <RecipientOrganisationDetails />
+        <RecipientOnboardingChecks />
+      </div>
+
+      <div class="column">
+        <RecipientContactDetails />
+        <RecipientSortingSessions />
+      </div>
+    </div>
+  </div>
 </template>

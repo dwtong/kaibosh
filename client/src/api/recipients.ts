@@ -46,15 +46,15 @@ export async function createRecipient(
   return api.post("recipients", { recipient }).then(({ data }) => data)
 }
 
-export async function updateRecipient(
+export async function putRecipient(
   id: string,
   recipient: Partial<Recipient>,
 ): Promise<Recipient> {
   return api.put(`recipients/${id}`, { recipient }).then(({ data }) => data)
 }
 
-export async function destroyRecipient(id: string): Promise<void> {
-  api.delete(`recipients/${id}`)
+export async function destroyRecipient(id: string): Promise<Recipient> {
+  return api.delete(`recipients/${id}`).then(({ data }) => data)
 }
 
 export async function exportRecipients(
