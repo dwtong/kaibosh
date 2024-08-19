@@ -9,10 +9,15 @@ export type Base = {
 
 export const useAppStore = defineStore("app", () => {
   const bases = ref<Base[]>()
+  const isLoading = ref(false)
 
   async function fetchBases() {
     await getBases().then((data) => (bases.value = data))
   }
 
-  return { bases, fetchBases }
+  function setIsLoading(value: boolean) {
+    isLoading.value = value
+  }
+
+  return { bases, fetchBases, setIsLoading, isLoading }
 })

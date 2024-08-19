@@ -4,9 +4,12 @@ import { computed } from "vue"
 import NavBar from "./components/ui/NavBar.vue"
 import { useRoute } from "vue-router"
 import { useAuthStore } from "./stores/auth"
+import LoadingSpinner from "./components/ui/LoadingSpinner.vue"
+import { useAppStore } from "./stores/app"
 
 const route = useRoute()
 const authStore = useAuthStore()
+const appStore = useAppStore()
 
 const showNav = computed(() => {
   const isPublicRoute = route.matched.every((r) => r.meta.public)
@@ -19,6 +22,7 @@ const showNav = computed(() => {
     <NavBar />
   </div>
   <div class="main" :class="{ 'with-nav': showNav }">
+    <LoadingSpinner :is-active="appStore.isLoading" :is-fullscreen="true" />
     <section class="section">
       <div class="container is-fluid">
         <RouterView :key="route.fullPath" />

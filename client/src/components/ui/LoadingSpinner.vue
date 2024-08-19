@@ -1,9 +1,18 @@
 <script setup lang="ts">
-const props = defineProps<{ isActive: boolean }>()
+const props = defineProps<{
+  isActive: boolean
+  isFullscreen: boolean
+}>()
 </script>
 
 <template>
-  <div class="loader-wrapper" :class="{ 'is-active': props.isActive }">
+  <div
+    class="loader-wrapper"
+    :class="{
+      'is-active': props.isActive,
+      'is-fullscreen': props.isFullscreen,
+    }"
+  >
     <div class="loader is-loading"></div>
   </div>
 </template>
@@ -20,14 +29,22 @@ const props = defineProps<{ isActive: boolean }>()
   border-radius: 6px;
 
   .loader {
-    height: 40px;
-    width: 40px;
+    height: 100px;
+    width: 100px;
   }
 
   &.is-active {
     display: flex;
     opacity: 1;
     z-index: 1;
+  }
+
+  &.is-fullscreen {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: rgb(255 255 255 / 40%);
+    z-index: 2;
   }
 }
 
