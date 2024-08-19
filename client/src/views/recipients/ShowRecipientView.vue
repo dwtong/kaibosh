@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import RecipientMessageBox from "@/components/recipient/RecipientMessageBox.vue"
+import RecipientContactDetails from "@/components/recipient/RecipientContactDetails.vue"
 import RecipientOnboardingChecks from "@/components/recipient/RecipientOnboardingChecks.vue"
 import RecipientOrganisationDetails from "@/components/recipient/RecipientOrganisationDetails.vue"
 import { useAppStore } from "@/stores/app"
@@ -100,7 +101,7 @@ async function toggleCheckbox(name: string, value: boolean) {
       </div>
 
       <div class="column">
-        <RecipientContactDetails />
+        <RecipientContactDetails :contact="recipient?.contact" />
         <RecipientSortingSessions />
       </div>
     </div>
