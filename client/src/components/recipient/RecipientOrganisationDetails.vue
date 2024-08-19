@@ -4,7 +4,9 @@ import type { Recipient } from "@/api/recipients"
 import RecipientStatusTag from "./RecipientStatusTag.vue"
 import { computed } from "vue"
 import { formatDate } from "@/utils/date"
+import { useAppStore } from "@/stores/app"
 
+const { getBaseName } = useAppStore()
 const props = defineProps<{
   recipient?: Recipient
 }>()
@@ -27,7 +29,7 @@ const startDate = computed(() => {
       {{ recipient?.name }}
     </InfoField>
     <InfoField label="Base">
-      {{ recipient?.baseId }}
+      {{ getBaseName(recipient?.baseId) }}
     </InfoField>
     <InfoField label="Physical Address">
       {{ recipient?.physicalAddress }}
