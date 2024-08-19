@@ -8,34 +8,48 @@ import ValidatedInput from "../ui/ValidatedInput.vue"
 import ValidatedBaseSelect from "../ui/ValidatedBaseSelect.vue"
 import ValidatedDate from "../ui/ValidatedDate.vue"
 import ValidatedAddress from "../ui/ValidatedAddress.vue"
-
-export type NewRecipientDetails = {
-  name: string
-  baseId: string
-  description?: string
-  startDate?: Date
-  contactName?: string
-  contactEmail?: string
-  contactPhoneLandline?: string
-  contactPhoneMobile?: string
-  physicalAddress?: string
-}
+import type { Recipient } from "@/api/recipients"
 
 const props = defineProps<{
-  onSubmit: (recipient: NewRecipientDetails) => Promise<void>
+  recipient?: Recipient
+  onSubmit: (recipient: Partial<Recipient>) => Promise<void>
 }>()
+
+console.log(props.recipient?.physicalAddress)
+
+const defaults = {
+  name: props.recipient?.name || "",
+  baseId: props.recipient?.baseId.toString() || "",
+  description: props.recipient?.description || "",
+  contactName: props.recipient?.contact.name || "",
+  contactEmail: props.recipient?.contact.email || "",
+  contactPhoneLandline: props.recipient?.contact.phoneLandline || "",
+  contactPhoneMobile: props.recipient?.contact.phoneMobile || "",
+  physicalAddress: props.recipient?.physicalAddress || "",
+  startDate: props.recipient?.startedAt
+    ? new Date(props.recipient?.startedAt)
+    : null,
+}
 
 const validationSchema = toTypedSchema(
   object({
-    name: string().nonempty("Name is required"),
-    baseId: string().nonempty("Base is required"),
-    description: string().optional(),
-    startDate: date().optional(),
-    contactName: string().optional(),
-    contactEmail: string().email().optional(),
-    contactPhoneLandline: string().optional(),
-    contactPhoneMobile: string().optional(),
-    physicalAddress: string().optional(),
+    name: string().nonempty("Name is required").default(defaults.name),
+    baseId: string().nonempty("Base is required").default(defaults.baseId),
+    description: string().optional().default(defaults.description),
+    startDate: date().optional().nullable().default(defaults.startDate),
+    contactName: string().optional().default(defaults.contactName),
+    contactEmail: string()
+      .email()
+      .optional()
+      .nullable()
+      .default(defaults.contactEmail || null),
+    contactPhoneLandline: string()
+      .optional()
+      .default(defaults.contactPhoneLandline),
+    contactPhoneMobile: string()
+      .optional()
+      .default(defaults.contactPhoneMobile),
+    physicalAddress: string().optional().default(defaults.physicalAddress),
   }),
 )
 const { handleSubmit, submitCount } = useForm({
@@ -43,8 +57,28 @@ const { handleSubmit, submitCount } = useForm({
 })
 const showErrors = computed(() => submitCount.value > 0)
 const isSubmitting = ref(false)
-const submit = handleSubmit(async (recipient) => {
+const submit = handleSubmit(async (recipientParams) => {
   isSubmitting.value = true
+  const {
+    baseId,
+    contactName,
+    contactEmail,
+    contactPhoneMobile,
+    contactPhoneLandline,
+    startDate,
+    ...recipientDetails
+  } = recipientParams
+  const recipient: Partial<Recipient> = {
+    ...recipientDetails,
+    baseId: parseInt(baseId),
+    startedAt: startDate,
+    contact: {
+      name: contactName || "",
+      email: contactEmail || "",
+      phoneMobile: contactPhoneMobile || "",
+      phoneLandline: contactPhoneLandline || "",
+    },
+  }
   await props.onSubmit(recipient)
   isSubmitting.value = false
 })
@@ -69,6 +103,7 @@ const submit = handleSubmit(async (recipient) => {
         name="physicalAddress"
         type="text"
         label="physical address"
+        :value="defaults.physicalAddress"
         :show-error="showErrors"
       />
       <ValidatedDate

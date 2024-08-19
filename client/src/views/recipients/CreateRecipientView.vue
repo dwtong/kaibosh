@@ -1,33 +1,13 @@
 <script setup lang="ts">
-import { createRecipient, type NewRecipient } from "@/api/recipients"
-import NewRecipientForm, {
-  type NewRecipientDetails,
-} from "@/components/recipient/NewRecipientForm.vue"
+import { createRecipient, type Recipient } from "@/api/recipients"
+import RecipientForm from "@/components/recipient/RecipientForm.vue"
 import { useRouter } from "vue-router"
 import { toast } from "@/utils/toast"
 const router = useRouter()
 
-async function onSubmit(recipient: NewRecipientDetails) {
-  const {
-    baseId,
-    contactName,
-    contactEmail,
-    contactPhoneMobile,
-    contactPhoneLandline,
-    ...recipientDetails
-  } = recipient
-  const recipientParams: NewRecipient = {
-    baseId: parseInt(baseId),
-    contact: {
-      name: contactName || "",
-      email: contactEmail || "",
-      phoneMobile: contactPhoneMobile || "",
-      phoneLandline: contactPhoneLandline || "",
-    },
-    ...recipientDetails,
-  }
+async function onSubmit(recipient: Partial<Recipient>) {
   try {
-    const { id } = await createRecipient(recipientParams)
+    const { id } = await createRecipient(recipient)
     router.push(`/recipients/${id}`)
     toast({ message: "Recipient created.", type: "is-success" })
   } catch (error) {
@@ -40,7 +20,7 @@ async function onSubmit(recipient: NewRecipientDetails) {
 <template>
   <div class="columns">
     <div class="column is-half is-offset-one-quarter">
-      <NewRecipientForm :on-submit="onSubmit" />
+      <RecipientForm :on-submit="onSubmit" />
     </div>
   </div>
 </template>

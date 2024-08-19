@@ -10,7 +10,7 @@ const props = defineProps<{
   showError?: boolean
 }>()
 
-const { errorMessage, value, setValue } = useField<string>(() => props.name)
+const { errorMessage, value, setValue } = useField<string | null>(props.name)
 let datepicker: Datepicker
 
 onMounted(() => {
@@ -24,7 +24,7 @@ onMounted(() => {
   })
   element.addEventListener("changeDate", (ev) => {
     const { date } = (ev as CustomEvent).detail
-    setValue(date)
+    setValue(date || null)
   })
   datepicker.setDate(value.value)
 })

@@ -16,7 +16,7 @@ export type RecipientSummary = {
 
 export type Recipient = RecipientSummary & {
   description: string
-  startedAt: Date | string
+  startedAt: Date | string | null
   physicalAddress: string
   contact: Contact
   hasMetKaibosh: boolean
