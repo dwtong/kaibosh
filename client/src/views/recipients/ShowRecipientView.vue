@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import RecipientMessageBox from "@/components/recipient/RecipientMessageBox.vue"
+import RecipientOrganisationDetails from "@/components/recipient/RecipientOrganisationDetails.vue"
 import { useAppStore } from "@/stores/app"
 import { useRecipientsStore } from "@/stores/recipients"
 import { toast } from "@/utils/toast"
@@ -80,7 +81,7 @@ async function reactivateRecipient() {
 
     <div v-if="recipientStatus !== 'archived'" class="columns">
       <div class="column is-half">
-        <RecipientOrganisationDetails />
+        <RecipientOrganisationDetails :recipient="recipient" />
         <RecipientOnboardingChecks />
       </div>
 

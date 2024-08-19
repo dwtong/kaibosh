@@ -5,12 +5,14 @@ type Props = {
   status?: string
   size?: "is-normal" | "is-medium" | "is-large"
   withLabel?: boolean
+  withContainer?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   status: "is-primary",
   size: "is-normal",
   withLabel: false,
+  withContainer: false,
 })
 
 const label = computed(() => props.status?.replace("_", " "))
@@ -28,11 +30,11 @@ const type = computed(() => {
 </script>
 
 <template>
-  <div class="status-container">
+  <div :class="{ 'status-container': withContainer }">
     <div v-if="props.withLabel" class="field">
       <label class="label">Status</label>
       <transition name="fade">
-        <span class="tag" :class="type" :size="props.size">{{ label }}</span>
+        <span class="tag" :class="[type, size]">{{ label }}</span>
       </transition>
     </div>
     <span v-else class="tag" :class="type" :size="props.size">{{ label }}</span>
