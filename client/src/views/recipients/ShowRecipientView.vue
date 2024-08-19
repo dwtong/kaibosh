@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import RecipientMessageBox from "@/components/recipient/RecipientMessageBox.vue"
+import RecipientOnboardingChecks from "@/components/recipient/RecipientOnboardingChecks.vue"
 import RecipientOrganisationDetails from "@/components/recipient/RecipientOrganisationDetails.vue"
 import { useAppStore } from "@/stores/app"
 import { useRecipientsStore } from "@/stores/recipients"
@@ -38,6 +39,16 @@ async function reactivateRecipient() {
   } catch (error) {
     console.error(error)
     toast({ message: "Failed to reactivate recipient.", type: "is-danger" })
+  }
+}
+
+async function toggleCheckbox(name: string, value: boolean) {
+  const recipientId = recipient?.value?.id as string
+  try {
+    await recipientStore.updateRecipient(recipientId, { [name]: value })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to update recipient.", type: "is-danger" })
   }
 }
 </script>
@@ -82,7 +93,10 @@ async function reactivateRecipient() {
     <div v-if="recipientStatus !== 'archived'" class="columns">
       <div class="column is-half">
         <RecipientOrganisationDetails :recipient="recipient" />
-        <RecipientOnboardingChecks />
+        <RecipientOnboardingChecks
+          :recipient="recipient"
+          @input="toggleCheckbox"
+        />
       </div>
 
       <div class="column">
