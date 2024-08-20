@@ -34,19 +34,17 @@ const type = computed(() => {
     <div v-if="props.withLabel" class="field">
       <label class="label">Status</label>
       <transition name="fade">
-        <span class="tag" :class="[type, size]">{{ label }}</span>
+        <span class="tag is-rounded" :class="[type, size]">{{ label }}</span>
       </transition>
     </div>
-    <span v-else class="tag" :class="type" :size="props.size">{{ label }}</span>
+    <span v-else class="tag is-rounded" :class="type" :size="props.size">{{
+      label
+    }}</span>
   </div>
 </template>
 
 <style scoped lang="scss">
 .status-container {
   text-align: center;
-}
-
-.tag {
-  border-radius: 1rem;
 }
 </style>

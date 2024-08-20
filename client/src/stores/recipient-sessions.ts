@@ -10,14 +10,14 @@ export const useRecipientSessionsStore = defineStore(
   () => {
     const recipientSessions = ref<RecipientSession[]>([])
 
-    async function fetchRecipientSession(recipientId: string) {
+    async function fetchRecipientSessions(recipientId: string) {
       await getForRecipient(recipientId).then(
         (data) => (recipientSessions.value = data),
       )
     }
 
     return {
-      fetchRecipientSession,
+      fetchRecipientSessions,
       recipientSessions,
     }
   },

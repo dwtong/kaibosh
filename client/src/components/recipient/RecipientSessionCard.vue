@@ -1,18 +1,30 @@
 <script lang="ts" setup>
-import type { RecipientSession } from "@/api/recipient-sessions"
+import { destroyHold, type RecipientSession } from "@/api/recipient-sessions"
 import { formatTime } from "@/utils/date"
 import { capitalize } from "es-toolkit"
 import HoldStatusTag from "../ui/HoldStatusTag.vue"
 import { Transition, ref } from "vue"
+import HoldsList from "./HoldsList.vue"
+import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
+import { toast } from "@/utils/toast"
+import { useRoute } from "vue-router"
 
-defineProps<{
+const props = defineProps<{
   session: RecipientSession
+  deleteHold: (holdId: string) => void
+  deleteSession: (sessionId: string) => void
+  updateSession: (session: RecipientSession) => void
 }>()
 
-const expanded = ref(false)
+const recipientSessionsStore = useRecipientSessionsStore()
+const expanded = ref(true) // TODO: false
+const route = useRoute()
+
 function toggleExpanded() {
   expanded.value = !expanded.value
 }
+
+async function removeHold(holdId: string) {}
 </script>
 
 <template>
@@ -39,7 +51,14 @@ function toggleExpanded() {
     <Transition>
       <div v-if="expanded">
         <div class="card-content">
-          <div class="content">TODO: food allocations</div>
+          <div v-if="session.holds.length > 0" class="content">
+            <p class="label">Session Holds</p>
+            <HoldsList :holds="session.holds" :delete-hold="deleteHold" />
+          </div>
+          <div class="content">
+            <p class="label">Food Allocations</p>
+            <!-- <AllocationList :allocations="recipientSession.allocations" /> -->
+          </div>
         </div>
         <footer v-if="expanded" class="card-footer">
           <a href="#" class="card-footer-item">Edit</a>
@@ -58,6 +77,10 @@ function toggleExpanded() {
 
 .card-header {
   background-color: #e6e6e6;
+}
+
+.content {
+  margin-bottom: 2.5rem !important;
 }
 
 .day-text {

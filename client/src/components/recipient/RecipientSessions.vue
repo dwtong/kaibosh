@@ -4,9 +4,9 @@ import RecipientSessionCard from "./RecipientSessionCard.vue"
 
 defineProps<{
   sessions?: RecipientSession[]
-}>()
-defineEmits<{
-  (e: "input", name: string, value: boolean): void
+  deleteHold: (holdId: string) => void
+  deleteSession: (sessionId: string) => void
+  updateSession: (session: RecipientSession) => void
 }>()
 
 const loading = false
@@ -17,7 +17,12 @@ const loading = false
     <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
     <div v-if="!loading">
       <div v-for="session in sessions" :key="session.id" class="sessions-box">
-        <RecipientSessionCard :session="session" />
+        <RecipientSessionCard
+          :session="session"
+          :delete-hold="deleteHold"
+          :update-session="updateSession"
+          :delete-session="deleteSession"
+        />
       </div>
     </div>
   </div>

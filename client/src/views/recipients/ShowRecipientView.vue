@@ -11,6 +11,7 @@ import { onBeforeMount } from "vue"
 import { useRoute } from "vue-router"
 import RecipientSessions from "@/components/recipient/RecipientSessions.vue"
 import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
+import { destroyHold, type RecipientSession } from "@/api/recipient-sessions"
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -18,19 +19,18 @@ const recipientStore = useRecipientsStore()
 const { recipient, recipientStatus } = storeToRefs(recipientStore)
 const recipientSessionsStore = useRecipientSessionsStore()
 const { recipientSessions } = storeToRefs(recipientSessionsStore)
+const recipientId = route.params.id as string
 
 onBeforeMount(async () => {
-  const recipientId = route.params.id as string
   appStore.setIsLoading(true)
   await Promise.all([
     recipientStore.fetchRecipient(recipientId),
-    recipientSessionsStore.fetchRecipientSession(recipientId),
+    recipientSessionsStore.fetchRecipientSessions(recipientId),
   ])
   appStore.setIsLoading(false)
 })
 
 async function archiveRecipient() {
-  const recipientId = recipient?.value?.id as string
   try {
     await recipientStore.archiveRecipient(recipientId)
     toast({ message: "Recipient archived.", type: "is-success" })
@@ -41,7 +41,6 @@ async function archiveRecipient() {
 }
 
 async function reactivateRecipient() {
-  const recipientId = recipient?.value?.id as string
   try {
     await recipientStore.updateRecipient(recipientId, { archivedAt: null })
     toast({ message: "Recipient reactivated.", type: "is-success" })
@@ -52,12 +51,26 @@ async function reactivateRecipient() {
 }
 
 async function toggleCheckbox(name: string, value: boolean) {
-  const recipientId = recipient?.value?.id as string
   try {
     await recipientStore.updateRecipient(recipientId, { [name]: value })
   } catch (error) {
     console.error(error)
     toast({ message: "Failed to update recipient.", type: "is-danger" })
+  }
+}
+
+async function deleteHold(holdId: string) {
+  try {
+    const recipientId = route.params.id as string
+    await destroyHold(recipientId, holdId)
+    await Promise.all([
+      recipientSessionsStore.fetchRecipientSessions(recipientId),
+      recipientStore.fetchRecipient(recipientId),
+    ])
+    toast({ message: "Hold deleted.", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to delete hold.", type: "is-danger" })
   }
 }
 </script>
@@ -110,7 +123,12 @@ async function toggleCheckbox(name: string, value: boolean) {
 
       <div class="column">
         <RecipientContactDetails :contact="recipient?.contact" />
-        <RecipientSessions :sessions="recipientSessions" />
+        <RecipientSessions
+          :sessions="recipientSessions"
+          :delete-hold="deleteHold"
+          :update-session="updateSession"
+          :delete-session="deleteSession"
+        />
       </div>
     </div>
   </div>
