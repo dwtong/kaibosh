@@ -9,15 +9,23 @@ import { toast } from "@/utils/toast"
 import { storeToRefs } from "pinia"
 import { onBeforeMount } from "vue"
 import { useRoute } from "vue-router"
+import RecipientSessions from "@/components/recipient/RecipientSessions.vue"
+import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
 
 const route = useRoute()
 const appStore = useAppStore()
 const recipientStore = useRecipientsStore()
 const { recipient, recipientStatus } = storeToRefs(recipientStore)
+const recipientSessionsStore = useRecipientSessionsStore()
+const { recipientSessions } = storeToRefs(recipientSessionsStore)
 
 onBeforeMount(async () => {
+  const recipientId = route.params.id as string
   appStore.setIsLoading(true)
-  await recipientStore.fetchRecipient(route.params.id as string)
+  await Promise.all([
+    recipientStore.fetchRecipient(recipientId),
+    recipientSessionsStore.fetchRecipientSession(recipientId),
+  ])
   appStore.setIsLoading(false)
 })
 
@@ -102,7 +110,7 @@ async function toggleCheckbox(name: string, value: boolean) {
 
       <div class="column">
         <RecipientContactDetails :contact="recipient?.contact" />
-        <RecipientSortingSessions />
+        <RecipientSessions :sessions="recipientSessions" />
       </div>
     </div>
   </div>
