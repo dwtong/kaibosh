@@ -45,15 +45,18 @@ export async function createRecipientSession(
 
 export async function updateRecipientSession(
   recipientId: string,
-  id: string,
+  sessionId: string,
   params: RecipientSessionParams,
 ): Promise<RecipientSession> {
   return api
-    .put(`recipients/${recipientId}/sessions/${id}`, { session: params })
+    .put(`recipients/${recipientId}/sessions/${sessionId}`, { session: params })
     .then(({ data }) => data)
 }
-export async function destroy(recipientId: string, id: string): Promise<void> {
-  return api.delete(`recipients/${recipientId}/sessions/${id}`)
+export async function destroyRecipientSession(
+  recipientId: string,
+  sessionId: string,
+): Promise<void> {
+  return api.delete(`recipients/${recipientId}/sessions/${sessionId}`)
 }
 
 export async function createHold(

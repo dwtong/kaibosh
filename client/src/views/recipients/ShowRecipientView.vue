@@ -11,7 +11,11 @@ import { onBeforeMount } from "vue"
 import { useRoute } from "vue-router"
 import RecipientSessions from "@/components/recipient/RecipientSessions.vue"
 import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
-import { destroyHold, type RecipientSession } from "@/api/recipient-sessions"
+import {
+  destroyHold,
+  destroyRecipientSession,
+  type RecipientSession,
+} from "@/api/recipient-sessions"
 import { useSessionsStore } from "@/stores/sessions"
 
 const route = useRoute()
@@ -70,7 +74,13 @@ async function updateSession(session: RecipientSession) {
 }
 
 async function deleteSession(sessionId: string) {
-  console.log("deleteSession", sessionId)
+  try {
+    await destroyRecipientSession(recipientId, sessionId)
+    await recipientSessionsStore.fetchRecipientSessions(recipientId)
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to update recipient.", type: "is-danger" })
+  }
 }
 
 async function deleteHold(holdId: string) {

@@ -10,8 +10,8 @@ import AllocationList from "./AllocationList.vue"
 defineProps<{
   recipientSession: RecipientSession
   deleteHold: (holdId: string) => void
-  deleteSession: (sessionId: string) => void
-  updateSession: (session: RecipientSession) => void
+  openDeleteModal: (recipientSessionId: string) => void
+  openUpdateModal: (recipientSessionId: string) => void
 }>()
 
 const expanded = ref(false)
@@ -58,8 +58,18 @@ function toggleExpanded() {
           </div>
         </div>
         <footer v-if="expanded" class="card-footer">
-          <a href="#" class="card-footer-item">Edit</a>
-          <a href="#" class="card-footer-item">Delete</a>
+          <a
+            class="card-footer-item"
+            @click="() => openUpdateModal(recipientSession.id)"
+          >
+            Edit
+          </a>
+          <a
+            class="card-footer-item"
+            @click="() => openDeleteModal(recipientSession.id)"
+          >
+            Delete
+          </a>
         </footer>
       </div>
     </Transition>

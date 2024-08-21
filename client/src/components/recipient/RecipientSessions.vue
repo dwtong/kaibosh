@@ -3,20 +3,40 @@ import type { RecipientSession } from "@/api/recipient-sessions"
 import RecipientSessionCard from "./RecipientSessionCard.vue"
 import SessionModal from "./SessionModal.vue"
 import HoldModal from "./HoldModal.vue"
-import { computed } from "vue"
+import { computed, ref } from "vue"
+import ModalConfirmation from "../ui/ModalConfirmation.vue"
 
 const props = defineProps<{
   recipientSessions?: RecipientSession[]
   recipientId: string
   deleteHold: (holdId: string) => void
-  deleteSession: (sessionId: string) => void
-  updateSession: (session: RecipientSession) => void
+  deleteSession: (sessionId: string) => Promise<void>
+  updateSession: (session: RecipientSession) => Promise<void>
   isLoading: boolean
 }>()
 
 const canAddHold = computed(() => {
   return props.isLoading || props.recipientSessions?.length === 0
 })
+const deleteConfirmationIsOpen = ref(false)
+const updateConfirmationIsOpen = ref(false)
+const modalRecipientSessionId = ref()
+
+function openUpdateModal(recipientSessionId: string) {
+  updateConfirmationIsOpen.value = true
+  modalRecipientSessionId.value = recipientSessionId
+}
+
+function openDeleteModal(recipientSessionId: string) {
+  deleteConfirmationIsOpen.value = true
+  modalRecipientSessionId.value = recipientSessionId
+}
+
+function deleteSessionAndCloseModal() {
+  props.deleteSession(modalRecipientSessionId.value).then(() => {
+    deleteConfirmationIsOpen.value = false
+  })
+}
 </script>
 
 <template>
@@ -47,6 +67,15 @@ const canAddHold = computed(() => {
             Add Hold
           </button>
         </HoldModal>
+        <ModalConfirmation
+          submit-button="Delete"
+          type="is-danger"
+          :is-open="deleteConfirmationIsOpen"
+          @close="deleteConfirmationIsOpen = false"
+          @submit="deleteSessionAndCloseModal"
+        >
+          Are you sure you wish to delete this session?
+        </ModalConfirmation>
       </div>
       <div
         v-for="recipientSession in recipientSessions"
@@ -56,8 +85,8 @@ const canAddHold = computed(() => {
         <RecipientSessionCard
           :recipient-session="recipientSession"
           :delete-hold="deleteHold"
-          :update-session="updateSession"
-          :delete-session="deleteSession"
+          :open-update-modal="openUpdateModal"
+          :open-delete-modal="openDeleteModal"
         />
       </div>
     </div>
