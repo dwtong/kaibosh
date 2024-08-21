@@ -143,6 +143,7 @@ async function deleteHold(holdId: string) {
           :update-session="updateSession"
           :delete-session="deleteSession"
           :is-loading="appStore.isLoading"
+          :recipient-id="recipientId"
         />
       </div>
     </div>

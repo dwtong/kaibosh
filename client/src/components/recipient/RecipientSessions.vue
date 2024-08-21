@@ -7,6 +7,7 @@ import { computed } from "vue"
 
 const props = defineProps<{
   recipientSessions?: RecipientSession[]
+  recipientId: string
   deleteHold: (holdId: string) => void
   deleteSession: (sessionId: string) => void
   updateSession: (session: RecipientSession) => void
@@ -23,7 +24,11 @@ const canAddHold = computed(() => {
     <h1 class="title is-4 is-inline-block">Sorting Sessions</h1>
     <div v-if="!isLoading">
       <div class="buttons">
-        <SessionModal v-slot="{ open }" :recipient-sessions="recipientSessions">
+        <SessionModal
+          v-slot="{ open }"
+          :recipient-sessions="recipientSessions"
+          :recipient-id="recipientId"
+        >
           <button class="button is-info" @click="open">
             Add Sorting Session
           </button>

@@ -1,11 +1,12 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 import { getBases, type Base } from "@/api/bases"
-import { getCategories } from "@/api/categories"
+import { getCategories, type Category } from "@/api/categories"
+import { sortBy } from "es-toolkit"
 
 export const useAppStore = defineStore("app", () => {
   const bases = ref<Base[]>()
-  const categories = ref<Base[]>()
+  const categories = ref<Category[]>()
   const isLoading = ref(false)
 
   async function fetchBases() {
@@ -15,7 +16,10 @@ export const useAppStore = defineStore("app", () => {
 
   async function fetchCategories() {
     if (categories.value?.length) return
-    await getCategories().then((data) => (categories.value = data))
+    await getCategories().then((data) => {
+      const sortedCategories = sortBy(data, [(c) => c.name])
+      categories.value = sortedCategories
+    })
   }
 
   function getBaseName(baseId?: number | string): string {
@@ -27,8 +31,14 @@ export const useAppStore = defineStore("app", () => {
     if (!categoryId || !categories.value || categories.value.length === 0) {
       return ""
     }
-    const name = categories.value.find((c) => c.id == categoryId)?.name || ""
-    return name
+    return categories.value.find((c) => c.id == categoryId)?.name || ""
+  }
+
+  function getCategoryUnit(categoryId?: number | string): string {
+    if (!categoryId || !categories.value || categories.value.length === 0) {
+      return ""
+    }
+    return categories.value.find((c) => c.id == categoryId)?.unit || ""
   }
 
   function setIsLoading(value: boolean) {
@@ -42,6 +52,7 @@ export const useAppStore = defineStore("app", () => {
     fetchCategories,
     getBaseName,
     getCategoryName,
+    getCategoryUnit,
     setIsLoading,
     isLoading,
   }

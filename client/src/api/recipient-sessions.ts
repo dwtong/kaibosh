@@ -22,28 +22,34 @@ export type SessionHold = {
   endsAt: Date
 }
 
+export type RecipientSessionParams = {
+  sessionId: string
+  recipientId: string
+  allocations: Omit<SessionAllocation, "id">[]
+}
+
 export async function getForRecipient(
   recipientId: string,
 ): Promise<RecipientSession[]> {
   return api.get(`recipients/${recipientId}/sessions`).then(({ data }) => data)
 }
 
-export async function create(
+export async function createRecipientSession(
   recipientId: string,
-  params: Omit<RecipientSession, "id">,
+  params: RecipientSessionParams,
 ): Promise<RecipientSession> {
   return api
-    .post(`recipients/${recipientId}/sessions`, params)
+    .post(`recipients/${recipientId}/sessions`, { session: params })
     .then(({ data }) => data)
 }
 
-export async function update(
+export async function updateRecipientSession(
   recipientId: string,
   id: string,
-  params: RecipientSession,
+  params: RecipientSessionParams,
 ): Promise<RecipientSession> {
   return api
-    .put(`recipients/${recipientId}/sessions/${id}`, params)
+    .put(`recipients/${recipientId}/sessions/${id}`, { session: params })
     .then(({ data }) => data)
 }
 export async function destroy(recipientId: string, id: string): Promise<void> {

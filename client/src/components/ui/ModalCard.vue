@@ -2,11 +2,12 @@
 defineProps<{
   isOpen: boolean
   title: string
-  successButton: string
-  disableSuccess: boolean
+  submitButton: string
+  disableSubmit: boolean
 }>()
 defineEmits<{
   (e: "close"): void
+  (e: "submit"): void
 }>()
 </script>
 
@@ -29,8 +30,12 @@ defineEmits<{
         <div>
           <div class="buttons is-right">
             <button class="button" @click="$emit('close')">Cancel</button>
-            <button :disabled="disableSuccess" class="button is-info">
-              {{ successButton }}
+            <button
+              :disabled="disableSubmit"
+              class="button is-info"
+              @click="$emit('submit')"
+            >
+              {{ submitButton }}
             </button>
           </div>
         </div>

@@ -58,7 +58,6 @@ const isSubmitting = ref(false)
 const submit = handleSubmit(async (recipientParams) => {
   isSubmitting.value = true
   const {
-    baseId,
     contactName,
     contactEmail,
     contactPhoneMobile,
@@ -68,7 +67,6 @@ const submit = handleSubmit(async (recipientParams) => {
   } = recipientParams
   const recipient: Partial<Recipient> = {
     ...recipientDetails,
-    baseId: parseInt(baseId),
     startedAt: startDate,
     contact: {
       name: contactName || "",

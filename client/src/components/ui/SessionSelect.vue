@@ -10,7 +10,6 @@ const model = defineModel()
 
 function updateSessionId(event: Event) {
   const { value } = event.target as HTMLInputElement
-  console.log("value", value)
   model.value = value
 }
 </script>

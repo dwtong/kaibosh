@@ -1,4 +1,6 @@
 import { getSessionsForBase, type Session } from "@/api/sessions"
+import { dayIndexFromString } from "@/utils/date"
+import { sortBy } from "es-toolkit"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
@@ -10,7 +12,13 @@ export const useSessionsStore = defineStore("sessions", () => {
     if (sessions.value?.length && baseId == currentBaseId.value) {
       return
     }
-    await getSessionsForBase(baseId).then((data) => (sessions.value = data))
+    await getSessionsForBase(baseId).then((data) => {
+      const sortedSessions = sortBy(data, [
+        (s) => dayIndexFromString(s.day),
+        (s) => s.time,
+      ])
+      sessions.value = sortedSessions
+    })
     currentBaseId.value = baseId
   }
 
