@@ -24,6 +24,7 @@ const recipientId = route.params.id as string
 onBeforeMount(async () => {
   appStore.setIsLoading(true)
   await Promise.all([
+    appStore.fetchCategories(),
     recipientStore.fetchRecipient(recipientId),
     recipientSessionsStore.fetchRecipientSessions(recipientId),
   ])
@@ -128,6 +129,7 @@ async function deleteHold(holdId: string) {
           :delete-hold="deleteHold"
           :update-session="updateSession"
           :delete-session="deleteSession"
+          :is-loading="appStore.isLoading"
         />
       </div>
     </div>

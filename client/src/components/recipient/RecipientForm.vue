@@ -15,8 +15,6 @@ const props = defineProps<{
   onSubmit: (recipient: Partial<Recipient>) => Promise<void>
 }>()
 
-console.log(props.recipient?.physicalAddress)
-
 const defaults = {
   name: props.recipient?.name || "",
   baseId: props.recipient?.baseId.toString() || "",

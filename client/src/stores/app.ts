@@ -1,28 +1,48 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
-import { getBases } from "@/api/bases"
-
-export type Base = {
-  id: string
-  name: string
-}
+import { getBases, type Base } from "@/api/bases"
+import { getCategories } from "@/api/categories"
 
 export const useAppStore = defineStore("app", () => {
   const bases = ref<Base[]>()
+  const categories = ref<Base[]>()
   const isLoading = ref(false)
 
   async function fetchBases() {
+    if (bases.value && bases.value.length > 0) return
     await getBases().then((data) => (bases.value = data))
   }
 
-  function getBaseName(id?: number | string): string {
-    if (!id || !bases.value || bases.value.length === 0) return ""
-    return bases.value.find((b) => b.id == id)?.name || ""
+  async function fetchCategories() {
+    if (categories.value && categories.value.length > 0) return
+    await getCategories().then((data) => (categories.value = data))
+  }
+
+  function getBaseName(baseId?: number | string): string {
+    if (!baseId || !bases.value || bases.value.length === 0) return ""
+    return bases.value.find((b) => b.id == baseId)?.name || ""
+  }
+
+  function getCategoryName(categoryId?: number | string): string {
+    if (!categoryId || !categories.value || categories.value.length === 0) {
+      return ""
+    }
+    const name = categories.value.find((c) => c.id == categoryId)?.name || ""
+    return name
   }
 
   function setIsLoading(value: boolean) {
     isLoading.value = value
   }
 
-  return { bases, fetchBases, getBaseName, setIsLoading, isLoading }
+  return {
+    bases,
+    categories,
+    fetchBases,
+    fetchCategories,
+    getBaseName,
+    getCategoryName,
+    setIsLoading,
+    isLoading,
+  }
 })

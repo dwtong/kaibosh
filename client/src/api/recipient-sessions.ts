@@ -6,8 +6,14 @@ export type RecipientSession = {
   time: string
   sessionId: string
   status: string
-  allocations: string[]
+  allocations: SessionAllocation[]
   holds: SessionHold[]
+}
+
+export type SessionAllocation = {
+  id: string
+  categoryId: string
+  quantity: string
 }
 
 export type SessionHold = {
