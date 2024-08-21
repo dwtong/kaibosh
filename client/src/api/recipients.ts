@@ -9,7 +9,7 @@ export type Contact = {
 
 export type RecipientSummary = {
   id: string
-  baseId: number
+  baseId: string
   name: string
   status: string
 }

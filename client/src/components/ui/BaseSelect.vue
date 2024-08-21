@@ -43,7 +43,7 @@ appStore.fetchBases()
   </div>
 </template>
 
-<style>
+<style scoped>
 .placeholder {
   color: hsl(0deg 0% 78.04%);
 }

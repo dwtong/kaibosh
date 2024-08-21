@@ -12,10 +12,12 @@ import { useRoute } from "vue-router"
 import RecipientSessions from "@/components/recipient/RecipientSessions.vue"
 import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
 import { destroyHold, type RecipientSession } from "@/api/recipient-sessions"
+import { useSessionsStore } from "@/stores/sessions"
 
 const route = useRoute()
 const appStore = useAppStore()
 const recipientStore = useRecipientsStore()
+const sessionsStore = useSessionsStore()
 const { recipient, recipientStatus } = storeToRefs(recipientStore)
 const recipientSessionsStore = useRecipientSessionsStore()
 const { recipientSessions } = storeToRefs(recipientSessionsStore)
@@ -28,6 +30,9 @@ onBeforeMount(async () => {
     recipientStore.fetchRecipient(recipientId),
     recipientSessionsStore.fetchRecipientSessions(recipientId),
   ])
+  if (recipient.value?.baseId) {
+    await sessionsStore.fetchSessionsForBase(recipient.value?.baseId)
+  }
   appStore.setIsLoading(false)
 })
 
@@ -58,6 +63,14 @@ async function toggleCheckbox(name: string, value: boolean) {
     console.error(error)
     toast({ message: "Failed to update recipient.", type: "is-danger" })
   }
+}
+
+async function updateSession(session: RecipientSession) {
+  console.log("updateSession", session)
+}
+
+async function deleteSession(sessionId: string) {
+  console.log("deleteSession", sessionId)
 }
 
 async function deleteHold(holdId: string) {
@@ -125,7 +138,7 @@ async function deleteHold(holdId: string) {
       <div class="column">
         <RecipientContactDetails :contact="recipient?.contact" />
         <RecipientSessions
-          :sessions="recipientSessions"
+          :recipient-sessions="recipientSessions"
           :delete-hold="deleteHold"
           :update-session="updateSession"
           :delete-session="deleteSession"

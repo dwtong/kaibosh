@@ -9,12 +9,12 @@ export const useAppStore = defineStore("app", () => {
   const isLoading = ref(false)
 
   async function fetchBases() {
-    if (bases.value && bases.value.length > 0) return
+    if (bases.value?.length) return
     await getBases().then((data) => (bases.value = data))
   }
 
   async function fetchCategories() {
-    if (categories.value && categories.value.length > 0) return
+    if (categories.value?.length) return
     await getCategories().then((data) => (categories.value = data))
   }
 

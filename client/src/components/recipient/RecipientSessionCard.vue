@@ -8,13 +8,13 @@ import HoldsList from "./HoldsList.vue"
 import AllocationList from "./AllocationList.vue"
 
 defineProps<{
-  session: RecipientSession
+  recipientSession: RecipientSession
   deleteHold: (holdId: string) => void
   deleteSession: (sessionId: string) => void
   updateSession: (session: RecipientSession) => void
 }>()
 
-const expanded = ref(true) // TODO: false
+const expanded = ref(false)
 
 function toggleExpanded() {
   expanded.value = !expanded.value
@@ -28,30 +28,33 @@ function toggleExpanded() {
         <div class="level-item">
           <p class="card-header-title">
             <span class="has-text-weight-semibold is-size-5 day-text">{{
-              capitalize(session.day)
+              capitalize(recipientSession.day)
             }}</span>
             <span class="has-text-weight-normal is-size-5">{{
-              formatTime(session.time)
+              formatTime(recipientSession.time)
             }}</span>
           </p>
         </div>
       </div>
       <div class="level-left">
         <div class="level-item hold-status">
-          <HoldStatusTag :status="session.status" />
+          <HoldStatusTag :status="recipientSession.status" />
         </div>
       </div>
     </header>
     <Transition>
       <div v-if="expanded">
         <div class="card-content">
-          <div v-if="session.holds.length > 0" class="content">
+          <div v-if="recipientSession.holds.length > 0" class="content">
             <p class="label">Session Holds</p>
-            <HoldsList :holds="session.holds" :delete-hold="deleteHold" />
+            <HoldsList
+              :holds="recipientSession.holds"
+              :delete-hold="deleteHold"
+            />
           </div>
           <div class="content">
             <p class="label">Food Allocations</p>
-            <AllocationList :allocations="session.allocations" />
+            <AllocationList :allocations="recipientSession.allocations" />
           </div>
         </div>
         <footer v-if="expanded" class="card-footer">
@@ -63,7 +66,7 @@ function toggleExpanded() {
   </div>
 </template>
 
-<style>
+<style scoped>
 .card {
   margin-bottom: 1rem;
   cursor: pointer;
