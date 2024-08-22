@@ -19,7 +19,7 @@ function openModal() {
     :is-open="isOpen"
     :disable-success="false"
     title="Add Hold"
-    success-button="Save"
+    submit-button="Save"
     @close="onClose"
   />
 </template>

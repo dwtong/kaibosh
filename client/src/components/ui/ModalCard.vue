@@ -3,7 +3,7 @@ defineProps<{
   isOpen: boolean
   title: string
   submitButton: string
-  disableSubmit: boolean
+  disableSubmit?: boolean
 }>()
 defineEmits<{
   (e: "close"): void

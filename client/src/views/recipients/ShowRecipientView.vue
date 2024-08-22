@@ -11,11 +11,6 @@ import { onBeforeMount } from "vue"
 import { useRoute } from "vue-router"
 import RecipientSessions from "@/components/recipient/RecipientSessions.vue"
 import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
-import {
-  destroyHold,
-  destroyRecipientSession,
-  type RecipientSession,
-} from "@/api/recipient-sessions"
 import { useSessionsStore } from "@/stores/sessions"
 
 const route = useRoute()
@@ -23,8 +18,7 @@ const appStore = useAppStore()
 const recipientStore = useRecipientsStore()
 const sessionsStore = useSessionsStore()
 const { recipient, recipientStatus } = storeToRefs(recipientStore)
-const recipientSessionsStore = useRecipientSessionsStore()
-const { recipientSessions } = storeToRefs(recipientSessionsStore)
+const { fetchRecipientSessions } = useRecipientSessionsStore()
 const recipientId = route.params.id as string
 
 onBeforeMount(async () => {
@@ -32,7 +26,7 @@ onBeforeMount(async () => {
   await Promise.all([
     appStore.fetchCategories(),
     recipientStore.fetchRecipient(recipientId),
-    recipientSessionsStore.fetchRecipientSessions(recipientId),
+    fetchRecipientSessions(recipientId),
   ])
   if (recipient.value?.baseId) {
     await sessionsStore.fetchSessionsForBase(recipient.value?.baseId)
@@ -66,35 +60,6 @@ async function toggleCheckbox(name: string, value: boolean) {
   } catch (error) {
     console.error(error)
     toast({ message: "Failed to update recipient.", type: "is-danger" })
-  }
-}
-
-async function updateSession(session: RecipientSession) {
-  console.log("updateSession", session)
-}
-
-async function deleteSession(sessionId: string) {
-  try {
-    await destroyRecipientSession(recipientId, sessionId)
-    await recipientSessionsStore.fetchRecipientSessions(recipientId)
-  } catch (error) {
-    console.error(error)
-    toast({ message: "Failed to update recipient.", type: "is-danger" })
-  }
-}
-
-async function deleteHold(holdId: string) {
-  try {
-    const recipientId = route.params.id as string
-    await destroyHold(recipientId, holdId)
-    await Promise.all([
-      recipientSessionsStore.fetchRecipientSessions(recipientId),
-      recipientStore.fetchRecipient(recipientId),
-    ])
-    toast({ message: "Hold deleted.", type: "is-success" })
-  } catch (error) {
-    console.error(error)
-    toast({ message: "Failed to delete hold.", type: "is-danger" })
   }
 }
 </script>
@@ -148,10 +113,6 @@ async function deleteHold(holdId: string) {
       <div class="column">
         <RecipientContactDetails :contact="recipient?.contact" />
         <RecipientSessions
-          :recipient-sessions="recipientSessions"
-          :delete-hold="deleteHold"
-          :update-session="updateSession"
-          :delete-session="deleteSession"
           :is-loading="appStore.isLoading"
           :recipient-id="recipientId"
         />

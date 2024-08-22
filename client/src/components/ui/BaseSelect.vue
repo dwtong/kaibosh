@@ -7,7 +7,7 @@ type Props = {
   required?: boolean
   label?: string
   help?: string
-  placeholder: string | undefined
+  placeholder?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -15,6 +15,7 @@ withDefaults(defineProps<Props>(), {
   required: false,
   label: "",
   help: "",
+  placeholder: "",
 })
 
 defineEmits<{

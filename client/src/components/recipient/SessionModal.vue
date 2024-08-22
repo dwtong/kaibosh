@@ -3,43 +3,46 @@ import ModalCard from "@/components/ui/ModalCard.vue"
 import { computed, reactive, ref } from "vue"
 import SessionSelect from "../ui/SessionSelect.vue"
 import {
-  createRecipientSession,
   type RecipientSession,
+  type RecipientSessionParams,
 } from "@/api/recipient-sessions"
 import AllocationQuantitiesInput from "./AllocationQuantitiesInput.vue"
 import { useAppStore } from "@/stores/app"
 import { storeToRefs } from "pinia"
-import { toast } from "@/utils/toast"
-import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
 
 const props = defineProps<{
   recipientSessions?: RecipientSession[]
   recipientId: string
+  existingSession?: RecipientSession
 }>()
-const isOpen = ref(false) // TODO: false
-const selectedSessionId = ref()
+const emit = defineEmits<{
+  (e: "close"): void
+  (e: "submit", sessionParams: RecipientSessionParams): void
+}>()
+const isOpen = ref(false)
 const session = computed(() => {
   return props.recipientSessions?.find(
     (rs) => rs.sessionId == selectedSessionId.value,
   )
 })
+const selectedSessionId = ref()
 const sessionExists = computed(() => !!session.value)
 const appStore = useAppStore()
-const recipientSessionsStore = useRecipientSessionsStore()
 const { categories } = storeToRefs(appStore)
 const allocationCategories = reactive(
-  categories.value?.map(({ id }) => {
+  categories.value?.map(({ id: categoryId }) => {
+    const allocations = props.existingSession?.allocations
+    const allocation = allocations?.find((a) => a.categoryId == categoryId)
     return {
-      enabled: !!session.value?.allocations.find((a) => a.categoryId === id),
-      categoryId: id,
-      quantity: "",
+      categoryId,
+      quantity: allocation ? allocation.quantity : "",
+      enabled: !!allocation,
     }
   }) || [],
 )
-
-function onClose() {
-  isOpen.value = false
-}
+const title = computed(() => {
+  return props.existingSession ? "Edit Sorting Session" : "Add Sorting Session"
+})
 
 async function onSubmit() {
   const allocations = allocationCategories
@@ -49,24 +52,13 @@ async function onSubmit() {
     })
   const sessionParams = {
     allocations,
-    sessionId: selectedSessionId.value,
+    sessionId: selectedSessionId.value as string,
     recipientId: props.recipientId,
   }
-  try {
-    await createRecipientSession(props.recipientId, sessionParams)
-    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
-    allocationCategories.forEach((c) => (c.enabled = false))
-    selectedSessionId.value = ""
-    isOpen.value = false
-    toast({ message: "Session created", type: "is-success" })
-  } catch (error) {
-    console.error(error)
-    toast({ message: "Failed to create session", type: "is-danger" })
-  }
-}
-
-function openModal() {
-  isOpen.value = true
+  emit("submit", sessionParams)
+  allocationCategories.forEach((c) => (c.enabled = false))
+  selectedSessionId.value = undefined
+  isOpen.value = false
 }
 
 function onAllocationInput(categoryId: string, enabled: boolean) {
@@ -75,20 +67,24 @@ function onAllocationInput(categoryId: string, enabled: boolean) {
   )
   allocationCategories[index].enabled = enabled
 }
+
+function openModal() {
+  isOpen.value = true
+}
 </script>
 
 <template>
   <slot :open="openModal"></slot>
   <ModalCard
     :is-open="isOpen"
-    title="Add Sorting Session"
+    :title="title"
     submit-button="Save"
-    :disable-submit="!selectedSessionId || sessionExists"
-    @close="onClose"
+    :disable-submit="!existingSession && (!selectedSessionId || sessionExists)"
+    @close="() => (isOpen = false)"
     @submit="onSubmit"
   >
     <div class="columns">
-      <div class="column">
+      <div v-if="!existingSession" class="column">
         <p class="subtitle">Select session time and day</p>
         <SessionSelect v-model="selectedSessionId" />
         <p v-if="sessionExists" class="error-msg">
@@ -97,7 +93,10 @@ function onAllocationInput(categoryId: string, enabled: boolean) {
       </div>
     </div>
 
-    <div v-if="selectedSessionId && !sessionExists" class="columns">
+    <div
+      v-if="(existingSession || selectedSessionId) && !sessionExists"
+      class="columns"
+    >
       <div class="column">
         <p class="subtitle">Choose category quantities</p>
         <AllocationQuantitiesInput

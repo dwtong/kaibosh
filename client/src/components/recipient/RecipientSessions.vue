@@ -1,41 +1,92 @@
 <script setup lang="ts">
-import type { RecipientSession } from "@/api/recipient-sessions"
+import {
+  createRecipientSession,
+  destroyHold,
+  destroyRecipientSession,
+  updateRecipientSession,
+  type RecipientSessionParams,
+} from "@/api/recipient-sessions"
 import RecipientSessionCard from "./RecipientSessionCard.vue"
 import SessionModal from "./SessionModal.vue"
 import HoldModal from "./HoldModal.vue"
 import { computed, ref } from "vue"
 import ModalConfirmation from "../ui/ModalConfirmation.vue"
+import { toast } from "@/utils/toast"
+import { useRecipientSessionsStore } from "@/stores/recipient-sessions"
+import { storeToRefs } from "pinia"
+import { useRecipientsStore } from "@/stores/recipients"
 
 const props = defineProps<{
-  recipientSessions?: RecipientSession[]
   recipientId: string
-  deleteHold: (holdId: string) => void
-  deleteSession: (sessionId: string) => Promise<void>
-  updateSession: (session: RecipientSession) => Promise<void>
   isLoading: boolean
 }>()
+const { fetchRecipient } = useRecipientsStore()
+const recipientSessionsStore = useRecipientSessionsStore()
+const { recipientSessions } = storeToRefs(recipientSessionsStore)
+
+async function createSession(sessionParams: RecipientSessionParams) {
+  try {
+    await createRecipientSession(props.recipientId, sessionParams)
+    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    toast({ message: "Session created", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to create session", type: "is-danger" })
+  }
+}
+
+async function updateSession(
+  recipientSessionId: string,
+  params: RecipientSessionParams,
+) {
+  try {
+    await updateRecipientSession(props.recipientId, recipientSessionId, params)
+    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    toast({ message: "Session updated", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to update session", type: "is-danger" })
+  }
+}
+
+async function deleteSession() {
+  try {
+    await destroyRecipientSession(
+      props.recipientId,
+      selectedRecipientSessionId.value,
+    )
+    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    toast({ message: "Session deleted", type: "is-success" })
+    deleteConfirmationIsOpen.value = false
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to delete session.", type: "is-danger" })
+  }
+}
+
+async function deleteHold(holdId: string) {
+  try {
+    await destroyHold(props.recipientId, holdId)
+    await Promise.all([
+      recipientSessionsStore.fetchRecipientSessions(props.recipientId),
+      fetchRecipient(props.recipientId),
+    ])
+    toast({ message: "Hold deleted.", type: "is-success" })
+  } catch (error) {
+    console.error(error)
+    toast({ message: "Failed to delete hold.", type: "is-danger" })
+  }
+}
 
 const canAddHold = computed(() => {
-  return props.isLoading || props.recipientSessions?.length === 0
+  return !props.isLoading && recipientSessions.value.length > 0
 })
 const deleteConfirmationIsOpen = ref(false)
-const updateConfirmationIsOpen = ref(false)
-const modalRecipientSessionId = ref()
-
-function openUpdateModal(recipientSessionId: string) {
-  updateConfirmationIsOpen.value = true
-  modalRecipientSessionId.value = recipientSessionId
-}
+const selectedRecipientSessionId = ref()
 
 function openDeleteModal(recipientSessionId: string) {
   deleteConfirmationIsOpen.value = true
-  modalRecipientSessionId.value = recipientSessionId
-}
-
-function deleteSessionAndCloseModal() {
-  props.deleteSession(modalRecipientSessionId.value).then(() => {
-    deleteConfirmationIsOpen.value = false
-  })
+  selectedRecipientSessionId.value = recipientSessionId
 }
 </script>
 
@@ -48,6 +99,7 @@ function deleteSessionAndCloseModal() {
           v-slot="{ open }"
           :recipient-sessions="recipientSessions"
           :recipient-id="recipientId"
+          @submit="createSession"
         >
           <button class="button is-info" @click="open">
             Add Sorting Session
@@ -72,7 +124,7 @@ function deleteSessionAndCloseModal() {
           type="is-danger"
           :is-open="deleteConfirmationIsOpen"
           @close="deleteConfirmationIsOpen = false"
-          @submit="deleteSessionAndCloseModal"
+          @submit="deleteSession"
         >
           Are you sure you wish to delete this session?
         </ModalConfirmation>
@@ -82,12 +134,20 @@ function deleteSessionAndCloseModal() {
         :key="recipientSession.id"
         class="sessions-box"
       >
-        <RecipientSessionCard
-          :recipient-session="recipientSession"
-          :delete-hold="deleteHold"
-          :open-update-modal="openUpdateModal"
-          :open-delete-modal="openDeleteModal"
-        />
+        <SessionModal
+          v-slot="{ open }"
+          :recipient-sessions="recipientSessions"
+          :recipient-id="recipientId"
+          :existing-session="recipientSession"
+          @submit="(params) => updateSession(recipientSession.id, params)"
+        >
+          <RecipientSessionCard
+            :recipient-session="recipientSession"
+            :delete-hold="deleteHold"
+            :open-update-modal="open"
+            :open-delete-modal="openDeleteModal"
+          />
+        </SessionModal>
       </div>
     </div>
   </div>
