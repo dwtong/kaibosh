@@ -1,21 +1,26 @@
-import { fileURLToPath, URL } from "node:url";
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import { ConfigEnv } from "vite";
+import { fileURLToPath, URL } from "node:url"
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
+import { ConfigEnv } from "vite"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }: ConfigEnv) => {
-  const isDev = command !== "build";
+  const isDev = command !== "build"
   if (isDev) {
     // Terminate the watcher when Phoenix quits
     process.stdin.on("close", () => {
-      process.exit(0);
-    });
+      process.exit(0)
+    })
 
-    process.stdin.resume();
+    process.stdin.resume()
   }
 
   return {
+    define: {
+      __VUE_OPTIONS_API__: "false",
+      __VUE_PROD_DEVTOOLS__: "false",
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
+    },
     plugins: [vue()],
     resolve: {
       alias: {
@@ -50,5 +55,5 @@ export default defineConfig(({ command }: ConfigEnv) => {
         },
       },
     },
-  };
-});
+  }
+})
