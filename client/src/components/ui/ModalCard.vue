@@ -2,7 +2,7 @@
 defineProps<{
   isOpen: boolean
   title: string
-  submitButton: string
+  submitButton?: string
   disableSubmit?: boolean
 }>()
 defineEmits<{
@@ -30,13 +30,15 @@ defineEmits<{
         <div>
           <div class="buttons is-right">
             <button class="button" @click="$emit('close')">Cancel</button>
-            <button
-              :disabled="disableSubmit"
-              class="button is-info"
-              @click="$emit('submit')"
-            >
-              {{ submitButton }}
-            </button>
+            <slot name="submit">
+              <button
+                :disabled="disableSubmit"
+                class="button is-info"
+                @click="$emit('submit')"
+              >
+                {{ submitButton }}
+              </button>
+            </slot>
           </div>
         </div>
       </footer>

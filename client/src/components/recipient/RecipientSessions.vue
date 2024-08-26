@@ -79,6 +79,7 @@ async function deleteHold(holdId: string) {
 }
 
 const canAddHold = computed(() => {
+  console.log(recipientSessions.value.length)
   return !props.isLoading && recipientSessions.value.length > 0
 })
 const deleteConfirmationIsOpen = ref(false)
@@ -105,9 +106,13 @@ function openDeleteModal(recipientSessionId: string) {
             Add Sorting Session
           </button>
         </SessionModal>
-        <HoldModal v-slot="{ open }">
+        <HoldModal
+          v-slot="{ open }"
+          :recipient-sessions="recipientSessions"
+          :recipient-id="recipientId"
+        >
           <button
-            :disabled="canAddHold"
+            :disabled="!canAddHold"
             :title="
               canAddHold
                 ? 'Hold date cannot be added when recipient has no sessions'
@@ -116,7 +121,7 @@ function openDeleteModal(recipientSessionId: string) {
             class="button is-warning"
             @click="open"
           >
-            Add Hold
+            Add Hold Date
           </button>
         </HoldModal>
         <ModalConfirmation

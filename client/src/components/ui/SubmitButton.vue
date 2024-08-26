@@ -3,6 +3,7 @@ import { computed } from "vue"
 
 type Props = {
   isSubmitting: boolean
+  disabled?: boolean
   type?: string
   label?: string
 }
@@ -25,7 +26,7 @@ const cssClass = computed(() => {
     type="submit"
     :class="cssClass"
     class="button"
-    :disabled="isSubmitting"
+    :disabled="isSubmitting || disabled"
   >
     <slot>{{ label }}</slot>
   </button>

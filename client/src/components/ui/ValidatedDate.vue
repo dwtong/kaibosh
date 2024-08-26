@@ -8,6 +8,8 @@ const props = defineProps<{
   label?: string
   placeholder?: string
   showError?: boolean
+  disabled?: boolean
+  default?: Date
 }>()
 
 const { errorMessage, value, setValue } = useField<string | null>(props.name)
@@ -42,6 +44,7 @@ const label = computed(() => props.label || props.name.replace(/-/g, " "))
         class="input date datepicker-input"
         :name="name"
         :placeholder="placeholder"
+        :disabled="disabled"
       />
     </div>
     <p v-if="showError && errorMessage" class="error-msg">{{ errorMessage }}</p>

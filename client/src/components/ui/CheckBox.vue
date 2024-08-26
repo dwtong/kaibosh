@@ -4,6 +4,7 @@ import { useAppStore } from "@/stores/app"
 const props = defineProps<{
   value: boolean
   label: string
+  disabled?: boolean
 }>()
 
 defineEmits<{
@@ -16,7 +17,7 @@ appStore.fetchBases()
 
 <template>
   <div class="field">
-    <label class="b-checkbox checkbox">
+    <label class="b-checkbox checkbox" :disabled="disabled ? true : null">
       <input
         type="checkbox"
         :value="props.value"
