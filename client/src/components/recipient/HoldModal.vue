@@ -76,7 +76,7 @@ const submit = handleSubmit(async ({ startDate, endDate }) => {
     const params = {
       recipientSessionId: recipientSession.id,
       startsAt: startOfDayString(startDate),
-      endsAt: noEndDate.value ? null : endOfDayString(endDate as Date),
+      endsAt: noEndDate.value ? "" : endOfDayString(endDate as Date),
     }
     sessionPromises.push(createHold(props.recipientId, params))
   }
