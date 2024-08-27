@@ -1,4 +1,9 @@
-import { getSessionPlansForBase, type SessionPlan } from "@/api/sessions"
+import {
+  getPlanForSession,
+  getSessionPlansForBase,
+  type SessionPlan,
+  type SessionPlanDetails,
+} from "@/api/sessions"
 import { formatDate } from "@/utils/date"
 import { capitalize, sortBy } from "es-toolkit"
 import { defineStore } from "pinia"
@@ -6,6 +11,17 @@ import { ref } from "vue"
 
 export const useSessionPlansStore = defineStore("session-plans", () => {
   const planList = ref<SessionPlan[]>([])
+  const planDetails = ref<SessionPlanDetails>()
+
+  async function fetchPlanDetails(
+    baseId: string,
+    sessionId: string,
+    date: string,
+  ) {
+    await getPlanForSession(baseId, sessionId, date).then((data) => {
+      planDetails.value = data
+    })
+  }
 
   async function fetchPlanList(baseId: string, weekOfDate: Date) {
     const weekOfDateString = formatDate(weekOfDate, "yyyy-MM-dd")
@@ -21,8 +37,22 @@ export const useSessionPlansStore = defineStore("session-plans", () => {
     )
   }
 
+  function allocationsForCategory(categoryId: string) {
+    return planDetails.value?.allocations.filter(
+      (a) => a.categoryId === categoryId,
+    )
+  }
+
+  function recipientById(recipientId: string) {
+    return planDetails.value?.recipients.find((r) => r.id === recipientId)
+  }
+
   return {
+    allocationsForCategory,
+    fetchPlanDetails,
     fetchPlanList,
     plansForDay,
+    planDetails,
+    recipientById,
   }
 })

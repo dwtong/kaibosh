@@ -7,6 +7,7 @@ import SessionRecipientList from "./SessionRecipientList.vue"
 const props = defineProps<{
   weekOfDate: Date
   day: Day
+  baseId: string
 }>()
 const { plansForDay } = useSessionPlansStore()
 const plans = computed(() => plansForDay(props.day))
@@ -27,7 +28,8 @@ const sessionDate = computed(() => {
       <div v-for="plan in plans" :key="plan.session.id" class="column is-half">
         <SessionRecipientList
           :plan="plan"
-          :date="formatDate(weekOfDate, 'yyyy-MM-dd')"
+          :date="plan.session.date"
+          :base-id="baseId"
         />
       </div>
     </div>

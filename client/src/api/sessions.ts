@@ -1,4 +1,5 @@
 import api from "./api"
+import type { SessionAllocation } from "./recipient-sessions"
 
 export type Session = {
   id: string
@@ -9,6 +10,10 @@ export type Session = {
 export type SessionPlan = {
   session: Session & { date: string }
   recipients: SessionRecipient[]
+}
+
+export type SessionPlanDetails = SessionPlan & {
+  allocations: SessionAllocation[]
 }
 
 export type SessionRecipient = {
@@ -28,5 +33,15 @@ export async function getSessionPlansForBase(
 ): Promise<SessionPlan[]> {
   return api
     .get(`bases/${baseId}/plans?week_of_date=${weekOfDate}`)
+    .then(({ data }) => data)
+}
+
+export async function getPlanForSession(
+  baseId: string,
+  sessionId: string,
+  date: string,
+): Promise<SessionPlanDetails> {
+  return api
+    .get(`bases/${baseId}/plans/${sessionId}?date=${date}`)
     .then(({ data }) => data)
 }

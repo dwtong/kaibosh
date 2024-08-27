@@ -8,6 +8,7 @@ import SessionRecipient from "./SessionRecipient.vue"
 const props = defineProps<{
   plan: SessionPlan
   date: string
+  baseId: string
 }>()
 
 const recipients = computed(() => {
@@ -38,7 +39,7 @@ const recipients = computed(() => {
     </div>
     <footer class="card-footer is-hidden-print">
       <router-link
-        :to="`/sessions/${plan.session.id}?date=${date}`"
+        :to="`/sessions/${plan.session.id}?date=${date}&baseId=${baseId}`"
         class="card-footer-item"
         >View Session</router-link
       >

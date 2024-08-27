@@ -51,6 +51,7 @@ if (baseId.value) {
         :key="day"
         :week-of-date="weekOfDate"
         :day="day"
+        :base-id="baseId"
       />
     </div>
   </div>

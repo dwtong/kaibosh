@@ -36,3 +36,37 @@ function viewRecipient() {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.print-only {
+  font-size: 12px;
+}
+
+.allocation-recipient {
+  @media print {
+    margin-bottom: 0.2rem;
+    font-size: 12px !important;
+  }
+
+  .tag {
+    font-weight: 800;
+    margin-left: 0.1rem;
+    margin-top: 0.4rem;
+  }
+}
+
+.is-text {
+  margin-bottom: 0rem !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  display: block;
+  text-align: left;
+}
+
+.inactive {
+  text-decoration-line: line-through !important;
+  color: darkgray !important;
+}
+</style>
