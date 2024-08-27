@@ -1,109 +1,80 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SessionListItem from "@/components/sessions/SessionListItem.vue"
+import WeekDateControls from "@/components/sessions/WeekDateControls.vue"
+import BaseSelect from "@/components/ui/BaseSelect.vue"
+import { useSessionPlansStore } from "@/stores/session-plans"
+import { listOfDays, mondayOfWeek, thisWeek } from "@/utils/date"
+import { computed, ref, watch } from "vue"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
+const sessionPlansStore = useSessionPlansStore()
+const baseId = ref(localStorage.getItem("baseId") || "")
+const showSessions = ref(!!baseId.value)
+const weekOfDate = computed(() => {
+  const dateParam = route.query?.date?.toString()
+  return dateParam ? mondayOfWeek(new Date(dateParam)) : thisWeek
+})
+
+function setBase(event: Event) {
+  const { value } = event.target as HTMLInputElement
+  baseId.value = value
+  showSessions.value = true
+  localStorage.setItem("baseId", value)
+}
+
+watch(baseId, () =>
+  sessionPlansStore.fetchPlanList(baseId.value, weekOfDate.value),
+)
+if (baseId.value) {
+  sessionPlansStore.fetchPlanList(baseId.value, weekOfDate.value)
+}
+</script>
 
 <template>
-  <div>sessions list view</div>
+  <div>
+    <div class="title-box is-hidden-print">
+      <h1 class="title is-inline-block">Session Schedule</h1>
+    </div>
+    <div class="columns">
+      <div class="column is-hidden-print">
+        <BaseSelect :value="baseId" @input="setBase" />
+      </div>
+      <div class="column is-hidden-print">
+        <WeekDateControls :base-id="baseId" :date="weekOfDate" />
+      </div>
+    </div>
+
+    <div v-if="showSessions" class="list-view">
+      <SessionListItem
+        v-for="day in listOfDays"
+        :key="day"
+        :week-of-date="weekOfDate"
+        :day="day"
+      />
+    </div>
+  </div>
 </template>
 
-<!-- <template> -->
-<!--   <div> -->
-<!--     <div class="title-box is-hidden-print"> -->
-<!--       <h1 class="title is-inline-block">Session Schedule</h1> -->
-<!--     </div> -->
-<!--     <div class="columns"> -->
-<!--       <div class="column is-hidden-print"> -->
-<!--         <BaseSelect class="" :value="baseId" required="true" @input="setBase" /> -->
-<!--       </div> -->
-<!--       <div class="column is-hidden-print"> -->
-<!--         <WeekDateControls :base-id="baseId" :date="weekOfDate" /> -->
-<!--       </div> -->
-<!--     </div> -->
+<style scoped>
+.box {
+  @media print {
+    padding: 10px;
+  }
+}
 
-<!--     <div v-if="showSessionOptions"> -->
-<!--       <SessionListItem v-for="day in days" :key="day" :week-of-date="weekOfDate" :day="day" /> -->
-<!--     </div> -->
-<!--   </div> -->
-<!-- </template> -->
+.card-header {
+  background-color: #e6e6e6;
+}
 
-<!-- <script lang="ts"> -->
-<!-- import Vue from "vue"; -->
-<!-- import { Component } from "vue-property-decorator"; -->
-<!-- import Sessions from "@/store/modules/sessions"; -->
-<!-- import SessionPlans from "@/store/modules/session-plans"; -->
-<!-- import BaseSelect from "@/components/ui/BaseSelect.vue"; -->
-<!-- import SessionListItem from "@/components/sessions/SessionListItem.vue"; -->
-<!-- import WeekDateControls from "@/components/sessions/WeekDateControls.vue"; -->
-<!-- import { listOfDays, mondayOfWeek, thisWeek, formatDate } from "@/helpers/date"; -->
-<!-- import App from "@/store/modules/app"; -->
+.list-view {
+  margin-top: -23rem;
+}
 
-<!-- @Component({ components: { BaseSelect, SessionListItem, WeekDateControls } }) -->
-<!-- export default class ListSessions extends Vue { -->
-<!--   sessionId = "0"; -->
-<!--   showSessionOptions = true; -->
-<!--   baseId = localStorage.getItem("baseId"); -->
-
-<!--   async created() { -->
-<!--     if (this.baseId && this.baseId !== "0") { -->
-<!--       this.fetchPlans(); -->
-
-<!--       this.showSessionOptions = true; -->
-<!--     } else { -->
-<!--       this.showSessionOptions = false; -->
-<!--     } -->
-<!--   } -->
-
-<!--   async setBase(baseId: string) { -->
-<!--     localStorage.setItem("baseId", baseId); -->
-<!--     this.baseId = baseId; -->
-<!--     await this.fetchPlans(); -->
-<!--     this.showSessionOptions = true; -->
-<!--   } -->
-
-<!--   async fetchPlans() { -->
-<!--     App.enableLoading(); -->
-
-<!--     if (this.baseId) { -->
-<!--       const weekOfDate = formatDate(this.weekOfDate, "yyyy-MM-dd"); -->
-<!--       await Sessions.fetchList(this.baseId); -->
-<!--       await SessionPlans.fetchPlanList({ baseId: this.baseId, weekOfDate }); -->
-<!--     } -->
-<!--     App.disableLoading(); -->
-<!--   } -->
-
-<!--   get showSubmitButton() { -->
-<!--     return this.baseId !== "0" && this.sessionId !== "0"; -->
-<!--   } -->
-
-<!--   get days() { -->
-<!--     return listOfDays; -->
-<!--   } -->
-
-<!--   get weekOfDate() { -->
-<!--     const dateParam = this.$route.query.date?.toString(); -->
-
-<!--     if (dateParam) { -->
-<!--       return mondayOfWeek(new Date(dateParam)); -->
-<!--     } else { -->
-<!--       return thisWeek; -->
-<!--     } -->
-<!--   } -->
-<!-- } -->
-<!-- </script> -->
-
-<!-- <style lang="scss" scoped> -->
-<!-- .box { -->
-<!--   @media print { -->
-<!--     padding: 10px; -->
-<!--   } -->
-<!-- } -->
-
-<!-- .card-header { -->
-<!--   background-color: #e6e6e6; -->
-<!-- } -->
-
-<!-- .title { -->
-<!--   @media print { -->
-<!--     font-size: 16px !important; -->
-<!--     margin-bottom: 10px !important; -->
-<!--   } -->
-<!-- } -->
-<!-- </style> -->
+.title {
+  @media print {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
+}
+</style>

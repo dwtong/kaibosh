@@ -8,7 +8,7 @@ import ValidatedDate from "../ui/ValidatedDate.vue"
 import CheckBox from "../ui/CheckBox.vue"
 import { type RecipientSession } from "@/api/recipient-sessions"
 import { capitalize } from "es-toolkit"
-import { formatTime } from "@/utils/date"
+import { endOfDayString, formatTime, startOfDayString } from "@/utils/date"
 import SubmitButton from "../ui/SubmitButton.vue"
 import { createHold } from "@/api/recipient-sessions"
 import { toast } from "@/utils/toast"
@@ -74,9 +74,9 @@ const submit = handleSubmit(async ({ startDate, endDate }) => {
   const sessionPromises = []
   for (const recipientSession of sessionsToSubmit) {
     const params = {
-      startsAt: startDate,
-      endsAt: noEndDate.value ? null : (endDate as Date),
       recipientSessionId: recipientSession.id,
+      startsAt: startOfDayString(startDate),
+      endsAt: noEndDate.value ? null : endOfDayString(endDate as Date),
     }
     sessionPromises.push(createHold(props.recipientId, params))
   }

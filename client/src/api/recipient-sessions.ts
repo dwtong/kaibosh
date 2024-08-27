@@ -18,8 +18,8 @@ export type SessionAllocation = {
 
 export type SessionHold = {
   id: string
-  startsAt: Date
-  endsAt: Date | null
+  startsAt: string
+  endsAt: string
 }
 
 export type RecipientSessionParams = {

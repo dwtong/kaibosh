@@ -95,6 +95,17 @@ $colors: map-merge($colors, $addColors);
   border-radius: 6px;
 }
 
+.datepicker-inline {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+
+  .datepicker-picker {
+  padding: 0.7rem;
+}
+
+}
+
 .field {
   margin-bottom: 1rem;
 
