@@ -123,6 +123,7 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
   height: 100%;
 
   @media print {
+    break-inside: avoid;
     border: 1px solid gray;
     box-shadow: unset;
     -webkit-box-shadow: unset;

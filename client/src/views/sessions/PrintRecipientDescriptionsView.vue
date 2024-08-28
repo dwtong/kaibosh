@@ -96,6 +96,9 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
 .page {
   overflow: visible;
   position: fixed;
+  @media print {
+    position: relative;
+  }
   z-index: 999;
   height: 100%;
   width: 100%;
@@ -105,6 +108,12 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
   font-size: 16px;
   color: black;
   overflow-y: auto;
+}
+
+.recipient {
+  @media print {
+    break-inside: avoid;
+  }
 }
 
 .title {

@@ -32,6 +32,19 @@ const showNav = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+.container {
+  @media print {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.section {
+  @media print {
+    padding: 0 !important;
+  }
+}
+
 .main {
   background-color: $app-background;
   min-height: 100vh;
