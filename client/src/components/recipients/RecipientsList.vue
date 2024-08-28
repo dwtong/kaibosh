@@ -3,9 +3,12 @@ import type { RecipientSummary } from "@/api/recipients"
 import RecipientStatusTag from "../recipient/RecipientStatusTag.vue"
 import { useRouter } from "vue-router"
 import { useRecipientsStore } from "@/stores/recipients"
+import SortIcon from "../ui/SortIcon.vue"
+import { storeToRefs } from "pinia"
 
 const router = useRouter()
 const recipientStore = useRecipientsStore()
+const { sortDir, sortField } = storeToRefs(recipientStore)
 const sortBy = recipientStore.setSort
 
 const props = defineProps<{
@@ -20,8 +23,16 @@ function navigate(recipientId: string): void {
 <template>
   <table class="table is-fullwidth is-hoverable is-striped">
     <thead>
-      <th @click="sortBy('name')">Name</th>
-      <th class="th-status" @click="sortBy('status')">Status</th>
+      <th @click="sortBy('name')">
+        <div>
+          Name
+          <SortIcon v-if="sortField === 'name'" :direction="sortDir" />
+        </div>
+      </th>
+      <th class="th-status" @click="sortBy('status')">
+        Status
+        <SortIcon v-if="sortField === 'status'" :direction="sortDir" />
+      </th>
     </thead>
     <tbody>
       <tr
