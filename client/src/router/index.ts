@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import { useAuthStore } from "@/stores/auth"
 import CreateRecipientView from "@/views/recipients/CreateRecipientView.vue"
 import UpdateRecipientView from "@/views/recipients/UpdateRecipientView.vue"
-import SignupView from "@/views/recipients/SignupView.vue"
+// import SignupView from "@/views/recipients/SignupView.vue"
 import ListRecipientsView from "@/views/recipients/ListRecipientsView.vue"
 import ShowRecipientView from "@/views/recipients/ShowRecipientView.vue"
 import ShowSessionView from "@/views/sessions/ShowSessionView.vue"
@@ -26,11 +26,11 @@ const router = createRouter({
       component: LoginView,
       meta: { public: true },
     },
-    {
-      path: "/signup",
-      component: SignupView,
-      meta: { public: true },
-    },
+    // {
+    //   path: "/signup",
+    //   component: SignupView,
+    //   meta: { public: true },
+    // },
     {
       path: "/recipients",
       component: ListRecipientsView,
