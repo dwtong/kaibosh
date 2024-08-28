@@ -128,7 +128,7 @@ const submit = handleSubmit(async (recipientParams) => {
       <ValidatedInput
         name="contactEmail"
         label="contact email"
-        type="text"
+        type="email"
         :show-error="showErrors"
       />
       <ValidatedInput
@@ -143,10 +143,6 @@ const submit = handleSubmit(async (recipientParams) => {
         type="text"
         :show-error="showErrors"
       />
-      <!-- <ValidatedInput v-model="recipientDetails.contact.name" label="contact name" /> -->
-      <!-- <ValidatedInput v-model="recipientDetails.contact.email" label="contact email" :rules="{ email: true }" /> -->
-      <!-- <ValidatedInput v-model="recipientDetails.contact.phoneLandline" label="contact landline" /> -->
-      <!-- <ValidatedInput v-model="recipientDetails.contact.phoneMobile" label="contact mobile" /> -->
     </div>
     <SubmitButton
       :is-submitting="isSubmitting"

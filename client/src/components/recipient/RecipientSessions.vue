@@ -27,7 +27,10 @@ const { recipientSessions } = storeToRefs(recipientSessionsStore)
 async function createSession(sessionParams: RecipientSessionParams) {
   try {
     await createRecipientSession(props.recipientId, sessionParams)
-    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    await Promise.all([
+      recipientSessionsStore.fetchRecipientSessions(props.recipientId),
+      fetchRecipient(props.recipientId),
+    ])
     toast({ message: "Session created", type: "is-success" })
   } catch (error) {
     console.error(error)
@@ -41,7 +44,10 @@ async function updateSession(
 ) {
   try {
     await updateRecipientSession(props.recipientId, recipientSessionId, params)
-    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    await Promise.all([
+      recipientSessionsStore.fetchRecipientSessions(props.recipientId),
+      fetchRecipient(props.recipientId),
+    ])
     toast({ message: "Session updated", type: "is-success" })
   } catch (error) {
     console.error(error)
@@ -55,7 +61,10 @@ async function deleteSession() {
       props.recipientId,
       selectedRecipientSessionId.value,
     )
-    await recipientSessionsStore.fetchRecipientSessions(props.recipientId)
+    await Promise.all([
+      recipientSessionsStore.fetchRecipientSessions(props.recipientId),
+      fetchRecipient(props.recipientId),
+    ])
     toast({ message: "Session deleted", type: "is-success" })
     deleteConfirmationIsOpen.value = false
   } catch (error) {
@@ -79,7 +88,6 @@ async function deleteHold(holdId: string) {
 }
 
 const canAddHold = computed(() => {
-  console.log(recipientSessions.value.length)
   return !props.isLoading && recipientSessions.value.length > 0
 })
 const deleteConfirmationIsOpen = ref(false)
