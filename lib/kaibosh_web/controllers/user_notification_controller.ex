@@ -37,8 +37,8 @@ defmodule KaiboshWeb.UserNotificationController do
     with conn <- fetch_session(conn),
          user_id <- get_session(conn, :user_id),
          %User{} = user <- Accounts.get_user!(user_id),
-         base_id when is_integer(base_id) <- String.to_integer(base_id),
-         :ok <- Accounts.unsubscribe_user_from_base_notifications(user, base_id) do
+         base_id when is_integer(base_id) <- String.to_integer(base_id) do
+      Accounts.unsubscribe_user_from_base_notifications(user, base_id)
       send_resp(conn, :no_content, "")
     end
   end

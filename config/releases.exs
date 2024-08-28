@@ -14,9 +14,12 @@ config :kaibosh, Kaibosh.Repo,
   ssl_opts: [cacertfile: ~c"/src/kaibosh/ca-certificate.crt"],
   start_apps_before_migration: [:ssl]
 
-config :sentry,
-  dsn: System.fetch_env!("SENTRY_DSN"),
-  environment_name: System.fetch_env!("APP_ENV")
+if config_env() == :prod do
+  config :sentry,
+    dsn: System.fetch_env!("SENTRY_DSN"),
+    enable_source_code_context: true,
+    root_source_code_path: File.cwd!()
+end
 
 config :kaibosh, Kaibosh.Mailer,
   domain: "mg.#{System.fetch_env!("DOMAIN")}",

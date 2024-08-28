@@ -25,7 +25,11 @@ Alternatively, you can:
   * Install dependencies with `mix deps.get`
   * Populate your environment with any `POSTGRES_*` variables required (see dev.exs)
   * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
+  * Install Node.js dependencies with `npm install --prefix client`
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Sending Emails in Development
+
+Any emails sent in development can be viewed at [`http://localhost:4000/sent_emails`](http://localhost:4000/sent_emails)

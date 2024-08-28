@@ -1,11 +1,14 @@
-FROM --platform=linux/amd64 elixir:1.14 as build
+FROM elixir:1.17.2-otp-27 as build
+
+ENV NODE_VERSION=22.7.0
 
 WORKDIR /app
 
 # install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get update -y && \
-    apt-get install nodejs
+RUN curl -L -o node.tar.xz "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" && \
+  tar -xJf node.tar.xz -C /usr/local --strip-components=1 && \
+  rm node.tar.xz && \
+  ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
 # clean up workspace
 RUN mkdir -p priv/static && \
@@ -28,13 +31,13 @@ RUN mix deps.get
 RUN mix deps.compile
 RUN mix deps.compile sentry --force # https://docs.sentry.io/platforms/elixir/#including-source-code
 
-# build assets
-COPY assets/package.json assets/package-lock.json ./assets/
-RUN npm ci --prefix assets --progress=false --no-audit --loglevel=error
+# build frontend client
+COPY client/package.json client/package-lock.json
+RUN npm ci --prefix client --progress=false --no-audit --loglevel=error
 
 COPY priv priv
-COPY assets assets
-RUN npm run build --prefix assets
+COPY client client
+RUN npm run build --prefix client
 RUN mix phx.digest
 
 # compile and build release

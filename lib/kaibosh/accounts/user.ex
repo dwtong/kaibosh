@@ -41,6 +41,9 @@ defmodule Kaibosh.Accounts.User do
   end
 
   def check_password(%User{} = user, password) do
-    Argon2.check_pass(user, password)
+    case Argon2.verify_pass(password, user.password_hash) do
+      true -> {:ok, user}
+      false -> {:error, "invalid password"}
+    end
   end
 end

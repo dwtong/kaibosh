@@ -23,13 +23,8 @@ config :kaibosh, KaiboshWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch",
-      "--config",
-      "node_modules/@vue/cli-service/webpack.config.js",
-      cd: Path.expand("../assets", __DIR__)
+      "node_modules/vite/bin/vite.js",
+      cd: Path.expand("../client", __DIR__)
     ]
   ],
   secret_key_base: "xgscsEJOOIdPnwM9mgsaZD98pdV9S1c5Am9GDyUEedXRu02Vk7JiZ1XFthWEu5GQ"
@@ -81,4 +76,6 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-import_config "dev.secret.exs"
+if File.exists?("config/dev.secret.exs") do
+  import_config "dev.secret.exs"
+end

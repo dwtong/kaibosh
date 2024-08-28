@@ -2,6 +2,8 @@ defmodule KaiboshWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :kaibosh
 
+  @one_week 60 * 60 * 24 * 7
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -10,7 +12,8 @@ defmodule KaiboshWeb.Endpoint do
     key: "_kaibosh_key",
     signing_salt: "3H1zjXAA",
     extra: "SameSite=Strict",
-    http_only: true
+    http_only: true,
+    max_age: @one_week
   ]
 
   # socket "/socket", KaiboshWeb.UserSocket,
@@ -23,12 +26,19 @@ defmodule KaiboshWeb.Endpoint do
   #
   # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
-  plug Plug.Static,
-    at: "/",
-    from: {:kaibosh, "priv/static"},
-    gzip: false,
-    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
-    only_matching: ["precache-manifest"]
+  # plug Plug.Static,
+  #   at: "/",
+  #   from: {:kaibosh, "priv/static"},
+  #   gzip: false,
+  #   only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
+  #   only_matching: ["precache-manifest"]
+
+  if Mix.env() == :dev do
+    plug Plug.Static,
+      at: "/",
+      from: "client",
+      gzip: false
+  end
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
