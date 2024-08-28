@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 elixir:1.14 as build
+FROM elixir:1.17.2-otp-27 as build
 
 WORKDIR /app
 
