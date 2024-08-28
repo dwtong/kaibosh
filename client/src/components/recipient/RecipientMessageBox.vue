@@ -9,8 +9,8 @@ defineProps<{
 </script>
 
 <template>
-  <transition name="fade">
-    <div>
+  <div>
+    <Transition>
       <MessageBox v-if="status === 'pending'" title="Pending" type="is-info">
         <p>
           {{ name }} is currently pending. For a recipient to become active,
@@ -21,7 +21,9 @@ defineProps<{
           &nbsp;&nbsp;&nbsp;&nbsp;3. Have at least one sorting session set.<br />
         </p>
       </MessageBox>
+    </Transition>
 
+    <Transition>
       <MessageBox
         v-if="status === 'archived'"
         title="Archived"
@@ -32,6 +34,18 @@ defineProps<{
           <a @click="reactivate">Click here</a> to reactivate them.
         </p>
       </MessageBox>
-    </div>
-  </transition>
+    </Transition>
+  </div>
 </template>
+
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

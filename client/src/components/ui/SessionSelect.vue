@@ -6,7 +6,7 @@ import { storeToRefs } from "pinia"
 
 const sessionsStore = useSessionsStore()
 const { sessions } = storeToRefs(sessionsStore)
-const model = defineModel()
+const model = defineModel<string>()
 
 function updateSessionId(event: Event) {
   const { value } = event.target as HTMLInputElement

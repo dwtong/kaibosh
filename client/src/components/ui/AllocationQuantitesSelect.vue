@@ -16,7 +16,7 @@ const quantities = [
   { value: "9.0", name: "9" },
   { value: "10.0", name: "10" },
 ]
-const model = defineModel()
+const model = defineModel<string>()
 
 function updateQuantity(event: Event) {
   const { value } = event.target as HTMLInputElement

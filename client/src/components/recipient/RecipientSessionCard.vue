@@ -97,14 +97,4 @@ function toggleExpanded() {
 .hold-status {
   margin-right: 0.5rem;
 }
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.1s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
 </style>
