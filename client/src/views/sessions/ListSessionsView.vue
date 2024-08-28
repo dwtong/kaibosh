@@ -2,12 +2,14 @@
 import SessionListItem from "@/components/sessions/SessionListItem.vue"
 import WeekDateControls from "@/components/sessions/WeekDateControls.vue"
 import BaseSelect from "@/components/ui/BaseSelect.vue"
+import { useAppStore } from "@/stores/app"
 import { useSessionPlansStore } from "@/stores/session-plans"
 import { listOfDays, mondayOfWeek, thisWeek } from "@/utils/date"
-import { computed, ref, watch } from "vue"
+import { computed, onBeforeMount, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
+const appStore = useAppStore()
 const sessionPlansStore = useSessionPlansStore()
 const baseId = ref(localStorage.getItem("baseId") || "")
 const showSessions = ref(!!baseId.value)
@@ -26,9 +28,14 @@ function setBase(event: Event) {
 watch(baseId, () =>
   sessionPlansStore.fetchPlanList(baseId.value, weekOfDate.value),
 )
-if (baseId.value) {
-  sessionPlansStore.fetchPlanList(baseId.value, weekOfDate.value)
-}
+
+onBeforeMount(async () => {
+  appStore.setIsLoading(true)
+  if (baseId.value) {
+    await sessionPlansStore.fetchPlanList(baseId.value, weekOfDate.value)
+  }
+  appStore.setIsLoading(false)
+})
 </script>
 
 <template>

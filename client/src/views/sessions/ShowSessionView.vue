@@ -6,7 +6,7 @@ import { imagePath } from "@/utils/assets"
 import { formatDate } from "@/utils/date"
 import { capitalize, sortBy } from "es-toolkit"
 import { storeToRefs } from "pinia"
-import { computed } from "vue"
+import { computed, onBeforeMount } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
@@ -29,19 +29,25 @@ function print() {
 
 function allocationsForCategory(categoryId: string) {
   const allocations =
-    sessionPlansStore.allocationsForCategory(categoryId)?.map((a: any) => {
+    sessionPlansStore.allocationsForCategory(categoryId)?.map((a) => {
       return { ...a, recipient: sessionPlansStore.recipientById(a.recipientId) }
     }) || []
 
-  return sortBy(allocations, [(a) => [a.recipient.status, a.recipient.name]])
+  return sortBy(allocations, [(a) => [a.recipient?.status, a.recipient?.name]])
 }
 
-appStore.fetchCategories()
-sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
+onBeforeMount(async () => {
+  appStore.setIsLoading(true)
+  await Promise.all([
+    appStore.fetchCategories(),
+    sessionPlansStore.fetchPlanDetails(baseId, sessionId, date),
+  ])
+  appStore.setIsLoading(false)
+})
 </script>
 
 <template>
-  <div class="print">
+  <div v-if="!appStore.isLoading" class="print">
     <div class="title-box">
       <div class="field buttons is-pulled-right">
         <p class="control">

@@ -13,6 +13,7 @@ export type RecipientSession = {
 export type SessionAllocation = {
   id: string
   categoryId: string
+  recipientId: string
   quantity: string
 }
 
