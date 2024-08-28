@@ -25,3 +25,7 @@ jobs:
       - name: Run linter
         working-directory: ./client
         run: npm run lint
+
+      - name: Run format check
+        working-directory: ./client
+        run: npm run format
