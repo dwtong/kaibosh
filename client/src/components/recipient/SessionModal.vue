@@ -48,7 +48,7 @@ async function onSubmit() {
   const allocations = allocationCategories
     .filter((a) => a.enabled)
     .map(({ categoryId, quantity }) => {
-      return { categoryId, quantity }
+      return { categoryId, quantity, recipientId: props.recipientId }
     })
   const sessionParams = {
     allocations,

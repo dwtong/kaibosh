@@ -30,7 +30,10 @@ function print() {
 function allocationsForCategory(categoryId: string) {
   const allocations =
     sessionPlansStore.allocationsForCategory(categoryId)?.map((a) => {
-      return { ...a, recipient: sessionPlansStore.recipientById(a.recipientId) }
+      return {
+        ...a,
+        recipient: sessionPlansStore.recipientById(a.recipientId as string),
+      }
     }) || []
 
   return sortBy(allocations, [(a) => [a.recipient?.status, a.recipient?.name]])
@@ -104,7 +107,7 @@ onBeforeMount(async () => {
                 :key="allocation.recipientId"
               >
                 <SessionRecipient
-                  v-if="allocation"
+                  v-if="allocation?.recipient"
                   :quantity="allocation.quantity"
                   :recipient="allocation.recipient"
                 />

@@ -1,15 +1,8 @@
 import Axios from "axios"
 import camelCaseKeys from "camelcase-keys"
 import snakeCaseKeys from "snakecase-keys"
-import {
-  deleteAuthToken,
-  loadAuthToken,
-  saveAuthToken,
-} from "@/utils/local-storage"
+import { loadAuthToken, saveAuthToken } from "@/utils/local-storage"
 import { useAuthStore } from "@/stores/auth"
-import { useRouter } from "vue-router"
-// import toast from "@/helpers/toast"
-// import { UserModule } from "@/store/modules/user"
 
 const baseURL = "http://localhost:4000/api"
 
