@@ -71,7 +71,7 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
       <div
         v-for="category in categories"
         :key="category.id"
-        class="column card-column"
+        class="column card-column is-one-third"
       >
         <div class="card">
           <div v-if="category.imageName" class="card-image">
@@ -110,3 +110,101 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.columns {
+  align-items: stretch;
+}
+.box {
+  padding: 1rem 0.2rem;
+}
+
+.card {
+  height: 100%;
+
+  @media print {
+    border: 1px solid gray;
+    box-shadow: unset;
+    -webkit-box-shadow: unset;
+  }
+}
+
+.card-column {
+  flex: none;
+  width: 33.3333%;
+
+  @media print {
+    margin: 0;
+    padding: 10px;
+    width: 50%;
+  }
+}
+
+.card-content {
+  @media print {
+    padding: 8px;
+  }
+}
+
+.card-image {
+  @media print {
+    $padding: 10px;
+    padding: $padding;
+    margin-top: -$padding;
+    margin-bottom: -$padding;
+  }
+}
+
+.category-image {
+  @media print {
+    display: none;
+  }
+}
+
+.category-title {
+  @media print {
+    font-size: 16px !important;
+    background-color: rgb(200, 200, 200);
+    padding: 4px;
+  }
+}
+
+.media {
+  @media print {
+    margin-bottom: 10px !important;
+  }
+}
+
+.print {
+  @media print {
+    font-size: 20px;
+  }
+}
+
+.title-box {
+  height: 100px !important;
+
+  @media print {
+    height: 60px !important;
+  }
+
+  .subtitle {
+    margin-top: 0.4rem !important;
+
+    @media print {
+      font-size: 20px;
+      margin-top: 0px !important;
+    }
+  }
+
+  .title {
+    margin-left: 0 !important;
+    margin-bottom: 0.4rem !important;
+
+    @media print {
+      font-size: 20px;
+      margin-bottom: 0px !important;
+    }
+  }
+}
+</style>

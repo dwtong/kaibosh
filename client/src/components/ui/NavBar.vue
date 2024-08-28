@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/auth"
+import { useRecipientsStore } from "@/stores/recipients"
 const authStore = useAuthStore()
 
-// import AllRecipients from "@/store/modules/all-recipients";
-// import { UserModule } from "@/store/modules/user";
+const recipientStore = useRecipientsStore()
 
 function resetRecipientNameFilter() {
-  //   AllRecipients.updateNameFilter("");
+  recipientStore.setFilteredName("")
 }
 </script>
 
 <template>
   <aside class="menu">
     <div class="logo">
-      <img src="@/assets/images/kaibosh.png" alt="logo" />
+      <RouterLink to="/">
+        <img src="@/assets/images/kaibosh.png" alt="logo" />
+      </RouterLink>
     </div>
 
     <p class="menu-label">Schedule</p>
