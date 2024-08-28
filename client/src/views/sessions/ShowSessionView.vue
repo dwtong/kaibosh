@@ -46,7 +46,7 @@ sessionPlansStore.fetchPlanDetails(baseId, sessionId, date)
       <div class="field buttons is-pulled-right">
         <p class="control">
           <router-link
-            :to="`/sessions/${sessionId}/descriptions`"
+            :to="`/sessions/${sessionId}/descriptions?date=${date}&baseId=${baseId}`"
             class="button is-primary"
             >Recipient Descriptions</router-link
           >

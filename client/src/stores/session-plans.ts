@@ -7,11 +7,16 @@ import {
 import { formatDate } from "@/utils/date"
 import { capitalize, sortBy } from "es-toolkit"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 export const useSessionPlansStore = defineStore("session-plans", () => {
   const planList = ref<SessionPlan[]>([])
   const planDetails = ref<SessionPlanDetails>()
+
+  const orderedRecipients = computed(() => {
+    const recipients = planDetails.value?.recipients || []
+    return sortBy(recipients, [(c) => c.name])
+  })
 
   async function fetchPlanDetails(
     baseId: string,
@@ -51,6 +56,7 @@ export const useSessionPlansStore = defineStore("session-plans", () => {
     allocationsForCategory,
     fetchPlanDetails,
     fetchPlanList,
+    orderedRecipients,
     plansForDay,
     planDetails,
     recipientById,
