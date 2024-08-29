@@ -27,7 +27,7 @@ config :kaibosh, KaiboshWeb.Endpoint,
       cd: Path.expand("../client", __DIR__)
     ]
   ],
-  secret_key_base: "xgscsEJOOIdPnwM9mgsaZD98pdV9S1c5Am9GDyUEedXRu02Vk7JiZ1XFthWEu5GQ"
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 config :kaibosh, Kaibosh.Mailer, adapter: Bamboo.LocalAdapter
 

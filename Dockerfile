@@ -32,7 +32,8 @@ RUN mix deps.compile
 RUN mix deps.compile sentry --force # https://docs.sentry.io/platforms/elixir/#including-source-code
 
 # build frontend client
-COPY client/package.json client/package-lock.json
+COPY client/package.json client/package.json
+COPY client/package-lock.json client/package-lock.json
 RUN npm ci --prefix client --progress=false --no-audit --loglevel=error
 
 COPY priv priv
