@@ -68,6 +68,7 @@ onBeforeMount(async () => {
 .box {
   @media print {
     padding: 10px;
+    box-shadow: none;
   }
 }
 

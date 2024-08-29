@@ -35,3 +35,9 @@ const sessionDate = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.box {
+  break-inside: avoid;
+}
+</style>
