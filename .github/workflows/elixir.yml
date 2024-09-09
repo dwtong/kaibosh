@@ -47,6 +47,7 @@ jobs:
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
+
       - name: Check Formatting
         run: mix format --check-formatted
 

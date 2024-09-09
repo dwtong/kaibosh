@@ -1,6 +1,7 @@
 defmodule Kaibosh.Release do
   @moduledoc """
-  Functions to run migrations in a released (prod) environment.
+  Used for executing DB release tasks when run in production without Mix
+  installed.
   """
   @app :kaibosh
 
